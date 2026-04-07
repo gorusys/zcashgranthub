@@ -58,7 +58,8 @@ export function GrantCard({ grant }: { grant: Grant }) {
               <Calendar className="h-3 w-3" />
               {new Date(grant.submittedDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
             </div>
-            <span className="flex items-center gap-1 text-xs font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
+            {/* Always visible on touch devices; fades in on hover for pointer devices */}
+            <span className="flex items-center gap-1 text-xs font-medium text-primary transition-opacity sm:opacity-0 sm:group-hover:opacity-100">
               View Grant <ArrowRight className="h-3 w-3" />
             </span>
           </div>

@@ -64,30 +64,40 @@ export default function ApplyPage() {
   const removeMilestone = (i: number) => setMilestones(prev => prev.filter((_, idx) => idx !== i));
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="mb-2 text-3xl font-bold text-foreground">Submit a Grant Application</h1>
-      <p className="mb-8 text-muted-foreground">Complete all steps to submit your proposal for ZCG funding.</p>
+    <div className="container mx-auto px-4 py-6 sm:py-8">
+      <h1 className="mb-1 text-2xl font-bold text-foreground sm:text-3xl">Submit a Grant Application</h1>
+      <p className="mb-6 text-sm text-muted-foreground sm:mb-8 sm:text-base">
+        Complete all steps to submit your proposal for ZCG funding.
+      </p>
 
-      <div className="flex flex-col gap-8 lg:flex-row">
-        {/* Step indicator */}
-        <nav className="w-full shrink-0 lg:w-64">
-          <div className="sticky top-24 space-y-1">
+      <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
+        {/* Step list — vertical on all screen sizes, stacks above form on mobile */}
+        <nav className="w-full shrink-0 lg:w-56 xl:w-64">
+          <div className="space-y-0.5 lg:sticky lg:top-24">
             {stepLabels.map((label, i) => (
               <button
                 key={i}
                 onClick={() => setStep(i)}
                 className={cn(
                   "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors",
-                  i === step ? "bg-primary/10 text-primary font-medium" : i < step ? "text-foreground" : "text-muted-foreground"
+                  i === step
+                    ? "bg-primary/10 font-medium text-primary"
+                    : i < step
+                    ? "text-foreground hover:bg-secondary/50"
+                    : "text-muted-foreground hover:bg-secondary/50"
                 )}
               >
                 <div className={cn(
                   "flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold",
-                  i < step ? "bg-primary text-primary-foreground" : i === step ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"
+                  i < step
+                    ? "bg-primary text-primary-foreground"
+                    : i === step
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-secondary text-muted-foreground"
                 )}>
                   {i < step ? <Check className="h-3 w-3" /> : i + 1}
                 </div>
-                <span className="hidden sm:block">{label}</span>
+                {label}
               </button>
             ))}
           </div>
@@ -95,13 +105,16 @@ export default function ApplyPage() {
 
         {/* Form */}
         <div className="flex-1">
+
           {/* Step 0: Terms */}
           {step === 0 && (
             <Card className="border-border/50 bg-card">
-              <CardHeader><CardTitle>Terms & Conditions</CardTitle></CardHeader>
-              <CardContent className="space-y-4">
+              <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
+                <CardTitle>Terms & Conditions</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 px-4 pb-4 sm:space-y-4 sm:px-6 sm:pb-6">
                 {terms.map((term, i) => (
-                  <label key={i} className="flex items-start gap-3 cursor-pointer">
+                  <label key={i} className="flex cursor-pointer items-start gap-3">
                     <Checkbox checked={termsAccepted[i]} onCheckedChange={() => setTermsAccepted(prev => { const n = [...prev]; n[i] = !n[i]; return n; })} className="mt-0.5" />
                     <span className="text-sm text-muted-foreground">{term}</span>
                   </label>
@@ -114,8 +127,10 @@ export default function ApplyPage() {
           {/* Step 1: Organization */}
           {step === 1 && (
             <Card className="border-border/50 bg-card">
-              <CardHeader><CardTitle>Organization</CardTitle></CardHeader>
-              <CardContent className="space-y-4">
+              <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
+                <CardTitle>Organization</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 px-4 pb-4 sm:space-y-4 sm:px-6 sm:pb-6">
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">GitHub Username</label>
                   <Input value={formData.github} onChange={e => updateField("github", e.target.value)} placeholder="your-github-handle" className="bg-secondary" />
@@ -135,8 +150,10 @@ export default function ApplyPage() {
           {/* Step 2: Project Overview */}
           {step === 2 && (
             <Card className="border-border/50 bg-card">
-              <CardHeader><CardTitle>Project Overview</CardTitle></CardHeader>
-              <CardContent className="space-y-4">
+              <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
+                <CardTitle>Project Overview</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 px-4 pb-4 sm:space-y-4 sm:px-6 sm:pb-6">
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">Grant Title *</label>
                   <Input value={formData.title} onChange={e => updateField("title", e.target.value)} placeholder="Enter your grant title" className="bg-secondary" />
@@ -161,10 +178,12 @@ export default function ApplyPage() {
 
           {/* Step 3: Project Lead */}
           {step === 3 && (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <Card className="border-border/50 bg-card">
-                <CardHeader><CardTitle>Project Lead</CardTitle></CardHeader>
-                <CardContent className="space-y-4">
+                <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
+                  <CardTitle>Project Lead</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3 px-4 pb-4 sm:px-6 sm:pb-6">
                   <Input placeholder="Name" value={formData.leadName} onChange={e => updateField("leadName", e.target.value)} className="bg-secondary" />
                   <Input placeholder="Role" value={formData.leadRole} onChange={e => updateField("leadRole", e.target.value)} className="bg-secondary" />
                   <Textarea placeholder="Background" value={formData.leadBg} onChange={e => updateField("leadBg", e.target.value)} className="bg-secondary" />
@@ -173,11 +192,11 @@ export default function ApplyPage() {
               </Card>
               {teamMembers.map((m, i) => (
                 <Card key={i} className="border-border/50 bg-card">
-                  <CardHeader className="flex flex-row items-center justify-between">
+                  <CardHeader className="flex flex-row items-center justify-between px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
                     <CardTitle className="text-base">Team Member {i + 1}</CardTitle>
                     <Button variant="ghost" size="icon" onClick={() => setTeamMembers(prev => prev.filter((_, idx) => idx !== i))}><X className="h-4 w-4" /></Button>
                   </CardHeader>
-                  <CardContent className="space-y-3">
+                  <CardContent className="space-y-3 px-4 pb-4 sm:px-6 sm:pb-6">
                     <Input placeholder="Name" value={m.name} onChange={e => setTeamMembers(prev => { const n = [...prev]; n[i] = { ...n[i], name: e.target.value }; return n; })} className="bg-secondary" />
                     <Input placeholder="Role" value={m.role} onChange={e => setTeamMembers(prev => { const n = [...prev]; n[i] = { ...n[i], role: e.target.value }; return n; })} className="bg-secondary" />
                     <Textarea placeholder="Responsibilities" value={m.resp} onChange={e => setTeamMembers(prev => { const n = [...prev]; n[i] = { ...n[i], resp: e.target.value }; return n; })} className="bg-secondary" />
@@ -195,8 +214,10 @@ export default function ApplyPage() {
           {/* Step 4: Project Details */}
           {step === 4 && (
             <Card className="border-border/50 bg-card">
-              <CardHeader><CardTitle>Project Details</CardTitle></CardHeader>
-              <CardContent className="space-y-4">
+              <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
+                <CardTitle>Project Details</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 px-4 pb-4 sm:space-y-4 sm:px-6 sm:pb-6">
                 {[
                   ["summary", "Project Summary *"], ["description", "Project Description *"], ["problem", "Proposed Problem *"],
                   ["solution", "Proposed Solution *"], ["solutionFormat", "Solution Format"], ["dependencies", "Dependencies"],
@@ -204,7 +225,7 @@ export default function ApplyPage() {
                 ].map(([key, label]) => (
                   <div key={key}>
                     <label className="mb-1 block text-sm font-medium text-foreground">{label}</label>
-                    <Textarea value={(formData as any)[key]} onChange={e => updateField(key, e.target.value)} className="min-h-[100px] bg-secondary" />
+                    <Textarea value={(formData as any)[key]} onChange={e => updateField(key, e.target.value)} className="min-h-[90px] bg-secondary sm:min-h-[100px]" />
                   </div>
                 ))}
               </CardContent>
@@ -214,8 +235,10 @@ export default function ApplyPage() {
           {/* Step 5: Budget */}
           {step === 5 && (
             <Card className="border-border/50 bg-card">
-              <CardHeader><CardTitle>Budget</CardTitle></CardHeader>
-              <CardContent className="space-y-4">
+              <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
+                <CardTitle>Budget</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 px-4 pb-4 sm:space-y-4 sm:px-6 sm:pb-6">
                 {[["hardware", "Hardware/Software"], ["services", "Services"], ["compensation", "Compensation"]].map(([key, label]) => (
                   <div key={key}>
                     <label className="mb-1 block text-sm font-medium text-foreground">{label}</label>
@@ -225,7 +248,7 @@ export default function ApplyPage() {
                     </div>
                   </div>
                 ))}
-                <div className="rounded-lg bg-secondary p-4 text-center">
+                <div className="rounded-lg bg-secondary p-3 text-center sm:p-4">
                   <span className="text-sm text-muted-foreground">Total Budget</span>
                   <div className="text-2xl font-bold text-primary">${total.toLocaleString()}</div>
                 </div>
@@ -235,12 +258,14 @@ export default function ApplyPage() {
 
           {/* Step 6: Risk */}
           {step === 6 && (
-            <div className="grid gap-4 sm:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-3 sm:gap-4">
               {[["implRisks", "Implementation Risks"], ["sideEffects", "Potential Side Effects"], ["successMetrics", "Success Metrics"]].map(([key, label]) => (
                 <Card key={key} className="border-border/50 bg-card">
-                  <CardHeader><CardTitle className="text-sm">{label}</CardTitle></CardHeader>
-                  <CardContent>
-                    <Textarea value={(formData as any)[key]} onChange={e => updateField(key, e.target.value)} className="min-h-[120px] bg-secondary" />
+                  <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
+                    <CardTitle className="text-sm">{label}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="px-4 pb-4 sm:px-6 sm:pb-6">
+                    <Textarea value={(formData as any)[key]} onChange={e => updateField(key, e.target.value)} className="min-h-[100px] bg-secondary sm:min-h-[120px]" />
                   </CardContent>
                 </Card>
               ))}
@@ -249,25 +274,23 @@ export default function ApplyPage() {
 
           {/* Step 7: Milestones */}
           {step === 7 && (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <Card className="border-border/50 bg-card">
-                <CardContent className="p-5">
+                <CardContent className="px-4 py-3 sm:px-6 sm:py-5">
                   <label className="mb-1 block text-sm font-medium text-foreground">Startup Funding</label>
-                  <div className="flex gap-3">
-                    <div className="relative flex-1">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">$</span>
-                      <Input type="number" value={formData.startupAmount} onChange={e => updateField("startupAmount", e.target.value)} className="bg-secondary pl-7" />
-                    </div>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">$</span>
+                    <Input type="number" value={formData.startupAmount} onChange={e => updateField("startupAmount", e.target.value)} className="bg-secondary pl-7" />
                   </div>
                 </CardContent>
               </Card>
               {milestones.map((m, i) => (
                 <Card key={i} className="border-border/50 bg-card">
-                  <CardHeader className="flex flex-row items-center justify-between">
+                  <CardHeader className="flex flex-row items-center justify-between px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
                     <CardTitle className="text-base">Milestone {i + 1}</CardTitle>
                     <Button variant="ghost" size="icon" onClick={() => removeMilestone(i)}><X className="h-4 w-4" /></Button>
                   </CardHeader>
-                  <CardContent className="space-y-3">
+                  <CardContent className="space-y-3 px-4 pb-4 sm:px-6 sm:pb-6">
                     <div className="grid gap-3 sm:grid-cols-2">
                       <div>
                         <label className="mb-1 block text-xs text-muted-foreground">Amount (USD)</label>
@@ -285,18 +308,22 @@ export default function ApplyPage() {
                   </CardContent>
                 </Card>
               ))}
-              <Button variant="outline" onClick={addMilestone} className="gap-2"><Plus className="h-4 w-4" /> Add Milestone</Button>
+              <Button variant="outline" onClick={addMilestone} className="gap-2">
+                <Plus className="h-4 w-4" /> Add Milestone
+              </Button>
             </div>
           )}
 
           {/* Step 8: Documents */}
           {step === 8 && (
             <Card className="border-border/50 bg-card">
-              <CardHeader><CardTitle>Supporting Documents</CardTitle></CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-center rounded-lg border-2 border-dashed border-border bg-secondary/50 p-10">
+              <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
+                <CardTitle>Supporting Documents</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 px-4 pb-4 sm:space-y-4 sm:px-6 sm:pb-6">
+                <div className="flex items-center justify-center rounded-lg border-2 border-dashed border-border bg-secondary/50 p-6 sm:p-10">
                   <div className="text-center">
-                    <Upload className="mx-auto mb-2 h-8 w-8 text-muted-foreground" />
+                    <Upload className="mx-auto mb-2 h-7 w-7 text-muted-foreground sm:h-8 sm:w-8" />
                     <p className="text-sm text-muted-foreground">Drag & drop files or click to upload</p>
                   </div>
                 </div>
@@ -317,25 +344,27 @@ export default function ApplyPage() {
           {/* Step 9: Review */}
           {step === 9 && (
             <Card className="border-border/50 bg-card">
-              <CardHeader><CardTitle>Review & Submit</CardTitle></CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid gap-4 sm:grid-cols-2">
+              <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
+                <CardTitle>Review & Submit</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 px-4 pb-4 sm:space-y-6 sm:px-6 sm:pb-6">
+                <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
                   <div><span className="text-xs text-muted-foreground">Title</span><p className="font-medium text-foreground">{formData.title || "—"}</p></div>
                   <div><span className="text-xs text-muted-foreground">Amount</span><p className="font-medium text-primary">${Number(formData.amount).toLocaleString() || "—"}</p></div>
                   <div><span className="text-xs text-muted-foreground">Category</span><p className="font-medium text-foreground">{formData.category || "—"}</p></div>
                   <div><span className="text-xs text-muted-foreground">Project Lead</span><p className="font-medium text-foreground">{formData.leadName || "—"}</p></div>
                 </div>
                 <div><span className="text-xs text-muted-foreground">Summary</span><p className="text-sm text-muted-foreground">{formData.summary || "—"}</p></div>
-                <div className="rounded-lg bg-secondary p-4 text-center">
+                <div className="rounded-lg bg-secondary p-3 text-center sm:p-4">
                   <span className="text-sm text-muted-foreground">Total Budget</span>
                   <div className="text-2xl font-bold text-primary">${total.toLocaleString()}</div>
                   <span className="text-xs text-muted-foreground">{milestones.length} milestones</span>
                 </div>
-                <label className="flex items-center gap-3 cursor-pointer">
+                <label className="flex cursor-pointer items-center gap-3">
                   <Checkbox checked={confirmed} onCheckedChange={() => setConfirmed(!confirmed)} />
                   <span className="text-sm text-foreground">I confirm all information is accurate</span>
                 </label>
-                <Button size="lg" disabled={!confirmed} className="w-full gap-2 bg-primary text-primary-foreground font-semibold">
+                <Button size="lg" disabled={!confirmed} className="w-full gap-2 bg-primary font-semibold text-primary-foreground">
                   <FileText className="h-4 w-4" /> Submit Grant Application
                 </Button>
               </CardContent>
@@ -343,11 +372,11 @@ export default function ApplyPage() {
           )}
 
           {/* Navigation */}
-          <div className="mt-6 flex items-center justify-between border-t border-border/50 pt-6">
+          <div className="mt-4 flex items-center justify-between border-t border-border/50 pt-4 sm:mt-6 sm:pt-6">
             <Button variant="outline" size="sm" className="gap-1 text-muted-foreground">
               <Save className="h-3.5 w-3.5" /> Save Draft
             </Button>
-            <div className="flex gap-3">
+            <div className="flex gap-2 sm:gap-3">
               {step > 0 && (
                 <Button variant="outline" onClick={() => setStep(step - 1)} className="gap-1">
                   <ChevronLeft className="h-4 w-4" /> Back

@@ -58,7 +58,7 @@ function AnimatedCounter({
   }, [started, target]);
 
   return (
-    <div ref={ref} className="text-3xl font-bold text-primary lg:text-4xl">
+    <div ref={ref} className="text-2xl font-bold text-primary sm:text-3xl lg:text-4xl">
       {prefix}
       {target >= 1_000_000
         ? `${(count / 1_000_000).toFixed(1)}M`
@@ -154,27 +154,27 @@ export default function LandingPage() {
       <section className="relative overflow-hidden border-b border-border/50">
         <div className="grid-pattern absolute inset-0" />
         <div className="absolute left-1/2 top-1/3 h-64 w-64 -translate-x-1/2 rounded-full bg-primary/10 blur-[120px] animate-glow-pulse" />
-        <div className="relative container mx-auto px-4 py-24 text-center lg:py-36">
-          <h1 className="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-foreground md:text-5xl lg:text-6xl">
+        <div className="relative container mx-auto px-4 py-16 text-center sm:py-24 lg:py-36">
+          <h1 className="mx-auto max-w-4xl text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-6xl">
             Fund the Future of{" "}
             <span className="text-gradient-gold">Zcash Privacy</span>
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
+          <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:mt-6 sm:text-lg">
             The Zcash Community Grants program funds independent teams building
             the Zcash ecosystem.
           </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <Link to="/apply">
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:mt-10 sm:flex-row sm:gap-4">
+            <Link to="/apply" className="w-full sm:w-auto">
               <Button
                 size="lg"
-                className="gap-2 bg-primary px-8 font-semibold text-primary-foreground hover:bg-primary/90"
+                className="w-full gap-2 bg-primary font-semibold text-primary-foreground hover:bg-primary/90 sm:w-auto sm:px-8"
               >
                 Submit a Grant
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
-            <Link to="/grants">
-              <Button size="lg" variant="outline" className="gap-2 border-border px-8">
+            <Link to="/grants" className="w-full sm:w-auto">
+              <Button size="lg" variant="outline" className="w-full gap-2 border-border sm:w-auto sm:px-8">
                 Browse Grants
               </Button>
             </Link>
@@ -184,7 +184,7 @@ export default function LandingPage() {
 
       {/* Stats — live from GitHub */}
       <section className="border-b border-border/50 bg-card/50">
-        <div className="container mx-auto grid grid-cols-2 gap-6 px-4 py-12 lg:grid-cols-4">
+        <div className="container mx-auto grid grid-cols-2 gap-4 px-4 py-10 sm:gap-6 sm:py-12 lg:grid-cols-4">
           {isLoading ? (
             Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="animate-pulse text-center">
@@ -224,14 +224,14 @@ export default function LandingPage() {
       </section>
 
       {/* What We Fund */}
-      <section className="container mx-auto px-4 py-20">
-        <h2 className="mb-2 text-center text-2xl font-bold text-foreground">
+      <section className="container mx-auto px-4 py-12 sm:py-16 md:py-20">
+        <h2 className="mb-2 text-center text-xl font-bold text-foreground sm:text-2xl">
           What We Fund
         </h2>
-        <p className="mb-12 text-center text-muted-foreground">
+        <p className="mb-8 text-center text-sm text-muted-foreground sm:mb-12 sm:text-base">
           Supporting the full spectrum of Zcash ecosystem development
         </p>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
           {fundingCategories.map((cat) => (
             <Card
               key={cat.title}
@@ -256,9 +256,9 @@ export default function LandingPage() {
       {/* Recent Grants — real data */}
       {(recentGrants.length > 0 || isLoading) && (
         <section className="border-t border-border/50 bg-card/30">
-          <div className="container mx-auto px-4 py-20">
-            <div className="mb-8 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-foreground">
+          <div className="container mx-auto px-4 py-12 sm:py-16 md:py-20">
+            <div className="mb-6 flex items-center justify-between sm:mb-8">
+              <h2 className="text-xl font-bold text-foreground sm:text-2xl">
                 Recent Grant Applications
               </h2>
               <Link
@@ -294,8 +294,8 @@ export default function LandingPage() {
       )}
 
       {/* How It Works */}
-      <section className="container mx-auto px-4 py-20">
-        <h2 className="mb-12 text-center text-2xl font-bold text-foreground">
+      <section className="container mx-auto px-4 py-12 sm:py-16 md:py-20">
+        <h2 className="mb-8 text-center text-xl font-bold text-foreground sm:mb-12 sm:text-2xl">
           How It Works
         </h2>
         <div className="mx-auto max-w-2xl">

@@ -145,16 +145,18 @@ export default function GrantsPage() {
     </div>
   );
 
+  const activeFilterCount = selectedStatuses.length + selectedCategories.length;
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground">Browse Grants</h1>
-        <p className="mt-1 text-muted-foreground">
+    <div className="container mx-auto px-4 py-6 sm:py-8">
+      <div className="mb-5 sm:mb-8">
+        <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Browse Grants</h1>
+        <p className="mt-1 text-sm text-muted-foreground sm:text-base">
           Explore funded projects in the Zcash ecosystem
         </p>
       </div>
 
-      <div className="flex gap-8">
+      <div className="flex gap-6 lg:gap-8">
         {/* Desktop sidebar */}
         <aside className="hidden w-64 shrink-0 lg:block">
           <div className="sticky top-24">
@@ -183,13 +185,19 @@ export default function GrantsPage() {
               <Button
                 variant="outline"
                 size="sm"
-                className="lg:hidden"
+                className="relative gap-2 lg:hidden"
                 onClick={() => setShowFilters(!showFilters)}
               >
-                <SlidersHorizontal className="mr-2 h-4 w-4" /> Filters
+                <SlidersHorizontal className="h-4 w-4" />
+                Filters
+                {activeFilterCount > 0 && (
+                  <span className="flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                    {activeFilterCount}
+                  </span>
+                )}
               </Button>
               <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-[180px] bg-secondary">
+                <SelectTrigger className="w-[160px] bg-secondary sm:w-[180px]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -201,18 +209,18 @@ export default function GrantsPage() {
           </div>
 
           {/* Mobile search */}
-          <div className="relative mb-4 lg:hidden">
+          <div className="relative mb-3 lg:hidden">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder="Search grants..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="bg-secondary pl-9"
+              className="h-11 bg-secondary pl-9"
             />
           </div>
 
           {showFilters && (
-            <div className="mb-6 rounded-lg border border-border bg-card p-4 lg:hidden">
+            <div className="mb-4 rounded-lg border border-border bg-card p-4 lg:hidden">
               <FilterPanel />
             </div>
           )}
@@ -254,8 +262,18 @@ export default function GrantsPage() {
           )}
 
           {!isLoading && filtered.length === 0 && !isError && (
-            <div className="py-20 text-center text-muted-foreground">
-              No grants match your filters.
+            <div className="py-16 text-center sm:py-20">
+              <p className="text-muted-foreground">No grants match your filters.</p>
+              {activeFilterCount > 0 && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="mt-3 text-primary"
+                  onClick={() => { setSelectedStatuses([]); setSelectedCategories([]); }}
+                >
+                  <X className="mr-1 h-3 w-3" /> Clear all filters
+                </Button>
+              )}
             </div>
           )}
         </div>

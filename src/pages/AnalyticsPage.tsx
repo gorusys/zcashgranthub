@@ -75,7 +75,7 @@ function Counter({ target, prefix = "" }: { target: number; prefix?: string }) {
   }, [started, target]);
 
   return (
-    <div ref={ref} className="text-3xl font-bold text-primary">
+    <div ref={ref} className="text-2xl font-bold text-primary sm:text-3xl">
       {prefix}
       {target >= 1_000_000
         ? `${(count / 1_000_000).toFixed(1)}M`
@@ -183,9 +183,9 @@ export default function AnalyticsPage() {
   const skeletonClass = isLoading ? "animate-pulse" : "";
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="mb-2 text-3xl font-bold text-foreground">Analytics</h1>
-      <p className="mb-8 text-muted-foreground">
+    <div className="container mx-auto px-4 py-6 sm:py-8">
+      <h1 className="mb-2 text-2xl font-bold text-foreground sm:text-3xl">Analytics</h1>
+      <p className="mb-6 text-sm text-muted-foreground sm:mb-8 sm:text-base">
         Public transparency dashboard — data sourced live from GitHub Issues
       </p>
 
@@ -367,7 +367,8 @@ export default function AnalyticsPage() {
                 ))}
               </div>
             ) : topGrantees.length > 0 ? (
-              <table className="w-full text-sm">
+              <div className="overflow-x-auto">
+              <table className="w-full min-w-[280px] text-sm">
                 <thead>
                   <tr className="border-b border-border/50 text-muted-foreground">
                     <th className="pb-2 text-left font-medium">Applicant</th>
@@ -401,6 +402,7 @@ export default function AnalyticsPage() {
                   ))}
                 </tbody>
               </table>
+              </div>
             ) : (
               <p className="py-8 text-center text-sm text-muted-foreground">
                 No data yet.
