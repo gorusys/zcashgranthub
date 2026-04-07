@@ -72,7 +72,7 @@ export function Navbar() {
           {/* ZEC price pill — desktop only */}
           <div className="hidden items-center gap-1.5 rounded-md bg-secondary px-2.5 py-1.5 text-xs font-medium lg:flex">
             <span className="text-muted-foreground">ZEC</span>
-            <span className="text-foreground">$38.42</span>
+            <span className="text-foreground">$268.42</span>
             <TrendingUp className="h-3 w-3 text-emerald-400" />
             <span className="text-emerald-400">+2.4%</span>
           </div>
@@ -137,7 +137,7 @@ export function Navbar() {
             {/* ZEC price in mobile menu */}
             <div className="mt-1 flex items-center gap-1.5 rounded-md bg-secondary px-3 py-2 text-xs font-medium">
               <span className="text-muted-foreground">ZEC</span>
-              <span className="font-semibold text-foreground">$38.42</span>
+              <span className="font-semibold text-foreground">$268.42</span>
               <TrendingUp className="h-3 w-3 text-emerald-400" />
               <span className="text-emerald-400">+2.4%</span>
             </div>
