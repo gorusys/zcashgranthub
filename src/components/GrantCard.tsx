@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { ArrowRight, Calendar } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { StatusBadge } from "@/components/StatusBadge";
@@ -11,7 +11,7 @@ export function GrantCard({ grant }: { grant: Grant }) {
     : 0;
 
   return (
-    <Link to={`/grants/${grant.id}`}>
+    <Link href={`/grants/${grant.id}`}>
       <Card className="group border-border/50 bg-card transition-all duration-200 hover:border-primary/30 hover:glow-gold">
         <CardContent className="p-5">
           <div className="mb-3 flex items-start justify-between gap-3">

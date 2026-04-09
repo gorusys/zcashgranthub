@@ -18,19 +18,22 @@ const VERIFIER_KEY = "github_oauth_verifier";
 const CONNECTED_EVENT = "github-auth-changed";
 
 function getRedirectUri(): string {
-  const envRedirect = import.meta.env.VITE_GITHUB_OAUTH_REDIRECT_URI as
-    | string
-    | undefined;
+  const envRedirect =
+    process.env.NEXT_PUBLIC_GITHUB_OAUTH_REDIRECT_URI ||
+    process.env.VITE_GITHUB_OAUTH_REDIRECT_URI;
   if (envRedirect && envRedirect.trim().length > 0) {
     return envRedirect;
+  }
+  if (typeof window === "undefined") {
+    return "";
   }
   return `${window.location.origin}/auth/github/callback`;
 }
 
 function getClientId(): string {
-  const clientId = import.meta.env.VITE_GITHUB_OAUTH_CLIENT_ID as
-    | string
-    | undefined;
+  const clientId =
+    process.env.NEXT_PUBLIC_GITHUB_OAUTH_CLIENT_ID ||
+    process.env.VITE_GITHUB_OAUTH_CLIENT_ID;
   if (!clientId) {
     throw new Error("Missing VITE_GITHUB_OAUTH_CLIENT_ID in environment.");
   }
@@ -38,7 +41,8 @@ function getClientId(): string {
 }
 
 function getApiBase(): string {
-  const apiBase = import.meta.env.VITE_AUTH_API_BASE as string | undefined;
+  const apiBase =
+    process.env.NEXT_PUBLIC_AUTH_API_BASE || process.env.VITE_AUTH_API_BASE;
   return apiBase && apiBase.trim().length > 0 ? apiBase : "";
 }
 
@@ -60,6 +64,7 @@ async function sha256(input: string): Promise<Uint8Array> {
 }
 
 export function readGitHubSession(): GitHubSession | null {
+  if (typeof window === "undefined") return null;
   const raw = window.localStorage.getItem(STORAGE_KEY);
   if (!raw) return null;
   try {
@@ -70,6 +75,7 @@ export function readGitHubSession(): GitHubSession | null {
 }
 
 function persistSession(session: GitHubSession | null): void {
+  if (typeof window === "undefined") return;
   if (session) {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
   } else {
@@ -142,6 +148,7 @@ export async function completeGitHubOAuth(code: string, state: string): Promise<
 }
 
 export function subscribeToGitHubAuth(cb: () => void): () => void {
+  if (typeof window === "undefined") return () => undefined;
   const listener = () => cb();
   window.addEventListener(CONNECTED_EVENT, listener);
   return () => window.removeEventListener(CONNECTED_EVENT, listener);

@@ -1,19 +1,22 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useRouter } from "next/router";
 import { Loader2 } from "lucide-react";
 import { completeGitHubOAuth } from "@/lib/githubAuth";
 import { Button } from "@/components/ui/button";
 
 export default function GitHubOAuthCallbackPage() {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
   const [error, setError] = useState<string>("");
 
-  const oauthError = searchParams.get("error");
-  const oauthErrorDescription = searchParams.get("error_description");
-  const code = searchParams.get("code");
-  const state = searchParams.get("state");
+  const oauthError =
+    typeof router.query.error === "string" ? router.query.error : null;
+  const oauthErrorDescription =
+    typeof router.query.error_description === "string"
+      ? router.query.error_description
+      : null;
+  const code = typeof router.query.code === "string" ? router.query.code : null;
+  const state = typeof router.query.state === "string" ? router.query.state : null;
 
   const message = useMemo(() => {
     if (oauthError) {
@@ -27,6 +30,7 @@ export default function GitHubOAuthCallbackPage() {
       setStatus("error");
       return;
     }
+    if (!router.isReady) return;
 
     if (!code || !state) {
       setStatus("error");
@@ -38,13 +42,13 @@ export default function GitHubOAuthCallbackPage() {
       try {
         await completeGitHubOAuth(code, state);
         setStatus("success");
-        setTimeout(() => navigate("/dashboard"), 700);
+        setTimeout(() => void router.push("/dashboard"), 700);
       } catch (err) {
         setStatus("error");
         setError(err instanceof Error ? err.message : "GitHub OAuth failed.");
       }
     })();
-  }, [code, state, oauthError, navigate]);
+  }, [code, state, oauthError, router, router.isReady]);
 
   return (
     <div className="container mx-auto px-4 py-16">
@@ -67,7 +71,7 @@ export default function GitHubOAuthCallbackPage() {
           <>
             <h1 className="text-lg font-semibold text-destructive">Could not connect GitHub</h1>
             <p className="mt-2 text-sm text-muted-foreground">{message}</p>
-            <Button className="mt-5" onClick={() => navigate("/")}>
+            <Button className="mt-5" onClick={() => void router.push("/")}>
               Back to Home
             </Button>
           </>

@@ -5,7 +5,7 @@ import { useGrants } from "@/hooks/useGrants";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { CheckCircle2, XCircle, MinusCircle, AlertTriangle, Clock, Users } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 export default function CommitteePage() {
   const { data: grants = [], isLoading } = useGrants();
@@ -53,7 +53,7 @@ export default function CommitteePage() {
                         <td className="px-4 py-3 text-right">
                           <div className="flex items-center justify-end gap-2">
                             <Button variant="outline" size="sm" className="text-xs">Assign to Me</Button>
-                            <Link to={`/grants/${g.id}`}><Button size="sm" className="text-xs">Review</Button></Link>
+                            <Link href={`/grants/${g.id}`}><Button size="sm" className="text-xs">Review</Button></Link>
                           </div>
                         </td>
                       </tr>

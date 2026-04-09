@@ -1,4 +1,5 @@
-import { Link, useLocation } from "react-router-dom";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { Bell, Github, Menu, X, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
@@ -16,7 +17,7 @@ const navLinks = [
 ];
 
 export function Navbar() {
-  const location = useLocation();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [sessionLogin, setSessionLogin] = useState<string | null>(
     readGitHubSession()?.user.login ?? null
@@ -25,7 +26,7 @@ export function Navbar() {
   // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
-  }, [location.pathname]);
+  }, [router.asPath]);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -43,13 +44,13 @@ export function Navbar() {
     };
   }, []);
 
-  const isActive = (href: string) => location.pathname === href;
+  const isActive = (href: string) => router.pathname === href;
 
   return (
     <nav className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
       <div className="container mx-auto flex h-14 items-center justify-between px-4 sm:h-16">
         {/* Brand */}
-        <Link to="/" className="flex items-center gap-2.5 sm:gap-3">
+        <Link href="/" className="flex items-center gap-2.5 sm:gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary sm:h-9 sm:w-9">
             <span className="text-base font-black text-primary-foreground sm:text-lg">Z</span>
           </div>
@@ -70,7 +71,7 @@ export function Navbar() {
           {navLinks.map((link) => (
             <Link
               key={link.href}
-              to={link.href}
+              href={link.href}
               className={`relative rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                 isActive(link.href)
                   ? "text-primary"
@@ -154,7 +155,7 @@ export function Navbar() {
             {navLinks.map((link) => (
               <Link
                 key={link.href}
-                to={link.href}
+                href={link.href}
                 className={`flex items-center rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
                   isActive(link.href)
                     ? "bg-primary/10 text-primary"

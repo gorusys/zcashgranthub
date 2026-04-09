@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const links = [
   { label: "Apply", href: "/apply" },
@@ -38,7 +38,7 @@ export function Footer() {
               ) : (
                 <Link
                   key={link.label}
-                  to={link.href}
+                  href={link.href}
                   className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                 >
                   {link.label}

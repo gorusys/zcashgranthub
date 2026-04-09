@@ -32,14 +32,18 @@ export interface GitHubComment {
   created_at: string;
 }
 
+const OFFICIAL_REPO = "ZcashCommunityGrants/zcashcommunitygrants";
 const REPO =
-  (import.meta.env.VITE_GITHUB_REPO as string | undefined) ||
-  "gorusys/zcashcommunitygrants";
+  process.env.NEXT_PUBLIC_GITHUB_REPO ||
+  process.env.VITE_GITHUB_REPO ||
+  OFFICIAL_REPO;
 const API = "https://api.github.com";
 
 function buildHeaders(): HeadersInit {
   const token =
-    getGitHubToken() ?? (import.meta.env.VITE_GITHUB_TOKEN as string | undefined);
+    getGitHubToken() ??
+    process.env.NEXT_PUBLIC_GITHUB_TOKEN ??
+    process.env.VITE_GITHUB_TOKEN;
   return {
     Accept: "application/vnd.github.v3+json",
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -80,31 +84,54 @@ async function getPages<T>(
 }
 
 export async function fetchAllGrantIssues(): Promise<GitHubIssue[]> {
-  const [open, closed] = await Promise.all([
-    getPages<GitHubIssue>(`/repos/${REPO}/issues`, { state: "open" }),
-    getPages<GitHubIssue>(`/repos/${REPO}/issues`, { state: "closed" }),
-  ]);
+  const loadGrantIssues = async (repo: string): Promise<GitHubIssue[]> => {
+    const [open, closed] = await Promise.all([
+      getPages<GitHubIssue>(`/repos/${repo}/issues`, { state: "open" }),
+      getPages<GitHubIssue>(`/repos/${repo}/issues`, { state: "closed" }),
+    ]);
+    return [...open, ...closed].filter((issue) =>
+      issue.labels.some((l) => l.name.includes("Grant Application"))
+    );
+  };
 
-  // Keep only issues that are actual grant applications (have the label)
-  return [...open, ...closed].filter((issue) =>
-    issue.labels.some((l) => l.name.includes("Grant Application"))
-  );
+  const primaryIssues = await loadGrantIssues(REPO);
+  if (primaryIssues.length > 0 || REPO === OFFICIAL_REPO) {
+    return primaryIssues;
+  }
+
+  return loadGrantIssues(OFFICIAL_REPO);
 }
 
 export async function fetchGrantIssue(number: number): Promise<GitHubIssue> {
   const res = await fetch(`${API}/repos/${REPO}/issues/${number}`, {
     headers: buildHeaders(),
   });
-  if (!res.ok) {
-    throw new Error(`GitHub API error ${res.status}: ${res.statusText}`);
+  if (res.ok) {
+    return res.json();
   }
-  return res.json();
+  if (REPO !== OFFICIAL_REPO && res.status === 404) {
+    const fallback = await fetch(`${API}/repos/${OFFICIAL_REPO}/issues/${number}`, {
+      headers: buildHeaders(),
+    });
+    if (!fallback.ok) {
+      throw new Error(`GitHub API error ${fallback.status}: ${fallback.statusText}`);
+    }
+    return fallback.json();
+  }
+  throw new Error(`GitHub API error ${res.status}: ${res.statusText}`);
 }
 
 export async function fetchIssueComments(
   number: number
 ): Promise<GitHubComment[]> {
-  return getPages<GitHubComment>(
-    `/repos/${REPO}/issues/${number}/comments`
-  );
+  try {
+    return await getPages<GitHubComment>(`/repos/${REPO}/issues/${number}/comments`);
+  } catch (error) {
+    if (REPO !== OFFICIAL_REPO) {
+      return getPages<GitHubComment>(
+        `/repos/${OFFICIAL_REPO}/issues/${number}/comments`
+      );
+    }
+    throw error;
+  }
 }

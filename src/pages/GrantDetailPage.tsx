@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import Link from "next/link";
 import {
   ArrowLeft,
   ExternalLink,
@@ -97,8 +97,7 @@ const TABS = [
   { value: "documents",  label: "Documents" },
 ];
 
-export default function GrantDetailPage() {
-  const { id } = useParams<{ id: string }>();
+export default function GrantDetailPage({ id }: { id?: string }) {
   const { data: grant, isLoading, isError, error } = useGrant(id);
   const [expandedSections, setExpandedSections] = useState<string[]>(["description"]);
   const [daoDemoStatus, setDaoDemoStatus] = useState<
@@ -122,7 +121,7 @@ export default function GrantDetailPage() {
         <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
           {(error as Error)?.message ?? "Failed to fetch from GitHub API."}
         </p>
-        <Link to="/grants">
+        <Link href="/grants">
           <Button variant="outline" className="mt-6">Back to Grants</Button>
         </Link>
       </div>
@@ -134,7 +133,7 @@ export default function GrantDetailPage() {
     return (
       <div className="container mx-auto px-4 py-20 text-center">
         <h1 className="text-2xl font-bold text-foreground">Grant not found</h1>
-        <Link to="/grants">
+        <Link href="/grants">
           <Button variant="outline" className="mt-4">Back to Grants</Button>
         </Link>
       </div>
@@ -183,7 +182,7 @@ export default function GrantDetailPage() {
     <div className="container mx-auto min-w-0 px-4 py-6 sm:py-8">
       {/* Back link */}
       <Link
-        to="/grants"
+        href="/grants"
         className="mb-5 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4" />

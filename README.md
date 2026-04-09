@@ -13,30 +13,29 @@ The all-in-one platform for **Zcash Community Grants** — replacing the GitHub 
 
 ## Tech Stack
 
-- [Vite](https://vitejs.dev/) + [React 18](https://react.dev/) + TypeScript
+- [Next.js](https://nextjs.org/) + [React 18](https://react.dev/) + TypeScript
 - [Tailwind CSS](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/)
 - [TanStack Query](https://tanstack.com/query) for async data fetching
 - [Recharts](https://recharts.org/) for analytics charts
-- [React Router v6](https://reactrouter.com/)
+- Next.js file-based routing
 
 ## Getting Started
 
 ```bash
 npm install
-npm run auth:server
 npm run dev
 ```
 
-Open [http://localhost:8080](http://localhost:8080).
+Open [http://localhost:3000](http://localhost:3000).
 
-For local GitHub OAuth, keep the auth server running on port `8082` while Vite runs on `8080`.
+GitHub OAuth token exchange now runs via Next API routes under `/api/auth/...`, so one `npm run dev` process is enough.
 
 ## Optional: GitHub API Token
 
 The app uses the public GitHub API (60 req/hr unauthenticated). To raise the limit to 5,000 req/hr, create a `.env` file:
 
 ```
-VITE_GITHUB_TOKEN=ghp_your_read_only_token_here
+NEXT_PUBLIC_GITHUB_TOKEN=ghp_your_read_only_token_here
 ```
 
 ## GitHub OAuth Setup
@@ -44,13 +43,13 @@ VITE_GITHUB_TOKEN=ghp_your_read_only_token_here
 Set these in `.env`:
 
 ```
-VITE_GITHUB_OAUTH_CLIENT_ID=your_github_oauth_app_client_id
-VITE_GITHUB_OAUTH_REDIRECT_URI=http://localhost:8080/auth/github/callback
+NEXT_PUBLIC_GITHUB_OAUTH_CLIENT_ID=your_github_oauth_app_client_id
+NEXT_PUBLIC_GITHUB_OAUTH_REDIRECT_URI=http://localhost:3000/auth/github/callback
 GITHUB_OAUTH_CLIENT_SECRET=your_github_oauth_app_client_secret
-VITE_GITHUB_REPO=gorusys/zcashcommunitygrants
+NEXT_PUBLIC_GITHUB_REPO=gorusys/zcashcommunitygrants
 ```
 
-In your GitHub OAuth app settings, add `http://localhost:8080/auth/github/callback` as an authorized callback URL.
+In your GitHub OAuth app settings, add `http://localhost:3000/auth/github/callback` as an authorized callback URL.
 
 ## Data Source
 

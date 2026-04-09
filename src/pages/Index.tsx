@@ -1,5 +1,10 @@
-import { Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 export default function Index() {
-  return <Navigate to="/" replace />;
+  const router = useRouter();
+  useEffect(() => {
+    void router.replace("/");
+  }, [router]);
+  return null;
 }

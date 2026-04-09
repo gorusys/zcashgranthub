@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import {
   ArrowRight,
   Shield,
@@ -164,7 +164,7 @@ export default function LandingPage() {
             the Zcash ecosystem.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:mt-10 sm:flex-row sm:gap-4">
-            <Link to="/apply" className="w-full sm:w-auto">
+            <Link href="/apply" className="w-full sm:w-auto">
               <Button
                 size="lg"
                 className="w-full gap-2 bg-primary font-semibold text-primary-foreground hover:bg-primary/90 sm:w-auto sm:px-8"
@@ -173,7 +173,7 @@ export default function LandingPage() {
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
-            <Link to="/grants" className="w-full sm:w-auto">
+            <Link href="/grants" className="w-full sm:w-auto">
               <Button size="lg" variant="outline" className="w-full gap-2 border-border sm:w-auto sm:px-8">
                 Browse Grants
               </Button>
@@ -262,7 +262,7 @@ export default function LandingPage() {
                 Recent Grant Applications
               </h2>
               <Link
-                to="/grants"
+                href="/grants"
                 className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
               >
                 View all <ChevronRight className="h-4 w-4" />

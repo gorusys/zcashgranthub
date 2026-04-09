@@ -6,7 +6,7 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { useGrants } from "@/hooks/useGrants";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const notifications = [
   { id: 1, message: "Your grant 'ZAP1 Protocol Hardening' milestone 1 has been approved", time: "2 hours ago", read: false },
@@ -57,7 +57,7 @@ export default function DashboardPage() {
                         <td className="px-4 py-3 text-right text-primary font-medium">${g.amount.toLocaleString()}</td>
                         <td className="px-4 py-3 text-muted-foreground">{new Date(g.submittedDate).toLocaleDateString()}</td>
                         <td className="px-4 py-3 text-right">
-                          <Link to={`/grants/${g.id}`}>
+                          <Link href={`/grants/${g.id}`}>
                             <Button variant="ghost" size="sm" className="gap-1 text-primary">View <ChevronRight className="h-3 w-3" /></Button>
                           </Link>
                         </td>
