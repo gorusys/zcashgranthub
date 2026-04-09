@@ -22,21 +22,391 @@ const stepLabels = [
 ];
 
 const terms = [
-  "I have read and agree to the ZCG Grant Terms and Conditions",
-  "I understand that all grant work must be open source",
-  "I agree to provide regular milestone reports",
-  "I understand that funding is milestone-based",
-  "I confirm that I am not on any sanctions list",
-  "I agree to KYC requirements for grants above $25,000",
-  "I understand the committee may request revisions",
-  "I agree to the ZCG Code of Conduct",
-  "I confirm all information provided is accurate",
+  <>
+    I agree to the{" "}
+    <a
+      href="https://9ba4718c-5c73-47c3-a024-4fc4e5278803.usrfiles.com/ugd/9ba471_f81ef4e4b5f040038350270590eb2e42.pdf"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline hover:text-foreground"
+    >
+      Grant Agreement
+    </a>{" "}
+    terms if funded
+  </>,
+  <>
+    I agree to{" "}
+    <a
+      href="https://9ba4718c-5c73-47c3-a024-4fc4e5278803.usrfiles.com/ugd/9ba471_7d9e73d16b584a61bae92282b208efc4.pdf"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline hover:text-foreground"
+    >
+      Provide KYC information
+    </a>{" "}
+    if funded above $50,000 USD
+  </>,
+  <>I agree to disclose conflicts of interest</>,
+  <>
+    I agree to adhere to the{" "}
+    <a
+      href="https://forum.zcashcommunity.com/t/zcg-code-of-conduct/41787"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline hover:text-foreground"
+    >
+      Code of Conduct
+    </a>{" "}
+    and{" "}
+    <a
+      href="https://forum.zcashcommunity.com/t/zcg-communication-guidelines/44284"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline hover:text-foreground"
+    >
+      Communication Guidelines
+    </a>
+  </>,
+  <>
+    I understand all milestone deliverables will be validated and accepted by their intended users or their representatives, who will confirm that the deliverables meet the required quality, functionality, and usability for each user story.
+  </>,
+  <>
+    I agree that for any new open-source software, I will create a <code>CONTRIBUTING.md</code> file that reflects the high standards of Zcash development, using the{" "}
+    <a
+      href="https://github.com/zcash/librustzcash/blob/main/CONTRIBUTING.md#styleguides"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline hover:text-foreground"
+    >
+      librustzcash style guides
+    </a>{" "}
+    as a primary reference.
+  </>,
+  <>
+    I understand when contributing to existing Zcash code, I am required to adhere to the project specific contribution guidelines, paying close attention to any{" "}
+    <a
+      href="https://github.com/zcash/librustzcash/blob/main/CONTRIBUTING.md#merge-workflow"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline hover:text-foreground"
+    >
+      merge
+    </a>
+    ,{" "}
+    <a
+      href="https://github.com/zcash/librustzcash/blob/main/CONTRIBUTING.md#branch-history"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline hover:text-foreground"
+    >
+      branch
+    </a>
+    ,{" "}
+    <a
+      href="https://github.com/zcash/librustzcash/blob/main/CONTRIBUTING.md#pull-request-review"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline hover:text-foreground"
+    >
+      pull request
+    </a>
+    , and{" "}
+    <a
+      href="https://github.com/zcash/librustzcash/blob/main/CONTRIBUTING.md#commit-messages"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline hover:text-foreground"
+    >
+      commit
+    </a>{" "}
+    guidelines as exemplified in the <code>librustzcash</code> repository.
+  </>,
+  <>
+    I agree to post request details on the{" "}
+    <a
+      href="https://forum.zcashcommunity.com/c/grants/33"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline hover:text-foreground"
+    >
+      Community Forum
+    </a>
+  </>,
+  <>
+    I understand it is my responsibility to post a link to this issue on the{" "}
+    <a
+      href="https://forum.zcashcommunity.com/c/grants/33"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline hover:text-foreground"
+    >
+      Zcash Community Forums
+    </a>{" "}
+    after this application has been submitted so the community can give input. I understand this is required in order for ZCG to discuss and vote on this grant application.
+  </>,
 ];
 
 const categories = [
   "Infrastructure", "Community", "Education", "Non-Wallet Applications", "Integration",
   "Wallets", "Research & Development", "Media", "Zcash Protocol Extension", "Dedicated Resource", "Event Sponsorships",
 ];
+
+const DEFAULT_REPO = "ZcashCommunityGrants/zcashcommunitygrants";
+// TESTING ONLY: Delete this mock object after issue-draft testing is complete.
+const MOCK_DRAFT_DATA = {
+  github: "@zcg-mock-applicant, @zcg-mock-reviewer",
+  org: "Mock Privacy Labs",
+  howLearn: "Saw the ZCG forum announcement and GitHub repository.",
+  title: "Mock Grant - Wallet UX Improvements",
+  amount: "45000",
+  category: "Wallets",
+  leadName: "Jane Mock",
+  leadRole: "Project Lead",
+  leadBg: "5 years of wallet engineering experience in privacy tooling.",
+  leadResp: "Roadmap ownership, release quality, and stakeholder updates.",
+  summary: "Improve wallet onboarding and shielded send UX for new users.",
+  description: "This mock proposal delivers clearer onboarding, improved transaction feedback, and safer defaults for shielded transactions.",
+  problem: "New users struggle with understanding privacy defaults and transaction progress.",
+  solution: "Implement guided onboarding, better state indicators, and improved copy for shielded actions.",
+  solutionFormat: "Open-source wallet code updates and documentation.",
+  dependencies: "Coordination with wallet maintainers and QA support.",
+  techApproach: "Incremental React UI updates, telemetry-free UX experiments, and usability testing.",
+  upstream: "Changes are designed for upstream merge into existing wallet repositories.",
+  hardware: "5000",
+  services: "10000",
+  compensation: "30000",
+  prevFunding: "yes",
+  otherFunding: "yes",
+  implRisks: "Integration risk with existing wallet architecture.",
+  sideEffects: "Potential temporary UX inconsistencies during rollout.",
+  successMetrics: "Reduced onboarding drop-off and faster successful shielded sends.",
+  startupAmount: "8000",
+  startupJustification: "Covers initial design, discovery interviews, and test harness setup.",
+  hardwareJustification: "Dedicated test devices and wallet QA environment setup.",
+  serviceJustification: "External accessibility review and security QA support.",
+  compensationJustification: "Covers engineering, QA, and product management effort.",
+  prevFundingDetails: "Received a prior ZCG microgrant for wallet UX research in 2025; delivered user interview report and prototype.",
+  otherFundingDetails: "Co-funded by internal R&D budget for non-overlapping exploratory design work.",
+};
+
+// TESTING ONLY: Delete this mock list after issue-draft testing is complete.
+const MOCK_TEAM_MEMBERS = [
+  {
+    name: "Alex Reviewer",
+    role: "Frontend Engineer",
+    bg: "Wallet UI specialist",
+    resp: "Implements UX components and accessibility fixes",
+  },
+  {
+    name: "Mina Tester",
+    role: "QA Lead",
+    bg: "Manual + automation test coverage",
+    resp: "Defines acceptance checks and release testing",
+  },
+];
+
+// TESTING ONLY: Delete this mock list after issue-draft testing is complete.
+const MOCK_MILESTONES = [
+  {
+    amount: "15000",
+    date: "2026-06-15",
+    stories: [
+      "As a new wallet user, I want a clear onboarding guide so that I can complete setup confidently.",
+    ],
+    deliverables: ["Onboarding flow redesign", "Help text refresh"],
+    criteria: "3 test users complete onboarding without facilitator help.",
+  },
+  {
+    amount: "30000",
+    date: "2026-08-01",
+    stories: [
+      "As a user, I want clearer transaction states so that I know when a shielded send is complete.",
+    ],
+    deliverables: ["Transaction state UI updates", "Release notes and usage guide"],
+    criteria: "All acceptance tests pass and maintainers approve UX changes.",
+  },
+];
+
+// TESTING ONLY: Delete this mock list after issue-draft testing is complete.
+const MOCK_DOCUMENTS = [
+  {
+    name: "Mock Product Spec",
+    url: "https://example.com/mock-product-spec",
+    desc: "Feature scope and non-goals",
+  },
+];
+
+function toYesNo(value: string): "Yes" | "No" {
+  return value === "yes" ? "Yes" : "No";
+}
+
+function normalizeAssignees(value: string): string {
+  return value
+    .split(",")
+    .map((v) => v.trim().replace(/^@+/, ""))
+    .filter(Boolean)
+    .join(",");
+}
+
+function buildTeamLeadText(leadName: string, leadRole: string, leadBg: string, leadResp: string): string {
+  return [
+    `Name: ${leadName || ""}`,
+    `Role: ${leadRole || ""}`,
+    `Background: ${leadBg || ""}`,
+    `Responsibilities: ${leadResp || ""}`,
+  ].join("\n");
+}
+
+function buildTeamMembersText(
+  teamMembers: { name: string; role: string; bg: string; resp: string }[]
+): string {
+  if (teamMembers.length === 0) return "None or N/A";
+  return teamMembers
+    .map((m) =>
+      [
+        `- Name: ${m.name || ""}`,
+        `Role: ${m.role || ""}`,
+        `Background: ${m.bg || ""}`,
+        `Responsibilities: ${m.resp || ""}`,
+      ].join("\n")
+    )
+    .join("\n");
+}
+
+function buildMilestonesText(
+  milestones: { amount: string; date: string; stories: string[]; deliverables: string[]; criteria: string }[]
+): string {
+  if (milestones.length === 0) return "";
+  return milestones
+    .map((m, i) => {
+      const stories = (m.stories || []).filter(Boolean);
+      const deliverables = (m.deliverables || []).filter(Boolean);
+      return [
+        `- Milestone: ${i + 1}`,
+        `Amount (USD): ${m.amount || "0"}`,
+        `Expected Completion Date: ${m.date || "YYYY-MM-DD"}`,
+        "User Stories:",
+        ...(stories.length > 0 ? stories.map((s) => `- "${s}"`) : ['- "As a [type of user], I want [some goal], so that [some reason]"']),
+        "Deliverables:",
+        ...(deliverables.length > 0 ? deliverables.map((d) => `- ${d}`) : ["- [List specific deliverables that fulfill the user stories]"]),
+        `Acceptance Criteria: ${m.criteria || ""}`,
+      ].join("\n");
+    })
+    .join("\n");
+}
+
+function buildDocumentsText(
+  documents: { name: string; url: string; desc: string }[]
+): string {
+  if (documents.length === 0) return "";
+  return documents
+    .map((d, i) => {
+      const label = d.name || `File Name ${i + 1}`;
+      const desc = d.desc || "Supporting file";
+      const link = d.url ? ` (${d.url})` : "";
+      return `- ${label}: ${desc}${link}`;
+    })
+    .join("\n");
+}
+
+function buildIssueDraftUrl(args: {
+  github: string;
+  formData: {
+    org: string;
+    howLearn: string;
+    title: string;
+    amount: string;
+    category: string;
+    leadName: string;
+    leadRole: string;
+    leadBg: string;
+    leadResp: string;
+    summary: string;
+    description: string;
+    problem: string;
+    solution: string;
+    solutionFormat: string;
+    dependencies: string;
+    techApproach: string;
+    upstream: string;
+    hardware: string;
+    services: string;
+    compensation: string;
+    prevFunding: string;
+    otherFunding: string;
+    implRisks: string;
+    sideEffects: string;
+    successMetrics: string;
+    startupAmount: string;
+    startupJustification: string;
+    hardwareJustification: string;
+    serviceJustification: string;
+    compensationJustification: string;
+    prevFundingDetails: string;
+    otherFundingDetails: string;
+  };
+  teamMembers: { name: string; role: string; bg: string; resp: string }[];
+  milestones: { amount: string; date: string; stories: string[]; deliverables: string[]; criteria: string }[];
+  documents: { name: string; url: string; desc: string }[];
+}): string | null {
+  const repo =
+    process.env.NEXT_PUBLIC_GITHUB_REPO ||
+    process.env.VITE_GITHUB_REPO ||
+    DEFAULT_REPO;
+  const [owner, name] = repo.split("/");
+  if (!owner || !name) return null;
+
+  const cleanAssignee = normalizeAssignees(args.github || "");
+  const total =
+    Number(args.formData.hardware) +
+    Number(args.formData.services) +
+    Number(args.formData.compensation);
+  const title = `Grant Application - ${args.formData.title || "Application Name"}`;
+  const params = new URLSearchParams({
+    template: "grant_application.yaml",
+    title,
+    assignees: cleanAssignee,
+    organization_details_name: args.formData.org,
+    organization_details_discovery: args.formData.howLearn,
+    project_overview_amount: args.formData.amount || "",
+    project_overview_category: args.formData.category,
+    team_information_project_lead: buildTeamLeadText(
+      args.formData.leadName,
+      args.formData.leadRole,
+      args.formData.leadBg,
+      args.formData.leadResp
+    ),
+    team_information_members: buildTeamMembersText(args.teamMembers),
+    project_details_summary: args.formData.summary,
+    project_details_description: args.formData.description,
+    project_details_problem: args.formData.problem,
+    project_details_solution: args.formData.solution,
+    project_details_format: args.formData.solutionFormat,
+    project_details_dependencies: args.formData.dependencies,
+    project_details_technical: args.formData.techApproach,
+    project_details_merge: args.formData.upstream,
+    budget_hardware: args.formData.hardware,
+    budget_hardware_justification: args.formData.hardwareJustification,
+    budget_service: args.formData.services,
+    budget_service_justification: args.formData.serviceJustification,
+    budget_compensation: args.formData.compensation,
+    budget_compensation_justification: args.formData.compensationJustification,
+    budget_total: String(total),
+    budget_previous_funding: toYesNo(args.formData.prevFunding),
+    budget_previous_details: args.formData.prevFundingDetails,
+    budget_other_sources: toYesNo(args.formData.otherFunding),
+    budget_other_sources_details: args.formData.otherFundingDetails,
+    risk_implementation: args.formData.implRisks,
+    risk_side_effects: args.formData.sideEffects,
+    risk_metrics: args.formData.successMetrics,
+    schedule_startup: args.formData.startupAmount,
+    schedule_startup_justification: args.formData.startupJustification,
+    schedule_milestones: buildMilestonesText(args.milestones),
+    supporting_documents: buildDocumentsText(args.documents),
+  });
+
+  return `https://github.com/${owner}/${name}/issues/new?${params.toString()}`;
+}
 
 export default function ApplyPage() {
   const [step, setStep] = useState(0);
@@ -48,7 +418,9 @@ export default function ApplyPage() {
     summary: "", description: "", problem: "", solution: "",
     solutionFormat: "", dependencies: "", techApproach: "", upstream: "",
     hardware: "0", services: "0", compensation: "0",
+    hardwareJustification: "", serviceJustification: "", compensationJustification: "",
     prevFunding: "no", otherFunding: "no",
+    prevFundingDetails: "", otherFundingDetails: "",
     implRisks: "", sideEffects: "", successMetrics: "",
     startupAmount: "0", startupJustification: "",
   });
@@ -56,12 +428,38 @@ export default function ApplyPage() {
   const [milestones, setMilestones] = useState<{ amount: string; date: string; stories: string[]; deliverables: string[]; criteria: string }[]>([]);
   const [documents, setDocuments] = useState<{ name: string; url: string; desc: string }[]>([]);
   const [confirmed, setConfirmed] = useState(false);
+  const allTermsAccepted = termsAccepted.every(Boolean);
 
   const updateField = (key: string, val: string) => setFormData(prev => ({ ...prev, [key]: val }));
   const total = Number(formData.hardware) + Number(formData.services) + Number(formData.compensation);
 
   const addMilestone = () => setMilestones(prev => [...prev, { amount: "", date: "", stories: [""], deliverables: [""], criteria: "" }]);
   const removeMilestone = (i: number) => setMilestones(prev => prev.filter((_, idx) => idx !== i));
+
+  const handleSubmitToGitHub = () => {
+    const issueUrl = buildIssueDraftUrl({
+      github: formData.github,
+      formData,
+      teamMembers,
+      milestones,
+      documents,
+    });
+    if (!issueUrl) return;
+    window.location.assign(issueUrl);
+  };
+
+  // TESTING ONLY: Delete this handler after issue-draft testing is complete.
+  const handleSubmitMockToGitHub = () => {
+    const issueUrl = buildIssueDraftUrl({
+      github: MOCK_DRAFT_DATA.github,
+      formData: MOCK_DRAFT_DATA,
+      teamMembers: MOCK_TEAM_MEMBERS,
+      milestones: MOCK_MILESTONES,
+      documents: MOCK_DOCUMENTS,
+    });
+    if (!issueUrl) return;
+    window.open(issueUrl, "_blank");
+  };
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
@@ -141,8 +539,8 @@ export default function ApplyPage() {
               </CardHeader>
               <CardContent className="space-y-3 px-4 pb-4 sm:space-y-4 sm:px-6 sm:pb-6">
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-foreground">GitHub Username</label>
-                  <Input value={formData.github} onChange={e => updateField("github", e.target.value)} placeholder="your-github-handle" className="bg-secondary" />
+                  <label className="mb-1 block text-sm font-medium text-foreground">Application Owners (@Octocat, @Octocat1) *</label>
+                  <Input value={formData.github} onChange={e => updateField("github", e.target.value)} placeholder="@owner1, @owner2" className="bg-secondary" />
                 </div>
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">Organization Name</label>
@@ -257,6 +655,46 @@ export default function ApplyPage() {
                     </div>
                   </div>
                 ))}
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-foreground">Hardware/Software Justification</label>
+                  <Textarea value={formData.hardwareJustification} onChange={e => updateField("hardwareJustification", e.target.value)} className="bg-secondary" />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-foreground">Service Costs Justification</label>
+                  <Textarea value={formData.serviceJustification} onChange={e => updateField("serviceJustification", e.target.value)} className="bg-secondary" />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-foreground">Compensation Costs Justification</label>
+                  <Textarea value={formData.compensationJustification} onChange={e => updateField("compensationJustification", e.target.value)} className="bg-secondary" />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-foreground">Previous Funding</label>
+                  <Select value={formData.prevFunding} onValueChange={v => updateField("prevFunding", v)}>
+                    <SelectTrigger className="bg-secondary"><SelectValue placeholder="Select one" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="yes">Yes</SelectItem>
+                      <SelectItem value="no">No</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-foreground">Previous Funding Details</label>
+                  <Textarea value={formData.prevFundingDetails} onChange={e => updateField("prevFundingDetails", e.target.value)} className="bg-secondary" />
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-foreground">Other Funding Sources</label>
+                  <Select value={formData.otherFunding} onValueChange={v => updateField("otherFunding", v)}>
+                    <SelectTrigger className="bg-secondary"><SelectValue placeholder="Select one" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="yes">Yes</SelectItem>
+                      <SelectItem value="no">No</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-foreground">Other Funding Sources Details</label>
+                  <Textarea value={formData.otherFundingDetails} onChange={e => updateField("otherFundingDetails", e.target.value)} className="bg-secondary" />
+                </div>
                 <div className="rounded-lg bg-secondary p-3 text-center sm:p-4">
                   <span className="text-sm text-muted-foreground">Total Budget</span>
                   <div className="text-2xl font-bold text-primary">${total.toLocaleString()}</div>
@@ -290,6 +728,10 @@ export default function ApplyPage() {
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">$</span>
                     <Input type="number" value={formData.startupAmount} onChange={e => updateField("startupAmount", e.target.value)} className="bg-secondary pl-7" />
+                  </div>
+                  <div className="mt-3">
+                    <label className="mb-1 block text-sm font-medium text-foreground">Startup Funding Justification</label>
+                    <Textarea value={formData.startupJustification} onChange={e => updateField("startupJustification", e.target.value)} className="bg-secondary" />
                   </div>
                 </CardContent>
               </Card>
@@ -340,6 +782,7 @@ export default function ApplyPage() {
                   <div key={i} className="flex items-center gap-2">
                     <Input placeholder="Name" value={d.name} onChange={e => setDocuments(prev => { const n = [...prev]; n[i] = { ...n[i], name: e.target.value }; return n; })} className="bg-secondary" />
                     <Input placeholder="URL" value={d.url} onChange={e => setDocuments(prev => { const n = [...prev]; n[i] = { ...n[i], url: e.target.value }; return n; })} className="bg-secondary" />
+                    <Input placeholder="Description" value={d.desc} onChange={e => setDocuments(prev => { const n = [...prev]; n[i] = { ...n[i], desc: e.target.value }; return n; })} className="bg-secondary" />
                     <Button variant="ghost" size="icon" onClick={() => setDocuments(prev => prev.filter((_, idx) => idx !== i))}><X className="h-4 w-4" /></Button>
                   </div>
                 ))}
@@ -373,8 +816,22 @@ export default function ApplyPage() {
                   <Checkbox checked={confirmed} onCheckedChange={() => setConfirmed(!confirmed)} />
                   <span className="text-sm text-foreground">I confirm all information is accurate</span>
                 </label>
-                <Button size="lg" disabled={!confirmed} className="w-full gap-2 bg-primary font-semibold text-primary-foreground">
+                <Button
+                  size="lg"
+                  disabled={!confirmed || !allTermsAccepted}
+                  className="w-full gap-2 bg-primary font-semibold text-primary-foreground"
+                  onClick={handleSubmitToGitHub}
+                >
                   <FileText className="h-4 w-4" /> Submit Grant Application
+                </Button>
+                {/* TESTING ONLY: Delete this button after issue-draft testing is complete. */}
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full gap-2"
+                  onClick={handleSubmitMockToGitHub}
+                >
+                  <FileText className="h-4 w-4" /> Submit Mock Draft (Testing)
                 </Button>
               </CardContent>
             </Card>
@@ -392,7 +849,7 @@ export default function ApplyPage() {
                 </Button>
               )}
               {step < 9 && (
-                <Button onClick={() => setStep(step + 1)} className="gap-1 bg-primary text-primary-foreground">
+                <Button onClick={() => setStep(step + 1)} disabled={step === 0 && !allTermsAccepted} className="gap-1 bg-primary text-primary-foreground">
                   Continue <ChevronRight className="h-4 w-4" />
                 </Button>
               )}

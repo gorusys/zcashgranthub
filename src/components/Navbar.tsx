@@ -19,9 +19,7 @@ const navLinks = [
 export function Navbar() {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [sessionLogin, setSessionLogin] = useState<string | null>(
-    readGitHubSession()?.user.login ?? null
-  );
+  const [sessionLogin, setSessionLogin] = useState<string | null>(null);
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -35,6 +33,7 @@ export function Navbar() {
   }, [mobileOpen]);
 
   useEffect(() => {
+    setSessionLogin(readGitHubSession()?.user.login ?? null);
     const syncSession = () => setSessionLogin(readGitHubSession()?.user.login ?? null);
     const unsub = subscribeToGitHubAuth(syncSession);
     window.addEventListener("storage", syncSession);
