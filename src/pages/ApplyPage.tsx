@@ -70,6 +70,15 @@ export default function ApplyPage() {
         Complete all steps to submit your proposal for ZCG funding.
       </p>
 
+      <Card className="mb-4 border-border/50 bg-card/70">
+        <CardContent className="p-3 text-xs leading-relaxed text-muted-foreground sm:p-4 sm:text-sm">
+          <span className="font-semibold text-foreground">Creator-first UX:</span>{" "}
+          this flow is designed so applicants can submit and track grants without
+          needing DAODAO knowledge. DAODAO voting status is surfaced later for
+          transparency, mainly for committee/governance participants.
+        </CardContent>
+      </Card>
+
       <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
         {/* Step list — vertical on all screen sizes, stacks above form on mobile */}
         <nav className="w-full shrink-0 lg:w-56 xl:w-64">

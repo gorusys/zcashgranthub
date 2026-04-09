@@ -11,7 +11,7 @@ import {
   AlertTriangle,
   ChevronDown,
   AlertCircle,
-  CheckCircle2,
+  Scale,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -101,6 +101,9 @@ export default function GrantDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { data: grant, isLoading, isError, error } = useGrant(id);
   const [expandedSections, setExpandedSections] = useState<string[]>(["description"]);
+  const [daoDemoStatus, setDaoDemoStatus] = useState<
+    "DRAFT" | "IN_VOTING" | "PASSED" | "REJECTED"
+  >("IN_VOTING");
 
   const toggleSection = (s: string) =>
     setExpandedSections((prev) =>
@@ -139,10 +142,40 @@ export default function GrantDetailPage() {
   }
 
   // ── helpers ───────────────────────────────────────────────────────────────
+  const daodaoUrl = "https://daodao.zone";
+
   const milestoneStatusBadge = (status: string) => {
     if (status === "Paid")        return "COMPLETED" as const;
     if (status === "In Progress") return "ACTIVE"    as const;
     return "PENDING_REVIEW" as const;
+  };
+
+  const daoStatusMeta: Record<
+    "DRAFT" | "IN_VOTING" | "PASSED" | "REJECTED",
+    { label: string; className: string }
+  > = {
+    DRAFT: {
+      label: "Draft",
+      className: "bg-secondary text-muted-foreground",
+    },
+    IN_VOTING: {
+      label: "In Voting",
+      className: "bg-blue-500/20 text-blue-300",
+    },
+    PASSED: {
+      label: "Passed",
+      className: "bg-emerald-500/20 text-emerald-300",
+    },
+    REJECTED: {
+      label: "Rejected",
+      className: "bg-red-500/20 text-red-300",
+    },
+  };
+
+  const demoVotes = {
+    yes: 68,
+    no: 21,
+    abstain: 11,
   };
 
   // ── render ────────────────────────────────────────────────────────────────
@@ -223,6 +256,23 @@ export default function GrantDetailPage() {
       <Card className="mb-6 border-border/50 bg-card">
         <CardContent className="p-3 sm:p-4">
           <WorkflowStepper status={grant.status} />
+        </CardContent>
+      </Card>
+
+      {/* ── Governance bridge (UI-first) ─────────────────────────────────── */}
+      <Card className="mb-6 border-border/50 bg-card/70">
+        <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Governance Pulse
+            </p>
+          </div>
+          <Button variant="outline" size="sm" className="shrink-0 gap-2" asChild>
+            <a href={daodaoUrl} target="_blank" rel="noopener noreferrer">
+              <Scale className="h-4 w-4" />
+              Open DAODAO
+            </a>
+          </Button>
         </CardContent>
       </Card>
 
@@ -632,6 +682,78 @@ export default function GrantDetailPage() {
               </CardContent>
             </Card>
           )}
+
+          {/* DAODAO integration card (UI first, data wiring next) */}
+          <Card className="border-border/50 bg-card">
+            <CardContent className="p-4">
+              <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                DAODAO Vote
+              </h3>
+              <div
+                className={`mb-2 inline-flex items-center rounded-full px-2.5 py-1 text-xs ${daoStatusMeta[daoDemoStatus].className}`}
+              >
+                {daoStatusMeta[daoDemoStatus].label}
+              </div>
+              <p className="mb-3 text-xs leading-relaxed text-muted-foreground">
+                Live governance snapshot with direct actions.
+              </p>
+
+              {/* Demo status switcher */}
+              <div className="mb-3 flex flex-wrap gap-1.5">
+                {(["DRAFT", "IN_VOTING", "PASSED", "REJECTED"] as const).map(
+                  (s) => (
+                    <button
+                      key={s}
+                      onClick={() => setDaoDemoStatus(s)}
+                      className={`rounded-md px-2 py-1 text-[11px] transition-colors ${
+                        daoDemoStatus === s
+                          ? "bg-primary/20 text-primary"
+                          : "bg-secondary text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      {daoStatusMeta[s].label}
+                    </button>
+                  )
+                )}
+              </div>
+
+              {daoDemoStatus === "IN_VOTING" && (
+                <div className="mb-3 space-y-2 rounded-md bg-secondary/40 p-2.5">
+                  {[
+                    ["Yes", demoVotes.yes, "bg-emerald-400"],
+                    ["No", demoVotes.no, "bg-red-400"],
+                    ["Abstain", demoVotes.abstain, "bg-slate-400"],
+                  ].map(([label, value, color]) => (
+                    <div key={label as string}>
+                      <div className="mb-1 flex items-center justify-between text-[11px] text-muted-foreground">
+                        <span>{label as string}</span>
+                        <span>{value as number}%</span>
+                      </div>
+                      <div className="h-1.5 w-full overflow-hidden rounded-full bg-secondary">
+                        <div
+                          className={`h-full ${color as string}`}
+                          style={{ width: `${value as number}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <Button variant="outline" size="sm" className="w-full justify-start gap-2" asChild>
+                  <a href={daodaoUrl} target="_blank" rel="noopener noreferrer">
+                    <Scale className="h-4 w-4" />
+                    View on DAODAO
+                  </a>
+                </Button>
+                <Button variant="outline" size="sm" className="w-full justify-start gap-2" disabled>
+                  <ExternalLink className="h-4 w-4" />
+                  Link Proposal (Coming Soon)
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Actions — only shown on desktop (mobile uses quick-actions bar above) */}
           <div className="hidden space-y-2 lg:block">
