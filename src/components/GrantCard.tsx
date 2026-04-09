@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { ArrowRight, Calendar } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/StatusBadge";
 import { CategoryBadge } from "@/components/CategoryBadge";
 import type { Grant } from "@/data/mockData";
+import { programLabel } from "@/lib/grantPrograms";
 
 export function GrantCard({ grant }: { grant: Grant }) {
   const progressPercent = grant.totalMilestones > 0
@@ -16,6 +18,9 @@ export function GrantCard({ grant }: { grant: Grant }) {
         <CardContent className="p-5">
           <div className="mb-3 flex items-start justify-between gap-3">
             <div className="flex flex-wrap gap-2">
+              <Badge variant="secondary" className="font-normal">
+                {programLabel(grant.program)}
+              </Badge>
               <StatusBadge status={grant.status} />
               <CategoryBadge category={grant.category} />
             </div>

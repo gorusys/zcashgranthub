@@ -168,3 +168,54 @@ export async function findZechubProposalIdByGrantTitle(
 
   return bestId;
 }
+
+/** Top-N ZecHub proposals by title similarity (for related suggestions). */
+export async function listZechubProposalsByTitleSimilarity(
+  grantTitle: string,
+  limit = 5,
+  minScore = 0.55
+): Promise<Array<{ id: number; title: string; score: number }>> {
+  const trimmed = grantTitle?.trim();
+  if (!trimmed) return [];
+
+  const bestById = new Map<number, { title: string; score: number }>();
+
+  let startBefore: number | undefined;
+
+  for (let page = 0; page < TITLE_MATCH_MAX_PAGES; page++) {
+    const url = new URL(
+      indexerUrl(
+        `/contract/${ZECHUB_PROPOSAL_MODULE_SINGLE}/daoProposalSingle/reverseProposals`
+      )
+    );
+    url.searchParams.set("limit", String(TITLE_MATCH_PAGE_SIZE));
+    if (startBefore !== undefined) {
+      url.searchParams.set("startBefore", String(startBefore));
+    }
+
+    const res = await fetch(url.toString());
+    if (!res.ok) {
+      throw new Error(`DAO DAO reverseProposals: ${res.status}`);
+    }
+    const rows = (await res.json()) as ReverseRow[];
+    if (!Array.isArray(rows) || rows.length === 0) break;
+
+    for (const row of rows) {
+      const score = grantTitleMatchScore(trimmed, row.proposal.title);
+      if (score < minScore) continue;
+      const prev = bestById.get(row.id);
+      if (!prev || score > prev.score) {
+        bestById.set(row.id, { title: row.proposal.title, score });
+      }
+    }
+
+    startBefore = rows[rows.length - 1].id;
+    if (rows.length < TITLE_MATCH_PAGE_SIZE) break;
+  }
+
+  const ranked = [...bestById.entries()]
+    .map(([id, v]) => ({ id, title: v.title, score: v.score }))
+    .sort((a, b) => b.score - a.score || b.id - a.id);
+
+  return ranked.slice(0, limit);
+}

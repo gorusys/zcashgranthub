@@ -1,5 +1,6 @@
-import { useState, useMemo } from "react";
-import { Search, SlidersHorizontal, X, Loader2, AlertCircle } from "lucide-react";
+import { useState, useMemo, useEffect, useCallback, useRef } from "react";
+import { useRouter } from "next/router";
+import { Search, SlidersHorizontal, X, AlertCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  ListPagination,
+  LIST_PAGE_SIZE,
+  parsePageQuery,
+  totalPagesForCount,
+} from "@/components/ListPagination";
+import { programLabel, type GrantProgram } from "@/lib/grantPrograms";
 
 const STATUSES: GrantStatus[] = [
   "PENDING_REVIEW",
@@ -54,6 +62,7 @@ function GrantCardSkeleton() {
 }
 
 export default function GrantsPage() {
+  const router = useRouter();
   const { data: grants = [], isLoading, isError, error } = useGrants();
 
   const [search, setSearch] = useState("");
@@ -61,6 +70,50 @@ export default function GrantsPage() {
   const [selectedCategories, setSelectedCategories] = useState<GrantCategory[]>([]);
   const [sortBy, setSortBy] = useState("newest");
   const [showFilters, setShowFilters] = useState(false);
+  const [programFilter, setProgramFilter] = useState<"all" | GrantProgram>("all");
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    const p = router.query.program;
+    if (p === "zcg" || p === "coinholder") {
+      setProgramFilter(p);
+    } else if (p === undefined || p === "") {
+      setProgramFilter("all");
+    }
+  }, [router.isReady, router.query.program]);
+
+  const setProgramFilterAndUrl = useCallback(
+    (v: "all" | GrantProgram) => {
+      setProgramFilter(v);
+      const nextQuery: Record<string, string | string[] | undefined> = {
+        ...router.query,
+      };
+      if (v === "all") {
+        delete nextQuery.program;
+      } else {
+        nextQuery.program = v;
+      }
+      delete nextQuery.page;
+      void router.replace({ pathname: "/grants", query: nextQuery }, undefined, {
+        shallow: true,
+      });
+    },
+    [router]
+  );
+
+  const goToPage = useCallback(
+    (p: number) => {
+      const nextQuery: Record<string, string | string[] | undefined> = {
+        ...router.query,
+      };
+      if (p <= 1) delete nextQuery.page;
+      else nextQuery.page = String(p);
+      void router.replace({ pathname: "/grants", query: nextQuery }, undefined, {
+        shallow: true,
+      });
+    },
+    [router]
+  );
 
   const toggleStatus = (s: GrantStatus) =>
     setSelectedStatuses((prev) =>
@@ -83,6 +136,8 @@ export default function GrantsPage() {
       list = list.filter((g) => selectedStatuses.includes(g.status));
     if (selectedCategories.length)
       list = list.filter((g) => selectedCategories.includes(g.category));
+    if (programFilter !== "all")
+      list = list.filter((g) => g.program === programFilter);
     if (sortBy === "newest")
       list.sort(
         (a, b) =>
@@ -91,10 +146,78 @@ export default function GrantsPage() {
       );
     if (sortBy === "amount-desc") list.sort((a, b) => b.amount - a.amount);
     return list;
-  }, [grants, search, selectedStatuses, selectedCategories, sortBy]);
+  }, [grants, search, selectedStatuses, selectedCategories, programFilter, sortBy]);
+
+  const filterSig = useMemo(
+    () =>
+      `${search}\0${[...selectedStatuses].sort().join()}\0${[...selectedCategories].sort().join()}\0${programFilter}\0${sortBy}`,
+    [search, selectedStatuses, selectedCategories, programFilter, sortBy]
+  );
+
+  const filterSigRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!router.isReady) return;
+    if (filterSigRef.current === null) {
+      filterSigRef.current = filterSig;
+      return;
+    }
+    if (filterSigRef.current === filterSig) return;
+    filterSigRef.current = filterSig;
+    if (!router.query.page) return;
+    const nextQuery = { ...router.query };
+    delete nextQuery.page;
+    void router.replace({ pathname: "/grants", query: nextQuery }, undefined, {
+      shallow: true,
+    });
+  }, [filterSig, router]);
+
+  const totalPages = totalPagesForCount(filtered.length);
+  const requestedPage = router.isReady ? parsePageQuery(router.query.page) : 1;
+  const currentPage = Math.min(requestedPage, totalPages);
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    if (requestedPage > totalPages && totalPages >= 1) {
+      const nextQuery = { ...router.query };
+      delete nextQuery.page;
+      void router.replace({ pathname: "/grants", query: nextQuery }, undefined, {
+        shallow: true,
+      });
+    }
+  }, [router.isReady, requestedPage, totalPages, router]);
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [router.query.page, router.isReady]);
+
+  const paginatedGrants = useMemo(() => {
+    const start = (currentPage - 1) * LIST_PAGE_SIZE;
+    return filtered.slice(start, start + LIST_PAGE_SIZE);
+  }, [filtered, currentPage]);
+
+  const rangeStart =
+    filtered.length === 0 ? 0 : (currentPage - 1) * LIST_PAGE_SIZE + 1;
+  const rangeEnd = Math.min(currentPage * LIST_PAGE_SIZE, filtered.length);
 
   const FilterPanel = () => (
     <div className="space-y-6">
+      <div>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">Program</h3>
+        <Select
+          value={programFilter}
+          onValueChange={(v) => setProgramFilterAndUrl(v as "all" | GrantProgram)}
+        >
+          <SelectTrigger className="bg-secondary">
+            <SelectValue placeholder="Program" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All programs</SelectItem>
+            <SelectItem value="zcg">{programLabel("zcg")}</SelectItem>
+            <SelectItem value="coinholder">{programLabel("coinholder")}</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
       <div>
         <h3 className="mb-3 text-sm font-semibold text-foreground">Status</h3>
         <div className="space-y-2">
@@ -129,13 +252,16 @@ export default function GrantsPage() {
           ))}
         </div>
       </div>
-      {(selectedStatuses.length > 0 || selectedCategories.length > 0) && (
+      {(selectedStatuses.length > 0 ||
+        selectedCategories.length > 0 ||
+        programFilter !== "all") && (
         <Button
           variant="ghost"
           size="sm"
           onClick={() => {
             setSelectedStatuses([]);
             setSelectedCategories([]);
+            setProgramFilterAndUrl("all");
           }}
           className="text-muted-foreground"
         >
@@ -145,14 +271,42 @@ export default function GrantsPage() {
     </div>
   );
 
-  const activeFilterCount = selectedStatuses.length + selectedCategories.length;
+  const activeFilterCount =
+    selectedStatuses.length +
+    selectedCategories.length +
+    (programFilter !== "all" ? 1 : 0);
+
+  const pageTitle =
+    programFilter === "zcg"
+      ? "ZCG grants"
+      : programFilter === "coinholder"
+        ? "Coinholder grants"
+        : "Browse grants";
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
       <div className="mb-5 sm:mb-8">
-        <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Browse Grants</h1>
+        <h1 className="text-2xl font-bold text-foreground sm:text-3xl">{pageTitle}</h1>
         <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-          Explore funded projects in the Zcash ecosystem
+          {programFilter === "zcg" && (
+            <>
+              Zcash Community Grants applications from GitHub (ids like{" "}
+              <code className="rounded bg-secondary px-1 text-xs">zcg-42</code>).
+            </>
+          )}
+          {programFilter === "coinholder" && (
+            <>
+              Financial Privacy Foundation coinholder program applications from GitHub (ids like{" "}
+              <code className="rounded bg-secondary px-1 text-xs">coinholder-4</code>).
+            </>
+          )}
+          {programFilter === "all" && (
+            <>
+              ZCG and Coinholder grant applications from GitHub (composite ids such as{" "}
+              <code className="rounded bg-secondary px-1 text-xs">zcg-42</code>
+              ).
+            </>
+          )}
         </p>
       </div>
 
@@ -179,7 +333,9 @@ export default function GrantsPage() {
             <span className="text-sm text-muted-foreground">
               {isLoading
                 ? "Loading grants from GitHub…"
-                : `Showing ${filtered.length} of ${grants.length} grants`}
+                : filtered.length === 0
+                  ? `0 matching · ${grants.length} loaded from GitHub`
+                  : `Rows ${rangeStart}–${rangeEnd} of ${filtered.length} matching · ${grants.length} loaded from GitHub`}
             </span>
             <div className="flex items-center gap-2">
               <Button
@@ -255,10 +411,18 @@ export default function GrantsPage() {
           {/* Results */}
           {!isLoading && (
             <div className="grid gap-4 sm:grid-cols-2">
-              {filtered.map((grant) => (
+              {paginatedGrants.map((grant) => (
                 <GrantCard key={grant.id} grant={grant} />
               ))}
             </div>
+          )}
+
+          {!isLoading && filtered.length > 0 && (
+            <ListPagination
+              page={currentPage}
+              totalPages={totalPages}
+              onPageChange={goToPage}
+            />
           )}
 
           {!isLoading && filtered.length === 0 && !isError && (
@@ -269,7 +433,11 @@ export default function GrantsPage() {
                   variant="ghost"
                   size="sm"
                   className="mt-3 text-primary"
-                  onClick={() => { setSelectedStatuses([]); setSelectedCategories([]); }}
+                  onClick={() => {
+                    setSelectedStatuses([]);
+                    setSelectedCategories([]);
+                    setProgramFilterAndUrl("all");
+                  }}
                 >
                   <X className="mr-1 h-3 w-3" /> Clear all filters
                 </Button>

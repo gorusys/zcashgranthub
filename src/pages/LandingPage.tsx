@@ -8,12 +8,16 @@ import {
   FlaskConical,
   Users,
   ChevronRight,
+  Github,
+  Table2,
+  Scale,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { GrantCard } from "@/components/GrantCard";
 import { useGrants } from "@/hooks/useGrants";
 import { useEffect, useRef, useState } from "react";
+import { GRANTS_DASHBOARD_SHEET_URL } from "@/lib/grantPrograms";
 
 function AnimatedCounter({
   target,
@@ -160,8 +164,8 @@ export default function LandingPage() {
             <span className="text-gradient-gold">Zcash Privacy</span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:mt-6 sm:text-lg">
-            The Zcash Community Grants program funds independent teams building
-            the Zcash ecosystem.
+            Explore ZCG and Coinholder applications on GitHub, ZecHub mini-grants on DAO DAO, and the
+            community operations dashboard—without mixing them into one false status.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:mt-10 sm:flex-row sm:gap-4">
             <Link href="/apply" className="w-full sm:w-auto">
@@ -220,6 +224,101 @@ export default function LandingPage() {
               </div>
             </>
           )}
+        </div>
+      </section>
+
+      {/* Programs overview */}
+      <section className="border-b border-border/50 bg-background">
+        <div className="container mx-auto px-4 py-10 sm:py-14">
+          <h2 className="mb-2 text-center text-xl font-bold text-foreground sm:text-2xl">
+            Programs &amp; dashboards
+          </h2>
+          <p className="mx-auto mb-8 max-w-2xl text-center text-sm text-muted-foreground sm:text-base">
+            Three application lanes plus the shared spreadsheet used for summaries and operations. Official
+            sites:{" "}
+            <a
+              href="https://zcashcommunitygrants.org/"
+              className="text-primary underline-offset-2 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Zcash Community Grants
+            </a>
+            ,{" "}
+            <a
+              href="https://zfnd.org/grants/"
+              className="text-primary underline-offset-2 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Zcash Foundation grants
+            </a>
+            ,{" "}
+            <a
+              href="https://github.com/Financial-Privacy-Foundation/ZcashCoinholderGrantsProgram"
+              className="text-primary underline-offset-2 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Coinholder program (GitHub)
+            </a>
+            .
+          </p>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <Card className="border-border/50 bg-card">
+              <CardContent className="flex flex-col gap-2 p-5">
+                <Github className="h-5 w-5 text-primary" />
+                <h3 className="font-semibold text-foreground">ZCG (GitHub)</h3>
+                <p className="text-sm text-muted-foreground">
+                  Community grant applications in the ZCG repository—browse via{" "}
+                  <Link href="/grants" className="text-primary hover:underline">
+                    Grants
+                  </Link>
+                  .
+                </p>
+              </CardContent>
+            </Card>
+            <Card className="border-border/50 bg-card">
+              <CardContent className="flex flex-col gap-2 p-5">
+                <Github className="h-5 w-5 text-primary" />
+                <h3 className="font-semibold text-foreground">Coinholder (GitHub)</h3>
+                <p className="text-sm text-muted-foreground">
+                  Financial Privacy Foundation coinholder grants—same browse view with program filter.
+                </p>
+              </CardContent>
+            </Card>
+            <Card className="border-border/50 bg-card">
+              <CardContent className="flex flex-col gap-2 p-5">
+                <Scale className="h-5 w-5 text-primary" />
+                <h3 className="font-semibold text-foreground">ZecHub DAO</h3>
+                <p className="text-sm text-muted-foreground">
+                  On-chain mini-grants on DAO DAO—{" "}
+                  <Link href="/zechub/proposals" className="text-primary hover:underline">
+                    proposal list
+                  </Link>
+                  .
+                </p>
+              </CardContent>
+            </Card>
+            <Card className="border-border/50 bg-card">
+              <CardContent className="flex flex-col gap-2 p-5">
+                <Table2 className="h-5 w-5 text-primary" />
+                <h3 className="font-semibold text-foreground">Ops dashboard</h3>
+                <p className="text-sm text-muted-foreground">
+                  Official Google Sheet for summaries, tracking, and payouts—not a separate grant type in this
+                  hub.
+                </p>
+                <a
+                  href={GRANTS_DASHBOARD_SHEET_URL}
+                  className="text-sm font-medium text-primary hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Open spreadsheet
+                </a>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </section>
 

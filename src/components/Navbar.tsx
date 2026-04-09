@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { NextRouter } from "next/router";
 import { useRouter } from "next/router";
 import { Bell, Github, Menu, X, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,10 +11,34 @@ import {
   subscribeToGitHubAuth,
 } from "@/lib/githubAuth";
 
-const navLinks = [
-  { label: "Browse Grants", href: "/grants" },
-  { label: "Apply",         href: "/apply"  },
-  { label: "Analytics",     href: "/analytics" },
+type NavLink = {
+  label: string;
+  href: string;
+  active: (router: NextRouter) => boolean;
+};
+
+const navLinks: NavLink[] = [
+  {
+    label: "ZCG Grants",
+    href: "/grants?program=zcg",
+    active: (r) => r.pathname === "/grants" && r.query.program === "zcg",
+  },
+  {
+    label: "Coinholder",
+    href: "/grants?program=coinholder",
+    active: (r) => r.pathname === "/grants" && r.query.program === "coinholder",
+  },
+  {
+    label: "ZecHub DAO",
+    href: "/zechub/proposals",
+    active: (r) => r.pathname.startsWith("/zechub/proposals"),
+  },
+  { label: "Apply", href: "/apply", active: (r) => r.pathname === "/apply" },
+  {
+    label: "Analytics",
+    href: "/analytics",
+    active: (r) => r.pathname === "/analytics",
+  },
 ];
 
 export function Navbar() {
@@ -21,15 +46,15 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [sessionLogin, setSessionLogin] = useState<string | null>(null);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
   }, [router.asPath]);
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [mobileOpen]);
 
   useEffect(() => {
@@ -43,12 +68,9 @@ export function Navbar() {
     };
   }, []);
 
-  const isActive = (href: string) => router.pathname === href;
-
   return (
     <nav className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
       <div className="container mx-auto flex h-14 items-center justify-between px-4 sm:h-16">
-        {/* Brand */}
         <Link href="/" className="flex items-center gap-2.5 sm:gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary sm:h-9 sm:w-9">
             <span className="text-base font-black text-primary-foreground sm:text-lg">Z</span>
@@ -58,37 +80,32 @@ export function Navbar() {
               ZcashGrantHub
             </span>
             <span className="mt-0.5 text-[10px] leading-none text-muted-foreground">
-              Zcash Community Grants
+              ZCG · Coinholder · ZecHub DAO
             </span>
           </div>
-          {/* Show just the name on very small screens */}
           <span className="text-sm font-bold text-foreground sm:hidden">ZcashGrantHub</span>
         </Link>
 
-        {/* Desktop nav */}
         <div className="hidden items-center gap-0.5 md:flex">
           {navLinks.map((link) => (
             <Link
-              key={link.href}
+              key={link.label}
               href={link.href}
               className={`relative rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                isActive(link.href)
+                link.active(router)
                   ? "text-primary"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {link.label}
-              {/* Active underline indicator */}
-              {isActive(link.href) && (
+              {link.active(router) && (
                 <span className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full bg-primary" />
               )}
             </Link>
           ))}
         </div>
 
-        {/* Right side controls */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* ZEC price pill — desktop only */}
           <div className="hidden items-center gap-1.5 rounded-md bg-secondary px-2.5 py-1.5 text-xs font-medium lg:flex">
             <span className="text-muted-foreground">ZEC</span>
             <span className="text-foreground">$268.42</span>
@@ -96,7 +113,6 @@ export function Navbar() {
             <span className="text-emerald-400">+2.4%</span>
           </div>
 
-          {/* Notifications */}
           <Button
             variant="ghost"
             size="icon"
@@ -109,7 +125,6 @@ export function Navbar() {
             </span>
           </Button>
 
-          {/* Connect GitHub — hidden on mobile */}
           {sessionLogin ? (
             <Button
               variant="outline"
@@ -134,7 +149,6 @@ export function Navbar() {
             </Button>
           )}
 
-          {/* Hamburger */}
           <Button
             variant="ghost"
             size="icon"
@@ -147,16 +161,15 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile drawer */}
       {mobileOpen && (
         <div className="border-t border-border/50 bg-background/95 backdrop-blur-xl md:hidden">
           <div className="container mx-auto flex flex-col gap-1 px-4 py-3">
             {navLinks.map((link) => (
               <Link
-                key={link.href}
+                key={link.label}
                 href={link.href}
                 className={`flex items-center rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
-                  isActive(link.href)
+                  link.active(router)
                     ? "bg-primary/10 text-primary"
                     : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                 }`}
@@ -165,7 +178,6 @@ export function Navbar() {
               </Link>
             ))}
 
-            {/* ZEC price in mobile menu */}
             <div className="mt-1 flex items-center gap-1.5 rounded-md bg-secondary px-3 py-2 text-xs font-medium">
               <span className="text-muted-foreground">ZEC</span>
               <span className="font-semibold text-foreground">$268.42</span>

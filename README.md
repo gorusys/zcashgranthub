@@ -1,15 +1,15 @@
 # ZcashGrantHub
 
-The all-in-one platform for **Zcash Community Grants** — replacing the GitHub Issues workflow with a dedicated, modern grants portal.
+A multi-program **grants explorer** for the Zcash ecosystem: **Zcash Community Grants (ZCG)** and **Coinholder** applications from GitHub, **ZecHub DAO** mini-grants on DAO DAO (Juno), and links to the community **Google Sheet** used for summaries and operations (not a fourth “grant type” in the UI).
 
 ## Features
 
-- **Live grant data** — fetched directly from the [ZcashCommunityGrants GitHub repo](https://github.com/ZcashCommunityGrants/zcashcommunitygrants/issues)
-- **Browse & filter** — search all grant applications by status, category, and amount
-- **Grant detail pages** — full application fields, milestones, team info, budget, risks, and GitHub comments
-- **Analytics dashboard** — live stats: applications per month, category breakdown, top applicants
-- **Apply wizard** — multi-step grant application form (mirrors the official YAML template)
-- **Committee dashboard** — review queue and vote panel for ZCG committee members
+- **Live GitHub data** — ZCG repo (configurable) plus optional **Coinholder** repo; grants use composite ids (`zcg-123`, `coinholder-4`) with legacy numeric routes still resolving as ZCG.
+- **ZecHub proposals** — `/zechub/proposals` and `/zechub/proposals/[id]` backed by the DAO DAO indexer.
+- **Related records** — Heuristic cross-links between programs (title similarity, issue references in proposal text) plus optional maintainer overrides in `src/data/grant-links.json` (`/api/related/for-grant`, `/api/related/for-proposal`).
+- **Browse & filter** — Search, status, category, and **program** filter on `/grants`.
+- **Grant detail** — Application fields, milestones, team, budget, risks, comments; **no** embedded DAO vote as ZCG status—only relationship suggestions and clear separation of programs.
+- **Analytics dashboard**, **Apply wizard**, **Committee dashboard** — unchanged from the original hub.
 
 ## Tech Stack
 
@@ -28,7 +28,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-GitHub OAuth token exchange now runs via Next API routes under `/api/auth/...`, so one `npm run dev` process is enough.
+GitHub OAuth token exchange runs via Next API routes under `/api/auth/...`, so one `npm run dev` process is enough.
 
 ## Optional: GitHub API Token
 
@@ -38,6 +38,14 @@ The app uses the public GitHub API (60 req/hr unauthenticated). To raise the lim
 NEXT_PUBLIC_GITHUB_TOKEN=ghp_your_read_only_token_here
 ```
 
+## GitHub repos
+
+| Variable | Purpose |
+|----------|---------|
+| `NEXT_PUBLIC_GITHUB_REPO` | ZCG (or primary) grants repo slug |
+| `NEXT_PUBLIC_GITHUB_REPO_COINHOLDER` | Coinholder repo (default: `Financial-Privacy-Foundation/ZcashCoinholderGrantsProgram`) |
+| `NEXT_PUBLIC_GITHUB_REPO_COINHOLDER_DISABLED=1` | Omit Coinholder from aggregation |
+
 ## GitHub OAuth Setup
 
 Set these in `.env`:
@@ -46,14 +54,20 @@ Set these in `.env`:
 NEXT_PUBLIC_GITHUB_OAUTH_CLIENT_ID=your_github_oauth_app_client_id
 NEXT_PUBLIC_GITHUB_OAUTH_REDIRECT_URI=http://localhost:3000/auth/github/callback
 GITHUB_OAUTH_CLIENT_SECRET=your_github_oauth_app_client_secret
-NEXT_PUBLIC_GITHUB_REPO=gorusys/zcashcommunitygrants
+NEXT_PUBLIC_GITHUB_REPO=ZcashCommunityGrants/zcashcommunitygrants
 ```
 
 In your GitHub OAuth app settings, add `http://localhost:3000/auth/github/callback` as an authorized callback URL.
 
-## Data Source
+## Cross-program links
 
-Grant data is fetched live from:
-`https://github.com/ZcashCommunityGrants/zcashcommunitygrants/issues`
+Optional explicit mappings live in **`src/data/grant-links.json`** (validated by maintainers). The related APIs merge these with heuristics.
 
-Issues are filtered to those labelled **"Grant Application"** and parsed from their markdown body into structured data.
+## Official program links
+
+- [Zcash Community Grants](https://zcashcommunitygrants.org/)
+- [Zcash Foundation grants](https://zfnd.org/grants/)
+- [Coinholder program (GitHub)](https://github.com/Financial-Privacy-Foundation/ZcashCoinholderGrantsProgram)
+- [ZecHub DAO (wiki)](https://zechub.wiki/dao)
+
+The hub also links the [community operations spreadsheet](https://docs.google.com/spreadsheets/d/1FQ28rDCyRW0TiNxrm3rgD8ai2KGUsXAjPieQmI1kKKg) as a dashboard, not as a competing browse index.

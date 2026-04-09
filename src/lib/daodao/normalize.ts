@@ -30,6 +30,7 @@ export function normalizeZechubProposal(raw: DaoProposalSingleRaw): ZechubPropos
   return {
     id: raw.id,
     title: raw.proposal.title,
+    description: raw.proposal.description ?? "",
     status: mapRawStatus(raw.proposal.status),
     rawStatus: raw.proposal.status,
     votes: { yes: y, no: n, abstain: a },

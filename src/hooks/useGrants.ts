@@ -1,19 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
 import {
-  fetchAllGrantIssues,
+  fetchAllGrantIssuesWithMeta,
   fetchGrantIssue,
   fetchIssueComments,
 } from "@/lib/github";
 import { parseIssueToGrant } from "@/lib/parseIssue";
 import type { Grant } from "@/data/mockData";
+import {
+  getGrantRepoConfigs,
+  parseGrantRouteId,
+} from "@/lib/grantPrograms";
 
 /** Fetch and parse all grant applications from GitHub Issues. */
 export function useGrants() {
   return useQuery<Grant[], Error>({
-    queryKey: ["grants"],
+    queryKey: ["grants", "multi-repo"],
     queryFn: async () => {
-      const issues = await fetchAllGrantIssues();
-      return issues.map((issue) => parseIssueToGrant(issue));
+      const metas = await fetchAllGrantIssuesWithMeta();
+      return metas.map(({ issue, program, sourceRepo }) =>
+        parseIssueToGrant(issue, [], { program, sourceRepo })
+      );
     },
     staleTime: 5 * 60 * 1000, // cache 5 minutes
     retry: 1,
@@ -26,15 +32,26 @@ export function useGrant(id: string | undefined) {
     queryKey: ["grant", id],
     queryFn: async () => {
       if (!id) throw new Error("Grant ID is required");
-      const issueNumber = parseInt(id, 10);
-      if (isNaN(issueNumber)) throw new Error(`Invalid grant ID: ${id}`);
+      const { program, issueNumber } = parseGrantRouteId(id);
 
       const [issue, comments] = await Promise.all([
-        fetchGrantIssue(issueNumber),
-        fetchIssueComments(issueNumber),
+        fetchGrantIssue(issueNumber, program),
+        fetchIssueComments(issueNumber, program),
       ]);
 
-      return parseIssueToGrant(issue, comments);
+      const fromApi = issue.repository_url?.replace(
+        "https://api.github.com/repos/",
+        ""
+      );
+      const sourceRepo =
+        fromApi ??
+        getGrantRepoConfigs().find((c) => c.program === program)?.slug ??
+        "";
+
+      return parseIssueToGrant(issue, comments, {
+        program,
+        sourceRepo,
+      });
     },
     enabled: Boolean(id),
     staleTime: 5 * 60 * 1000,

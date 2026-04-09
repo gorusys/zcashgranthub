@@ -6,6 +6,15 @@ import type {
   Milestone,
   TeamMember,
 } from "@/data/mockData";
+import {
+  formatGrantId,
+  type GrantProgram,
+} from "@/lib/grantPrograms";
+
+export interface ParseIssueContext {
+  program: GrantProgram;
+  sourceRepo: string;
+}
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -243,7 +252,8 @@ export function extractZechubDaoProposalId(body: string): number | null {
 
 export function parseIssueToGrant(
   issue: GitHubIssue,
-  comments: GitHubComment[] = []
+  comments: GitHubComment[] = [],
+  ctx: ParseIssueContext
 ): Grant {
   const body = issue.body ?? "";
 
@@ -260,7 +270,10 @@ export function parseIssueToGrant(
   const title = issue.title.replace(/^Grant\s+Application\s*[-–]\s*/i, "").trim();
 
   return {
-    id: String(issue.number),
+    id: formatGrantId(ctx.program, issue.number),
+    program: ctx.program,
+    sourceRepo: ctx.sourceRepo,
+    issueNumber: issue.number,
     title,
     applicant: issue.user.login,
     applicantAvatar: issue.user.avatar_url,
@@ -306,6 +319,5 @@ export function parseIssueToGrant(
     committeeMembers: issue.assignees.map((a) => a.login),
     forumLink: forumLink(body, comments),
     githubLink: issue.html_url,
-    zechubDaoProposalId: extractZechubDaoProposalId(body),
   };
 }

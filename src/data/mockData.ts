@@ -1,6 +1,8 @@
 // Types and configuration shared across the app.
 // Real data is loaded from the GitHub API via src/hooks/useGrants.ts
 
+import type { GrantProgram } from "@/lib/grantPrograms";
+
 export type GrantStatus =
   | "DRAFT"
   | "PENDING_REVIEW"
@@ -44,7 +46,12 @@ export interface TeamMember {
 }
 
 export interface Grant {
+  /** Route id, e.g. `zcg-42` or `coinholder-7` */
   id: string;
+  program: GrantProgram;
+  /** GitHub repo slug, e.g. `ZcashCommunityGrants/zcashcommunitygrants` */
+  sourceRepo: string;
+  issueNumber: number;
   title: string;
   applicant: string;
   applicantAvatar: string;
@@ -90,8 +97,6 @@ export interface Grant {
   committeeMembers: string[];
   forumLink: string;
   githubLink: string;
-  /** Optional ZecHub DAO (DAO DAO) single-choice proposal id (prefix A), if linked in issue body */
-  zechubDaoProposalId?: number | null;
 }
 
 export const statusConfig: Record<

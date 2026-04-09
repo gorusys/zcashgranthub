@@ -22,6 +22,8 @@ export type ZechubProposalUiStatus =
 export interface ZechubProposalView {
   id: number;
   title: string;
+  /** Proposal body / description from indexer (markdown or plain) */
+  description: string;
   status: ZechubProposalUiStatus;
   rawStatus: string;
   votes: { yes: number; no: number; abstain: number };
