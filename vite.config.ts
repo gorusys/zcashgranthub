@@ -6,6 +6,12 @@ export default defineConfig({
   server: {
     host: "::",
     port: 8080,
+    proxy: {
+      "/api/auth": {
+        target: "http://localhost:8082",
+        changeOrigin: true,
+      },
+    },
     hmr: {
       overlay: false,
     },

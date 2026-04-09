@@ -13,6 +13,7 @@ import DashboardPage from "./pages/DashboardPage";
 import CommitteePage from "./pages/CommitteePage";
 import AdminPage from "./pages/AdminPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
+import GitHubOAuthCallbackPage from "./pages/GitHubOAuthCallbackPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
@@ -40,6 +41,7 @@ const App = () => (
               <Route path="/grants/:id" element={<GrantDetailPage />} />
               <Route path="/apply" element={<ApplyPage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/auth/github/callback" element={<GitHubOAuthCallbackPage />} />
               <Route path="/committee" element={<CommitteePage />} />
               <Route path="/admin" element={<AdminPage />} />
               <Route path="/analytics" element={<AnalyticsPage />} />

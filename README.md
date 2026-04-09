@@ -23,10 +23,13 @@ The all-in-one platform for **Zcash Community Grants** — replacing the GitHub 
 
 ```bash
 npm install
+npm run auth:server
 npm run dev
 ```
 
 Open [http://localhost:8080](http://localhost:8080).
+
+For local GitHub OAuth, keep the auth server running on port `8082` while Vite runs on `8080`.
 
 ## Optional: GitHub API Token
 
@@ -35,6 +38,19 @@ The app uses the public GitHub API (60 req/hr unauthenticated). To raise the lim
 ```
 VITE_GITHUB_TOKEN=ghp_your_read_only_token_here
 ```
+
+## GitHub OAuth Setup
+
+Set these in `.env`:
+
+```
+VITE_GITHUB_OAUTH_CLIENT_ID=your_github_oauth_app_client_id
+VITE_GITHUB_OAUTH_REDIRECT_URI=http://localhost:8080/auth/github/callback
+GITHUB_OAUTH_CLIENT_SECRET=your_github_oauth_app_client_secret
+VITE_GITHUB_REPO=gorusys/zcashcommunitygrants
+```
+
+In your GitHub OAuth app settings, add `http://localhost:8080/auth/github/callback` as an authorized callback URL.
 
 ## Data Source
 

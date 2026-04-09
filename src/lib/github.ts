@@ -1,3 +1,5 @@
+import { getGitHubToken } from "@/lib/githubAuth";
+
 export interface GitHubLabel {
   id: number;
   name: string;
@@ -30,11 +32,14 @@ export interface GitHubComment {
   created_at: string;
 }
 
-const REPO = "ZcashCommunityGrants/zcashcommunitygrants";
+const REPO =
+  (import.meta.env.VITE_GITHUB_REPO as string | undefined) ||
+  "gorusys/zcashcommunitygrants";
 const API = "https://api.github.com";
 
 function buildHeaders(): HeadersInit {
-  const token = import.meta.env.VITE_GITHUB_TOKEN as string | undefined;
+  const token =
+    getGitHubToken() ?? (import.meta.env.VITE_GITHUB_TOKEN as string | undefined);
   return {
     Accept: "application/vnd.github.v3+json",
     ...(token ? { Authorization: `Bearer ${token}` } : {}),

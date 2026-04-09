@@ -2,6 +2,12 @@ import { Link, useLocation } from "react-router-dom";
 import { Bell, Github, Menu, X, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
+import {
+  beginGitHubOAuth,
+  clearGitHubSession,
+  readGitHubSession,
+  subscribeToGitHubAuth,
+} from "@/lib/githubAuth";
 
 const navLinks = [
   { label: "Browse Grants", href: "/grants" },
@@ -12,6 +18,9 @@ const navLinks = [
 export function Navbar() {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [sessionLogin, setSessionLogin] = useState<string | null>(
+    readGitHubSession()?.user.login ?? null
+  );
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -23,6 +32,16 @@ export function Navbar() {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
+
+  useEffect(() => {
+    const syncSession = () => setSessionLogin(readGitHubSession()?.user.login ?? null);
+    const unsub = subscribeToGitHubAuth(syncSession);
+    window.addEventListener("storage", syncSession);
+    return () => {
+      unsub();
+      window.removeEventListener("storage", syncSession);
+    };
+  }, []);
 
   const isActive = (href: string) => location.pathname === href;
 
@@ -91,17 +110,29 @@ export function Navbar() {
           </Button>
 
           {/* Connect GitHub — hidden on mobile */}
-          <Link to="/dashboard">
+          {sessionLogin ? (
             <Button
               variant="outline"
               size="sm"
               className="hidden h-9 gap-2 sm:flex"
+              onClick={clearGitHubSession}
+            >
+              <Github className="h-4 w-4" />
+              <span className="hidden lg:inline">@{sessionLogin} (Disconnect)</span>
+              <span className="lg:hidden">@{sessionLogin}</span>
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              size="sm"
+              className="hidden h-9 gap-2 sm:flex"
+              onClick={() => void beginGitHubOAuth()}
             >
               <Github className="h-4 w-4" />
               <span className="hidden lg:inline">Connect GitHub</span>
               <span className="lg:hidden">GitHub</span>
             </Button>
-          </Link>
+          )}
 
           {/* Hamburger */}
           <Button
@@ -142,12 +173,27 @@ export function Navbar() {
               <span className="text-emerald-400">+2.4%</span>
             </div>
 
-            <Link to="/dashboard" className="mt-1">
-              <Button variant="outline" size="sm" className="h-10 w-full gap-2">
+            {sessionLogin ? (
+              <Button
+                variant="outline"
+                size="sm"
+                className="mt-1 h-10 w-full gap-2"
+                onClick={clearGitHubSession}
+              >
+                <Github className="h-4 w-4" />
+                @{sessionLogin} (Disconnect)
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                size="sm"
+                className="mt-1 h-10 w-full gap-2"
+                onClick={() => void beginGitHubOAuth()}
+              >
                 <Github className="h-4 w-4" />
                 Connect GitHub
               </Button>
-            </Link>
+            )}
           </div>
         </div>
       )}
