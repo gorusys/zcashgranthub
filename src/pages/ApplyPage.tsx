@@ -6,7 +6,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
+import { getGitHubToken } from "@/lib/githubAuth";
 
 const stepLabels = [
   "Terms & Conditions",
@@ -152,89 +163,6 @@ const categories = [
 ];
 
 const DEFAULT_REPO = "ZcashCommunityGrants/zcashcommunitygrants";
-// TESTING ONLY: Delete this mock object after issue-draft testing is complete.
-const MOCK_DRAFT_DATA = {
-  github: "@zcg-mock-applicant, @zcg-mock-reviewer",
-  org: "Mock Privacy Labs",
-  howLearn: "Saw the ZCG forum announcement and GitHub repository.",
-  title: "Mock Grant - Wallet UX Improvements",
-  amount: "45000",
-  category: "Wallets",
-  leadName: "Jane Mock",
-  leadRole: "Project Lead",
-  leadBg: "5 years of wallet engineering experience in privacy tooling.",
-  leadResp: "Roadmap ownership, release quality, and stakeholder updates.",
-  summary: "Improve wallet onboarding and shielded send UX for new users.",
-  description: "This mock proposal delivers clearer onboarding, improved transaction feedback, and safer defaults for shielded transactions.",
-  problem: "New users struggle with understanding privacy defaults and transaction progress.",
-  solution: "Implement guided onboarding, better state indicators, and improved copy for shielded actions.",
-  solutionFormat: "Open-source wallet code updates and documentation.",
-  dependencies: "Coordination with wallet maintainers and QA support.",
-  techApproach: "Incremental React UI updates, telemetry-free UX experiments, and usability testing.",
-  upstream: "Changes are designed for upstream merge into existing wallet repositories.",
-  hardware: "5000",
-  services: "10000",
-  compensation: "30000",
-  prevFunding: "yes",
-  otherFunding: "yes",
-  implRisks: "Integration risk with existing wallet architecture.",
-  sideEffects: "Potential temporary UX inconsistencies during rollout.",
-  successMetrics: "Reduced onboarding drop-off and faster successful shielded sends.",
-  startupAmount: "8000",
-  startupJustification: "Covers initial design, discovery interviews, and test harness setup.",
-  hardwareJustification: "Dedicated test devices and wallet QA environment setup.",
-  serviceJustification: "External accessibility review and security QA support.",
-  compensationJustification: "Covers engineering, QA, and product management effort.",
-  prevFundingDetails: "Received a prior ZCG microgrant for wallet UX research in 2025; delivered user interview report and prototype.",
-  otherFundingDetails: "Co-funded by internal R&D budget for non-overlapping exploratory design work.",
-};
-
-// TESTING ONLY: Delete this mock list after issue-draft testing is complete.
-const MOCK_TEAM_MEMBERS = [
-  {
-    name: "Alex Reviewer",
-    role: "Frontend Engineer",
-    bg: "Wallet UI specialist",
-    resp: "Implements UX components and accessibility fixes",
-  },
-  {
-    name: "Mina Tester",
-    role: "QA Lead",
-    bg: "Manual + automation test coverage",
-    resp: "Defines acceptance checks and release testing",
-  },
-];
-
-// TESTING ONLY: Delete this mock list after issue-draft testing is complete.
-const MOCK_MILESTONES = [
-  {
-    amount: "15000",
-    date: "2026-06-15",
-    stories: [
-      "As a new wallet user, I want a clear onboarding guide so that I can complete setup confidently.",
-    ],
-    deliverables: ["Onboarding flow redesign", "Help text refresh"],
-    criteria: "3 test users complete onboarding without facilitator help.",
-  },
-  {
-    amount: "30000",
-    date: "2026-08-01",
-    stories: [
-      "As a user, I want clearer transaction states so that I know when a shielded send is complete.",
-    ],
-    deliverables: ["Transaction state UI updates", "Release notes and usage guide"],
-    criteria: "All acceptance tests pass and maintainers approve UX changes.",
-  },
-];
-
-// TESTING ONLY: Delete this mock list after issue-draft testing is complete.
-const MOCK_DOCUMENTS = [
-  {
-    name: "Mock Product Spec",
-    url: "https://example.com/mock-product-spec",
-    desc: "Feature scope and non-goals",
-  },
-];
 
 function toYesNo(value: string): "Yes" | "No" {
   return value === "yes" ? "Yes" : "No";
@@ -283,16 +211,26 @@ function buildMilestonesText(
       const deliverables = (m.deliverables || []).filter(Boolean);
       return [
         `- Milestone: ${i + 1}`,
-        `Amount (USD): ${m.amount || "0"}`,
-        `Expected Completion Date: ${m.date || "YYYY-MM-DD"}`,
-        "User Stories:",
-        ...(stories.length > 0 ? stories.map((s) => `- "${s}"`) : ['- "As a [type of user], I want [some goal], so that [some reason]"']),
-        "Deliverables:",
-        ...(deliverables.length > 0 ? deliverables.map((d) => `- ${d}`) : ["- [List specific deliverables that fulfill the user stories]"]),
-        `Acceptance Criteria: ${m.criteria || ""}`,
+        `  Amount (USD): ${m.amount || "0"}`,
+        `  Expected Completion Date: ${m.date || "YYYY-MM-DD"}`,
+        "  User Stories:",
+        ...(stories.length > 0
+          ? stories.map((s) => `    - "${s}"`)
+          : [
+              '    - "As a [type of user], I want [some goal], so that [some reason]"',
+              '    - "As a [different type of user], I want [some goal], so that [some reason]" (optional - add more as needed)',
+            ]),
+        "  Deliverables:",
+        ...(deliverables.length > 0
+          ? deliverables.map((d) => `    - ${d}`)
+          : [
+              "    - [List specific deliverables that fulfill the user stories]",
+              "    - [Each deliverable should clearly address one or more user stories]",
+            ]),
+        `  Acceptance Criteria: ${m.criteria || "[How will the target users validate this milestone is complete?]"}`,
       ].join("\n");
     })
-    .join("\n");
+    .join("\n\n");
 }
 
 function buildDocumentsText(
@@ -408,26 +346,111 @@ function buildIssueDraftUrl(args: {
   return `https://github.com/${owner}/${name}/issues/new?${params.toString()}`;
 }
 
-export default function ApplyPage() {
+export interface ApplyPageProps {
+  defaultGithub?: string;
+  defaultOrg?: string;
+  defaultHowLearn?: string;
+  defaultTitle?: string;
+  defaultAmount?: string;
+  defaultCategory?: string;
+  defaultLeadName?: string;
+  defaultLeadRole?: string;
+  defaultLeadBg?: string;
+  defaultLeadResp?: string;
+  defaultSummary?: string;
+  defaultDescription?: string;
+  defaultProblem?: string;
+  defaultSolution?: string;
+  defaultSolutionFormat?: string;
+  defaultDependencies?: string;
+  defaultTechApproach?: string;
+  defaultUpstream?: string;
+  defaultHardware?: string;
+  defaultServices?: string;
+  defaultCompensation?: string;
+  defaultHardwareJustification?: string;
+  defaultServiceJustification?: string;
+  defaultCompensationJustification?: string;
+  defaultPrevFunding?: "yes" | "no";
+  defaultOtherFunding?: "yes" | "no";
+  defaultPrevFundingDetails?: string;
+  defaultOtherFundingDetails?: string;
+  defaultImplRisks?: string;
+  defaultSideEffects?: string;
+  defaultSuccessMetrics?: string;
+  defaultStartupAmount?: string;
+  defaultStartupJustification?: string;
+  defaultTermsAccepted?: boolean[];
+  defaultTeamMembers?: { name: string; role: string; bg: string; resp: string }[];
+  defaultMilestones?: { amount: string; date: string; stories: string[]; deliverables: string[]; criteria: string }[];
+  defaultDocuments?: { name: string; url: string; desc: string }[];
+}
+
+export default function ApplyPage({
+  defaultGithub = "",
+  defaultOrg = "",
+  defaultHowLearn = "",
+  defaultTitle = "",
+  defaultAmount = "",
+  defaultCategory = "",
+  defaultLeadName = "",
+  defaultLeadRole = "",
+  defaultLeadBg = "",
+  defaultLeadResp = "",
+  defaultSummary = "",
+  defaultDescription = "",
+  defaultProblem = "",
+  defaultSolution = "",
+  defaultSolutionFormat = "",
+  defaultDependencies = "",
+  defaultTechApproach = "",
+  defaultUpstream = "",
+  defaultHardware = "0",
+  defaultServices = "0",
+  defaultCompensation = "0",
+  defaultHardwareJustification = "",
+  defaultServiceJustification = "",
+  defaultCompensationJustification = "",
+  defaultPrevFunding = "no",
+  defaultOtherFunding = "no",
+  defaultPrevFundingDetails = "",
+  defaultOtherFundingDetails = "",
+  defaultImplRisks = "",
+  defaultSideEffects = "",
+  defaultSuccessMetrics = "",
+  defaultStartupAmount = "0",
+  defaultStartupJustification = "",
+  defaultTermsAccepted = new Array(9).fill(false),
+  defaultTeamMembers = [],
+  defaultMilestones = [],
+  defaultDocuments = [],
+}: ApplyPageProps) {
   const [step, setStep] = useState(0);
-  const [termsAccepted, setTermsAccepted] = useState<boolean[]>(new Array(9).fill(false));
+  const [termsAccepted, setTermsAccepted] = useState<boolean[]>(
+    defaultTermsAccepted.length === 9
+      ? [...defaultTermsAccepted]
+      : new Array(9).fill(false)
+  );
   const [formData, setFormData] = useState({
-    github: "", org: "", howLearn: "",
-    title: "", amount: "", category: "",
-    leadName: "", leadRole: "", leadBg: "", leadResp: "",
-    summary: "", description: "", problem: "", solution: "",
-    solutionFormat: "", dependencies: "", techApproach: "", upstream: "",
-    hardware: "0", services: "0", compensation: "0",
-    hardwareJustification: "", serviceJustification: "", compensationJustification: "",
-    prevFunding: "no", otherFunding: "no",
-    prevFundingDetails: "", otherFundingDetails: "",
-    implRisks: "", sideEffects: "", successMetrics: "",
-    startupAmount: "0", startupJustification: "",
+    github: defaultGithub, org: defaultOrg, howLearn: defaultHowLearn,
+    title: defaultTitle, amount: defaultAmount, category: defaultCategory,
+    leadName: defaultLeadName, leadRole: defaultLeadRole, leadBg: defaultLeadBg, leadResp: defaultLeadResp,
+    summary: defaultSummary, description: defaultDescription, problem: defaultProblem, solution: defaultSolution,
+    solutionFormat: defaultSolutionFormat, dependencies: defaultDependencies, techApproach: defaultTechApproach, upstream: defaultUpstream,
+    hardware: defaultHardware, services: defaultServices, compensation: defaultCompensation,
+    hardwareJustification: defaultHardwareJustification, serviceJustification: defaultServiceJustification, compensationJustification: defaultCompensationJustification,
+    prevFunding: defaultPrevFunding, otherFunding: defaultOtherFunding,
+    prevFundingDetails: defaultPrevFundingDetails, otherFundingDetails: defaultOtherFundingDetails,
+    implRisks: defaultImplRisks, sideEffects: defaultSideEffects, successMetrics: defaultSuccessMetrics,
+    startupAmount: defaultStartupAmount, startupJustification: defaultStartupJustification,
   });
-  const [teamMembers, setTeamMembers] = useState<{ name: string; role: string; bg: string; resp: string }[]>([]);
-  const [milestones, setMilestones] = useState<{ amount: string; date: string; stories: string[]; deliverables: string[]; criteria: string }[]>([]);
-  const [documents, setDocuments] = useState<{ name: string; url: string; desc: string }[]>([]);
+  const [teamMembers, setTeamMembers] = useState<{ name: string; role: string; bg: string; resp: string }[]>(defaultTeamMembers);
+  const [milestones, setMilestones] = useState<{ amount: string; date: string; stories: string[]; deliverables: string[]; criteria: string }[]>(defaultMilestones);
+  const [documents, setDocuments] = useState<{ name: string; url: string; desc: string }[]>(defaultDocuments);
   const [confirmed, setConfirmed] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showRealDraftNotice, setShowRealDraftNotice] = useState(false);
   const allTermsAccepted = termsAccepted.every(Boolean);
 
   const updateField = (key: string, val: string) => setFormData(prev => ({ ...prev, [key]: val }));
@@ -435,8 +458,82 @@ export default function ApplyPage() {
 
   const addMilestone = () => setMilestones(prev => [...prev, { amount: "", date: "", stories: [""], deliverables: [""], criteria: "" }]);
   const removeMilestone = (i: number) => setMilestones(prev => prev.filter((_, idx) => idx !== i));
+  const addStory = (milestoneIdx: number) =>
+    setMilestones((prev) => {
+      const next = [...prev];
+      next[milestoneIdx] = {
+        ...next[milestoneIdx],
+        stories: [...next[milestoneIdx].stories, ""],
+      };
+      return next;
+    });
+  const removeStory = (milestoneIdx: number, storyIdx: number) =>
+    setMilestones((prev) => {
+      const next = [...prev];
+      next[milestoneIdx] = {
+        ...next[milestoneIdx],
+        stories: next[milestoneIdx].stories.filter((_, idx) => idx !== storyIdx),
+      };
+      return next;
+    });
+  const addDeliverable = (milestoneIdx: number) =>
+    setMilestones((prev) => {
+      const next = [...prev];
+      next[milestoneIdx] = {
+        ...next[milestoneIdx],
+        deliverables: [...next[milestoneIdx].deliverables, ""],
+      };
+      return next;
+    });
+  const removeDeliverable = (milestoneIdx: number, deliverableIdx: number) =>
+    setMilestones((prev) => {
+      const next = [...prev];
+      next[milestoneIdx] = {
+        ...next[milestoneIdx],
+        deliverables: next[milestoneIdx].deliverables.filter((_, idx) => idx !== deliverableIdx),
+      };
+      return next;
+    });
 
-  const handleSubmitToGitHub = () => {
+  const handleSubmitToGitHub = async () => {
+    setSubmitError(null);
+    const token = getGitHubToken();
+    if (!token) {
+      setSubmitError("Not authenticated. Connect GitHub first.");
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const response = await fetch("/api/create-issue", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          formData,
+          termsAccepted,
+          teamMembers,
+          milestones,
+          documents,
+        }),
+      });
+      const result = (await response.json()) as { issueUrl?: string; error?: string };
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to create issue.");
+      }
+      if (!result.issueUrl) {
+        throw new Error("Issue created but URL missing in response.");
+      }
+      window.open(result.issueUrl, "_blank");
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "Failed to create issue.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const submitRealDraftToGitHub = () => {
     const issueUrl = buildIssueDraftUrl({
       github: formData.github,
       formData,
@@ -444,21 +541,15 @@ export default function ApplyPage() {
       milestones,
       documents,
     });
-    if (!issueUrl) return;
-    window.location.assign(issueUrl);
+    if (!issueUrl) {
+      setSubmitError("Could not build real draft issue URL.");
+      return;
+    }
+    window.open(issueUrl, "_blank");
   };
 
-  // TESTING ONLY: Delete this handler after issue-draft testing is complete.
-  const handleSubmitMockToGitHub = () => {
-    const issueUrl = buildIssueDraftUrl({
-      github: MOCK_DRAFT_DATA.github,
-      formData: MOCK_DRAFT_DATA,
-      teamMembers: MOCK_TEAM_MEMBERS,
-      milestones: MOCK_MILESTONES,
-      documents: MOCK_DOCUMENTS,
-    });
-    if (!issueUrl) return;
-    window.open(issueUrl, "_blank");
+  const handleSubmitRealDraftToGitHub = () => {
+    setShowRealDraftNotice(true);
   };
 
   return (
@@ -468,14 +559,14 @@ export default function ApplyPage() {
         Complete all steps to submit your proposal for ZCG funding.
       </p>
 
-      <Card className="mb-4 border-border/50 bg-card/70">
+      {/* <Card className="mb-4 border-border/50 bg-card/70">
         <CardContent className="p-3 text-xs leading-relaxed text-muted-foreground sm:p-4 sm:text-sm">
           <span className="font-semibold text-foreground">Creator-first UX:</span>{" "}
           this flow is designed so applicants can submit and track grants without
           needing DAODAO knowledge. DAODAO voting status is surfaced later for
           transparency, mainly for committee/governance participants.
         </CardContent>
-      </Card>
+      </Card> */}
 
       <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
         {/* Step list — vertical on all screen sizes, stacks above form on mobile */}
@@ -756,6 +847,52 @@ export default function ApplyPage() {
                       <label className="mb-1 block text-xs text-muted-foreground">Acceptance Criteria</label>
                       <Textarea value={m.criteria} onChange={e => setMilestones(prev => { const n = [...prev]; n[i] = { ...n[i], criteria: e.target.value }; return n; })} className="bg-secondary" />
                     </div>
+                    <div>
+                      <label className="mb-1 block text-xs text-muted-foreground">User Stories</label>
+                      <div className="space-y-2">
+                        {m.stories.map((story, storyIdx) => (
+                          <div key={storyIdx} className="flex items-center gap-2">
+                            <Input
+                              value={story}
+                              placeholder='As a [type of user], I want [some goal], so that [some reason]'
+                              onChange={e => setMilestones(prev => { const n = [...prev]; const stories = [...n[i].stories]; stories[storyIdx] = e.target.value; n[i] = { ...n[i], stories }; return n; })}
+                              className="bg-secondary"
+                            />
+                            {m.stories.length > 1 && (
+                              <Button type="button" variant="ghost" size="icon" onClick={() => removeStory(i, storyIdx)}>
+                                <X className="h-4 w-4" />
+                              </Button>
+                            )}
+                          </div>
+                        ))}
+                        <Button type="button" variant="outline" size="sm" onClick={() => addStory(i)} className="gap-2">
+                          <Plus className="h-3.5 w-3.5" /> Add User Story
+                        </Button>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="mb-1 block text-xs text-muted-foreground">Deliverables</label>
+                      <div className="space-y-2">
+                        {m.deliverables.map((deliverable, deliverableIdx) => (
+                          <div key={deliverableIdx} className="flex items-center gap-2">
+                            <Input
+                              value={deliverable}
+                              placeholder="[List specific deliverables that fulfill the user stories]"
+                              onChange={e => setMilestones(prev => { const n = [...prev]; const deliverables = [...n[i].deliverables]; deliverables[deliverableIdx] = e.target.value; n[i] = { ...n[i], deliverables }; return n; })}
+                              className="bg-secondary"
+                            />
+                            {m.deliverables.length > 1 && (
+                              <Button type="button" variant="ghost" size="icon" onClick={() => removeDeliverable(i, deliverableIdx)}>
+                                <X className="h-4 w-4" />
+                              </Button>
+                            )}
+                          </div>
+                        ))}
+                        <Button type="button" variant="outline" size="sm" onClick={() => addDeliverable(i)} className="gap-2">
+                          <Plus className="h-3.5 w-3.5" /> Add Deliverable
+                        </Button>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
@@ -818,20 +955,23 @@ export default function ApplyPage() {
                 </label>
                 <Button
                   size="lg"
-                  disabled={!confirmed || !allTermsAccepted}
+                  disabled={!confirmed || !allTermsAccepted || isSubmitting}
                   className="w-full gap-2 bg-primary font-semibold text-primary-foreground"
-                  onClick={handleSubmitToGitHub}
+                  onClick={() => void handleSubmitToGitHub()}
                 >
-                  <FileText className="h-4 w-4" /> Submit Grant Application
+                  <FileText className="h-4 w-4" /> {isSubmitting ? "Submitting..." : "Submit Grant Application"}
                 </Button>
-                {/* TESTING ONLY: Delete this button after issue-draft testing is complete. */}
+                {submitError && (
+                  <p className="text-sm text-destructive">{submitError}</p>
+                )}
                 <Button
                   type="button"
                   variant="outline"
                   className="w-full gap-2"
-                  onClick={handleSubmitMockToGitHub}
+                  disabled={!confirmed || !allTermsAccepted}
+                  onClick={handleSubmitRealDraftToGitHub}
                 >
-                  <FileText className="h-4 w-4" /> Submit Mock Draft (Testing)
+                  <FileText className="h-4 w-4" /> Create Draft Grant Application
                 </Button>
               </CardContent>
             </Card>
@@ -857,6 +997,34 @@ export default function ApplyPage() {
           </div>
         </div>
       </div>
+      <AlertDialog
+        open={showRealDraftNotice}
+        onOpenChange={setShowRealDraftNotice}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Manual Check Needed Before Final GitHub Submit</AlertDialogTitle>
+            <AlertDialogDescription>
+              GitHub issue-form interactive controls can behave differently from API-created markdown.
+              Please review these fields manually on the opened GitHub issue page:
+              {"\n"}- Terms and Conditions checkboxes
+              {"\n"}- Category (dropdown value)
+              {"\n"}- Previous Funding (Yes/No dropdown)
+              {"\n"}- Other Funding Sources (Yes/No dropdown)
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                submitRealDraftToGitHub();
+              }}
+            >
+              Continue and Create Draft
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

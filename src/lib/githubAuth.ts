@@ -105,7 +105,7 @@ export async function beginGitHubOAuth(): Promise<void> {
   const url = new URL("https://github.com/login/oauth/authorize");
   url.searchParams.set("client_id", getClientId());
   url.searchParams.set("redirect_uri", redirectUri);
-  url.searchParams.set("scope", "read:user user:email");
+  url.searchParams.set("scope", "read:user user:email public_repo");
   url.searchParams.set("state", state);
   url.searchParams.set("code_challenge", codeChallenge);
   url.searchParams.set("code_challenge_method", "S256");
