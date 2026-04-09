@@ -90,6 +90,8 @@ export interface Grant {
   committeeMembers: string[];
   forumLink: string;
   githubLink: string;
+  /** Optional ZecHub DAO (DAO DAO) single-choice proposal id (prefix A), if linked in issue body */
+  zechubDaoProposalId?: number | null;
 }
 
 export const statusConfig: Record<

@@ -21,6 +21,9 @@ import { CategoryBadge } from "@/components/CategoryBadge";
 import { WorkflowStepper } from "@/components/WorkflowStepper";
 import { MilestoneProgressBar } from "@/components/MilestoneProgressBar";
 import { useGrant } from "@/hooks/useGrants";
+import { useZechubDaoForGrant } from "@/hooks/useZechubDao";
+import { zechubDaoDaodaoUrl } from "@/lib/daodao/zechubConfig";
+import type { ZechubProposalView } from "@/lib/daodao/types";
 import { useState } from "react";
 
 // ---------------------------------------------------------------------------
@@ -97,12 +100,40 @@ const TABS = [
   { value: "documents",  label: "Documents" },
 ];
 
+function zechubProposalBadge(p: ZechubProposalView) {
+  const map: Record<
+    ZechubProposalView["status"],
+    { label: string; className: string }
+  > = {
+    in_voting: {
+      label: "In voting",
+      className: "bg-blue-500/20 text-blue-300",
+    },
+    passed: {
+      label: "Passed",
+      className: "bg-emerald-500/20 text-emerald-300",
+    },
+    rejected: {
+      label: "Rejected",
+      className: "bg-red-500/20 text-red-300",
+    },
+    closed: {
+      label: "Closed",
+      className: "bg-secondary text-muted-foreground",
+    },
+    draft: {
+      label: "Draft",
+      className: "bg-secondary text-muted-foreground",
+    },
+  };
+  return map[p.status];
+}
+
 export default function GrantDetailPage({ id }: { id?: string }) {
   const { data: grant, isLoading, isError, error } = useGrant(id);
+  const { data: zechub, isLoading: zechubLoading, isError: zechubError, error: zechubErr } =
+    useZechubDaoForGrant(grant);
   const [expandedSections, setExpandedSections] = useState<string[]>(["description"]);
-  const [daoDemoStatus, setDaoDemoStatus] = useState<
-    "DRAFT" | "IN_VOTING" | "PASSED" | "REJECTED"
-  >("IN_VOTING");
 
   const toggleSection = (s: string) =>
     setExpandedSections((prev) =>
@@ -141,40 +172,12 @@ export default function GrantDetailPage({ id }: { id?: string }) {
   }
 
   // ── helpers ───────────────────────────────────────────────────────────────
-  const daodaoUrl = "https://daodao.zone";
+  const zechubDaoUrl = zechubDaoDaodaoUrl();
 
   const milestoneStatusBadge = (status: string) => {
     if (status === "Paid")        return "COMPLETED" as const;
     if (status === "In Progress") return "ACTIVE"    as const;
     return "PENDING_REVIEW" as const;
-  };
-
-  const daoStatusMeta: Record<
-    "DRAFT" | "IN_VOTING" | "PASSED" | "REJECTED",
-    { label: string; className: string }
-  > = {
-    DRAFT: {
-      label: "Draft",
-      className: "bg-secondary text-muted-foreground",
-    },
-    IN_VOTING: {
-      label: "In Voting",
-      className: "bg-blue-500/20 text-blue-300",
-    },
-    PASSED: {
-      label: "Passed",
-      className: "bg-emerald-500/20 text-emerald-300",
-    },
-    REJECTED: {
-      label: "Rejected",
-      className: "bg-red-500/20 text-red-300",
-    },
-  };
-
-  const demoVotes = {
-    yes: 68,
-    no: 21,
-    abstain: 11,
   };
 
   // ── render ────────────────────────────────────────────────────────────────
@@ -258,18 +261,46 @@ export default function GrantDetailPage({ id }: { id?: string }) {
         </CardContent>
       </Card>
 
-      {/* ── Governance bridge (UI-first) ─────────────────────────────────── */}
+      {/* ── ZecHub DAO (DAO DAO on Juno) ─────────────────────────────────── */}
       <Card className="mb-6 border-border/50 bg-card/70">
-        <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="min-w-0">
+        <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="min-w-0 space-y-1">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              Governance Pulse
+              ZecHub DAO (DAO DAO)
+            </p>
+            {zechub?.dao && (
+              <p className="text-sm text-foreground">
+                {zechub.dao.name} · {zechub.dao.proposalCount} proposals on{" "}
+                {zechub.dao.chainId}
+              </p>
+            )}
+            {zechubLoading && (
+              <p className="text-xs text-muted-foreground">Loading DAO metadata…</p>
+            )}
+            <p className="text-xs leading-relaxed text-muted-foreground">
+              Ecosystem education DAO (see{" "}
+              <a
+                href="https://zechub.wiki/dao"
+                className="text-primary underline-offset-2 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                zechub.wiki/dao
+              </a>
+              ).{" "}
+              <span className="font-medium text-foreground/90">
+                GitHub grant issues and ZecHub DAO DAO proposals are independent
+              </span>
+              —different numbering, timing, and lifecycle.               This hub best-effort matches when (1) a proposal cites this GitHub issue or a DAO DAO URL is in
+              the issue, or (2) the grant title aligns with a proposal title (dates and wording often differ).
+              In practice many grants also have a corresponding DAO proposal; absence of a match here does not
+              mean none exists.
             </p>
           </div>
           <Button variant="outline" size="sm" className="shrink-0 gap-2" asChild>
-            <a href={daodaoUrl} target="_blank" rel="noopener noreferrer">
+            <a href={zechubDaoUrl} target="_blank" rel="noopener noreferrer">
               <Scale className="h-4 w-4" />
-              Open DAODAO
+              Open ZecHub on DAO DAO
             </a>
           </Button>
         </CardContent>
@@ -682,74 +713,108 @@ export default function GrantDetailPage({ id }: { id?: string }) {
             </Card>
           )}
 
-          {/* DAODAO integration card (UI first, data wiring next) */}
+          {/* ZecHub DAO proposal (live indexer) */}
           <Card className="border-border/50 bg-card">
             <CardContent className="p-4">
               <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                DAODAO Vote
+                ZecHub DAO vote
               </h3>
-              <div
-                className={`mb-2 inline-flex items-center rounded-full px-2.5 py-1 text-xs ${daoStatusMeta[daoDemoStatus].className}`}
-              >
-                {daoStatusMeta[daoDemoStatus].label}
-              </div>
-              <p className="mb-3 text-xs leading-relaxed text-muted-foreground">
-                Live governance snapshot with direct actions.
+              <p className="mb-3 text-[11px] leading-relaxed text-muted-foreground">
+                On-chain proposals are not the same records as GitHub issues. We match by issue URL in
+                proposal text when present, otherwise by normalized title similarity (regions and date ranges
+                often differ between the two).
               </p>
 
-              {/* Demo status switcher */}
-              <div className="mb-3 flex flex-wrap gap-1.5">
-                {(["DRAFT", "IN_VOTING", "PASSED", "REJECTED"] as const).map(
-                  (s) => (
-                    <button
-                      key={s}
-                      onClick={() => setDaoDemoStatus(s)}
-                      className={`rounded-md px-2 py-1 text-[11px] transition-colors ${
-                        daoDemoStatus === s
-                          ? "bg-primary/20 text-primary"
-                          : "bg-secondary text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      {daoStatusMeta[s].label}
-                    </button>
-                  )
-                )}
-              </div>
+              {zechubLoading && (
+                <p className="text-xs text-muted-foreground">Loading proposal…</p>
+              )}
 
-              {daoDemoStatus === "IN_VOTING" && (
-                <div className="mb-3 space-y-2 rounded-md bg-secondary/40 p-2.5">
-                  {[
-                    ["Yes", demoVotes.yes, "bg-emerald-400"],
-                    ["No", demoVotes.no, "bg-red-400"],
-                    ["Abstain", demoVotes.abstain, "bg-slate-400"],
-                  ].map(([label, value, color]) => (
-                    <div key={label as string}>
-                      <div className="mb-1 flex items-center justify-between text-[11px] text-muted-foreground">
-                        <span>{label as string}</span>
-                        <span>{value as number}%</span>
-                      </div>
-                      <div className="h-1.5 w-full overflow-hidden rounded-full bg-secondary">
-                        <div
-                          className={`h-full ${color as string}`}
-                          style={{ width: `${value as number}%` }}
-                        />
-                      </div>
+              {zechubError && (
+                <p className="text-xs text-destructive">
+                  {(zechubErr as Error)?.message ?? "Could not load DAO DAO data."}
+                </p>
+              )}
+
+              {!zechubLoading && !zechubError && zechub?.proposal && (
+                <>
+                  <div
+                    className={`mb-2 inline-flex items-center rounded-full px-2.5 py-1 text-xs ${
+                      zechubProposalBadge(zechub.proposal).className
+                    }`}
+                  >
+                    {zechubProposalBadge(zechub.proposal).label}
+                  </div>
+                  <p className="mb-2 line-clamp-2 text-sm font-medium text-foreground">
+                    {zechub.proposal.title}
+                  </p>
+                  {zechub.proposal.totalVotes > 0 && (
+                    <div className="mb-3 space-y-2 rounded-md bg-secondary/40 p-2.5">
+                      {(
+                        [
+                          ["Yes", zechub.proposal.votePercent.yes, "bg-emerald-400"],
+                          ["No", zechub.proposal.votePercent.no, "bg-red-400"],
+                          ["Abstain", zechub.proposal.votePercent.abstain, "bg-slate-400"],
+                        ] as const
+                      ).map(([label, pct, color]) => (
+                        <div key={label}>
+                          <div className="mb-1 flex items-center justify-between text-[11px] text-muted-foreground">
+                            <span>{label}</span>
+                            <span>{pct}%</span>
+                          </div>
+                          <div className="h-1.5 w-full overflow-hidden rounded-full bg-secondary">
+                            <div
+                              className={`h-full ${color}`}
+                              style={{ width: `${pct}%` }}
+                            />
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  )}
+                  {zechub.proposal.expiresAtIso && zechub.proposal.status === "in_voting" && (
+                    <p className="mb-3 text-[11px] text-muted-foreground">
+                      Voting ends{" "}
+                      {new Date(zechub.proposal.expiresAtIso).toLocaleString()}
+                    </p>
+                  )}
+                  <p className="mb-3 text-[11px] text-muted-foreground">
+                    {zechub.resolution === "by_id" &&
+                      "Matched using a proposal id or DAO DAO URL in the issue text (GitHub and DAO DAO remain separate systems). "}
+                    {zechub.resolution === "by_github_issue" &&
+                      "Best-effort match: a proposal description appears to reference this GitHub issue. "}
+                    {zechub.resolution === "by_grant_title" &&
+                      "Best-effort match: grant title aligned with a proposal title (on-chain text often omits the GitHub issue link). "}
+                  </p>
+                </>
+              )}
+
+              {!zechubLoading && !zechubError && zechub && !zechub.proposal && (
+                <p className="mb-3 text-xs leading-relaxed text-muted-foreground">
+                  {zechub.resolution === "parsed_id_failed_lookup"
+                    ? "A DAO DAO proposal id was found in the issue, but it could not be loaded from the indexer."
+                    : "No matching ZecHub DAO proposal was found for this issue. GitHub and DAO DAO are independent—many grants still have a DAO vote elsewhere; try Open ZecHub on DAO DAO or add a daodao.zone proposal link in the issue when you want a definitive link here."}
+                </p>
               )}
 
               <div className="space-y-2">
                 <Button variant="outline" size="sm" className="w-full justify-start gap-2" asChild>
-                  <a href={daodaoUrl} target="_blank" rel="noopener noreferrer">
+                  <a href={zechubDaoUrl} target="_blank" rel="noopener noreferrer">
                     <Scale className="h-4 w-4" />
-                    View on DAODAO
+                    ZecHub on DAO DAO
                   </a>
                 </Button>
-                <Button variant="outline" size="sm" className="w-full justify-start gap-2" disabled>
-                  <ExternalLink className="h-4 w-4" />
-                  Link Proposal (Coming Soon)
-                </Button>
+                {zechub?.proposal && (
+                  <Button variant="outline" size="sm" className="w-full justify-start gap-2" asChild>
+                    <a
+                      href={zechub.proposal.daodaoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                      Open proposal A{zechub.proposal.id}
+                    </a>
+                  </Button>
+                )}
               </div>
             </CardContent>
           </Card>

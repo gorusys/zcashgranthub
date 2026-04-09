@@ -221,6 +221,22 @@ function forumLink(body: string, comments: GitHubComment[]): string {
   return m ? m[0] : "https://forum.zcashcommunity.com/c/grants/33";
 }
 
+/**
+ * Detect a ZecHub DAO DAO proposal reference (Juno, prefix A) in issue text.
+ * Matches daodao.zone proposal URLs and common "Proposal A123" phrasing.
+ */
+export function extractZechubDaoProposalId(body: string): number | null {
+  const fromUrl = body.match(
+    /daodao\.zone\/dao\/juno1[a-z0-9]+\/proposals\/A(\d+)/i
+  );
+  if (fromUrl) return parseInt(fromUrl[1], 10);
+  const prop = body.match(/(?:^|\s)proposal\s+A(\d+)\b/im);
+  if (prop) return parseInt(prop[1], 10);
+  const labeled = body.match(/DAO\s+Proposal\s*:?\s*A(\d+)/i);
+  if (labeled) return parseInt(labeled[1], 10);
+  return null;
+}
+
 // ---------------------------------------------------------------------------
 // Main export
 // ---------------------------------------------------------------------------
@@ -290,5 +306,6 @@ export function parseIssueToGrant(
     committeeMembers: issue.assignees.map((a) => a.login),
     forumLink: forumLink(body, comments),
     githubLink: issue.html_url,
+    zechubDaoProposalId: extractZechubDaoProposalId(body),
   };
 }
