@@ -33,7 +33,11 @@ const navLinks: NavLink[] = [
     href: "/zechub/proposals",
     active: (r) => r.pathname.startsWith("/zechub/proposals"),
   },
-  { label: "Apply", href: "/apply", active: (r) => r.pathname === "/apply" },
+  {
+    label: "Apply",
+    href: "/apply",
+    active: (r) => r.pathname === "/apply",
+  },
   {
     label: "Analytics",
     href: "/analytics",

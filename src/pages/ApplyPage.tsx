@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { Check, ChevronRight, ChevronLeft, Save, Upload, Plus, X, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -18,6 +20,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
 import { getGitHubToken } from "@/lib/githubAuth";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CoinholderApplyWizard } from "@/pages/CoinholderApplyPage";
 
 const stepLabels = [
   "Terms & Conditions",
@@ -425,6 +429,24 @@ export default function ApplyPage({
   defaultMilestones = [],
   defaultDocuments = [],
 }: ApplyPageProps) {
+  const router = useRouter();
+  const applyTab =
+    router.isReady && router.query.tab === "coinholder" ? "coinholder" : "zcg";
+
+  const setApplyTab = (v: string) => {
+    const next: Record<string, string | string[] | undefined> = {
+      ...router.query,
+    };
+    if (v === "zcg") {
+      delete next.tab;
+    } else {
+      next.tab = "coinholder";
+    }
+    void router.replace({ pathname: "/apply", query: next }, undefined, {
+      shallow: true,
+    });
+  };
+
   const [step, setStep] = useState(0);
   const [termsAccepted, setTermsAccepted] = useState<boolean[]>(
     defaultTermsAccepted.length === 9
@@ -511,6 +533,7 @@ export default function ApplyPage({
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
+          program: "zcg",
           formData,
           termsAccepted,
           teamMembers,
@@ -554,21 +577,40 @@ export default function ApplyPage({
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
-      <h1 className="mb-1 text-2xl font-bold text-foreground sm:text-3xl">Submit a Grant Application</h1>
-      <p className="mb-6 text-sm text-muted-foreground sm:mb-8 sm:text-base">
-        Complete all steps to submit your proposal for ZCG funding.
+      <h1 className="mb-1 text-2xl font-bold text-foreground sm:text-3xl">
+        Apply for a grant
+      </h1>
+      <p className="mb-4 text-sm text-muted-foreground sm:mb-6 sm:text-base">
+        Choose <span className="font-medium text-foreground">ZCG</span> for
+        forward-looking proposals or{" "}
+        <span className="font-medium text-foreground">Coinholder</span> for
+        Lockbox retroactive (completed work) applications. Connect GitHub before
+        submitting.
       </p>
 
-      {/* <Card className="mb-4 border-border/50 bg-card/70">
-        <CardContent className="p-3 text-xs leading-relaxed text-muted-foreground sm:p-4 sm:text-sm">
-          <span className="font-semibold text-foreground">Creator-first UX:</span>{" "}
-          this flow is designed so applicants can submit and track grants without
-          needing DAODAO knowledge. DAODAO voting status is surfaced later for
-          transparency, mainly for committee/governance participants.
-        </CardContent>
-      </Card> */}
+      <Tabs value={applyTab} onValueChange={setApplyTab} className="w-full">
+        <TabsList className="mb-6 grid h-auto w-full max-w-md grid-cols-2 p-1 sm:w-auto">
+          <TabsTrigger value="zcg" className="px-3 py-2">
+            ZCG
+          </TabsTrigger>
+          <TabsTrigger value="coinholder" className="px-3 py-2">
+            Coinholder
+          </TabsTrigger>
+        </TabsList>
 
-      <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
+        <TabsContent value="zcg" className="mt-0 outline-none focus-visible:ring-0">
+          <h2 className="mb-1 text-xl font-semibold text-foreground sm:text-2xl">
+            Zcash Community Grants
+          </h2>
+          {/* <p className="mb-4 text-sm text-muted-foreground sm:mb-6 sm:text-base">
+            Forward-looking applications.{" "}
+            <Link href="/grants?program=zcg" className="text-primary hover:underline">
+              Browse ZCG grants
+            </Link>
+            .
+          </p> */}
+
+          <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
         {/* Step list — vertical on all screen sizes, stacks above form on mobile */}
         <nav className="w-full shrink-0 lg:w-56 xl:w-64">
           <div className="space-y-0.5 lg:sticky lg:top-24">
@@ -997,6 +1039,13 @@ export default function ApplyPage({
           </div>
         </div>
       </div>
+        </TabsContent>
+
+        <TabsContent value="coinholder" className="mt-0 outline-none focus-visible:ring-0">
+          <CoinholderApplyWizard embedded />
+        </TabsContent>
+      </Tabs>
+
       <AlertDialog
         open={showRealDraftNotice}
         onOpenChange={setShowRealDraftNotice}

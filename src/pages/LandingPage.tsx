@@ -167,13 +167,23 @@ export default function LandingPage() {
             Explore ZCG and Coinholder applications on GitHub, ZecHub mini-grants on DAO DAO, and the
             community operations dashboard—without mixing them into one false status.
           </p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:mt-10 sm:flex-row sm:gap-4">
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:gap-4">
             <Link href="/apply" className="w-full sm:w-auto">
               <Button
                 size="lg"
                 className="w-full gap-2 bg-primary font-semibold text-primary-foreground hover:bg-primary/90 sm:w-auto sm:px-8"
               >
-                Submit a Grant
+                ZCG grant application
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+            <Link href="/apply?tab=coinholder" className="w-full sm:w-auto">
+              <Button
+                size="lg"
+                variant="secondary"
+                className="w-full gap-2 sm:w-auto sm:px-8"
+              >
+                Coinholder retroactive application
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
@@ -270,9 +280,13 @@ export default function LandingPage() {
                 <Github className="h-5 w-5 text-primary" />
                 <h3 className="font-semibold text-foreground">ZCG (GitHub)</h3>
                 <p className="text-sm text-muted-foreground">
-                  Community grant applications in the ZCG repository—browse via{" "}
-                  <Link href="/grants" className="text-primary hover:underline">
-                    Grants
+                  Community grant applications in the ZCG repository—{" "}
+                  <Link href="/apply" className="text-primary hover:underline">
+                    apply
+                  </Link>
+                  {" · "}
+                  <Link href="/grants?program=zcg" className="text-primary hover:underline">
+                    browse
                   </Link>
                   .
                 </p>
@@ -283,7 +297,15 @@ export default function LandingPage() {
                 <Github className="h-5 w-5 text-primary" />
                 <h3 className="font-semibold text-foreground">Coinholder (GitHub)</h3>
                 <p className="text-sm text-muted-foreground">
-                  Financial Privacy Foundation coinholder grants—same browse view with program filter.
+                  Lockbox retroactive grants—{" "}
+                  <Link href="/apply?tab=coinholder" className="text-primary hover:underline">
+                    apply
+                  </Link>
+                  {" · "}
+                  <Link href="/grants?program=coinholder" className="text-primary hover:underline">
+                    browse
+                  </Link>
+                  .
                 </p>
               </CardContent>
             </Card>

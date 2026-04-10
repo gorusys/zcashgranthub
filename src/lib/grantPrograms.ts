@@ -56,3 +56,17 @@ export function parseGrantRouteId(id: string): {
 export function programLabel(program: GrantProgram): string {
   return program === "zcg" ? "ZCG" : "Coinholder";
 }
+
+/** Target repo for creating issues via apply flow (server or client with NEXT_PUBLIC_*). */
+export function getIssueRepoSlug(program: GrantProgram = "zcg"): string {
+  if (program === "coinholder") {
+    return (
+      process.env.NEXT_PUBLIC_GITHUB_REPO_COINHOLDER || DEFAULT_COINHOLDER_REPO
+    );
+  }
+  return (
+    process.env.NEXT_PUBLIC_GITHUB_REPO ||
+    process.env.VITE_GITHUB_REPO ||
+    OFFICIAL_ZCG_REPO
+  );
+}

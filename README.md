@@ -9,7 +9,8 @@ A multi-program **grants explorer** for the Zcash ecosystem: **Zcash Community G
 - **Related records** — Heuristic cross-links between programs (title similarity, issue references in proposal text) plus optional maintainer overrides in `src/data/grant-links.json` (`/api/related/for-grant`, `/api/related/for-proposal`).
 - **Browse & filter** — Search, status, category, and **program** filter on `/grants`.
 - **Grant detail** — Application fields, milestones, team, budget, risks, comments; **no** embedded DAO vote as ZCG status—only relationship suggestions and clear separation of programs.
-- **Analytics dashboard**, **Apply wizard**, **Committee dashboard** — unchanged from the original hub.
+- **Apply wizards** — Single `/apply` page with **ZCG** and **Coinholder** tabs; Coinholder creates issues in the Coinholder repo with the correct label. `/apply/coinholder` redirects to `/apply?tab=coinholder`.
+- **Analytics dashboard**, **Committee dashboard**.
 
 ## Tech Stack
 

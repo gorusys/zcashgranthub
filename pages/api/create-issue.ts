@@ -1,5 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Octokit } from "@octokit/rest";
+import {
+  buildCoinholderIssueBody,
+  type CoinholderFormData,
+  COINHOLDER_TERMS_COUNT,
+} from "@/lib/coinholderApplyIssue";
+import { getIssueRepoSlug } from "@/lib/grantPrograms";
 
 type CreateIssueSuccess = { issueUrl: string };
 type CreateIssueError = { error: string };
@@ -48,7 +54,21 @@ type Payload = {
   documents: { name: string; url: string; desc: string }[];
 };
 
-const REPO_FALLBACK = "ZcashCommunityGrants/zcashcommunitygrants";
+type CoinholderPayload = {
+  program: "coinholder";
+  formData: CoinholderFormData;
+  termsAccepted: boolean[];
+};
+
+function isCoinholderPayload(body: unknown): body is CoinholderPayload {
+  if (typeof body !== "object" || body === null) return false;
+  const b = body as Record<string, unknown>;
+  return (
+    b.program === "coinholder" &&
+    typeof b.formData === "object" &&
+    b.formData !== null
+  );
+}
 
 function yesNo(v: string): string {
   return v === "yes" ? "Yes" : "No";
@@ -276,13 +296,51 @@ export default async function handler(
     return res.status(401).json({ error: "Not authenticated. Connect GitHub first." });
   }
 
+  if (isCoinholderPayload(req.body)) {
+    const { formData, termsAccepted } = req.body;
+    if (
+      !termsAccepted ||
+      termsAccepted.length !== COINHOLDER_TERMS_COUNT ||
+      !termsAccepted.every(Boolean)
+    ) {
+      return res.status(400).json({
+        error:
+          "All terms, conditions, and the community forum posting confirmation must be accepted.",
+      });
+    }
+
+    const slug = getIssueRepoSlug("coinholder");
+    const [owner, repoName] = slug.split("/");
+    if (!owner || !repoName) {
+      return res.status(500).json({ error: "Invalid Coinholder repository configuration." });
+    }
+
+    try {
+      const octokit = new Octokit({ auth: token });
+      const result = await octokit.issues.create({
+        owner,
+        repo: repoName,
+        title: `Retroactive Grant Application - ${formData.applicationTitle || "Application Name"}`,
+        labels: ["Pending Retroactive Grant Application"],
+        body: buildCoinholderIssueBody(formData, termsAccepted),
+        assignees: normalizeAssignees(formData.github)
+          .split(",")
+          .map((x) => x.trim())
+          .filter(Boolean),
+      });
+      return res.status(200).json({ issueUrl: result.data.html_url });
+    } catch (error: any) {
+      return handleOctokitError(res, error);
+    }
+  }
+
   const payload = req.body as Payload;
   if (!payload?.formData) {
     return res.status(500).json({ error: "Invalid request body." });
   }
 
-  const repo = process.env.NEXT_PUBLIC_GITHUB_REPO || REPO_FALLBACK;
-  const [owner, repoName] = repo.split("/");
+  const slug = getIssueRepoSlug("zcg");
+  const [owner, repoName] = slug.split("/");
   if (!owner || !repoName) {
     return res.status(500).json({ error: "Invalid repository configuration." });
   }
@@ -303,24 +361,31 @@ export default async function handler(
 
     return res.status(200).json({ issueUrl: result.data.html_url });
   } catch (error: any) {
-    const status = error?.status as number | undefined;
-    if (status === 401) {
-      return res.status(401).json({ error: "GitHub token is invalid or expired." });
-    }
-    if (status === 404) {
-      return res.status(500).json({
-        error:
-          "GitHub API returned Not Found. This usually means the token lacks write scope for issues (public_repo/repo) or has no access to the target repository.",
-      });
-    }
-    if (status === 403) {
-      return res.status(403).json({
-        error:
-          "Forbidden by GitHub API. Check token scopes and repository permissions.",
-      });
-    }
+    return handleOctokitError(res, error);
+  }
+}
+
+function handleOctokitError(
+  res: NextApiResponse<CreateIssueSuccess | CreateIssueError>,
+  error: any
+) {
+  const status = error?.status as number | undefined;
+  if (status === 401) {
+    return res.status(401).json({ error: "GitHub token is invalid or expired." });
+  }
+  if (status === 404) {
     return res.status(500).json({
-      error: error?.message || "Failed to create GitHub issue.",
+      error:
+        "GitHub API returned Not Found. This usually means the token lacks write scope for issues (public_repo/repo) or has no access to the target repository.",
     });
   }
+  if (status === 403) {
+    return res.status(403).json({
+      error:
+        "Forbidden by GitHub API. Check token scopes and repository permissions.",
+    });
+  }
+  return res.status(500).json({
+    error: error?.message || "Failed to create GitHub issue.",
+  });
 }

@@ -290,14 +290,12 @@ export default function GrantsPage() {
         <p className="mt-1 text-sm text-muted-foreground sm:text-base">
           {programFilter === "zcg" && (
             <>
-              Zcash Community Grants applications from GitHub (ids like{" "}
-              <code className="rounded bg-secondary px-1 text-xs">zcg-42</code>).
+              Zcash Community Grants applications from GitHub.
             </>
           )}
           {programFilter === "coinholder" && (
             <>
-              Financial Privacy Foundation coinholder program applications from GitHub (ids like{" "}
-              <code className="rounded bg-secondary px-1 text-xs">coinholder-4</code>).
+              Financial Privacy Foundation coinholder program applications from GitHub.
             </>
           )}
           {programFilter === "all" && (
