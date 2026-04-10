@@ -283,29 +283,38 @@ export default function GrantsPage() {
         ? "Coinholder grants"
         : "Browse grants";
 
+  const applyHref =
+    programFilter === "coinholder" ? "/apply?tab=coinholder" : "/apply";
+
+  const applyLabel =
+    programFilter === "coinholder" ? "Apply for Coinholder grant" : "Apply for ZCG grant";
+
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
-      <div className="mb-5 sm:mb-8">
-        <h1 className="text-2xl font-bold text-foreground sm:text-3xl">{pageTitle}</h1>
-        <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-          {programFilter === "zcg" && (
-            <>
-              Zcash Community Grants applications from GitHub.
-            </>
-          )}
-          {programFilter === "coinholder" && (
-            <>
-              Financial Privacy Foundation coinholder program applications from GitHub.
-            </>
-          )}
-          {programFilter === "all" && (
-            <>
-              ZCG and Coinholder grant applications from GitHub (composite ids such as{" "}
-              <code className="rounded bg-secondary px-1 text-xs">zcg-42</code>
-              ).
-            </>
-          )}
-        </p>
+      <div className="mb-5 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground sm:text-3xl">{pageTitle}</h1>
+          <p className="mt-1 text-sm text-muted-foreground sm:text-base">
+            {programFilter === "zcg" && (
+              <>
+                Zcash Community Grants applications from GitHub.
+              </>
+            )}
+            {programFilter === "coinholder" && (
+              <>
+                Financial Privacy Foundation coinholder program applications from GitHub.
+              </>
+            )}
+            {programFilter === "all" && (
+              <>
+                ZCG and Coinholder grant applications from GitHub (composite ids such as{" "}
+                <code className="rounded bg-secondary px-1 text-xs">zcg-42</code>
+                ).
+              </>
+            )}
+          </p>
+        </div>
+        <Button onClick={() => void router.push(applyHref)}>{applyLabel}</Button>
       </div>
 
       <div className="flex gap-6 lg:gap-8">
