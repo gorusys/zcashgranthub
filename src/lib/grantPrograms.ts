@@ -2,8 +2,7 @@
 export type GrantProgram = "zcg" | "coinholder";
 
 export const OFFICIAL_ZCG_REPO = "ZcashCommunityGrants/zcashcommunitygrants";
-export const DEFAULT_COINHOLDER_REPO =
-  "Financial-Privacy-Foundation/ZcashCoinholderGrantsProgram";
+export const OFFICIAL_COINHOLDER_REPO = "Financial-Privacy-Foundation/ZcashCoinholderGrantsProgram";
 
 export const GRANTS_DASHBOARD_SHEET_URL =
   "https://docs.google.com/spreadsheets/d/1FQ28rDCyRW0TiNxrm3rgD8ai2KGUsXAjPieQmI1kKKg";
@@ -16,11 +15,11 @@ export interface GrantRepoConfig {
 /** ZCG repo from env (legacy single-repo) plus optional Coinholder repo. */
 export function getGrantRepoConfigs(): GrantRepoConfig[] {
   const zcg =
-    process.env.NEXT_PUBLIC_GITHUB_REPO ||
-    process.env.VITE_GITHUB_REPO ||
+    process.env.NEXT_PUBLIC_ZCG_GITHUB_REPO ||
     OFFICIAL_ZCG_REPO;
-  const coinholder =
-    process.env.NEXT_PUBLIC_GITHUB_REPO_COINHOLDER || DEFAULT_COINHOLDER_REPO;
+  const coinholder = 
+    process.env.NEXT_PUBLIC_COINHOLDER_GITHUB_REPO ||
+    OFFICIAL_COINHOLDER_REPO;
 
   const includeCoinholder =
     process.env.NEXT_PUBLIC_GITHUB_REPO_COINHOLDER_DISABLED !== "1";
@@ -60,13 +59,16 @@ export function programLabel(program: GrantProgram): string {
 /** Target repo for creating issues via apply flow (server or client with NEXT_PUBLIC_*). */
 export function getIssueRepoSlug(program: GrantProgram = "zcg"): string {
   if (program === "coinholder") {
-    return (
-      process.env.NEXT_PUBLIC_GITHUB_REPO_COINHOLDER || DEFAULT_COINHOLDER_REPO
-    );
+    const repo = process.env.NEXT_PUBLIC_COINHOLDER_GITHUB_REPO || OFFICIAL_COINHOLDER_REPO;
+    if (!repo) {
+      throw new Error(
+        "Missing Coinholder repo env. Set NEXT_PUBLIC_GITHUB_REPO_COINHOLDER."
+      );
+    }
+    return repo;
   }
   return (
-    process.env.NEXT_PUBLIC_GITHUB_REPO ||
-    process.env.VITE_GITHUB_REPO ||
+    process.env.NEXT_PUBLIC_ZCG_GITHUB_REPO ||
     OFFICIAL_ZCG_REPO
   );
 }

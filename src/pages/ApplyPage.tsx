@@ -166,7 +166,7 @@ const categories = [
   "Wallets", "Research & Development", "Media", "Zcash Protocol Extension", "Dedicated Resource", "Event Sponsorships",
 ];
 
-const DEFAULT_REPO = "ZcashCommunityGrants/zcashcommunitygrants";
+const OFFICIAL_ZCG_REPO = "ZcashCommunityGrants/zcashcommunitygrants";
 
 function toYesNo(value: string): "Yes" | "No" {
   return value === "yes" ? "Yes" : "No";
@@ -292,9 +292,8 @@ function buildIssueDraftUrl(args: {
   documents: { name: string; url: string; desc: string }[];
 }): string | null {
   const repo =
-    process.env.NEXT_PUBLIC_GITHUB_REPO ||
-    process.env.VITE_GITHUB_REPO ||
-    DEFAULT_REPO;
+    process.env.NEXT_PUBLIC_ZCG_GITHUB_REPO ||
+    OFFICIAL_ZCG_REPO;
   const [owner, name] = repo.split("/");
   if (!owner || !name) return null;
 

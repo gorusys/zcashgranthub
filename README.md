@@ -43,8 +43,8 @@ NEXT_PUBLIC_GITHUB_TOKEN=ghp_your_read_only_token_here
 
 | Variable | Purpose |
 |----------|---------|
-| `NEXT_PUBLIC_GITHUB_REPO` | ZCG (or primary) grants repo slug |
-| `NEXT_PUBLIC_GITHUB_REPO_COINHOLDER` | Coinholder repo (default: `Financial-Privacy-Foundation/ZcashCoinholderGrantsProgram`) |
+| `NEXT_PUBLIC_ZCG_GITHUB_REPO` | ZCG grants repo slug |
+| `NEXT_PUBLIC_GITHUB_REPO_COINHOLDER` | Coinholder grants repo slug |
 | `NEXT_PUBLIC_GITHUB_REPO_COINHOLDER_DISABLED=1` | Omit Coinholder from aggregation |
 
 ## GitHub OAuth Setup
@@ -55,7 +55,7 @@ Set these in `.env`:
 NEXT_PUBLIC_GITHUB_OAUTH_CLIENT_ID=your_github_oauth_app_client_id
 NEXT_PUBLIC_GITHUB_OAUTH_REDIRECT_URI=http://localhost:3000/auth/github/callback
 GITHUB_OAUTH_CLIENT_SECRET=your_github_oauth_app_client_secret
-NEXT_PUBLIC_GITHUB_REPO=ZcashCommunityGrants/zcashcommunitygrants
+NEXT_PUBLIC_ZCG_GITHUB_REPO=ZcashCommunityGrants/zcashcommunitygrants
 ```
 
 In your GitHub OAuth app settings, add `http://localhost:3000/auth/github/callback` as an authorized callback URL.
