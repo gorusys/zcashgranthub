@@ -49,6 +49,19 @@ NEXT_PUBLIC_GITHUB_TOKEN=ghp_your_read_only_token_here
 | `NEXT_PUBLIC_GITHUB_REPO_COINHOLDER` | Coinholder grants repo slug |
 | `NEXT_PUBLIC_GITHUB_REPO_COINHOLDER_DISABLED=1` | Omit Coinholder from aggregation |
 
+## ZecHub DAO (DAO DAO on Juno)
+
+Defaults match the live ZecHub DAO; override only if contracts move.
+
+| Variable | Purpose |
+|----------|---------|
+| `NEXT_PUBLIC_ZECHUB_DAO_CORE` | DAO Core (`dao-core`) contract address on Juno |
+| `NEXT_PUBLIC_ZECHUB_PROPOSAL_MODULE_SINGLE` | Single-choice proposal module used for prefix **A** proposals |
+| `NEXT_PUBLIC_DAO_DAO_INDEXER_BASE` | DAO DAO indexer base URL (default `https://indexer.daodao.zone`) |
+
+**API routes:** `/api/daodao/proposals-list`, `/api/daodao/proposal?id=`, `/api/daodao/dao-meta`, `/api/daodao/zechub` (resolve ZecHub proposal by id, GitHub issue, or title).  
+**UI:** `/zechub/proposals`, `/zechub/proposals/[id]`.
+
 ## GitHub OAuth Setup
 
 Set these in `.env`:

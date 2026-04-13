@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState, useRef } from "react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { Search, SlidersHorizontal, X, Loader2, AlertCircle, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,7 @@ import {
   totalPagesForCount,
 } from "@/components/ListPagination";
 import { zechubDaoDaodaoUrl } from "@/lib/daodao/zechubConfig";
+import { useZechubDaoMeta } from "@/hooks/useZechubDaoMeta";
 
 interface ListResponse {
   items: ZechubProposalCardRow[];
@@ -59,6 +61,7 @@ function ProposalCardSkeleton() {
 
 export default function ZechubProposalsPage() {
   const router = useRouter();
+  const { data: daoMeta } = useZechubDaoMeta();
   const [items, setItems] = useState<ZechubProposalCardRow[]>([]);
   const [nextStartBefore, setNextStartBefore] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -259,20 +262,48 @@ export default function ZechubProposalsPage() {
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
+      <Head>
+        <title>ZecHub DAO proposals · Zcash Grants Hub</title>
+        <meta
+          name="description"
+          content="Browse on-chain ZecHub DAO proposals on Juno via DAO DAO—mini-grants and governance separate from ZCG GitHub review."
+        />
+      </Head>
       <div className="mb-5 sm:mb-8">
         <h1 className="text-2xl font-bold text-foreground sm:text-3xl">ZecHub DAO proposals</h1>
         <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-          Mini-grants and governance on DAO DAO (Juno)—independent from ZCG committee review. See{" "}
+          On-chain mini-grants and governance through{" "}
+          <span className="font-medium text-foreground/90">DAO DAO</span> on{" "}
+          <span className="font-medium text-foreground/90">Juno</span>—separate from ZCG committee
+          review on GitHub. See{" "}
           <a
             href="https://zechub.wiki/dao"
             className="text-primary underline-offset-2 hover:underline"
             target="_blank"
             rel="noopener noreferrer"
           >
-            zechub.wiki/dao
+            ZecHub DAO docs
           </a>{" "}
-          for context.
+          for program context.
         </p>
+        {daoMeta && (
+          <div className="mt-4 flex flex-wrap gap-3 rounded-lg border border-border/50 bg-card/60 px-4 py-3 text-sm">
+            <div>
+              <span className="text-muted-foreground">DAO </span>
+              <span className="font-medium text-foreground">{daoMeta.name}</span>
+            </div>
+            <span className="hidden text-border sm:inline">·</span>
+            <div>
+              <span className="text-muted-foreground">Chain </span>
+              <span className="font-mono text-foreground">{daoMeta.chainId}</span>
+            </div>
+            <span className="hidden text-border sm:inline">·</span>
+            <div>
+              <span className="text-muted-foreground">Proposals (on-chain) </span>
+              <span className="font-medium text-foreground">{daoMeta.proposalCount}</span>
+            </div>
+          </div>
+        )}
         <div className="mt-3">
           <Button variant="outline" size="sm" className="gap-2" asChild>
             <a href={daoUrl} target="_blank" rel="noopener noreferrer">
@@ -303,10 +334,10 @@ export default function ZechubProposalsPage() {
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <span className="text-sm text-muted-foreground">
               {loading
-                ? "Loading proposals from indexer…"
+                ? "Loading proposals…"
                 : filtered.length === 0
-                  ? `0 matching · ${items.length} loaded from indexer`
-                  : `Rows ${rangeStart}–${rangeEnd} of ${filtered.length} matching · ${items.length} loaded from indexer`}
+                  ? `No matches · showing ${items.length} loaded proposals`
+                  : `Showing ${rangeStart}–${rangeEnd} of ${filtered.length} matching · ${items.length} proposals loaded`}
             </span>
             <div className="flex items-center gap-2">
               <Button
@@ -417,7 +448,7 @@ export default function ZechubProposalsPage() {
                     Loading…
                   </>
                 ) : (
-                  "Load more from indexer"
+                  "Load more proposals"
                 )}
               </Button>
             </div>

@@ -62,9 +62,14 @@ export default async function handler(
       ? grantTitleRaw.trim()
       : null;
 
-  if (parsedProposalId === null && githubIssue === null) {
+  if (
+    parsedProposalId === null &&
+    githubIssue === null &&
+    (grantTitle === null || grantTitle.length === 0)
+  ) {
     return res.status(400).json({
-      error: "Provide proposalId and/or githubIssue query parameters.",
+      error:
+        "Provide proposalId, githubIssue, and/or grantTitle query parameters.",
     });
   }
 
@@ -89,6 +94,12 @@ export default async function handler(
           resolvedId = fromTitle;
           resolution = "by_grant_title";
         }
+      }
+    } else if (grantTitle !== null) {
+      const fromTitle = await findZechubProposalIdByGrantTitle(grantTitle);
+      if (fromTitle !== null) {
+        resolvedId = fromTitle;
+        resolution = "by_grant_title";
       }
     }
 

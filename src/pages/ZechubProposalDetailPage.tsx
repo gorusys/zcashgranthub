@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Head from "next/head";
 import { useQuery } from "@tanstack/react-query";
 import {
   ArrowLeft,
@@ -10,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { RelatedRecordsCard } from "@/components/RelatedRecordsCard";
+import { ProposalDescription } from "@/components/zechub/ProposalDescription";
 import { useRelatedForProposal } from "@/hooks/useRelatedForProposal";
 import type { ZechubProposalView } from "@/lib/daodao/types";
 import { zechubDaoDaodaoUrl } from "@/lib/daodao/zechubConfig";
@@ -119,6 +121,13 @@ export default function ZechubProposalDetailPage({ id }: { id: string }) {
 
   return (
     <div className="container mx-auto min-w-0 px-4 py-6 sm:py-8">
+      <Head>
+        <title>{proposal.title} · ZecHub DAO · Zcash Grants Hub</title>
+        <meta
+          name="description"
+          content={`ZecHub DAO proposal A${proposal.id} on Juno (DAO DAO). ${proposal.title.slice(0, 120)}`}
+        />
+      </Head>
       <Link
         href="/zechub/proposals"
         className="mb-5 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
@@ -138,9 +147,11 @@ export default function ZechubProposalDetailPage({ id }: { id: string }) {
             >
               {sb.label}
             </span>
-            <span className="text-xs text-muted-foreground">
-              Raw: {proposal.rawStatus}
-            </span>
+            <details className="text-xs text-muted-foreground">
+              <summary className="cursor-pointer select-none hover:text-foreground">
+                On-chain status ({proposal.rawStatus})
+              </summary>
+            </details>
           </div>
           <h1 className="text-xl font-bold text-foreground sm:text-2xl lg:text-3xl">
             {proposal.title}
@@ -199,9 +210,9 @@ export default function ZechubProposalDetailPage({ id }: { id: string }) {
               <CardTitle className="text-base">Description</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="whitespace-pre-wrap break-words text-sm text-muted-foreground">
-                {proposal.description?.trim() || "No description in indexer."}
-              </p>
+              <ProposalDescription
+                text={proposal.description?.trim() || ""}
+              />
             </CardContent>
           </Card>
 
