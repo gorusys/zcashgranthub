@@ -32,7 +32,7 @@ interface ListResponse {
 }
 
 async function fetchPage(startBefore?: number): Promise<ListResponse> {
-  const params = new URLSearchParams({ limit: "25" });
+  const params = new URLSearchParams({ limit: String(LIST_PAGE_SIZE) });
   if (startBefore !== undefined) {
     params.set("startBefore", String(startBefore));
   }
@@ -42,6 +42,35 @@ async function fetchPage(startBefore?: number): Promise<ListResponse> {
     throw new Error(err.error || `List failed (${res.status})`);
   }
   return res.json() as Promise<ListResponse>;
+}
+
+function filterAndSortRows(
+  rows: ZechubProposalCardRow[],
+  search: string,
+  selectedStatuses: string[],
+  sortBy: string
+): ZechubProposalCardRow[] {
+  let list = [...rows];
+  if (search.trim()) {
+    const q = search.toLowerCase();
+    list = list.filter((row) => row.proposal.title.toLowerCase().includes(q));
+  }
+  if (selectedStatuses.length > 0) {
+    const set = new Set(selectedStatuses);
+    list = list.filter((row) => set.has(row.proposal.status));
+  }
+  if (sortBy === "newest") {
+    list.sort((a, b) => b.id - a.id);
+  } else if (sortBy === "oldest") {
+    list.sort((a, b) => a.id - b.id);
+  } else if (sortBy === "title") {
+    list.sort((a, b) =>
+      a.proposal.title.localeCompare(b.proposal.title, undefined, {
+        sensitivity: "base",
+      })
+    );
+  }
+  return list;
 }
 
 function ProposalCardSkeleton() {
@@ -65,51 +94,21 @@ export default function ZechubProposalsPage() {
   const [items, setItems] = useState<ZechubProposalCardRow[]>([]);
   const [nextStartBefore, setNextStartBefore] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
+  const [pageFetching, setPageFetching] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [loadingMore, setLoadingMore] = useState(false);
 
   const [search, setSearch] = useState("");
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState("newest");
   const [showFilters, setShowFilters] = useState(false);
 
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      setLoading(true);
-      setLoadError(null);
-      try {
-        const d = await fetchPage();
-        if (!cancelled) {
-          setItems(d.items);
-          setNextStartBefore(d.nextStartBefore);
-        }
-      } catch (e) {
-        if (!cancelled) {
-          setLoadError(e instanceof Error ? e.message : "Load failed");
-        }
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const hasActiveFilters =
+    search.trim().length > 0 || selectedStatuses.length > 0;
 
-  const loadMore = useCallback(async () => {
-    if (nextStartBefore == null) return;
-    setLoadingMore(true);
-    try {
-      const d = await fetchPage(nextStartBefore);
-      setItems((prev) => [...prev, ...d.items]);
-      setNextStartBefore(d.nextStartBefore);
-    } catch (e) {
-      setLoadError(e instanceof Error ? e.message : "Load failed");
-    } finally {
-      setLoadingMore(false);
-    }
-  }, [nextStartBefore]);
+  const filtered = useMemo(
+    () => filterAndSortRows(items, search, selectedStatuses, sortBy),
+    [items, search, selectedStatuses, sortBy]
+  );
 
   const statusOptions = useMemo(() => {
     const seen = new Set<string>();
@@ -124,29 +123,92 @@ export default function ZechubProposalsPage() {
       prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]
     );
 
-  const filtered = useMemo(() => {
-    let list = [...items];
-    if (search.trim()) {
-      const q = search.toLowerCase();
-      list = list.filter((row) => row.proposal.title.toLowerCase().includes(q));
+  const requestedPage = router.isReady ? parsePageQuery(router.query.page) : 1;
+
+  /** Total pages: DAO on-chain count when unfiltered; otherwise from loaded + filtered rows. */
+  const totalPages = useMemo(() => {
+    if (hasActiveFilters) {
+      return totalPagesForCount(filtered.length);
     }
-    if (selectedStatuses.length > 0) {
-      const set = new Set(selectedStatuses);
-      list = list.filter((row) => set.has(row.proposal.status));
+    if (daoMeta && daoMeta.proposalCount > 0) {
+      return totalPagesForCount(daoMeta.proposalCount);
     }
-    if (sortBy === "newest") {
-      list.sort((a, b) => b.id - a.id);
-    } else if (sortBy === "oldest") {
-      list.sort((a, b) => a.id - b.id);
-    } else if (sortBy === "title") {
-      list.sort((a, b) =>
-        a.proposal.title.localeCompare(b.proposal.title, undefined, {
-          sensitivity: "base",
-        })
-      );
+    return totalPagesForCount(items.length);
+  }, [hasActiveFilters, filtered.length, daoMeta, items.length]);
+
+  const currentPage = Math.min(requestedPage, totalPages);
+
+  const fetchingRef = useRef(false);
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    if (fetchingRef.current) return;
+
+    const needed = currentPage * LIST_PAGE_SIZE;
+    let rows = [...items];
+    let cursor = nextStartBefore;
+
+    const filteredNow = filterAndSortRows(rows, search, selectedStatuses, sortBy);
+    if (filteredNow.length >= needed) {
+      setLoading(false);
+      setPageFetching(false);
+      return;
     }
-    return list;
-  }, [items, search, selectedStatuses, sortBy]);
+    if (rows.length > 0 && cursor === null) {
+      setLoading(false);
+      setPageFetching(false);
+      return;
+    }
+
+    let cancelled = false;
+    fetchingRef.current = true;
+
+    (async () => {
+      setLoadError(null);
+      try {
+        while (!cancelled) {
+          const f = filterAndSortRows(rows, search, selectedStatuses, sortBy);
+          if (f.length >= needed) break;
+          if (rows.length > 0 && cursor === null) break;
+
+          if (rows.length === 0) setLoading(true);
+          else setPageFetching(true);
+
+          const d = await fetchPage(rows.length === 0 ? undefined : cursor ?? undefined);
+          if (cancelled) return;
+
+          rows = [...rows, ...d.items];
+          cursor = d.nextStartBefore;
+          setItems(rows);
+          setNextStartBefore(cursor);
+        }
+      } catch (e) {
+        if (!cancelled) {
+          setLoadError(e instanceof Error ? e.message : "Load failed");
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+          setPageFetching(false);
+        }
+        fetchingRef.current = false;
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+      fetchingRef.current = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- controlled sync: fetch when page/filters need more rows
+  }, [
+    router.isReady,
+    currentPage,
+    search,
+    selectedStatuses,
+    sortBy,
+    items,
+    nextStartBefore,
+  ]);
 
   const goToPage = useCallback(
     (p: number) => {
@@ -188,10 +250,6 @@ export default function ZechubProposalsPage() {
       { shallow: true }
     );
   }, [filterSig, router]);
-
-  const totalPages = totalPagesForCount(filtered.length);
-  const requestedPage = router.isReady ? parsePageQuery(router.query.page) : 1;
-  const currentPage = Math.min(requestedPage, totalPages);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -259,6 +317,24 @@ export default function ZechubProposalsPage() {
   );
 
   const daoUrl = zechubDaoDaodaoUrl();
+
+  const summaryLine = useMemo(() => {
+    if (loading) return "Loading proposals…";
+    if (filtered.length === 0) return "No matching proposals";
+    const totalLabel =
+      hasActiveFilters || !daoMeta
+        ? `${filtered.length} matching (from ${items.length} loaded)`
+        : `${filtered.length} shown · ${daoMeta.proposalCount} on-chain total`;
+    return `Showing ${rangeStart}–${rangeEnd} of ${filtered.length} · ${totalLabel}`;
+  }, [
+    loading,
+    filtered.length,
+    hasActiveFilters,
+    daoMeta,
+    items.length,
+    rangeStart,
+    rangeEnd,
+  ]);
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
@@ -333,11 +409,13 @@ export default function ZechubProposalsPage() {
         <div className="flex-1">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <span className="text-sm text-muted-foreground">
-              {loading
-                ? "Loading proposals…"
-                : filtered.length === 0
-                  ? `No matches · showing ${items.length} loaded proposals`
-                  : `Showing ${rangeStart}–${rangeEnd} of ${filtered.length} matching · ${items.length} proposals loaded`}
+              {summaryLine}
+              {pageFetching && !loading && (
+                <span className="ml-2 inline-flex items-center gap-1 text-xs text-primary">
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                  Loading page…
+                </span>
+              )}
             </span>
             <div className="flex items-center gap-2">
               <Button
@@ -404,7 +482,15 @@ export default function ZechubProposalsPage() {
           )}
 
           {!loading && (
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="relative grid gap-4 sm:grid-cols-2">
+              {pageFetching && (
+                <div className="absolute inset-0 z-10 flex items-start justify-center rounded-lg bg-background/40 pt-8 backdrop-blur-[1px]">
+                  <span className="flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm text-muted-foreground shadow-sm">
+                    <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                    Loading proposals…
+                  </span>
+                </div>
+              )}
               {paginatedProposals.map((row) => (
                 <ZechubProposalCard key={row.id} row={row} />
               ))}
@@ -432,25 +518,6 @@ export default function ZechubProposalsPage() {
                   <X className="mr-1 h-3 w-3" /> Clear filters
                 </Button>
               )}
-            </div>
-          )}
-
-          {nextStartBefore != null && !loading && (
-            <div className="mt-8 flex justify-center">
-              <Button
-                variant="outline"
-                disabled={loadingMore}
-                onClick={() => void loadMore()}
-              >
-                {loadingMore ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Loading…
-                  </>
-                ) : (
-                  "Load more proposals"
-                )}
-              </Button>
             </div>
           )}
         </div>
