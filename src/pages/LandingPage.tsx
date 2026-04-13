@@ -395,11 +395,15 @@ export default function LandingPage() {
                 {Array.from({ length: 4 }).map((_, i) => (
                   <div
                     key={i}
-                    className="animate-pulse rounded-lg border border-border/50 bg-card p-5"
+                    className="flex h-full min-w-0 flex-col rounded-lg border border-border/50 bg-card p-5 animate-pulse"
                   >
                     <div className="mb-3 h-5 w-3/4 rounded bg-secondary" />
-                    <div className="h-4 w-1/2 rounded bg-secondary" />
-                    <div className="mt-3 h-7 w-20 rounded bg-secondary" />
+                    <div className="mb-3 h-4 w-1/2 rounded bg-secondary" />
+                    <div className="mb-3 h-7 w-20 rounded bg-secondary" />
+                    <div className="mt-auto flex justify-between border-t border-border/40 pt-3">
+                      <div className="h-3 w-16 rounded bg-secondary" />
+                      <div className="h-3 w-14 rounded bg-secondary" />
+                    </div>
                   </div>
                 ))}
               </div>

@@ -75,15 +75,18 @@ function filterAndSortRows(
 
 function ProposalCardSkeleton() {
   return (
-    <div className="rounded-lg border border-border/50 bg-card p-5 animate-pulse">
+    <div className="flex h-full min-w-0 flex-col rounded-lg border border-border/50 bg-card p-5 animate-pulse">
       <div className="mb-3 flex gap-2">
-        <div className="h-5 w-14 rounded-full bg-secondary" />
-        <div className="h-5 w-20 rounded-full bg-secondary" />
         <div className="h-5 w-24 rounded-full bg-secondary" />
+        <div className="h-5 w-20 rounded-full bg-secondary" />
       </div>
       <div className="mb-2 h-5 w-full rounded bg-secondary" />
       <div className="mb-1 h-4 w-2/3 rounded bg-secondary" />
-      <div className="mt-3 h-7 w-32 rounded bg-secondary" />
+      <div className="mb-3 h-7 w-32 rounded bg-secondary" />
+      <div className="mt-auto flex justify-between border-t border-border/40 pt-3">
+        <div className="h-3 w-12 rounded bg-secondary" />
+        <div className="h-3 w-20 rounded bg-secondary" />
+      </div>
     </div>
   );
 }

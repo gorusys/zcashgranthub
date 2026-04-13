@@ -13,9 +13,9 @@ export function GrantCard({ grant }: { grant: Grant }) {
     : 0;
 
   return (
-    <Link href={`/grants/${grant.id}`}>
-      <Card className="group border-border/50 bg-card transition-all duration-200 hover:border-primary/30 hover:glow-gold">
-        <CardContent className="p-5">
+    <Link href={`/grants/${grant.id}`} className="block h-full min-w-0">
+      <Card className="group flex h-full flex-col border-border/50 bg-card transition-all duration-200 hover:border-primary/30 hover:glow-gold">
+        <CardContent className="flex flex-1 flex-col p-5">
           <div className="mb-3 flex items-start justify-between gap-3">
             <div className="flex flex-wrap gap-2">
               <Badge variant="secondary" className="font-normal">
@@ -58,7 +58,7 @@ export function GrantCard({ grant }: { grant: Grant }) {
             </div>
           )}
 
-          <div className="flex items-center justify-between">
+          <div className="mt-auto flex items-center justify-between border-t border-border/40 pt-3">
             <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <Calendar className="h-3 w-3" />
               {new Date(grant.submittedDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}

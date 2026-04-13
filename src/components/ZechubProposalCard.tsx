@@ -31,22 +31,19 @@ export function ZechubProposalCard({ row }: { row: ZechubProposalCardRow }) {
   const a = row.proposal.votes.abstain || "0";
 
   return (
-    <Link href={`/zechub/proposals/${row.id}`}>
-      <Card className="group border-border/50 bg-card transition-all duration-200 hover:border-primary/30 hover:glow-gold">
-        <CardContent className="p-5">
+    <Link href={`/zechub/proposals/${row.id}`} className="block h-full min-w-0">
+      <Card className="group flex h-full flex-col border-border/50 bg-card transition-all duration-200 hover:border-primary/30 hover:glow-gold">
+        <CardContent className="flex flex-1 flex-col p-5">
           <div className="mb-3 flex items-start justify-between gap-3">
             <div className="flex flex-wrap gap-2">
-              <Badge variant="outline" className="font-mono text-[10px]">
-                A{row.id}
+              <Badge variant="secondary" className="font-normal">
+                ZecHub DAO
               </Badge>
               <span
                 className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusPillClass(row.proposal.status)}`}
               >
                 {row.proposal.status}
               </span>
-              <Badge variant="secondary" className="font-normal">
-                ZecHub DAO
-              </Badge>
             </div>
           </div>
 
@@ -64,7 +61,7 @@ export function ZechubProposalCard({ row }: { row: ZechubProposalCardRow }) {
             {a !== "0" ? ` · Abstain ${a}` : ""}
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="mt-auto flex items-center justify-between border-t border-border/40 pt-3">
             <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <span className="font-mono">#{row.id}</span>
             </div>
