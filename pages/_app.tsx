@@ -22,6 +22,17 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <Head>
+        <title>Zcash Grants Hub</title>
+        <meta
+          name="description"
+          content="Zcash Grants Hub: discover grants, submit proposals via GitHub, and explore treasury and funding insights for the Zcash community."
+        />
+        <meta property="og:title" content="Zcash Grants Hub" />
+        <meta
+          property="og:description"
+          content="A unified platform for Zcash grants discovery, proposal submission, and transparent treasury analytics."
+        />
+        <meta property="og:url" content="https://zgrantshub.com" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </Head>
       <TooltipProvider>

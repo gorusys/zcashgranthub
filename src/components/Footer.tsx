@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 const links = [
+  { label: "Website", href: "https://zgrantshub.com", external: true },
   { label: "Apply", href: "/apply" },
   { label: "Browse", href: "/grants" },
   { label: "Analytics", href: "/analytics" },
@@ -18,7 +19,7 @@ export function Footer() {
               <span className="text-sm font-black text-primary-foreground">Z</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-sm font-bold text-foreground">ZcashGrantHub</span>
+              <span className="text-sm font-bold text-foreground">Zcash Grants Hub</span>
               <span className="text-xs text-muted-foreground">Zcash Community Grants</span>
             </div>
           </div>
@@ -50,7 +51,7 @@ export function Footer() {
 
         <div className="mt-8 border-t border-border/50 pt-6 text-center">
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} ZcashGrantHub. Built for the Zcash Community.
+            © {new Date().getFullYear()} Zcash Grants Hub. Built for the Zcash Community.
           </p>
         </div>
       </div>

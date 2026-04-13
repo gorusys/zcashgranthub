@@ -1,6 +1,8 @@
-# ZcashGrantHub
+# Zcash Grants Hub
 
 A multi-program **grants explorer** for the Zcash ecosystem: **Zcash Community Grants (ZCG)** and **Coinholder** applications from GitHub, **ZecHub DAO** mini-grants on DAO DAO (Juno), and links to the community **Google Sheet** used for summaries and operations (not a fourth “grant type” in the UI).
+
+Official domain: [zgrantshub.com](https://zgrantshub.com)
 
 ## Features
 

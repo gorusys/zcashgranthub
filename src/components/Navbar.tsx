@@ -81,13 +81,13 @@ export function Navbar() {
           </div>
           <div className="hidden flex-col sm:flex">
             <span className="text-sm font-bold leading-none tracking-tight text-foreground">
-              ZcashGrantHub
+              Zcash Grants Hub
             </span>
             <span className="mt-0.5 text-[10px] leading-none text-muted-foreground">
               ZCG · Coinholder · ZecHub DAO
             </span>
           </div>
-          <span className="text-sm font-bold text-foreground sm:hidden">ZcashGrantHub</span>
+          <span className="text-sm font-bold text-foreground sm:hidden">Zcash Grants Hub</span>
         </Link>
 
         <div className="hidden items-center gap-0.5 md:flex">
