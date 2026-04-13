@@ -1,6 +1,9 @@
 import { useMemo, useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useGrants } from "@/hooks/useGrants";
+import { useZcgPublicSpreadsheet } from "@/hooks/useZcgPublicSpreadsheet";
+import { ZCG_PUBLIC_SPREADSHEET_URL } from "@/lib/zcgPublicSpreadsheet";
+import { ZcgWorkbookAnalytics } from "@/components/analytics/ZcgWorkbookAnalytics";
 import {
   BarChart,
   Bar,
@@ -11,9 +14,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  LineChart,
-  Line,
-  CartesianGrid,
 } from "recharts";
 import type { GrantCategory } from "@/data/mockData";
 import { AlertCircle } from "lucide-react";
@@ -84,22 +84,14 @@ function Counter({ target, prefix = "" }: { target: number; prefix?: string }) {
   );
 }
 
-// Static treasury data (sourced from ZCG public records)
-const TREASURY_DATA = [
-  { month: "Jul", balance: 14.2 },
-  { month: "Aug", balance: 13.8 },
-  { month: "Sep", balance: 13.1 },
-  { month: "Oct", balance: 12.5 },
-  { month: "Nov", balance: 12.8 },
-  { month: "Dec", balance: 12.2 },
-  { month: "Jan", balance: 11.8 },
-  { month: "Feb", balance: 11.5 },
-  { month: "Mar", balance: 11.2 },
-  { month: "Apr", balance: 11.0 },
-];
-
 export default function AnalyticsPage() {
   const { data: grants = [], isLoading, isError, error } = useGrants();
+  const {
+    data: sheet,
+    isLoading: sheetLoading,
+    isError: sheetError,
+    error: sheetErr,
+  } = useZcgPublicSpreadsheet();
 
   // Compute stats from real data
   const stats = useMemo(() => {
@@ -186,7 +178,30 @@ export default function AnalyticsPage() {
     <div className="container mx-auto px-4 py-6 sm:py-8">
       <h1 className="mb-2 text-2xl font-bold text-foreground sm:text-3xl">Analytics</h1>
       <p className="mb-6 text-sm text-muted-foreground sm:mb-8 sm:text-base">
-        Public transparency dashboard — data sourced live from GitHub Issues
+        Application and category metrics from GitHub Issues, plus official ZCG /
+        Coinholder treasury figures from the public{" "}
+        <a
+          href={ZCG_PUBLIC_SPREADSHEET_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary underline-offset-4 hover:underline"
+        >
+          Zcash Community Grants + Coinholder Grants dashboard sheet
+        </a>
+      </p>
+
+      <ZcgWorkbookAnalytics
+        sheet={sheet}
+        loading={sheetLoading}
+        error={sheetError ? sheetErr ?? null : null}
+      />
+
+      <h2 className="mb-4 mt-2 text-lg font-semibold text-foreground">
+        GitHub grant applications
+      </h2>
+      <p className="mb-6 text-xs text-muted-foreground sm:text-sm">
+        Issue-based pipeline for applications in connected repos — independent
+        of the treasury workbook above.
       </p>
 
       {/* Stat cards */}
@@ -303,49 +318,6 @@ export default function AnalyticsPage() {
                 No data yet.
               </p>
             )}
-          </CardContent>
-        </Card>
-
-        {/* Treasury balance (static public record) */}
-        <Card className="border-border/50 bg-card">
-          <CardHeader>
-            <CardTitle className="text-base">
-              Treasury Balance ($M)
-              <span className="ml-2 text-xs font-normal text-muted-foreground">
-                approx. from public records
-              </span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={TREASURY_DATA}>
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="hsl(220, 20%, 18%)"
-                />
-                <XAxis
-                  dataKey="month"
-                  tick={AXIS_TICK}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <YAxis
-                  tick={AXIS_TICK}
-                  axisLine={false}
-                  tickLine={false}
-                  domain={["auto", "auto"]}
-                />
-                <Tooltip contentStyle={CHART_TOOLTIP_STYLE} />
-                <Line
-                  type="monotone"
-                  dataKey="balance"
-                  stroke="hsl(40, 90%, 56%)"
-                  strokeWidth={2}
-                  dot={{ fill: "hsl(40, 90%, 56%)" }}
-                  name="Balance ($M)"
-                />
-              </LineChart>
-            </ResponsiveContainer>
           </CardContent>
         </Card>
 
