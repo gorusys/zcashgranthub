@@ -27,3 +27,8 @@ export function zechubDaoDaodaoUrl(): string {
 export function zechubProposalDaodaoUrl(proposalId: number): string {
   return `https://daodao.zone/dao/${ZECHUB_DAO_CORE}/proposals/${ZECHUB_PROPOSAL_PREFIX}${proposalId}`;
 }
+
+/** Open DAO DAO’s proposal builder for this DAO (connect wallet there to submit). */
+export function zechubDaoCreateProposalUrl(): string {
+  return `https://daodao.zone/dao/${ZECHUB_DAO_CORE}/proposals/create`;
+}

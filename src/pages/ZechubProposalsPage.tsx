@@ -1,7 +1,17 @@
 import { useCallback, useEffect, useMemo, useState, useRef } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Search, SlidersHorizontal, X, Loader2, AlertCircle, ExternalLink } from "lucide-react";
+import Link from "next/link";
+import {
+  Search,
+  SlidersHorizontal,
+  X,
+  Loader2,
+  AlertCircle,
+  ExternalLink,
+  FileEdit,
+  BookOpen,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -23,7 +33,7 @@ import {
   parsePageQuery,
   totalPagesForCount,
 } from "@/components/ListPagination";
-import { zechubDaoDaodaoUrl } from "@/lib/daodao/zechubConfig";
+import { zechubDaoCreateProposalUrl, zechubDaoDaodaoUrl } from "@/lib/daodao/zechubConfig";
 import { useZechubDaoMeta } from "@/hooks/useZechubDaoMeta";
 
 interface ListResponse {
@@ -320,6 +330,7 @@ export default function ZechubProposalsPage() {
   );
 
   const daoUrl = zechubDaoDaodaoUrl();
+  const createProposalUrl = zechubDaoCreateProposalUrl();
 
   const summaryLine = useMemo(() => {
     if (loading) return "Loading proposals…";
@@ -348,25 +359,35 @@ export default function ZechubProposalsPage() {
           content="Browse on-chain ZecHub DAO proposals on Juno via DAO DAO—mini-grants and governance separate from ZCG GitHub review."
         />
       </Head>
-      <div className="mb-5 sm:mb-8">
-        <h1 className="text-2xl font-bold text-foreground sm:text-3xl">ZecHub DAO proposals</h1>
-        <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-          On-chain mini-grants and governance through{" "}
-          <span className="font-medium text-foreground/90">DAO DAO</span> on{" "}
-          <span className="font-medium text-foreground/90">Juno</span>—separate from ZCG committee
-          review on GitHub. See{" "}
-          <a
-            href="https://zechub.wiki/dao"
-            className="text-primary underline-offset-2 hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            ZecHub DAO docs
-          </a>{" "}
-          for program context.
-        </p>
+      <div className="mb-5 space-y-4 sm:mb-8">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="min-w-0">
+            <h1 className="text-2xl font-bold text-foreground sm:text-3xl">ZecHub DAO proposals</h1>
+            <p className="mt-1 text-sm text-muted-foreground sm:text-base">
+              On-chain mini-grants and governance through{" "}
+              <span className="font-medium text-foreground/90">DAO DAO</span> on{" "}
+              <span className="font-medium text-foreground/90">Juno</span>—separate from ZCG committee
+              review on GitHub. See{" "}
+              <a
+                href="https://zechub.wiki/dao"
+                className="text-primary underline-offset-2 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                ZecHub DAO docs
+              </a>{" "}
+              for program context.
+            </p>
+          </div>
+          <Button className="w-full shrink-0 gap-2 sm:w-auto" asChild>
+            <a href={createProposalUrl} target="_blank" rel="noopener noreferrer">
+              <FileEdit className="h-4 w-4" />
+              Create proposal
+            </a>
+          </Button>
+        </div>
         {daoMeta && (
-          <div className="mt-4 flex flex-wrap gap-3 rounded-lg border border-border/50 bg-card/60 px-4 py-3 text-sm">
+          <div className="flex flex-wrap gap-3 rounded-lg border border-border/50 bg-card/60 px-4 py-3 text-sm">
             <div>
               <span className="text-muted-foreground">DAO </span>
               <span className="font-medium text-foreground">{daoMeta.name}</span>
@@ -383,7 +404,13 @@ export default function ZechubProposalsPage() {
             </div>
           </div>
         )}
-        <div className="mt-3">
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" size="sm" className="gap-2" asChild>
+            <Link href="/zechub/proposals/guide">
+              <BookOpen className="h-4 w-4" />
+              How to create & vote
+            </Link>
+          </Button>
           <Button variant="outline" size="sm" className="gap-2" asChild>
             <a href={daoUrl} target="_blank" rel="noopener noreferrer">
               <ExternalLink className="h-4 w-4" />

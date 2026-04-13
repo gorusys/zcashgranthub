@@ -6,6 +6,7 @@ import {
   ExternalLink,
   AlertCircle,
   Scale,
+  Vote,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -158,6 +159,14 @@ export default function ZechubProposalDetailPage({ id }: { id: string }) {
           </h1>
         </div>
         <div className="flex shrink-0 flex-wrap gap-2">
+          {proposal.status === "in_voting" && (
+            <Button size="sm" className="gap-2" asChild>
+              <a href={proposal.daodaoUrl} target="_blank" rel="noopener noreferrer">
+                <Vote className="h-4 w-4" />
+                Vote on DAO DAO
+              </a>
+            </Button>
+          )}
           <Button variant="outline" size="sm" className="gap-2" asChild>
             <a href={proposal.daodaoUrl} target="_blank" rel="noopener noreferrer">
               <ExternalLink className="h-4 w-4" />
@@ -175,6 +184,28 @@ export default function ZechubProposalDetailPage({ id }: { id: string }) {
 
       <div className="flex flex-col gap-6 lg:flex-row">
         <div className="min-w-0 flex-1 space-y-6">
+          {proposal.status === "in_voting" && (
+            <Card className="border-primary/35 bg-primary/[0.06]">
+              <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-foreground">Voting is open</p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    DAO members vote on{" "}
+                    <span className="font-medium text-foreground/90">DAO DAO</span>: connect a Juno
+                    wallet there (e.g. Keplr or Leap), then cast Yes / No / Abstain. This hub does not
+                    sign transactions.
+                  </p>
+                </div>
+                <Button className="shrink-0 gap-2" asChild>
+                  <a href={proposal.daodaoUrl} target="_blank" rel="noopener noreferrer">
+                    <Vote className="h-4 w-4" />
+                    Vote on DAO DAO
+                  </a>
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
           {proposal.totalVotes > 0 && (
             <Card className="border-border/50 bg-card">
               <CardHeader className="pb-2">
@@ -232,6 +263,15 @@ export default function ZechubProposalDetailPage({ id }: { id: string }) {
                 from ZCG or Coinholder GitHub applications; use{" "}
                 <span className="font-medium text-foreground/90">Related records</span> for
                 cross-program hints.
+              </p>
+              <p className="mt-3">
+                <Link
+                  href="/zechub/proposals/guide"
+                  className="font-medium text-primary underline-offset-2 hover:underline"
+                >
+                  How to create proposals & vote
+                </Link>{" "}
+                on DAO DAO.
               </p>
               {proposal.expiresAtIso && proposal.status === "in_voting" && (
                 <p className="mt-3">
