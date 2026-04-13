@@ -1,31 +1,23 @@
-import { Fragment, type ReactNode } from "react";
+import type { Components } from "react-markdown";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
-/** Split capture groups alternate text / URL / text / URL */
-const URL_SPLIT = /(https?:\/\/\S+)/g;
-
-function linkifyLine(line: string): ReactNode[] {
-  const pieces = line.split(URL_SPLIT);
-  return pieces.map((piece, i) => {
-    if (i % 2 === 1) {
-      const href = piece;
-      return (
-        <a
-          key={i}
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="break-all text-primary underline-offset-2 hover:underline"
-        >
-          {href}
-        </a>
-      );
-    }
-    return <Fragment key={i}>{piece}</Fragment>;
-  });
-}
+const markdownComponents: Components = {
+  a: ({ href, children, ...props }) => (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="font-medium text-primary underline-offset-2 hover:underline"
+      {...props}
+    >
+      {children}
+    </a>
+  ),
+};
 
 /**
- * Renders proposal body from the indexer: paragraphs, line breaks, and linked URLs.
+ * Renders proposal body from the indexer as markdown (GFM): headings, lists, links, code, tables.
  */
 export function ProposalDescription({ text }: { text: string }) {
   const trimmed = text?.trim() ?? "";
@@ -35,19 +27,19 @@ export function ProposalDescription({ text }: { text: string }) {
     );
   }
 
-  const blocks = trimmed.split(/\n{2,}/);
-
   return (
-    <div className="max-w-none space-y-4">
-      {blocks.map((block, bi) => (
-        <div key={bi} className="mb-4 last:mb-0">
-          {block.split("\n").map((line, li) => (
-            <p key={li} className="whitespace-pre-wrap break-words text-sm leading-relaxed text-muted-foreground">
-              {linkifyLine(line)}
-            </p>
-          ))}
-        </div>
-      ))}
+    <div
+      className={
+        "max-w-none text-muted-foreground prose prose-invert prose-sm " +
+        "prose-headings:text-foreground prose-strong:text-foreground prose-p:leading-relaxed " +
+        "prose-a:break-words prose-pre:bg-secondary prose-pre:text-foreground " +
+        "prose-code:text-foreground prose-code:bg-secondary/80 prose-code:rounded prose-code:px-1 prose-code:py-0.5 " +
+        "prose-table:border-border prose-th:border-border prose-td:border-border"
+      }
+    >
+      <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+        {trimmed}
+      </ReactMarkdown>
     </div>
   );
 }
