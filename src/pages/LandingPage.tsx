@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { GrantCard } from "@/components/GrantCard";
 import { useGrants } from "@/hooks/useGrants";
+import { useZcgPublicSpreadsheet } from "@/hooks/useZcgPublicSpreadsheet";
 import { useEffect, useRef, useState } from "react";
 import { GRANTS_DASHBOARD_SHEET_URL } from "@/lib/grantPrograms";
 
@@ -135,13 +136,26 @@ const howItWorks = [
 
 export default function LandingPage() {
   const { data: grants = [], isLoading } = useGrants();
+  const { data: sheet } = useZcgPublicSpreadsheet();
+
+  const parseUsdMetric = (value: string | null | undefined): number | null => {
+    if (!value) return null;
+    const numeric = Number(value.replace(/[^0-9.-]/g, ""));
+    return Number.isFinite(numeric) ? numeric : null;
+  };
 
   // Derive live stats from real data
   const totalGrants = grants.length;
   const activeGrants = grants.filter((g) =>
     ["ACTIVE", "APPROVED"].includes(g.status)
   ).length;
-  const totalDisbursed = grants.reduce((s, g) => s + g.amountPaid, 0);
+  const parsedTotalOutflow = parseUsdMetric(sheet?.zcg.metrics["Total USD outflow:"]);
+  const totalDisbursed =
+    parsedTotalOutflow ?? grants.reduce((s, g) => s + g.amountPaid, 0);
+  const parsedTreasuryUsd = parseUsdMetric(
+    sheet?.zcg.metrics["USD value of current holdings:"]
+  );
+  const zcgTreasury = parsedTreasuryUsd ?? 0;
 
   // Show up to 4 recently active/approved/committee-review grants
   const recentGrants = grants
@@ -227,7 +241,7 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="text-center">
-                <AnimatedCounter target={11_000_000} prefix="~$" />
+                <AnimatedCounter target={zcgTreasury} prefix={zcgTreasury > 0 ? "~$" : "$"} />
                 <div className="mt-1 text-sm text-muted-foreground">
                   ZCG Treasury
                 </div>

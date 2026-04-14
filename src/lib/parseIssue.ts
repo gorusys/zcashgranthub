@@ -117,19 +117,28 @@ export function labelToStatus(
   program: GrantProgram = "zcg"
 ): GrantStatus {
   const names = labels.map((l) => l.name.toLowerCase());
+  const has = (needle: string) => names.some((n) => n.includes(needle));
 
-  if (names.some((n) => n.includes("rejected"))) return "REJECTED";
+  if (
+    has("rejected") ||
+    has("declined") ||
+    has("does not meet criteria") ||
+    has("not meet criteria")
+  ) {
+    return "REJECTED";
+  }
+  if (has("withdrawn") || has("cancelled") || has("canceled")) {
+    return "SUSPENDED";
+  }
 
   /** Lockbox / Coinholder repo label workflow */
   if (program === "coinholder") {
-    if (names.some((n) => n.includes("funds disbursed"))) return "COMPLETED";
-    if (names.some((n) => n.includes("approved by coinholders")))
+    if (has("funds disbursed")) return "COMPLETED";
+    if (has("approved by coinholders"))
       return "APPROVED";
     if (
-      names.some(
-        (n) =>
-          n.includes("ready for vote") || n.includes("all steps completed")
-      )
+      has("ready for vote") ||
+      has("all steps completed")
     )
       return "COMMUNITY_REVIEW";
     if (state === "closed") return "COMPLETED";
@@ -137,11 +146,11 @@ export function labelToStatus(
   }
 
   if (state === "closed") return "COMPLETED";
-  if (names.some((n) => n.includes("startup payment"))) return "ACTIVE";
-  if (names.some((n) => n.includes("grant approved"))) return "APPROVED";
-  if (names.some((n) => n.includes("ready for zcg review")))
+  if (has("startup payment")) return "ACTIVE";
+  if (has("grant approved")) return "APPROVED";
+  if (has("ready for zcg review"))
     return "COMMITTEE_REVIEW";
-  if (names.some((n) => n.includes("community review")))
+  if (has("community review"))
     return "COMMUNITY_REVIEW";
   return "PENDING_REVIEW";
 }
