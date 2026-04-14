@@ -1,5 +1,7 @@
-// Types and configuration shared across the app.
-// Real data is loaded from the GitHub API via src/hooks/useGrants.ts
+/**
+ * Grant domain types and UI config (status badges, categories, workflow).
+ * Live rows are built in src/hooks/useGrants.ts from GitHub issues.
+ */
 
 import type { GrantProgram } from "@/lib/grantPrograms";
 

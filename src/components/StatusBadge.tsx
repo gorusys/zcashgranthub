@@ -1,4 +1,4 @@
-import { type GrantStatus, statusConfig } from "@/data/mockData";
+import { type GrantStatus, statusConfig } from "@/data/grantTypes";
 import { cn } from "@/lib/utils";
 
 export function StatusBadge({ status, className }: { status: GrantStatus; className?: string }) {

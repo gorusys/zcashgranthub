@@ -10,8 +10,6 @@ import GrantsPage from "./pages/GrantsPage";
 import GrantDetailPage from "./pages/GrantDetailPage";
 import ApplyPage from "./pages/ApplyPage";
 import DashboardPage from "./pages/DashboardPage";
-import CommitteePage from "./pages/CommitteePage";
-import AdminPage from "./pages/AdminPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import GitHubOAuthCallbackPage from "./pages/GitHubOAuthCallbackPage";
 import NotFound from "./pages/NotFound";
@@ -46,8 +44,6 @@ const App = () => (
               />
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/auth/github/callback" element={<GitHubOAuthCallbackPage />} />
-              <Route path="/committee" element={<CommitteePage />} />
-              <Route path="/admin" element={<AdminPage />} />
               <Route path="/analytics" element={<AnalyticsPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

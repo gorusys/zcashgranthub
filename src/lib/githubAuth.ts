@@ -35,7 +35,9 @@ function getClientId(): string {
     process.env.NEXT_PUBLIC_GITHUB_OAUTH_CLIENT_ID ||
     process.env.VITE_GITHUB_OAUTH_CLIENT_ID;
   if (!clientId) {
-    throw new Error("Missing VITE_GITHUB_OAUTH_CLIENT_ID in environment.");
+    throw new Error(
+      "Missing GitHub OAuth client id. Set NEXT_PUBLIC_GITHUB_OAUTH_CLIENT_ID (or VITE_GITHUB_OAUTH_CLIENT_ID) in your environment."
+    );
   }
   return clientId;
 }

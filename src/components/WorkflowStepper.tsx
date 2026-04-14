@@ -1,5 +1,5 @@
 import { Check } from "lucide-react";
-import { workflowSteps, getWorkflowStep, type GrantStatus } from "@/data/mockData";
+import { workflowSteps, getWorkflowStep, type GrantStatus } from "@/data/grantTypes";
 import { cn } from "@/lib/utils";
 
 export function WorkflowStepper({ status }: { status: GrantStatus }) {

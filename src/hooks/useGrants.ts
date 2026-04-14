@@ -5,7 +5,7 @@ import {
   fetchIssueComments,
 } from "@/lib/github";
 import { parseIssueToGrant } from "@/lib/parseIssue";
-import type { Grant } from "@/data/mockData";
+import type { Grant } from "@/data/grantTypes";
 import {
   getGrantRepoConfigs,
   parseGrantRouteId,

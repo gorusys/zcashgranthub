@@ -15,7 +15,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
-import type { GrantCategory } from "@/data/mockData";
+import type { GrantCategory } from "@/data/grantTypes";
 import { AlertCircle } from "lucide-react";
 
 const CHART_TOOLTIP_STYLE = {

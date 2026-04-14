@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   BookOpen,
   Check,
@@ -39,6 +39,11 @@ import {
   zechubDaoCreateProposalUrl,
   zechubDaoDaodaoUrl,
 } from "@/lib/daodao/zechubConfig";
+import {
+  clearZcgApplyDraft,
+  loadZcgApplyDraft,
+  saveZcgApplyDraft,
+} from "@/lib/zcgApplyDraft";
 
 const stepLabels = [
   "Terms & Conditions",
@@ -496,7 +501,33 @@ export default function ApplyPage({
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showRealDraftNotice, setShowRealDraftNotice] = useState(false);
+  const [draftNotice, setDraftNotice] = useState<string | null>(null);
+  const draftRestoredRef = useRef(false);
   const allTermsAccepted = termsAccepted.every(Boolean);
+
+  useEffect(() => {
+    if (!router.isReady || applyTab !== "zcg" || draftRestoredRef.current) return;
+    const d = loadZcgApplyDraft();
+    if (!d) return;
+    draftRestoredRef.current = true;
+    setStep(Math.min(Math.max(0, d.step), 9));
+    const ta = [...d.termsAccepted];
+    while (ta.length < 9) ta.push(false);
+    setTermsAccepted(ta.slice(0, 9));
+    setFormData((prev) => ({ ...prev, ...d.formData }));
+    setTeamMembers(d.teamMembers?.length ? d.teamMembers.map((m) => ({ ...m })) : []);
+    setMilestones(
+      d.milestones?.length
+        ? d.milestones.map((m) => ({
+            ...m,
+            stories: [...m.stories],
+            deliverables: [...m.deliverables],
+          }))
+        : []
+    );
+    setDocuments(d.documents?.length ? d.documents.map((x) => ({ ...x })) : []);
+    setDraftNotice("Restored a saved draft from this browser.");
+  }, [router.isReady, applyTab]);
 
   const updateField = (key: string, val: string) => setFormData(prev => ({ ...prev, [key]: val }));
   const total = Number(formData.hardware) + Number(formData.services) + Number(formData.compensation);
@@ -571,6 +602,7 @@ export default function ApplyPage({
       if (!result.issueUrl) {
         throw new Error("Issue created but URL missing in response.");
       }
+      clearZcgApplyDraft();
       window.open(result.issueUrl, "_blank");
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : "Failed to create issue.");
@@ -596,6 +628,26 @@ export default function ApplyPage({
 
   const handleSubmitRealDraftToGitHub = () => {
     setShowRealDraftNotice(true);
+  };
+
+  const handleSaveDraft = () => {
+    try {
+      saveZcgApplyDraft({
+        step,
+        termsAccepted: [...termsAccepted],
+        formData: { ...formData },
+        teamMembers: teamMembers.map((m) => ({ ...m })),
+        milestones: milestones.map((m) => ({
+          ...m,
+          stories: [...m.stories],
+          deliverables: [...m.deliverables],
+        })),
+        documents: documents.map((d) => ({ ...d })),
+      });
+      setDraftNotice("Draft saved in this browser. It is cleared after a successful submit.");
+    } catch {
+      setDraftNotice("Could not save draft.");
+    }
   };
 
   return (
@@ -1048,8 +1100,15 @@ export default function ApplyPage({
           )}
 
           {/* Navigation */}
-          <div className="mt-4 flex items-center justify-between border-t border-border/50 pt-4 sm:mt-6 sm:pt-6">
-            <Button variant="outline" size="sm" className="gap-1 text-muted-foreground">
+          <div className="mt-4 space-y-2 border-t border-border/50 pt-4 sm:mt-6 sm:pt-6">
+            <div className="flex items-center justify-between">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="gap-1 text-muted-foreground"
+              onClick={handleSaveDraft}
+            >
               <Save className="h-3.5 w-3.5" /> Save Draft
             </Button>
             <div className="flex gap-2 sm:gap-3">
@@ -1064,6 +1123,10 @@ export default function ApplyPage({
                 </Button>
               )}
             </div>
+            </div>
+            {draftNotice && applyTab === "zcg" && (
+              <p className="text-xs text-muted-foreground">{draftNotice}</p>
+            )}
           </div>
         </div>
       </div>

@@ -5,7 +5,7 @@ import type {
   GrantCategory,
   Milestone,
   TeamMember,
-} from "@/data/mockData";
+} from "@/data/grantTypes";
 import {
   formatGrantId,
   type GrantProgram,

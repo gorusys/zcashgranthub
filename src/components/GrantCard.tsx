@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/StatusBadge";
 import { CategoryBadge } from "@/components/CategoryBadge";
-import type { Grant } from "@/data/mockData";
+import type { Grant } from "@/data/grantTypes";
 import { programLabel } from "@/lib/grantPrograms";
 
 export function GrantCard({ grant }: { grant: Grant }) {

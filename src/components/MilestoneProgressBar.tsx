@@ -1,4 +1,4 @@
-import type { Milestone } from "@/data/mockData";
+import type { Milestone } from "@/data/grantTypes";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 

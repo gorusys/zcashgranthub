@@ -11,8 +11,8 @@ Official domain: [zgrantshub.com](https://zgrantshub.com)
 - **Related records** — Heuristic cross-links between programs (title similarity, issue references in proposal text) plus optional maintainer overrides in `src/data/grant-links.json` (`/api/related/for-grant`, `/api/related/for-proposal`).
 - **Browse & filter** — Search, status, category, and **program** filter on `/grants`.
 - **Grant detail** — Application fields, milestones, team, budget, risks, comments; **no** embedded DAO vote as ZCG status—only relationship suggestions and clear separation of programs.
-- **Apply wizards** — Single `/apply` page with **ZCG** and **Coinholder** tabs; Coinholder creates issues in the Coinholder repo with the correct label. `/apply/coinholder` redirects to `/apply?tab=coinholder`.
-- **Analytics dashboard**, **Committee dashboard**.
+- **Apply wizards** — Single `/apply` page with **ZCG**, **Coinholder**, and **ZecHub DAO** tabs. ZCG/Coinholder create GitHub issues; ZecHub links to DAO DAO. `/apply/coinholder` redirects to `/apply?tab=coinholder`.
+- **Analytics dashboard**.
 
 ## Tech Stack
 

@@ -1,4 +1,4 @@
-import { type GrantCategory, categoryConfig } from "@/data/mockData";
+import { type GrantCategory, categoryConfig } from "@/data/grantTypes";
 import { cn } from "@/lib/utils";
 
 export function CategoryBadge({ category, className }: { category: GrantCategory; className?: string }) {

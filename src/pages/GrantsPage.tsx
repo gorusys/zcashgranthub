@@ -6,7 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { GrantCard } from "@/components/GrantCard";
 import { useGrants } from "@/hooks/useGrants";
-import type { GrantStatus, GrantCategory } from "@/data/mockData";
+import type { GrantStatus, GrantCategory } from "@/data/grantTypes";
 import {
   Select,
   SelectContent,

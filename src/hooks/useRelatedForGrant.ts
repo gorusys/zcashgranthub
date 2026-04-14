@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import type { Grant } from "@/data/mockData";
+import type { Grant } from "@/data/grantTypes";
 import type { RelatedItem } from "@/lib/related/resolveRelated";
 
 async function fetchRelated(grant: Grant): Promise<RelatedItem[]> {
