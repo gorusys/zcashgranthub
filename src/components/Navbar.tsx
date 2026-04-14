@@ -1,15 +1,125 @@
 import Link from "next/link";
 import type { NextRouter } from "next/router";
 import { useRouter } from "next/router";
-import { Bell, Github, Menu, X, TrendingUp } from "lucide-react";
+import { Bell, Github, Menu, Minus, TrendingDown, TrendingUp, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useState, useEffect, type ReactNode } from "react";
 import {
   beginGitHubOAuth,
   clearGitHubSession,
   readGitHubSession,
   subscribeToGitHubAuth,
 } from "@/lib/githubAuth";
+import { useZecUsdPrice } from "@/hooks/useZecUsdPrice";
+import type { ZecUsdPriceState } from "@/hooks/useZecUsdPrice";
+
+const ZCG_FORUM_GRANTS = "https://forum.zcashcommunity.com/c/grants/12";
+
+function ZecPricePill({ state, className }: { state: ZecUsdPriceState; className?: string }) {
+  const { usd, change24hPct, status } = state;
+  const loading = status === "idle" || status === "loading";
+
+  const priceLabel =
+    usd != null
+      ? `$${usd.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`
+      : loading
+        ? "…"
+        : "—";
+
+  let changeEl: ReactNode = null;
+  if (change24hPct != null && usd != null) {
+    const flat = Math.abs(change24hPct) < 0.05;
+    const up = change24hPct >= 0.05;
+    const down = change24hPct <= -0.05;
+    const label = `${change24hPct >= 0 ? "+" : ""}${change24hPct.toFixed(2)}%`;
+    changeEl = (
+      <>
+        {up && <TrendingUp className="h-3 w-3 shrink-0 text-emerald-400" aria-hidden />}
+        {down && <TrendingDown className="h-3 w-3 shrink-0 text-red-400" aria-hidden />}
+        {flat && <Minus className="h-3 w-3 shrink-0 text-muted-foreground" aria-hidden />}
+        <span
+          className={
+            up ? "text-emerald-400" : down ? "text-red-400" : "text-muted-foreground"
+          }
+        >
+          {label}
+        </span>
+      </>
+    );
+  } else if (usd != null && loading) {
+    changeEl = <span className="text-muted-foreground">…</span>;
+  } else if (usd != null) {
+    changeEl = <span className="text-muted-foreground">—</span>;
+  }
+
+  return (
+    <div
+      className={`flex items-center gap-1.5 rounded-md bg-secondary px-2.5 py-1.5 text-xs font-medium ${className ?? ""}`}
+      title="ZEC/USD from CoinGecko (refreshes about every 2 minutes)"
+    >
+      <span className="text-muted-foreground">ZEC</span>
+      <span className="text-foreground">{priceLabel}</span>
+      {changeEl}
+    </div>
+  );
+}
+
+function UpdatesMenu({ triggerClassName }: { triggerClassName?: string }) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          className={triggerClassName ?? "relative h-9 w-9 text-muted-foreground"}
+          aria-label="Updates and useful links"
+        >
+          <Bell className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-72">
+        <DropdownMenuLabel>Updates & links</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link href="/dashboard" className="cursor-pointer">
+            My dashboard
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/grants" className="cursor-pointer">
+            Browse grants
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <a
+            href={ZCG_FORUM_GRANTS}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="cursor-pointer"
+          >
+            ZCG forum (grants)
+          </a>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <p className="px-2 py-1.5 text-xs leading-relaxed text-muted-foreground">
+          In-app notifications are not wired yet. Watch your GitHub issues and the forum for grant
+          updates.
+        </p>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
 
 type NavLink = {
   label: string;
@@ -49,6 +159,7 @@ export function Navbar() {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [sessionLogin, setSessionLogin] = useState<string | null>(null);
+  const zecPrice = useZecUsdPrice();
 
   useEffect(() => {
     setMobileOpen(false);
@@ -110,24 +221,9 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3">
-          <div className="hidden items-center gap-1.5 rounded-md bg-secondary px-2.5 py-1.5 text-xs font-medium lg:flex">
-            <span className="text-muted-foreground">ZEC</span>
-            <span className="text-foreground">$268.42</span>
-            <TrendingUp className="h-3 w-3 text-emerald-400" />
-            <span className="text-emerald-400">+2.4%</span>
-          </div>
+          <ZecPricePill state={zecPrice} className="hidden lg:flex" />
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="relative h-9 w-9 text-muted-foreground"
-            aria-label="Notifications"
-          >
-            <Bell className="h-4 w-4" />
-            <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
-              3
-            </span>
-          </Button>
+          <UpdatesMenu />
 
           {sessionLogin ? (
             <Button
@@ -182,11 +278,51 @@ export function Navbar() {
               </Link>
             ))}
 
-            <div className="mt-1 flex items-center gap-1.5 rounded-md bg-secondary px-3 py-2 text-xs font-medium">
-              <span className="text-muted-foreground">ZEC</span>
-              <span className="font-semibold text-foreground">$268.42</span>
-              <TrendingUp className="h-3 w-3 text-emerald-400" />
-              <span className="text-emerald-400">+2.4%</span>
+            <ZecPricePill state={zecPrice} className="mt-1 w-full justify-between px-3 py-2" />
+
+            <div className="mt-1">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-10 w-full justify-start gap-2 text-muted-foreground"
+                    aria-label="Updates and useful links"
+                  >
+                    <Bell className="h-4 w-4" />
+                    Updates & links
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-[min(100vw-2rem,20rem)]">
+                  <DropdownMenuLabel>Quick links</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard" className="cursor-pointer">
+                      My dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/grants" className="cursor-pointer">
+                      Browse grants
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <a
+                      href={ZCG_FORUM_GRANTS}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="cursor-pointer"
+                    >
+                      ZCG forum (grants)
+                    </a>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <p className="px-2 py-1.5 text-xs leading-relaxed text-muted-foreground">
+                    In-app notifications are not wired yet. Watch GitHub issues and the forum for
+                    updates.
+                  </p>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
 
             {sessionLogin ? (
