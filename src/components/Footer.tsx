@@ -15,9 +15,14 @@ export function Footer() {
       <div className="container mx-auto px-4 py-8 sm:py-12">
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-              <span className="text-sm font-black text-primary-foreground">Z</span>
-            </div>
+            <img
+              src="/favicon.svg"
+              alt=""
+              width={32}
+              height={32}
+              className="h-8 w-8 shrink-0 rounded-lg"
+              aria-hidden
+            />
             <div className="flex flex-col">
               <span className="text-sm font-bold text-foreground">Zcash Grants Hub</span>
               <span className="text-xs text-muted-foreground">Zcash Community Grants</span>

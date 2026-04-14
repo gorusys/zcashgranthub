@@ -187,9 +187,14 @@ export function Navbar() {
     <nav className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
       <div className="container mx-auto flex h-14 items-center justify-between px-4 sm:h-16">
         <Link href="/" className="flex items-center gap-2.5 sm:gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary sm:h-9 sm:w-9">
-            <span className="text-base font-black text-primary-foreground sm:text-lg">Z</span>
-          </div>
+          <img
+            src="/favicon.svg"
+            alt=""
+            width={36}
+            height={36}
+            className="h-8 w-8 shrink-0 rounded-lg sm:h-9 sm:w-9"
+            aria-hidden
+          />
           <div className="hidden flex-col sm:flex">
             <span className="text-sm font-bold leading-none tracking-tight text-foreground">
               Zcash Grants Hub

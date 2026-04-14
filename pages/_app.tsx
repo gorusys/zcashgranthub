@@ -33,7 +33,16 @@ export default function App({ Component, pageProps }: AppProps) {
           content="A unified platform for Zcash grants discovery, proposal submission, and transparent treasury analytics."
         />
         <meta property="og:url" content="https://zgrantshub.com" />
+        <meta
+          property="og:image"
+          content="https://zgrantshub.com/favicon.svg"
+        />
+        <meta
+          name="twitter:image"
+          content="https://zgrantshub.com/favicon.svg"
+        />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/favicon.svg" />
       </Head>
       <TooltipProvider>
         <Toaster />
