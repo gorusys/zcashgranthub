@@ -38,6 +38,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   "Non-Wallet Applications": "#06B6D4",
   "Zcash Protocol Extension": "#EF4444",
   "Dedicated Resource": "#64748B",
+  "Retroactive Event Funding": "#CA8A04",
   "Event Sponsorships": "#EAB308",
 };
 

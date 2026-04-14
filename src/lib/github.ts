@@ -108,8 +108,10 @@ function issueLooksLikeGrantApplication(
   }
   if (program === "coinholder") {
     const body = issue.body ?? "";
+    if (body.includes("## Terms and Conditions")) return true;
     if (body.includes("### Terms and Conditions")) return true;
     if (body.includes("```milestones.yaml")) return true;
+    if (/retroactive\s+grant\s+application/i.test(issue.title)) return true;
     if (/grant\s+application/i.test(issue.title)) return true;
     return false;
   }

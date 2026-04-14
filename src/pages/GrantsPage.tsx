@@ -44,6 +44,7 @@ const CATEGORIES: GrantCategory[] = [
   "Media",
   "Zcash Protocol Extension",
   "Dedicated Resource",
+  "Retroactive Event Funding",
   "Event Sponsorships",
 ];
 

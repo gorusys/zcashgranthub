@@ -27,6 +27,7 @@ export type GrantCategory =
   | "Media"
   | "Zcash Protocol Extension"
   | "Dedicated Resource"
+  | "Retroactive Event Funding"
   | "Event Sponsorships";
 
 export interface Milestone {
@@ -164,6 +165,9 @@ export const categoryConfig: Record<GrantCategory, { color: string }> = {
   },
   "Dedicated Resource": {
     color: "bg-slate-500/20 text-slate-400 border-slate-500/30",
+  },
+  "Retroactive Event Funding": {
+    color: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
   },
   "Event Sponsorships": {
     color: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",

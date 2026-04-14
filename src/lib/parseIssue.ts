@@ -11,6 +11,15 @@ import {
   type GrantProgram,
 } from "@/lib/grantPrograms";
 
+function stripGrantTitlePrefix(raw: string, program: GrantProgram): string {
+  const t = raw
+    .replace(/^retroactive\s+grant\s+application\s*[-–]\s*/i, "")
+    .replace(/^grant\s+application\s*[-–]\s*/i, "")
+    .trim();
+  if (program === "coinholder" && !t) return raw.trim();
+  return t || raw.trim();
+}
+
 export interface ParseIssueContext {
   program: GrantProgram;
   sourceRepo: string;
@@ -85,6 +94,7 @@ const VALID_CATEGORIES: GrantCategory[] = [
   "Media",
   "Zcash Protocol Extension",
   "Dedicated Resource",
+  "Retroactive Event Funding",
   "Event Sponsorships",
 ];
 
@@ -103,11 +113,29 @@ function parseCategory(str: string): GrantCategory {
 
 export function labelToStatus(
   labels: { name: string }[],
-  state: "open" | "closed"
+  state: "open" | "closed",
+  program: GrantProgram = "zcg"
 ): GrantStatus {
   const names = labels.map((l) => l.name.toLowerCase());
 
   if (names.some((n) => n.includes("rejected"))) return "REJECTED";
+
+  /** Lockbox / Coinholder repo label workflow */
+  if (program === "coinholder") {
+    if (names.some((n) => n.includes("funds disbursed"))) return "COMPLETED";
+    if (names.some((n) => n.includes("approved by coinholders")))
+      return "APPROVED";
+    if (
+      names.some(
+        (n) =>
+          n.includes("ready for vote") || n.includes("all steps completed")
+      )
+    )
+      return "COMMUNITY_REVIEW";
+    if (state === "closed") return "COMPLETED";
+    return "PENDING_REVIEW";
+  }
+
   if (state === "closed") return "COMPLETED";
   if (names.some((n) => n.includes("startup payment"))) return "ACTIVE";
   if (names.some((n) => n.includes("grant approved"))) return "APPROVED";
@@ -266,8 +294,7 @@ export function parseIssueToGrant(
   const totalBudget = parseAmount(extractSection(body, "Total Budget (USD)"));
   const amount = totalBudget || requestedAmount;
 
-  // Strip the "Grant Application - " prefix from title
-  const title = issue.title.replace(/^Grant\s+Application\s*[-–]\s*/i, "").trim();
+  const title = stripGrantTitlePrefix(issue.title, ctx.program);
 
   return {
     id: formatGrantId(ctx.program, issue.number),
@@ -279,7 +306,7 @@ export function parseIssueToGrant(
     applicantAvatar: issue.user.avatar_url,
     githubUsername: issue.user.login,
     category: parseCategory(extractSection(body, "Category")),
-    status: labelToStatus(issue.labels, issue.state),
+    status: labelToStatus(issue.labels, issue.state, ctx.program),
     amount,
     submittedDate: issue.created_at,
     lastUpdated: issue.updated_at,
@@ -289,7 +316,9 @@ export function parseIssueToGrant(
     solution: extractSection(body, "Proposed Solution"),
     solutionFormat: extractSection(body, "Solution Format"),
     dependencies: extractSection(body, "Dependencies"),
-    technicalApproach: extractSection(body, "Technical Approach"),
+    technicalApproach:
+      extractSection(body, "Technical Approach (how you did it)") ||
+      extractSection(body, "Technical Approach"),
     upstreamMerge: extractSection(body, "Upstream Merge Opportunities"),
     milestones,
     milestonesCompleted: paidMilestones.length,
