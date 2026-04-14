@@ -6,6 +6,73 @@
 
 @layer base {
   :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 40 90% 52%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 20% 40%;
+
+    --accent: 210 40% 94%;
+    --accent-foreground: 222 47% 11%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 32% 90%;
+    --input: 214 32% 90%;
+    --ring: 40 90% 56%;
+
+    --radius: 0.5rem;
+
+    --gold: 40 90% 52%;
+    --gold-foreground: 0 0% 100%;
+    --gold-muted: 40 60% 42%;
+
+    --status-draft: 215 20% 55%;
+    --status-pending: 45 93% 47%;
+    --status-community: 217 91% 60%;
+    --status-committee: 271 81% 56%;
+    --status-approved: 142 71% 45%;
+    --status-active: 142 76% 36%;
+    --status-completed: 173 80% 40%;
+    --status-rejected: 0 84% 60%;
+    --status-suspended: 25 95% 53%;
+
+    --cat-infrastructure: 40 90% 56%;
+    --cat-community: 142 71% 45%;
+    --cat-education: 217 91% 60%;
+    --cat-integration: 271 81% 56%;
+    --cat-research: 173 80% 40%;
+    --cat-wallets: 25 95% 53%;
+    --cat-media: 340 82% 52%;
+    --cat-protocol: 0 84% 60%;
+    --cat-resource: 215 20% 55%;
+    --cat-events: 45 93% 47%;
+    --cat-non-wallet: 199 89% 48%;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 40 90% 52%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 40% 94%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 32% 90%;
+    --sidebar-ring: 40 90% 56%;
+  }
+
+  .dark {
     --background: 222 47% 6%;
     --foreground: 210 40% 98%;
 
@@ -33,8 +100,6 @@
     --border: 220 20% 18%;
     --input: 220 20% 18%;
     --ring: 40 90% 56%;
-
-    --radius: 0.5rem;
 
     --gold: 40 90% 56%;
     --gold-foreground: 222 47% 6%;
@@ -159,6 +224,16 @@
       linear-gradient(hsl(220 20% 18% / 0.5) 1px, transparent 1px),
       linear-gradient(90deg, hsl(220 20% 18% / 0.5) 1px, transparent 1px);
     background-size: 60px 60px;
+  }
+
+  /* Softer hero grid for light mode; dark mode keeps crisp lines */
+  .grid-pattern-soft-light {
+    opacity: 0.6;
+    filter: blur(0.7px);
+  }
+  .dark .grid-pattern-soft-light {
+    opacity: 1;
+    filter: none;
   }
 
   /* Clamp a block of text to N lines */

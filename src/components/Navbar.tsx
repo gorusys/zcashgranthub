@@ -20,6 +20,7 @@ import {
 } from "@/lib/githubAuth";
 import { useZecUsdPrice } from "@/hooks/useZecUsdPrice";
 import type { ZecUsdPriceState } from "@/hooks/useZecUsdPrice";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const ZCG_FORUM_GRANTS = "https://forum.zcashcommunity.com/c/grants/12";
 
@@ -228,6 +229,8 @@ export function Navbar() {
         <div className="flex items-center gap-2 sm:gap-3">
           <ZecPricePill state={zecPrice} className="hidden lg:flex" />
 
+          <ThemeToggle className="h-9 w-9 text-muted-foreground" />
+
           <UpdatesMenu />
 
           {sessionLogin ? (
@@ -284,6 +287,8 @@ export function Navbar() {
             ))}
 
             <ZecPricePill state={zecPrice} className="mt-1 w-full justify-between px-3 py-2" />
+
+            <ThemeToggle className="mt-1 h-10 w-10 text-muted-foreground" />
 
             <div className="mt-1">
               <DropdownMenu>

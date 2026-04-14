@@ -156,7 +156,7 @@ export default function LandingPage() {
     <div className="min-h-screen">
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border/50">
-        <div className="grid-pattern absolute inset-0" />
+        <div className="grid-pattern grid-pattern-soft-light absolute inset-0" />
         <div className="absolute left-1/2 top-1/3 h-64 w-64 -translate-x-1/2 rounded-full bg-primary/10 blur-[120px] animate-glow-pulse" />
         <div className="relative container mx-auto px-4 py-16 text-center sm:py-24 lg:py-36">
           <h1 className="mx-auto max-w-4xl text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-6xl">
