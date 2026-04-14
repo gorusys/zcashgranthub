@@ -1,7 +1,20 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { Check, ChevronRight, ChevronLeft, Save, Upload, Plus, X, FileText } from "lucide-react";
+import {
+  BookOpen,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+  FileEdit,
+  FileText,
+  Plus,
+  Save,
+  Scale,
+  Upload,
+  X,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -22,6 +35,10 @@ import { cn } from "@/lib/utils";
 import { getGitHubToken } from "@/lib/githubAuth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CoinholderApplyWizard } from "@/pages/CoinholderApplyPage";
+import {
+  zechubDaoCreateProposalUrl,
+  zechubDaoDaodaoUrl,
+} from "@/lib/daodao/zechubConfig";
 
 const stepLabels = [
   "Terms & Conditions",
@@ -430,7 +447,11 @@ export default function ApplyPage({
 }: ApplyPageProps) {
   const router = useRouter();
   const applyTab =
-    router.isReady && router.query.tab === "coinholder" ? "coinholder" : "zcg";
+    router.isReady && router.query.tab === "coinholder"
+      ? "coinholder"
+      : router.isReady && router.query.tab === "zechub"
+        ? "zechub"
+        : "zcg";
 
   const setApplyTab = (v: string) => {
     const next: Record<string, string | string[] | undefined> = {
@@ -439,12 +460,15 @@ export default function ApplyPage({
     if (v === "zcg") {
       delete next.tab;
     } else {
-      next.tab = "coinholder";
+      next.tab = v;
     }
     void router.replace({ pathname: "/apply", query: next }, undefined, {
       shallow: true,
     });
   };
+
+  const zechubCreateUrl = zechubDaoCreateProposalUrl();
+  const zechubDaoUrl = zechubDaoDaodaoUrl();
 
   const [step, setStep] = useState(0);
   const [termsAccepted, setTermsAccepted] = useState<boolean[]>(
@@ -581,19 +605,24 @@ export default function ApplyPage({
       </h1>
       <p className="mb-4 text-sm text-muted-foreground sm:mb-6 sm:text-base">
         Choose <span className="font-medium text-foreground">ZCG</span> for
-        forward-looking proposals or{" "}
-        <span className="font-medium text-foreground">Coinholder</span> for
-        Lockbox retroactive (completed work) applications. Connect GitHub before
-        submitting.
+        forward-looking proposals,{" "}
+        <span className="font-medium text-foreground">Coinholder</span> for Lockbox
+        retroactive (completed work) applications, or{" "}
+        <span className="font-medium text-foreground">ZecHub DAO</span> for on-chain
+        mini-grants via DAO DAO on Juno. Connect GitHub before submitting ZCG or
+        Coinholder forms.
       </p>
 
       <Tabs value={applyTab} onValueChange={setApplyTab} className="w-full">
-        <TabsList className="mb-6 grid h-auto w-full max-w-md grid-cols-2 p-1 sm:w-auto">
-          <TabsTrigger value="zcg" className="px-3 py-2">
+        <TabsList className="mb-6 grid h-auto w-full max-w-xl grid-cols-3 p-1 sm:w-auto">
+          <TabsTrigger value="zcg" className="px-2 py-2 text-xs sm:px-3 sm:text-sm">
             ZCG
           </TabsTrigger>
-          <TabsTrigger value="coinholder" className="px-3 py-2">
+          <TabsTrigger value="coinholder" className="px-2 py-2 text-xs sm:px-3 sm:text-sm">
             Coinholder
+          </TabsTrigger>
+          <TabsTrigger value="zechub" className="px-2 py-2 text-xs sm:px-3 sm:text-sm">
+            ZecHub DAO
           </TabsTrigger>
         </TabsList>
 
@@ -1042,6 +1071,102 @@ export default function ApplyPage({
 
         <TabsContent value="coinholder" className="mt-0 outline-none focus-visible:ring-0">
           <CoinholderApplyWizard embedded />
+        </TabsContent>
+
+        <TabsContent value="zechub" className="mt-0 outline-none focus-visible:ring-0">
+          <h2 className="mb-1 text-xl font-semibold text-foreground sm:text-2xl">
+            ZecHub DAO (on-chain)
+          </h2>
+          <p className="mb-6 max-w-2xl text-sm text-muted-foreground sm:text-base">
+            ZecHub mini-grants and governance run on{" "}
+            <span className="font-medium text-foreground/90">DAO DAO</span> on{" "}
+            <span className="font-medium text-foreground/90">Juno</span>. You do not file a
+            GitHub issue here—connect a wallet on DAO DAO to create proposals, vote when voting
+            is open, and follow execution there.
+          </p>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <Card className="border-border/50 bg-card">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Create a proposal</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm text-muted-foreground">
+                <p>
+                  Open the official proposal builder, draft your title and description (markdown
+                  supported), add actions such as spends or contract messages, then submit and sign
+                  with your Juno wallet.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Button className="gap-2" asChild>
+                    <a href={zechubCreateUrl} target="_blank" rel="noopener noreferrer">
+                      <FileEdit className="h-4 w-4" />
+                      Create proposal on DAO DAO
+                    </a>
+                  </Button>
+                  <Button variant="outline" size="sm" className="gap-2" asChild>
+                    <a href={zechubDaoUrl} target="_blank" rel="noopener noreferrer">
+                      <Scale className="h-4 w-4" />
+                      Open ZecHub DAO
+                    </a>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-border/50 bg-card">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Browse & vote</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm text-muted-foreground">
+                <p>
+                  This hub lists proposals from the DAO DAO indexer. Use{" "}
+                  <span className="font-medium text-foreground/90">Vote on DAO DAO</span> on a
+                  proposal when its status is open for voting.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Button variant="outline" className="gap-2" asChild>
+                    <Link href="/zechub/proposals">Browse ZecHub proposals</Link>
+                  </Button>
+                  <Button variant="outline" size="sm" className="gap-2" asChild>
+                    <a href={zechubDaoUrl} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="h-4 w-4" />
+                      DAO DAO UI
+                    </a>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card className="mt-4 border-border/50 bg-card">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base">Learn more</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-3 text-sm text-muted-foreground sm:flex-row sm:flex-wrap sm:items-center">
+              <Button variant="outline" size="sm" className="w-fit gap-2" asChild>
+                <Link href="/zechub/proposals/guide">
+                  <BookOpen className="h-4 w-4" />
+                  How to create proposals & vote
+                </Link>
+              </Button>
+              <a
+                href="https://zechub.wiki/dao"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-fit text-primary underline-offset-2 hover:underline"
+              >
+                ZecHub DAO docs (wiki)
+              </a>
+              <a
+                href="https://docs.daodao.zone/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-fit text-primary underline-offset-2 hover:underline"
+              >
+                DAO DAO documentation
+              </a>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
 
