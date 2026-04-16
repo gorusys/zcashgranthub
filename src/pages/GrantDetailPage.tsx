@@ -726,11 +726,11 @@ export default function GrantDetailPage({ id }: { id?: string }) {
 
           {/* Actions — only shown on desktop (mobile uses quick-actions bar above) */}
           <div className="hidden space-y-2 lg:block">
-            <Button variant="outline" className="w-full justify-start gap-2 text-sm" asChild>
+            {/* <Button variant="outline" className="w-full justify-start gap-2 text-sm" asChild>
               <a href={grant.forumLink} target="_blank" rel="noopener noreferrer">
                 <MessageSquare className="h-4 w-4 shrink-0" /> Forum Thread
               </a>
-            </Button>
+            </Button> */}
             <Button variant="outline" className="w-full justify-start gap-2 text-sm" asChild>
               <a href={grant.githubLink} target="_blank" rel="noopener noreferrer">
                 <Github className="h-4 w-4 shrink-0" /> GitHub Issue
