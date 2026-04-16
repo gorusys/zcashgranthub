@@ -28,7 +28,7 @@ import {
   GRANTS_DASHBOARD_SHEET_URL,
   programLabel,
 } from "@/lib/grantPrograms";
-import { RelatedRecordsCard } from "@/components/RelatedRecordsCard";
+// import { RelatedRecordsCard } from "@/components/RelatedRecordsCard";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 
@@ -274,7 +274,7 @@ export default function GrantDetailPage({ id }: { id?: string }) {
       </Card>
 
       {/* ── ZecHub DAO (separate program) ──────────────────────────────── */}
-      <Card className="mb-6 border-border/50 bg-card/70">
+      {/* <Card className="mb-6 border-border/50 bg-card/70">
         <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0 space-y-1">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -306,16 +306,16 @@ export default function GrantDetailPage({ id }: { id?: string }) {
             </Button>
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
 
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <RelatedRecordsCard
           items={related}
           isLoading={relatedLoading}
           isError={relatedError}
           errorMessage={(relatedErr as Error)?.message}
         />
-      </div>
+      </div> */}
 
       {/* ── Mobile quick-actions (shows above tabs on small screens) ────── */}
       <div className="mb-4 flex gap-2 overflow-x-auto scrollbar-hide pb-1 lg:hidden">
