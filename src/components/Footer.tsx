@@ -4,6 +4,7 @@ const links = [
   { label: "Website", href: "https://zgrantshub.com", external: true },
   { label: "Apply", href: "/apply" },
   { label: "Browse", href: "/grants" },
+  { label: "Discussions", href: "/forum/discussions" },
   { label: "Analytics", href: "/analytics" },
   { label: "Forum", href: "https://forum.zcashcommunity.com", external: true },
   { label: "GitHub", href: "https://github.com/ZcashCommunityGrants", external: true },
