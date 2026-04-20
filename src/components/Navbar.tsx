@@ -21,8 +21,9 @@ import {
 import { useZecUsdPrice } from "@/hooks/useZecUsdPrice";
 import type { ZecUsdPriceState } from "@/hooks/useZecUsdPrice";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { ZCG_COMMUNITY_GRANTS_FORUM_CATEGORY_URL } from "@/lib/grantPrograms";
 
-const ZCG_FORUM_GRANTS = "https://forum.zcashcommunity.com/c/grants/12";
+const ZCG_FORUM_GRANTS = ZCG_COMMUNITY_GRANTS_FORUM_CATEGORY_URL;
 
 function ZecPricePill({ state, className }: { state: ZecUsdPriceState; className?: string }) {
   const { usd, change24hPct, status } = state;
@@ -148,6 +149,11 @@ const navLinks: NavLink[] = [
     label: "Apply",
     href: "/apply",
     active: (r) => r.pathname === "/apply",
+  },
+  {
+    label: "Forum",
+    href: "/forum/discussions",
+    active: (r) => r.pathname === "/forum/discussions",
   },
   {
     label: "Analytics",
