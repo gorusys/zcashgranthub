@@ -7,6 +7,9 @@ export const OFFICIAL_COINHOLDER_REPO = "Financial-Privacy-Foundation/ZcashCoinh
 export const GRANTS_DASHBOARD_SHEET_URL =
   "https://docs.google.com/spreadsheets/d/1FQ28rDCyRW0TiNxrm3rgD8ai2KGUsXAjPieQmI1kKKg";
 
+export const ZCG_COMMUNITY_GRANTS_FORUM_CATEGORY_URL =
+  "https://forum.zcashcommunity.com/c/grants/33";
+
 export interface GrantRepoConfig {
   slug: string;
   program: GrantProgram;
