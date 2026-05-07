@@ -8,6 +8,7 @@ import type {
 } from "@/data/grantTypes";
 import {
   formatGrantId,
+  ZCG_COMMUNITY_GRANTS_FORUM_CATEGORY_URL,
   type GrantProgram,
 } from "@/lib/grantPrograms";
 
@@ -264,7 +265,7 @@ function parseDocuments(
 function forumLink(body: string, comments: GitHubComment[]): string {
   const text = [body, ...comments.map((c) => c.body)].join(" ");
   const m = text.match(/https?:\/\/forum\.zcashcommunity\.com\/[^\s)>]+/);
-  return m ? m[0] : "https://forum.zcashcommunity.com/c/grants/33";
+  return m ? m[0] : ZCG_COMMUNITY_GRANTS_FORUM_CATEGORY_URL;
 }
 
 /**
