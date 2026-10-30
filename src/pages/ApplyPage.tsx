@@ -36,6 +36,7 @@ import { getGitHubToken } from "@/lib/githubAuth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CoinholderApplyWizard } from "@/pages/CoinholderApplyPage";
 import { track } from "@/lib/analytics";
+import { PreflightPanel } from "@/components/PreflightPanel";
 import {
   zechubDaoCreateProposalUrl,
   zechubDaoDaodaoUrl,
@@ -1075,7 +1076,7 @@ export default function ApplyPage({
               <CardContent className="space-y-4 px-4 pb-4 sm:space-y-6 sm:px-6 sm:pb-6">
                 <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
                   <div><span className="text-xs text-muted-foreground">Title</span><p className="font-medium text-foreground">{formData.title || "—"}</p></div>
-                  <div><span className="text-xs text-muted-foreground">Amount</span><p className="font-medium text-primary">${Number(formData.amount).toLocaleString() || "—"}</p></div>
+                  <div><span className="text-xs text-muted-foreground">Amount</span><p className="font-medium text-primary">{formData.amount && Number.isFinite(Number(formData.amount)) ? `$${Number(formData.amount).toLocaleString()}` : "—"}</p></div>
                   <div><span className="text-xs text-muted-foreground">Category</span><p className="font-medium text-foreground">{formData.category || "—"}</p></div>
                   <div><span className="text-xs text-muted-foreground">Project Lead</span><p className="font-medium text-foreground">{formData.leadName || "—"}</p></div>
                 </div>
@@ -1085,6 +1086,10 @@ export default function ApplyPage({
                   <div className="text-2xl font-bold text-primary">${total.toLocaleString()}</div>
                   <span className="text-xs text-muted-foreground">{milestones.length} milestones</span>
                 </div>
+                <PreflightPanel
+                  draft={{ formData, milestones, teamMembers }}
+                  onGoToStep={setStep}
+                />
                 <label className="flex cursor-pointer items-center gap-3">
                   <Checkbox checked={confirmed} onCheckedChange={() => setConfirmed(!confirmed)} />
                   <span className="text-sm text-foreground">I confirm all information is accurate</span>

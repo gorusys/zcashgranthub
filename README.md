@@ -12,6 +12,7 @@ Official domain: [zgrantshub.com](https://zgrantshub.com)
 - **Browse & filter** — Search, status, category, and **program** filter on `/grants`.
 - **Grant detail** — Application fields, milestones, team, budget, risks, comments; **no** embedded DAO vote as ZCG status—only relationship suggestions and clear separation of programs.
 - **Apply wizards** — Single `/apply` page with **ZCG**, **Coinholder**, and **ZecHub DAO** tabs. ZCG/Coinholder create GitHub issues; ZecHub links to DAO DAO. `/apply/coinholder` redirects to `/apply?tab=coinholder`.
+- **Proposal preflight** — the ZCG wizard's Review step checks budget/milestone consistency, dated milestones with deliverables and acceptance criteria, measurable KPIs, funding disclosure and KYC, with a Fix link to the right step, and lists similar past applications and their outcomes.
 - **Funding Finder** — `/find-funding` asks three questions (work stage, size, kind) and ranks the routes that fit (Coinholder retro, ZCG, ZecHub bounties, ZecHub DAO) with each program's rules and next steps.
 - **Coinholder retro rounds** — `/retro` shows the current round phase with a countdown, the FPF timeline, a pre-submission checklist, this round's submissions, past-round outcomes (counts from FPF GitHub labels) and live organizer announcements from the forum. Round dates live in `src/data/retro-rounds.json`; add each new round from FPF's forum post and cite it in `sources`.
 - **Analytics dashboard**.
@@ -42,6 +43,8 @@ Grant data is fetched **server-side** (`/api/grants`, `/api/grants/[id]`) and ca
 ```
 GITHUB_API_TOKEN=ghp_your_read_only_token_here
 ```
+
+Without a token the hub still copes: GitHub reads use conditional requests (ETags), and `304 Not Modified` responses don't count against the limit. The last good snapshot is also written to disk (`GRANTS_SNAPSHOT_PATH`, default in the OS temp dir), so restarts and cold starts serve data immediately.
 
 > **Do not** use `NEXT_PUBLIC_GITHUB_TOKEN`: anything prefixed `NEXT_PUBLIC_` is bundled into browser JavaScript. It is now ignored (with a server warning); if you set it previously, revoke that token.
 
