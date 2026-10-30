@@ -15,14 +15,15 @@ async function getJson<T>(url: string): Promise<T> {
   return body as T;
 }
 
-/** All grant applications (ZCG + Coinholder), from the server-side snapshot. */
-export function useGrants() {
+/** All grant applications (ZCG + Coinholder) as list views, from the server-side snapshot. */
+export function useGrants({ enabled = true }: { enabled?: boolean } = {}) {
   return useQuery<Grant[], Error>({
     queryKey: ["grants", "multi-repo"],
     queryFn: async () =>
       (await getJson<GrantsSnapshot>("/api/grants")).grants,
     staleTime: 5 * 60 * 1000,
     retry: 1,
+    enabled,
   });
 }
 

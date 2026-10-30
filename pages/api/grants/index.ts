@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getGrantsSnapshot, type GrantsSnapshot } from "@/lib/server/grantsStore";
+import { getGrantsSnapshot, toListGrant, type GrantsSnapshot } from "@/lib/server/grantsStore";
 
 type ErrBody = { error: string };
 
@@ -13,7 +13,9 @@ export default async function handler(
   }
 
   try {
-    const body = await getGrantsSnapshot();
+    const snap = await getGrantsSnapshot();
+    // List pages don't render long-form fields; ?full=1 returns complete records.
+    const body = req.query.full === "1" ? snap : { ...snap, grants: snap.grants.map(toListGrant) };
     res.setHeader(
       "Cache-Control",
       "public, s-maxage=300, stale-while-revalidate=900"

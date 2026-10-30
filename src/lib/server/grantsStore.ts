@@ -182,3 +182,28 @@ export function __resetGrantsStoreForTests(): void {
   diskChecked = false;
   detailCache.clear();
 }
+
+const EMPTY_MEMBER = { name: "", role: "", background: "", responsibilities: "" };
+
+/**
+ * List view of a grant: long-form fields that only the detail page renders
+ * (served by /api/grants/[id]) are blanked to keep list payloads small.
+ */
+export function toListGrant(g: Grant): Grant {
+  return {
+    ...g,
+    description: "",
+    problem: "",
+    solution: "",
+    solutionFormat: "",
+    dependencies: "",
+    technicalApproach: "",
+    upstreamMerge: "",
+    risks: { implementation: "", sideEffects: "", successMetrics: "" },
+    teamLead: { ...EMPTY_MEMBER, name: g.teamLead.name },
+    teamMembers: [],
+    comments: [],
+    documents: [],
+    milestones: g.milestones.map((m) => ({ ...m, userStories: [], deliverables: [], acceptanceCriteria: "" })),
+  };
+}
