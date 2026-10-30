@@ -33,6 +33,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useZecUsdPrice } from "@/hooks/useZecUsdPrice";
+import { track } from "@/lib/analytics";
 import {
   DEFAULT_DONATION_MEMO,
   DONATION_RECEIVERS,
@@ -416,9 +417,10 @@ export default function DonatePage() {
                 <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
                   <Button
                     className="gap-2"
-                    onClick={() =>
-                      void copy("address", DONATION_UNIFIED_ADDRESS, "Donation address copied")
-                    }
+                    onClick={() => {
+                      track("donate_copy_address");
+                      void copy("address", DONATION_UNIFIED_ADDRESS, "Donation address copied");
+                    }}
                   >
                     {copied === "address" ? (
                       <Check className="h-4 w-4" />
@@ -428,7 +430,7 @@ export default function DonatePage() {
                     Copy address
                   </Button>
                   <Button variant="outline" className="gap-2" asChild>
-                    <a href={paymentUri}>
+                    <a href={paymentUri} onClick={() => track("donate_open_wallet")}>
                       <ExternalLink className="h-4 w-4" />
                       Open in wallet
                     </a>

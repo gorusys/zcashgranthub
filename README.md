@@ -43,6 +43,18 @@ GITHUB_API_TOKEN=ghp_your_read_only_token_here
 
 > **Do not** use `NEXT_PUBLIC_GITHUB_TOKEN`: anything prefixed `NEXT_PUBLIC_` is bundled into browser JavaScript. It is now ignored (with a server warning); if you set it previously, revoke that token.
 
+## Optional: privacy-respecting analytics
+
+Off by default. When enabled, the site loads a cookieless script ([Plausible](https://plausible.io) or self-hosted [Umami](https://umami.is)) and records aggregate page views plus a few named events (`apply_submitted`, `apply_draft_opened`, `donate_copy_address`, `donate_open_wallet`, `funding_finder_result`, `outbound_program`). No cookies, no personal data, no addresses or amounts. These numbers are the usage evidence for retroactive grant applications.
+
+```
+NEXT_PUBLIC_PLAUSIBLE_DOMAIN=zgrantshub.com
+# NEXT_PUBLIC_PLAUSIBLE_SRC=https://plausible.example.com/js/script.js   # self-hosted
+# or
+# NEXT_PUBLIC_UMAMI_WEBSITE_ID=<uuid>
+# NEXT_PUBLIC_UMAMI_SRC=https://umami.example.com/script.js
+```
+
 ## GitHub repos
 
 | Variable | Purpose |

@@ -35,6 +35,7 @@ import { cn } from "@/lib/utils";
 import { getGitHubToken } from "@/lib/githubAuth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CoinholderApplyWizard } from "@/pages/CoinholderApplyPage";
+import { track } from "@/lib/analytics";
 import {
   zechubDaoCreateProposalUrl,
   zechubDaoDaodaoUrl,
@@ -603,6 +604,7 @@ export default function ApplyPage({
         throw new Error("Issue created but URL missing in response.");
       }
       clearZcgApplyDraft();
+      track("apply_submitted", { program: "zcg" });
       window.open(result.issueUrl, "_blank");
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : "Failed to create issue.");
@@ -623,6 +625,7 @@ export default function ApplyPage({
       setSubmitError("Could not build real draft issue URL.");
       return;
     }
+    track("apply_draft_opened", { program: "zcg" });
     window.open(issueUrl, "_blank");
   };
 

@@ -1,5 +1,6 @@
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import Script from "next/script";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,7 +9,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { AnnouncementBar } from "@/components/AnnouncementBar";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { analyticsScript } from "@/lib/analytics";
 import "@/index.css";
+
+const analytics = analyticsScript();
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,6 +56,9 @@ export default function App({ Component, pageProps }: AppProps) {
           <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
           <link rel="apple-touch-icon" href="/favicon.svg" />
         </Head>
+        {analytics && (
+          <Script defer src={analytics.src} strategy="afterInteractive" {...analytics.attrs} />
+        )}
         <TooltipProvider>
           <Toaster />
           <Sonner />
