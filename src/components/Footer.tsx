@@ -6,6 +6,8 @@ const links = [
   { label: "Browse", href: "/grants" },
   { label: "Discussions", href: "/forum/discussions" },
   { label: "Analytics", href: "/analytics" },
+  { label: "Donate", href: "/donate" },
+  { label: "Contribute", href: "/donate#contribute" },
   { label: "Forum", href: "https://forum.zcashcommunity.com", external: true },
   { label: "GitHub", href: "https://github.com/ZcashCommunityGrants", external: true },
 ];

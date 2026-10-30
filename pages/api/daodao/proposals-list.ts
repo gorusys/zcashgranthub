@@ -1,9 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import {
-  DAO_DAO_INDEXER_BASE,
-  ZECHUB_CHAIN_ID,
-  ZECHUB_PROPOSAL_MODULE_SINGLE,
-} from "@/lib/daodao/zechubConfig";
+import { queryReverseProposals } from "@/lib/daodao/zechubSource";
 
 interface ReverseRow {
   id: number;
@@ -38,24 +34,13 @@ export default async function handler(
       ? parseInt(startBeforeRaw, 10)
       : undefined;
 
-  const base = `${DAO_DAO_INDEXER_BASE}/${ZECHUB_CHAIN_ID}/contract/${ZECHUB_PROPOSAL_MODULE_SINGLE}/daoProposalSingle/reverseProposals`;
-  const url = new URL(base);
-  url.searchParams.set("limit", String(limit));
-  if (startBefore !== undefined && !Number.isNaN(startBefore)) {
-    url.searchParams.set("startBefore", String(startBefore));
-  }
+  const cursor =
+    startBefore !== undefined && !Number.isNaN(startBefore) ? startBefore : undefined;
 
   res.setHeader("Cache-Control", "s-maxage=30, stale-while-revalidate=60");
 
   try {
-    const r = await fetch(url.toString());
-    if (!r.ok) {
-      return res.status(502).json({ error: `Indexer ${r.status}` });
-    }
-    const rows = (await r.json()) as ReverseRow[];
-    if (!Array.isArray(rows)) {
-      return res.status(200).json({ items: [], nextStartBefore: null });
-    }
+    const rows: ReverseRow[] = await queryReverseProposals(limit, cursor);
     const last = rows[rows.length - 1];
     const nextStartBefore =
       rows.length > 0 && last ? last.id : null;
