@@ -131,19 +131,19 @@ type NavLink = {
 
 const navLinks: NavLink[] = [
   {
-    label: "ZCG Grants",
-    href: "/grants?program=zcg",
-    active: (r) => r.pathname === "/grants" && r.query.program === "zcg",
-  },
-  {
-    label: "Coinholder",
-    href: "/grants?program=coinholder",
-    active: (r) => r.pathname === "/grants" && r.query.program === "coinholder",
+    label: "Grants",
+    href: "/grants",
+    active: (r) => r.pathname.startsWith("/grants"),
   },
   {
     label: "Retro Rounds",
     href: "/retro",
     active: (r) => r.pathname === "/retro",
+  },
+  {
+    label: "Decisions",
+    href: "/decisions",
+    active: (r) => r.pathname === "/decisions",
   },
   {
     label: "ZecHub DAO",
@@ -208,22 +208,22 @@ export function Navbar() {
             aria-hidden
           />
           <div className="hidden flex-col sm:flex">
-            <span className="text-sm font-bold leading-none tracking-tight text-foreground">
+            <span className="whitespace-nowrap text-sm font-bold leading-none tracking-tight text-foreground">
               Zcash Grants Hub
             </span>
-            <span className="mt-0.5 text-[10px] leading-none text-muted-foreground">
+            <span className="mt-0.5 whitespace-nowrap text-[10px] leading-none text-muted-foreground">
               ZCG · Coinholder · ZecHub DAO
             </span>
           </div>
           <span className="text-sm font-bold text-foreground sm:hidden">Zcash Grants Hub</span>
         </Link>
 
-        <div className="hidden items-center gap-0.5 md:flex">
+        <div className="hidden items-center gap-0.5 xl:flex">
           {navLinks.map((link) => (
             <Link
               key={link.label}
               href={link.href}
-              className={`relative rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+              className={`relative whitespace-nowrap rounded-md px-2.5 py-2 text-sm font-medium transition-colors ${
                 link.active(router)
                   ? "text-primary"
                   : "text-muted-foreground hover:text-foreground"
@@ -231,14 +231,14 @@ export function Navbar() {
             >
               {link.label}
               {link.active(router) && (
-                <span className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full bg-primary" />
+                <span className="absolute bottom-0 left-2.5 right-2.5 h-0.5 rounded-full bg-primary" />
               )}
             </Link>
           ))}
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3">
-          <ZecPricePill state={zecPrice} className="hidden lg:flex" />
+          <ZecPricePill state={zecPrice} className="hidden 2xl:flex" />
 
           <Button
             variant={router.pathname === "/donate" ? "secondary" : "ghost"}
@@ -275,15 +275,15 @@ export function Navbar() {
               onClick={() => void beginGitHubOAuth()}
             >
               <Github className="h-4 w-4" />
-              <span className="hidden lg:inline">Connect GitHub</span>
-              <span className="lg:hidden">GitHub</span>
+              <span className="hidden 2xl:inline">Connect GitHub</span>
+              <span className="2xl:hidden">GitHub</span>
             </Button>
           )}
 
           <Button
             variant="ghost"
             size="icon"
-            className="h-9 w-9 text-muted-foreground md:hidden"
+            className="h-9 w-9 text-muted-foreground xl:hidden"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             onClick={() => setMobileOpen((prev) => !prev)}
           >
@@ -293,7 +293,7 @@ export function Navbar() {
       </div>
 
       {mobileOpen && (
-        <div className="border-t border-border/50 bg-background/95 backdrop-blur-xl md:hidden">
+        <div className="border-t border-border/50 bg-background/95 backdrop-blur-xl xl:hidden">
           <div className="container mx-auto flex flex-col gap-1 px-4 py-3">
             {navLinks.map((link) => (
               <Link
