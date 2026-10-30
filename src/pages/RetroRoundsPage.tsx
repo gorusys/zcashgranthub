@@ -45,6 +45,8 @@ import {
 } from "@/lib/retroRounds";
 
 const VOTE_ANALYSIS_THREAD = "https://forum.zcashcommunity.com/t/57910";
+const ZODL_VOTING_GUIDE_URL = "https://zodl.com/zodl-3-5-0-vote-with-your-zec/";
+const CIPHERSCAN_GOVERNANCE_URL = "https://cipherscan.app/governance";
 
 const usd = (n: number) =>
   n.toLocaleString(undefined, { style: "currency", currency: "USD", maximumFractionDigits: 0 });
@@ -172,6 +174,10 @@ const CHECKLIST: Array<{ title: string; body: string }> = [
   {
     title: "Be present during review",
     body: "Answer questions in your forum thread during the mandatory 30-day review period.",
+  },
+  {
+    title: "Your ballot text is frozen",
+    body: "Voters see the application as submitted, and it can't be edited once voting opens. Put final, current numbers in it before the review period ends.",
   },
   {
     title: "How a vote passes",
@@ -462,6 +468,51 @@ export default function RetroRoundsPage() {
             {RETRO_ROUNDS.some((r) => r.status === "postponed") &&
               " Q2 2026 was postponed and its submissions were voted on in Q3."}
           </p>
+        </CardContent>
+      </Card>
+
+      {/* How to vote */}
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <Vote className="h-5 w-5 text-primary" /> How to vote (ZEC holders)
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4 text-sm text-muted-foreground">
+          <ol className="list-decimal space-y-2 pl-5">
+            <li>
+              <span className="font-medium text-foreground">Hold shielded ZEC in a wallet that supports voting</span>{" "}
+              before the eligibility snapshot. Recent polls have run in Zodl (including Keystone
+              through Zodl), Zkool and Vizor. Each round's announcement gives the snapshot and which
+              funds count.
+            </li>
+            <li>
+              <span className="font-medium text-foreground">Vote during the voting window</span> from
+              your wallet's voting section. Each proposal is a separate question; either "Reject"
+              option counts as a no.
+            </li>
+            <li>
+              <span className="font-medium text-foreground">Every answer counts toward quorum.</span>{" "}
+              A proposal needs {RETRO_QUORUM_ZEC.toLocaleString()} ZEC voted on it (any answer) before a
+              simple majority of Approve can pass it, so abstaining still helps a vote count.
+            </li>
+            <li>
+              <span className="font-medium text-foreground">Your vote stays private.</span> Votes are
+              encrypted; the published tallies can be checked independently.
+            </li>
+          </ol>
+          <div className="flex flex-wrap gap-2">
+            <Button asChild variant="outline" size="sm">
+              <a href={ZODL_VOTING_GUIDE_URL} target="_blank" rel="noopener noreferrer">
+                Zodl voting guide <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <a href={CIPHERSCAN_GOVERNANCE_URL} target="_blank" rel="noopener noreferrer">
+                Upcoming votes & results (CipherScan) <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
+              </a>
+            </Button>
+          </div>
         </CardContent>
       </Card>
 
