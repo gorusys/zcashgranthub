@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import type { Milestone } from "@/data/grantTypes";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -11,6 +12,7 @@ const milestoneStatusColor: Record<string, string> = {
 };
 
 export function MilestoneProgressBar({ milestones }: { milestones: Milestone[] }) {
+  const { text: tx, locale: uiLocale } = useUi();
   return (
     <div className="flex gap-1">
       {milestones.map((m) => (
@@ -25,7 +27,7 @@ export function MilestoneProgressBar({ milestones }: { milestones: Milestone[] }
           </TooltipTrigger>
           <TooltipContent>
             <p className="text-xs">
-              Milestone {m.number}: {m.status} — ${m.amount.toLocaleString()}
+              {tx("Milestone ")}{m.number}: {tx(m.status)} — ${m.amount.toLocaleString(uiLocale)}
             </p>
           </TooltipContent>
         </Tooltip>

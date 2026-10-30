@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -53,6 +54,7 @@ export function ListPagination({
   totalPages: number;
   onPageChange: (p: number) => void;
 }) {
+  const { text: tx } = useUi();
   if (totalPages <= 1) return null;
 
   const items = buildPageList(page, totalPages);
@@ -74,7 +76,7 @@ export function ListPagination({
           className="gap-1"
         >
           <ChevronLeft className="h-4 w-4" />
-          <span className="hidden sm:inline">Previous</span>
+          <span className="hidden sm:inline">{tx("Previous")}</span>
         </Button>
         {items.map((it, i) =>
           it === "ellipsis" ? (
@@ -105,12 +107,12 @@ export function ListPagination({
           onClick={() => onPageChange(page + 1)}
           className="gap-1"
         >
-          <span className="hidden sm:inline">Next</span>
+          <span className="hidden sm:inline">{tx("Next")}</span>
           <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
       <p className="text-xs text-muted-foreground sm:ml-2">
-        Page {page} of {totalPages}
+        {tx("Page ")}{page} {tx(" of ")}{totalPages}
       </p>
     </div>
   );

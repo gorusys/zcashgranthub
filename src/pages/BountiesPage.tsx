@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import { useMemo, useState } from "react";
 import Head from "next/head";
 import { useQuery } from "@tanstack/react-query";
@@ -19,6 +20,7 @@ const daysAgo = (iso: string, t: Translate) => {
 };
 
 function OpportunityRow({ o, zecUsd }: { o: Opportunity; zecUsd: number | null }) {
+  const { text: tx } = useUi();
   const { t } = useT();
   return (
     <li className="py-3">
@@ -29,15 +31,15 @@ function OpportunityRow({ o, zecUsd }: { o: Opportunity; zecUsd: number | null }
           </span>
         ) : (
           <span className="inline-flex items-center gap-1 rounded-full bg-secondary px-2 py-0.5 font-medium text-foreground">
-            <Github className="h-3 w-3" /> {o.context}
+            <Github className="h-3 w-3" /> {tx(o.context)}
           </span>
         )}
-        {o.source === "zechub" && <span>{o.context}</span>}
-        {o.difficulty && <span className="capitalize">· {o.difficulty}</span>}
-        <span>· {daysAgo(o.createdAt, t)}</span>
+        {o.source === "zechub" && <span>{tx(o.context)}</span>}
+        {o.difficulty && <span className="capitalize">· {tx(o.difficulty)}</span>}
+        <span>· {tx(daysAgo(o.createdAt, t))}</span>
         {o.amountZec != null && (
           <span className="ml-auto font-medium tabular-nums text-foreground">
-            {o.amountZec} ZEC{zecUsd ? ` ≈ $${(o.amountZec * zecUsd).toFixed(2)}` : ""}
+            {o.amountZec} {tx(" ZEC")}{tx(zecUsd ? ` ≈ $${(o.amountZec * zecUsd).toFixed(2)}` : "")}
           </span>
         )}
       </div>
@@ -65,6 +67,7 @@ function OpportunityRow({ o, zecUsd }: { o: Opportunity; zecUsd: number | null }
 }
 
 export default function BountiesPage() {
+  const { text: tx } = useUi();
   const { data, isLoading, isError } = useQuery<OpportunitiesSnapshot>({
     queryKey: ["opportunities"],
     queryFn: async () => {
@@ -99,10 +102,10 @@ export default function BountiesPage() {
   return (
     <div className="container mx-auto min-w-0 max-w-4xl px-4 py-6 sm:py-8">
       <Head>
-        <title>{`${t("bounties.title")} · Zcash Grants Hub`}</title>
+        <title>{tx(`${t("bounties.title")} · Zcash Grants Hub`)}</title>
         <meta
           name="description"
-          content="Open ZEC bounties from ZecHub and beginner-friendly issues in Zebra, librustzcash, Zingo and other Zcash projects, in one list."
+          content={tx("Open ZEC bounties from ZecHub and beginner-friendly issues in Zebra, librustzcash, Zingo and other Zcash projects, in one list.")}
         />
       </Head>
 
@@ -112,8 +115,7 @@ export default function BountiesPage() {
       <p className="mb-6 mt-2 text-sm text-muted-foreground sm:text-base">
         {t("bounties.intro", { orgs: GITHUB_ORGS.join(", ") })}{" "}
         <a href={ZECHUB_BOUNTIES_SITE} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-          bounties.zechub.wiki
-        </a>
+          {tx("ZecHub bounty board")}</a>
       </p>
 
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -124,7 +126,7 @@ export default function BountiesPage() {
             onChange={(e) => setQ(e.target.value)}
             placeholder={t("bounties.search")}
             className="pl-9"
-            aria-label="Search bounties and issues"
+            aria-label={tx("Search bounties and issues")}
           />
         </div>
         <div className="flex flex-wrap gap-1.5">
@@ -142,7 +144,7 @@ export default function BountiesPage() {
               )}
             >
               {t(`bounties.filter.${f}`)}
-              {f !== "all" && data ? ` (${counts[f]})` : ""}
+              {tx(f !== "all" && data ? ` (${counts[f]})` : "")}
             </button>
           ))}
         </div>

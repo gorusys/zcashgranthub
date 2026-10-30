@@ -1,7 +1,9 @@
+import { useUi } from "@/i18n/useUi";
 import { type GrantCategory, categoryConfig } from "@/data/grantTypes";
 import { cn } from "@/lib/utils";
 
 export function CategoryBadge({ category, className }: { category: GrantCategory; className?: string }) {
+  const { text: tx } = useUi();
   const config = categoryConfig[category];
   return (
     <span
@@ -11,7 +13,7 @@ export function CategoryBadge({ category, className }: { category: GrantCategory
         className
       )}
     >
-      {category}
+      {tx(category)}
     </span>
   );
 }

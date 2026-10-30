@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import { useEffect, useMemo, useState } from "react";
 import { Bell, FileText, LayoutDashboard, ChevronRight, Clock, ExternalLink } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,6 +12,7 @@ import { WatchlistPanel } from "@/components/WatchlistPanel";
 import { readGitHubSession, subscribeToGitHubAuth } from "@/lib/githubAuth";
 
 export default function DashboardPage() {
+  const { text: tx, locale: uiLocale } = useUi();
   const { data: grants = [], isLoading } = useGrants();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("applications");
@@ -56,49 +58,41 @@ export default function DashboardPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="mb-8 text-3xl font-bold text-foreground">Dashboard</h1>
+      <h1 className="mb-8 text-3xl font-bold text-foreground">{tx("Dashboard")}</h1>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="mb-6 bg-secondary">
           <TabsTrigger value="applications" className="gap-2">
-            <LayoutDashboard className="h-4 w-4" /> My Applications
-          </TabsTrigger>
+            <LayoutDashboard className="h-4 w-4" /> {tx(" My Applications")}</TabsTrigger>
           <TabsTrigger value="milestones" className="gap-2">
-            <FileText className="h-4 w-4" /> Milestone Reports
-          </TabsTrigger>
+            <FileText className="h-4 w-4" /> {tx(" Milestone Reports")}</TabsTrigger>
           <TabsTrigger value="notifications" className="gap-2">
-            <Bell className="h-4 w-4" /> Notifications
-          </TabsTrigger>
+            <Bell className="h-4 w-4" /> {tx(" Notifications")}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="applications">
           <Card className="border-border/50 bg-card">
             <CardContent className="p-0">
               {login === undefined ? (
-                <div className="p-6 text-sm text-muted-foreground">Checking GitHub session…</div>
+                <div className="p-6 text-sm text-muted-foreground">{tx("Checking GitHub session…")}</div>
               ) : login === null ? (
                 <div className="p-6 text-sm text-muted-foreground">
                   <p className="mb-3">
-                    Connect GitHub with the same account you use on grant issues so we can list
-                    applications where you are the GitHub author.
-                  </p>
+                    {tx("Connect GitHub with the same account you use on grant issues so we can list applications where you are the GitHub author.")}</p>
                   <p className="text-xs">
-                    Grant rows are matched by the issue author field from GitHub—not by email.
-                  </p>
+                    {tx("Grant rows are matched by the issue author field from GitHub—not by email.")}</p>
                 </div>
               ) : isLoading ? (
-                <div className="p-6 text-sm text-muted-foreground">Loading grants from GitHub…</div>
+                <div className="p-6 text-sm text-muted-foreground">{tx("Loading grants from GitHub…")}</div>
               ) : myGrants.length === 0 ? (
                 <div className="p-6 text-sm text-muted-foreground">
-                  No grants found for <span className="font-mono text-foreground">@{login}</span>{" "}
-                  in the configured repos. Open an application from{" "}
+                  {tx("No grants found for ")}<span className="font-mono text-foreground">@{login}</span>{" "}
+                  {tx("in the configured repos. Open an application from")}{" "}
                   <Link href="/apply" className="text-primary underline-offset-2 hover:underline">
-                    Apply
-                  </Link>{" "}
-                  or browse{" "}
+                    {tx("Apply")}</Link>{" "}
+                  {tx("or browse")}{" "}
                   <Link href="/grants" className="text-primary underline-offset-2 hover:underline">
-                    Grants
-                  </Link>
+                    {tx("Grants")}</Link>
                   .
                 </div>
               ) : (
@@ -106,11 +100,11 @@ export default function DashboardPage() {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-border/50 text-muted-foreground">
-                        <th className="px-4 py-3 text-left font-medium">Title</th>
-                        <th className="px-4 py-3 text-left font-medium">Status</th>
-                        <th className="px-4 py-3 text-right font-medium">Amount</th>
-                        <th className="px-4 py-3 text-left font-medium">Submitted</th>
-                        <th className="px-4 py-3 text-right font-medium">Actions</th>
+                        <th className="px-4 py-3 text-left font-medium">{tx("Title")}</th>
+                        <th className="px-4 py-3 text-left font-medium">{tx("Status")}</th>
+                        <th className="px-4 py-3 text-right font-medium">{tx("Amount")}</th>
+                        <th className="px-4 py-3 text-left font-medium">{tx("Submitted")}</th>
+                        <th className="px-4 py-3 text-right font-medium">{tx("Actions")}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -121,15 +115,15 @@ export default function DashboardPage() {
                             <StatusBadge status={g.status} />
                           </td>
                           <td className="px-4 py-3 text-right font-medium text-primary">
-                            ${g.amount.toLocaleString()}
+                            ${g.amount.toLocaleString(uiLocale)}
                           </td>
                           <td className="px-4 py-3 text-muted-foreground">
-                            {new Date(g.submittedDate).toLocaleDateString()}
+                            {new Date(g.submittedDate).toLocaleDateString(uiLocale)}
                           </td>
                           <td className="px-4 py-3 text-right">
                             <Link href={`/grants/${g.id}`}>
                               <Button variant="ghost" size="sm" className="gap-1 text-primary">
-                                View <ChevronRight className="h-3 w-3" />
+                                {tx("View ")}<ChevronRight className="h-3 w-3" />
                               </Button>
                             </Link>
                           </td>
@@ -146,15 +140,13 @@ export default function DashboardPage() {
         <TabsContent value="milestones">
           <div className="space-y-3">
             {login === undefined ? (
-              <p className="text-sm text-muted-foreground">Checking GitHub session…</p>
+              <p className="text-sm text-muted-foreground">{tx("Checking GitHub session…")}</p>
             ) : login === null ? (
               <p className="text-sm text-muted-foreground">
-                Connect GitHub to see milestones for your grants.
-              </p>
+                {tx("Connect GitHub to see milestones for your grants.")}</p>
             ) : milestoneRows.length === 0 ? (
               <p className="text-sm text-muted-foreground">
-                No open milestones for your active grants, or you have no active grants yet.
-              </p>
+                {tx("No open milestones for your active grants, or you have no active grants yet.")}</p>
             ) : (
               milestoneRows.map(({ grant, milestone: m }) => (
                 <Card key={`${grant.id}-${m.number}`} className="border-border/50 bg-card">
@@ -162,25 +154,23 @@ export default function DashboardPage() {
                     <div>
                       <div className="text-sm font-medium text-foreground">{grant.title}</div>
                       <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-                        <span>Milestone {m.number}</span>
+                        <span>{tx("Milestone ")}{m.number}</span>
                         <span className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" /> Due:{" "}
-                          {new Date(m.dueDate).toLocaleDateString()}
+                          <Clock className="h-3 w-3" /> {tx(" Due:")}{" "}
+                          {new Date(m.dueDate).toLocaleDateString(uiLocale)}
                         </span>
-                        <span>${m.amount.toLocaleString()}</span>
+                        <span>${m.amount.toLocaleString(uiLocale)}</span>
                       </div>
                     </div>
                     {grant.githubLink ? (
                       <Button size="sm" variant="outline" className="shrink-0 gap-1" asChild>
                         <a href={grant.githubLink} target="_blank" rel="noopener noreferrer">
                           <ExternalLink className="h-3 w-3" />
-                          Open on GitHub
-                        </a>
+                          {tx("Open on GitHub")}</a>
                       </Button>
                     ) : (
                       <Button size="sm" variant="secondary" disabled className="shrink-0">
-                        No issue link
-                      </Button>
+                        {tx("No issue link")}</Button>
                     )}
                   </CardContent>
                 </Card>

@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronDown, ExternalLink, Gavel } from "lucide-react";
@@ -20,16 +21,17 @@ const OUTCOME: Record<ZcgOutcome, { label: string; className: string }> = {
 };
 
 export function OutcomeBadge({ outcome }: { outcome: ZcgOutcome }) {
+  const { text: tx } = useUi();
   const o = OUTCOME[outcome];
   return (
     <span className={cn("inline-flex shrink-0 items-center rounded-full px-2 py-0.5 text-xs font-medium", o.className)}>
-      {o.label}
+      {tx(o.label)}
     </span>
   );
 }
 
-const fmtDate = (iso: string) =>
-  new Date(`${iso}T00:00:00Z`).toLocaleDateString(undefined, {
+const fmtDate = (locale: string, iso: string) =>
+  new Date(`${iso}T00:00:00Z`).toLocaleDateString(locale, {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -46,16 +48,17 @@ export function DecisionEntry({
   showTitle?: boolean;
   defaultOpen?: boolean;
 }) {
+  const { text: tx, locale: uiLocale } = useUi();
   const [open, setOpen] = useState(defaultOpen);
   const note = d.outcomeText && !/^(approved|declined|remains open)\.?$/i.test(d.outcomeText) ? d.outcomeText : "";
   return (
     <div className="py-3">
       <div className="flex flex-wrap items-center gap-2">
         <OutcomeBadge outcome={d.outcome} />
-        <span className="text-xs text-muted-foreground">{fmtDate(d.meetingDate)}</span>
+        <span className="text-xs text-muted-foreground">{tx(fmtDate(uiLocale, d.meetingDate))}</span>
         {d.requestedUsd != null && (
           <span className="text-xs text-muted-foreground">
-            · requested ${d.requestedUsd.toLocaleString()}
+            {tx("· requested $")}{d.requestedUsd.toLocaleString(uiLocale)}
           </span>
         )}
         <a
@@ -64,7 +67,7 @@ export function DecisionEntry({
           rel="noopener noreferrer"
           className="ml-auto inline-flex items-center gap-1 text-xs text-primary hover:underline"
         >
-          Minutes <ExternalLink className="h-3 w-3" />
+          {tx("Minutes ")}<ExternalLink className="h-3 w-3" />
         </a>
       </div>
       {showTitle && (
@@ -87,7 +90,7 @@ export function DecisionEntry({
             className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground"
           >
             <ChevronDown className={cn("h-3.5 w-3.5 transition-transform", open && "rotate-180")} />
-            {open ? "Hide" : "Show"} committee reasoning ({d.statements.length})
+            {tx(open ? "Hide" : "Show")} {tx(" committee reasoning (")}{d.statements.length})
           </button>
           {open && (
             <ul className="mt-2 space-y-2 border-l-2 border-border pl-3">
@@ -107,6 +110,7 @@ export function DecisionEntry({
 
 /** ZCG committee decisions about one grant, from meeting minutes. Renders nothing when none are found. */
 export function CommitteeDecisionsCard({ forumLink, title }: { forumLink: string; title: string }) {
+  const { text: tx } = useUi();
   const { data } = useQuery<DecisionsResponse>({
     queryKey: ["zcg-decisions", forumLink, title],
     queryFn: async () => {
@@ -124,17 +128,14 @@ export function CommitteeDecisionsCard({ forumLink, title }: { forumLink: string
     <Card className="mb-6">
       <CardHeader className="pb-1">
         <CardTitle className="flex items-center gap-2 text-base">
-          <Gavel className="h-4 w-4 text-primary" /> ZCG committee decisions
-        </CardTitle>
+          <Gavel className="h-4 w-4 text-primary" /> {tx(" ZCG committee decisions")}</CardTitle>
       </CardHeader>
       <CardContent className="divide-y divide-border pt-0">
         {sorted.map((d, i) => (
           <DecisionEntry key={`${d.minutesTopicId}-${d.topicId}`} d={d} defaultOpen={i === 0} />
         ))}
         <p className="pt-3 text-xs text-muted-foreground">
-          Parsed from the committee's published meeting minutes. The minutes are the authoritative
-          record.
-        </p>
+          {tx("Parsed from the committee's published meeting minutes. The minutes are the authoritative record.")}</p>
       </CardContent>
     </Card>
   );

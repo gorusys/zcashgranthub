@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useT } from "@/i18n";
@@ -16,6 +17,7 @@ function readDismissed(): boolean {
 }
 
 export function AnnouncementBar() {
+  const { text: tx } = useUi();
   const router = useRouter();
   const { t } = useT();
   const [dismissed, setDismissed] = useState(false);
@@ -38,7 +40,7 @@ export function AnnouncementBar() {
   return (
     <div
       role="region"
-      aria-label="Announcement"
+      aria-label={tx("Announcement")}
       className="relative border-b border-primary/20 bg-gradient-to-r from-primary/15 via-primary/10 to-primary/15"
     >
       <div className="container mx-auto flex min-h-10 items-center justify-center gap-x-3 px-10 py-2 text-center text-xs sm:text-sm">

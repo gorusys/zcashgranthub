@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import { useMemo, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
@@ -40,11 +41,11 @@ function TopicSkeleton() {
   );
 }
 
-function formatDate(value: string | null): string {
+function formatDate(locale: string, value: string | null): string {
   if (!value) return "Unknown";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "Unknown";
-  return date.toLocaleDateString(undefined, {
+  return date.toLocaleDateString(locale, {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -53,12 +54,13 @@ function formatDate(value: string | null): string {
 
 function sortTopics<T extends { title: string; postsCount: number; lastPostedAt: string | null }>(
   items: T[],
-  sortBy: SortBy
+  sortBy: SortBy,
+  locale: string
 ): T[] {
   const list = [...items];
   if (sortBy === "title") {
     list.sort((a, b) =>
-      a.title.localeCompare(b.title, undefined, { sensitivity: "base" })
+      a.title.localeCompare(b.title, locale, { sensitivity: "base" })
     );
     return list;
   }
@@ -75,6 +77,7 @@ function sortTopics<T extends { title: string; postsCount: number; lastPostedAt:
 }
 
 export default function ForumDiscussionsPage() {
+  const { text: tx, locale: uiLocale } = useUi();
   const router = useRouter();
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState<SortBy>("activity");
@@ -101,16 +104,16 @@ export default function ForumDiscussionsPage() {
 
   const filteredTopics = useMemo(() => {
     const topics = data?.topics ?? [];
-    return sortTopics(topics, sortBy);
-  }, [data?.topics, sortBy]);
+    return sortTopics(topics, sortBy, uiLocale);
+  }, [data?.topics, sortBy, uiLocale]);
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
       <Head>
-        <title>Forum discussions · Zcash Grants Hub</title>
+        <title>{tx("Forum discussions · Zcash Grants Hub")}</title>
         <meta
           name="description"
-          content="Browse active Community Grants discussions from the Zcash forum."
+          content={tx("Browse active Community Grants discussions from the Zcash forum.")}
         />
       </Head>
 
@@ -118,18 +121,16 @@ export default function ForumDiscussionsPage() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground sm:text-3xl">
-              Forum discussions
-            </h1>
+              {tx("Forum discussions")}</h1>
             <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-              Live feed from the{" "}
+              {tx("Live feed from the")}{" "}
               <a
                 href={ZCG_COMMUNITY_GRANTS_FORUM_CATEGORY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary underline-offset-2 hover:underline"
               >
-                Community Grants forum category
-              </a>
+                {tx("Community Grants forum category")}</a>
               .
             </p>
           </div>
@@ -137,8 +138,7 @@ export default function ForumDiscussionsPage() {
             <Button variant="outline" className="gap-2" asChild>
               <Link href="/grants">
                 <MessageSquare className="h-4 w-4" />
-                Browse grants
-              </Link>
+                {tx("Browse grants")}</Link>
             </Button>
             <Button className="gap-2" asChild>
               <a
@@ -146,8 +146,7 @@ export default function ForumDiscussionsPage() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Open forum
-                <ExternalLink className="h-4 w-4" />
+                {tx("Open forum")}<ExternalLink className="h-4 w-4" />
               </a>
             </Button>
           </div>
@@ -163,7 +162,7 @@ export default function ForumDiscussionsPage() {
               setSearch(e.target.value);
               if (page !== 1) goToPage(1);
             }}
-            placeholder="Search topics..."
+            placeholder={tx("Search topics...")}
             className="pl-9"
           />
         </div>
@@ -173,9 +172,9 @@ export default function ForumDiscussionsPage() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="activity">Latest activity</SelectItem>
-              <SelectItem value="replies">Most replies</SelectItem>
-              <SelectItem value="title">Title A-Z</SelectItem>
+              <SelectItem value="activity">{tx("Latest activity")}</SelectItem>
+              <SelectItem value="replies">{tx("Most replies")}</SelectItem>
+              <SelectItem value="title">{tx("Title A-Z")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -186,7 +185,7 @@ export default function ForumDiscussionsPage() {
           <CardContent className="flex items-start gap-3 p-4">
             <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-400" />
             <div>
-              <p className="text-sm font-medium text-red-300">Could not load forum topics</p>
+              <p className="text-sm font-medium text-red-300">{tx("Could not load forum topics")}</p>
               <p className="mt-1 text-xs text-muted-foreground">
                 {error?.message ?? "Unexpected API error"}
               </p>
@@ -205,7 +204,7 @@ export default function ForumDiscussionsPage() {
 
       {!isLoading && !isError && filteredTopics.length === 0 && (
         <div className="rounded-lg border border-border/50 bg-card px-6 py-12 text-center">
-          <p className="text-sm text-muted-foreground">No discussions match your search.</p>
+          <p className="text-sm text-muted-foreground">{tx("No discussions match your search.")}</p>
         </div>
       )}
 
@@ -222,11 +221,11 @@ export default function ForumDiscussionsPage() {
               >
                 <div className="mb-1 text-sm font-medium text-foreground">{topic.title}</div>
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-                  <span>{topic.postsCount} posts</span>
-                  <span>Last activity: {formatDate(topic.lastPostedAt)}</span>
+                  <span>{topic.postsCount} {tx(" posts")}</span>
+                  <span>{tx("Last activity: ")}{tx(formatDate(uiLocale, topic.lastPostedAt))}</span>
                   {topic.subcategoryLabel && (
                     <Badge variant="outline" className="text-[10px] font-medium">
-                      {topic.subcategoryLabel}
+                      {tx(topic.subcategoryLabel)}
                     </Badge>
                   )}
                 </div>
@@ -248,8 +247,7 @@ export default function ForumDiscussionsPage() {
               className="gap-1"
             >
               <ChevronLeft className="h-4 w-4" />
-              Previous
-            </Button>
+              {tx("Previous")}</Button>
             <Button
               type="button"
               variant="outline"
@@ -258,13 +256,12 @@ export default function ForumDiscussionsPage() {
               onClick={() => goToPage(page + 1)}
               className="gap-1"
             >
-              Next
-              <ChevronRight className="h-4 w-4" />
+              {tx("Next")}<ChevronRight className="h-4 w-4" />
             </Button>
           </div>
           <p className="text-xs text-muted-foreground">
-            Forum page {page}
-            {data?.hasMore ? "" : " · End of available topics"}
+            {tx("Forum page ")}{page}
+            {tx(data?.hasMore ? "" : " · End of available topics")}
           </p>
         </div>
       )}

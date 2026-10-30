@@ -25,9 +25,9 @@ Official domain: [zgrantshub.com](https://zgrantshub.com)
 
 ## Languages
 
-English, Spanish (`/es`) and Brazilian Portuguese (`/pt-BR`) via Next.js locale routing and a language switcher. Translated so far: navigation, footer, announcement bar, landing hero, the Funding Finder (including its recommendations) and the Bounties page; other pages fall back to English.
+English, Spanish (`/es`) and Brazilian Portuguese (`/pt-BR`) via Next.js locale routing and a language switcher. All available pages and shared components use translated interface copy, including application forms, validation, statuses, dashboards, charts, and metadata. Dates and numbers follow the selected locale, and the language switcher preserves the route, query, and hash and saves the preference in the NEXT_LOCALE cookie. Source proposal content and submitted values remain unchanged.
 
-To add a language: copy `src/i18n/messages/es.ts`, translate every value (keep `{placeholders}`), register it in `LOCALES` (`src/i18n/translate.ts`) and `i18n.locales` (`next.config.mjs`). The type checker rejects missing keys and the tests reject changed placeholders. Native-speaker review is welcome; translations here were written by the maintainers.
+To add a language: copy `src/i18n/messages/es.ts`, translate every value (keep `{placeholders}`), register it in `LOCALES` (`src/i18n/translate.ts`) and `i18n.locales` (`next.config.mjs`). Extend `src/i18n/messages/ui.json` and the locale mapping in `src/i18n/uiTranslate.ts` for the new language as well. The type checker rejects missing keys and the tests reject changed placeholders. Shared interface copy is in `src/i18n/messages/ui.json` (English source → Spanish and Portuguese translations). Use `useUi().text` (from `src/i18n/useUi.ts`) in components, preserve API/form identifiers, and keep placeholders unchanged. Run `npm run test:i18n` for catalog and source coverage, or `I18N_BASE_URL=http://localhost:3000 npm run test:i18n:browser` against a running app for route and language-switching checks. Native-speaker review is welcome.
 
 ## Tech Stack
 

@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import { useEffect, useMemo, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
@@ -33,9 +34,10 @@ function Choice<T extends string>({
   value: T | null;
   onChange: (v: T) => void;
 }) {
+  const { text: tx } = useUi();
   return (
     <fieldset>
-      <legend className="mb-2 text-sm font-medium text-foreground">{legend}</legend>
+      <legend className="mb-2 text-sm font-medium text-foreground">{tx(legend)}</legend>
       <div className="grid gap-2 sm:grid-cols-3">
         {options.map((o) => (
           <button
@@ -50,8 +52,8 @@ function Choice<T extends string>({
                 : "border-border text-muted-foreground hover:border-primary/50 hover:text-foreground"
             )}
           >
-            <div className="font-medium text-foreground">{o.label}</div>
-            {o.hint && <div className="mt-0.5 text-xs">{o.hint}</div>}
+            <div className="font-medium text-foreground">{tx(o.label)}</div>
+            {o.hint && <div className="mt-0.5 text-xs">{tx(o.hint)}</div>}
           </button>
         ))}
       </div>
@@ -60,6 +62,7 @@ function Choice<T extends string>({
 }
 
 export default function FundingFinderPage() {
+  const { text: tx, locale: uiLocale } = useUi();
   const [stage, setStage] = useState<WorkStage | null>(null);
   const [size, setSize] = useState<WorkSize | null>(null);
   const [kind, setKind] = useState<WorkKind | null>(null);
@@ -96,10 +99,10 @@ export default function FundingFinderPage() {
   return (
     <div className="container mx-auto min-w-0 max-w-4xl px-4 py-6 sm:py-8">
       <Head>
-        <title>{`${t("finder.title")} · Zcash Grants Hub`}</title>
+        <title>{tx(`${t("finder.title")} · Zcash Grants Hub`)}</title>
         <meta
           name="description"
-          content="Answer three questions to find which Zcash funding route fits your work: ZCG, Coinholder retroactive grants, ZecHub bounties or the ZecHub DAO."
+          content={tx("Answer three questions to find which Zcash funding route fits your work: ZCG, Coinholder retroactive grants, ZecHub bounties or the ZecHub DAO.")}
         />
       </Head>
 
@@ -134,10 +137,10 @@ export default function FundingFinderPage() {
                   {r.id === "coinholder" && round && milestone && now != null && (
                     <p className="rounded-md bg-primary/10 px-3 py-2 text-foreground">
                       {t("finder.roundNote", {
-                        round: round.label,
+                        round: tx(round.label),
                         phase: t(`retro.phase.${roundPhase(round, now)}` as MessageKey),
                         milestone: t(`retro.ms.${milestone.label}` as MessageKey),
-                        date: new Date(milestone.at).toLocaleString(locale, {
+                        date: new Date(milestone.at).toLocaleString(uiLocale, {
                           dateStyle: "medium",
                           timeStyle: "short",
                           timeZone: "UTC",
@@ -147,25 +150,25 @@ export default function FundingFinderPage() {
                   )}
                   <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
                     {r.why.map((w) => (
-                      <li key={w}>{w}</li>
+                      <li key={w}>{tx(w)}</li>
                     ))}
                   </ul>
                   <div>
                     <div className="mb-1 font-medium text-foreground">{t("finder.nextSteps")}</div>
                     <ol className="list-decimal space-y-1 pl-5 text-muted-foreground">
                       {r.steps.map((s) => (
-                        <li key={s}>{s}</li>
+                        <li key={s}>{tx(s)}</li>
                       ))}
                     </ol>
                   </div>
                   <Button asChild size="sm" variant={r.fit === "best" ? "default" : "outline"}>
                     {external ? (
                       <a href={r.href} target="_blank" rel="noopener noreferrer">
-                        {r.cta} <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
+                        {tx(r.cta)} <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
                       </a>
                     ) : (
                       <Link href={r.href}>
-                        {r.cta} <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+                        {tx(r.cta)} <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
                       </Link>
                     )}
                   </Button>

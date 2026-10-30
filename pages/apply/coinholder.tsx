@@ -1,3 +1,4 @@
+import { UiText } from "@/i18n/ui";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 
@@ -19,7 +20,7 @@ export default function ApplyCoinholderRedirect() {
 
   return (
     <div className="container mx-auto px-4 py-8 text-sm text-muted-foreground">
-      Redirecting to apply…
+      <UiText text="Redirecting to apply…" />
     </div>
   );
 }

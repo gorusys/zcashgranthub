@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import Link from "next/link";
 import { useT, type MessageKey } from "@/i18n";
 
@@ -20,6 +21,7 @@ const links: FooterLink[] = [
 ];
 
 export function Footer() {
+  const { text: tx } = useUi();
   const { t } = useT();
   return (
     <footer className="border-t border-border/50 bg-background">
@@ -35,7 +37,7 @@ export function Footer() {
               aria-hidden
             />
             <div className="flex flex-col">
-              <span className="text-sm font-bold text-foreground">Zcash Grants Hub</span>
+              <span className="text-sm font-bold text-foreground">{tx("Zcash Grants Hub")}</span>
               <span className="text-xs text-muted-foreground">{t("footer.subtitle")}</span>
             </div>
           </div>
@@ -50,7 +52,7 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  {link.labelKey ? t(link.labelKey) : link.text}
+                  {tx(link.labelKey ? t(link.labelKey) : link.text)}
                 </a>
               ) : (
                 <Link
@@ -58,7 +60,7 @@ export function Footer() {
                   href={link.href}
                   className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  {link.labelKey ? t(link.labelKey) : link.text}
+                  {tx(link.labelKey ? t(link.labelKey) : link.text)}
                 </Link>
               )
             )}

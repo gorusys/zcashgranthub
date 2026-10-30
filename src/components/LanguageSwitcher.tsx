@@ -17,6 +17,8 @@ export function LanguageSwitcher({ className, showLabel = false }: { className?:
   const router = useRouter();
   const { t, locale } = useT();
   const change = (l: string) => {
+    if (!(LOCALES as readonly string[]).includes(l) || l === locale) return;
+    document.cookie = `NEXT_LOCALE=${encodeURIComponent(l)}; Path=/; Max-Age=31536000; SameSite=Lax`;
     void router.push({ pathname: router.pathname, query: router.query }, router.asPath, { locale: l as Locale, scroll: false });
   };
   return (

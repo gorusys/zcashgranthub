@@ -1,3 +1,5 @@
+import { useUi } from "@/i18n/useUi";
+import { UiText } from "@/i18n/ui";
 import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import {
@@ -42,75 +44,61 @@ const stepLabels = [
 
 const coinholderTerms: ReactNode[] = [
   <>
-    I agree to the{" "}
+    <UiText text="I agree to the" />{" "}
     <a
       href="https://9ba4718c-5c73-47c3-a024-4fc4e5278803.usrfiles.com/ugd/9ba471_6ff6db4095fd4c4ba21babec361e927e.pdf"
       target="_blank"
       rel="noopener noreferrer"
       className="underline hover:text-foreground"
     >
-      Grant Agreement
-    </a>{" "}
-    terms if funded
-  </>,
+      <UiText text="Grant Agreement" /></a>{" "}
+    <UiText text="terms if funded" /></>,
   <>
-    I agree to{" "}
+    <UiText text="I agree to" />{" "}
     <a
       href="https://9ba4718c-5c73-47c3-a024-4fc4e5278803.usrfiles.com/ugd/9ba471_7d9e73d16b584a61bae92282b208efc4.pdf"
       target="_blank"
       rel="noopener noreferrer"
       className="underline hover:text-foreground"
     >
-      Provide KYC information
-    </a>{" "}
-    if funded above $50,000 USD
-  </>,
-  <>I agree to disclose conflicts of interest</>,
+      <UiText text="Provide KYC information" /></a>{" "}
+    <UiText text="if funded above $50,000 USD" /></>,
+  <><UiText text="I agree to disclose conflicts of interest" /></>,
   <>
-    I understand that this grant program is only eligible for{" "}
-    <span className="font-medium text-foreground">completed work</span>, as it
-    is a retroactive grant program. Applications for planned or partially completed
-    work will not be considered.
-  </>,
+    <UiText text="I understand that this grant program is only eligible for" />{" "}
+    <span className="font-medium text-foreground"><UiText text="completed work" /></span><UiText text=", as it is a retroactive grant program. Applications for planned or partially completed work will not be considered." /></>,
   <>
-    I agree that for any new open-source software, I will create a{" "}
-    <code className="text-xs">CONTRIBUTING.md</code> file aligned with the{" "}
+    <UiText text="I agree that for any new open-source software, I will create a" />{" "}
+    <code className="text-xs"><UiText text="CONTRIBUTING.md" /></code> <UiText text=" file aligned with the" />{" "}
     <a
       href="https://github.com/zcash/librustzcash/blob/main/CONTRIBUTING.md#styleguides"
       target="_blank"
       rel="noopener noreferrer"
       className="underline hover:text-foreground"
     >
-      librustzcash style guides
-    </a>
+      <UiText text="librustzcash style guides" /></a>
     .
   </>,
   <>
-    I understand when contributing to existing Zcash code, I will follow project
-    contribution guidelines (merge, branch, PR, commit) as in librustzcash.
-  </>,
+    <UiText text="I understand when contributing to existing Zcash code, I will follow project contribution guidelines (merge, branch, PR, commit) as in librustzcash." /></>,
   <>
-    I understand grants are valued in USD but disbursed in Shielded ZEC, and
-    amounts may fluctuate with the exchange rate at payment time.
-  </>,
+    <UiText text="I understand grants are valued in USD but disbursed in Shielded ZEC, and amounts may fluctuate with the exchange rate at payment time." /></>,
   <>
-    I understand it is my responsibility to post a link to this issue on the{" "}
+    <UiText text="I understand it is my responsibility to post a link to this issue on the" />{" "}
     <a
       href="https://forum.zcashcommunity.com/t/about-the-retroactive-grants-category/52106"
       target="_blank"
       rel="noopener noreferrer"
       className="underline hover:text-foreground"
     >
-      Zcash Community Forums (Retroactive Grants)
-    </a>{" "}
-    after submission so the community can discuss and vote. If I cannot post
-    (e.g. new user limits), I will comment on the issue for help with permissions.
-  </>,
+      <UiText text="Zcash Community Forums (Retroactive Grants)" /></a>{" "}
+    <UiText text="after submission so the community can discuss and vote. If I cannot post (e.g. new user limits), I will comment on the issue for help with permissions." /></>,
 ];
 
 const LAST_STEP = stepLabels.length - 1;
 
 export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean }) {
+  const { text: tx } = useUi();
   const [step, setStep] = useState(0);
   const [termsAccepted, setTermsAccepted] = useState<boolean[]>(() =>
     new Array(COINHOLDER_TERMS_COUNT).fill(false)
@@ -197,19 +185,16 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
       {!embedded && (
         <p className="mb-2 text-xs text-muted-foreground">
           <Link href="/apply" className="text-primary hover:underline">
-            ZCG (forward-looking) grant application
-          </Link>
+            {tx("ZCG (forward-looking) grant application")}</Link>
           {" · "}
           <Link href="/grants?program=coinholder" className="text-primary hover:underline">
-            Browse Coinholder grants
-          </Link>
+            {tx("Browse Coinholder grants")}</Link>
         </p>
       )}
       <Heading
         className={`mb-1 font-bold text-foreground ${embedded ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl"}`}
       >
-        Lockbox — Coinholder retroactive grant application
-      </Heading>
+        {tx("Lockbox — Coinholder retroactive grant application")}</Heading>
       {/* <p className="mb-2 text-sm text-muted-foreground sm:mb-4 sm:text-base">
         For <span className="font-medium text-foreground">completed work only</span>
         . Submitted issues are created in{" "}
@@ -256,7 +241,7 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
                 >
                   {i < step ? <Check className="h-3 w-3" /> : i + 1}
                 </div>
-                {label}
+                {tx(label)}
               </button>
             ))}
           </div>
@@ -266,7 +251,7 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
           {step === 0 && (
             <Card className="border-border/50 bg-card">
               <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
-                <CardTitle>Terms & Conditions</CardTitle>
+                <CardTitle>{tx("Terms & Conditions")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 px-4 pb-4 sm:space-y-4 sm:px-6 sm:pb-6">
                 {coinholderTerms.map((term, i) => (
@@ -289,9 +274,7 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
                   </label>
                 ))}
                 <p className="text-xs text-muted-foreground">
-                  All items must be accepted to continue (including the forum posting
-                  commitment).
-                </p>
+                  {tx("All items must be accepted to continue (including the forum posting commitment).")}</p>
               </CardContent>
             </Card>
           )}
@@ -299,24 +282,22 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
           {step === 1 && (
             <Card className="border-border/50 bg-card">
               <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
-                <CardTitle>Applicant & organization</CardTitle>
+                <CardTitle>{tx("Applicant & organization")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 px-4 pb-4 sm:px-6 sm:pb-6">
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">
-                    Application owners (@octocat, @octocat1) *
-                  </label>
+                    {tx("Application owners (@octocat, @octocat1) *")}</label>
                   <Input
                     value={formData.github}
                     onChange={(e) => updateField("github", e.target.value)}
-                    placeholder="@owner1, @owner2"
+                    placeholder={tx("@owner1, @owner2")}
                     className="bg-secondary"
                   />
                 </div>
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">
-                    Organization or individual name *
-                  </label>
+                    {tx("Organization or individual name *")}</label>
                   <Input
                     value={formData.organizationOrIndividualName}
                     onChange={(e) =>
@@ -327,11 +308,9 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
                 </div>
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">
-                    Additional team members *
-                  </label>
+                    {tx("Additional team members *")}</label>
                   <p className="mb-2 text-xs text-muted-foreground">
-                    YAML-style list. Use “None” or “N/A” if you are the only person.
-                  </p>
+                    {tx("YAML-style list. Use “None” or “N/A” if you are the only person.")}</p>
                   <Textarea
                     value={formData.additionalTeamMembers}
                     onChange={(e) =>
@@ -342,9 +321,7 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
                 </div>
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">
-                    How did you learn about the Lockbox: Coinholder Retroactive Grants
-                    Program? *
-                  </label>
+                    {tx("How did you learn about the Lockbox: Coinholder Retroactive Grants Program? *")}</label>
                   <Textarea
                     value={formData.discovery}
                     onChange={(e) => updateField("discovery", e.target.value)}
@@ -358,50 +335,47 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
           {step === 2 && (
             <Card className="border-border/50 bg-card">
               <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
-                <CardTitle>Project overview</CardTitle>
+                <CardTitle>{tx("Project overview")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 px-4 pb-4 sm:px-6 sm:pb-6">
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">
-                    Application name (used in issue title) *
-                  </label>
+                    {tx("Application name (used in issue title) *")}</label>
                   <Input
                     value={formData.applicationTitle}
                     onChange={(e) =>
                       updateField("applicationTitle", e.target.value)
                     }
-                    placeholder="Short name for your retroactive application"
+                    placeholder={tx("Short name for your retroactive application")}
                     className="bg-secondary"
                   />
                 </div>
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">
-                    Requested grant amount (USD) *
-                  </label>
+                    {tx("Requested grant amount (USD) *")}</label>
                   <Input
                     value={formData.requestedAmountUsd}
                     onChange={(e) =>
                       updateField("requestedAmountUsd", e.target.value)
                     }
-                    placeholder="e.g. $50,000"
+                    placeholder={tx("e.g. $50,000")}
                     className="bg-secondary"
                   />
                 </div>
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">
-                    Category *
-                  </label>
+                    {tx("Category *")}</label>
                   <Select
                     value={formData.category}
                     onValueChange={(v) => updateField("category", v)}
                   >
                     <SelectTrigger className="bg-secondary">
-                      <SelectValue placeholder="Select a category" />
+                      <SelectValue placeholder={tx("Select a category")} />
                     </SelectTrigger>
                     <SelectContent>
                       {COINHOLDER_CATEGORIES.map((c) => (
                         <SelectItem key={c} value={c}>
-                          {c}
+                          {tx(c)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -409,8 +383,7 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
                 </div>
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">
-                    Project summary *
-                  </label>
+                    {tx("Project summary *")}</label>
                   <Textarea
                     value={formData.projectSummary}
                     onChange={(e) => updateField("projectSummary", e.target.value)}
@@ -419,8 +392,7 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
                 </div>
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">
-                    Project description *
-                  </label>
+                    {tx("Project description *")}</label>
                   <Textarea
                     value={formData.projectDescription}
                     onChange={(e) =>
@@ -431,8 +403,7 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
                 </div>
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">
-                    Technical approach (how you did it) *
-                  </label>
+                    {tx("Technical approach (how you did it) *")}</label>
                   <Textarea
                     value={formData.technicalApproach}
                     onChange={(e) =>
@@ -443,12 +414,11 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
                 </div>
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">
-                    Time period of work completion *
-                  </label>
+                    {tx("Time period of work completion *")}</label>
                   <Input
                     value={formData.timePeriod}
                     onChange={(e) => updateField("timePeriod", e.target.value)}
-                    placeholder="e.g. Q3 2024 or July 2024 – September 2024"
+                    placeholder={tx("e.g. Q3 2024 or July 2024 – September 2024")}
                     className="bg-secondary"
                   />
                 </div>
@@ -459,24 +429,22 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
           {step === 3 && (
             <Card className="border-border/50 bg-card">
               <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
-                <CardTitle>Budget & funding</CardTitle>
+                <CardTitle>{tx("Budget & funding")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 px-4 pb-4 sm:px-6 sm:pb-6">
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">
-                    Total budget (USD) *
-                  </label>
+                    {tx("Total budget (USD) *")}</label>
                   <Input
                     value={formData.totalBudgetUsd}
                     onChange={(e) => updateField("totalBudgetUsd", e.target.value)}
-                    placeholder="e.g. $50,000"
+                    placeholder={tx("e.g. $50,000")}
                     className="bg-secondary"
                   />
                 </div>
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">
-                    Budget breakdown *
-                  </label>
+                    {tx("Budget breakdown *")}</label>
                   <Textarea
                     value={formData.budgetBreakdown}
                     onChange={(e) => updateField("budgetBreakdown", e.target.value)}
@@ -485,8 +453,7 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
                 </div>
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">
-                    Previous funding (Coinholder program)
-                  </label>
+                    {tx("Previous funding (Coinholder program)")}</label>
                   <Select
                     value={formData.prevFunding}
                     onValueChange={(v) =>
@@ -497,15 +464,14 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="no">No</SelectItem>
-                      <SelectItem value="yes">Yes</SelectItem>
+                      <SelectItem value="no">{tx("No")}</SelectItem>
+                      <SelectItem value="yes">{tx("Yes")}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">
-                    Previous funding details
-                  </label>
+                    {tx("Previous funding details")}</label>
                   <Textarea
                     value={formData.prevFundingDetails}
                     onChange={(e) =>
@@ -516,8 +482,7 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
                 </div>
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">
-                    Other funding sources
-                  </label>
+                    {tx("Other funding sources")}</label>
                   <Select
                     value={formData.otherFunding}
                     onValueChange={(v) =>
@@ -528,15 +493,14 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="no">No</SelectItem>
-                      <SelectItem value="yes">Yes</SelectItem>
+                      <SelectItem value="no">{tx("No")}</SelectItem>
+                      <SelectItem value="yes">{tx("Yes")}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">
-                    Other funding sources details
-                  </label>
+                    {tx("Other funding sources details")}</label>
                   <Textarea
                     value={formData.otherFundingDetails}
                     onChange={(e) =>
@@ -552,13 +516,12 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
           {step === 4 && (
             <Card className="border-border/50 bg-card">
               <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
-                <CardTitle>Impact & evidence</CardTitle>
+                <CardTitle>{tx("Impact & evidence")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 px-4 pb-4 sm:px-6 sm:pb-6">
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">
-                    Success metrics *
-                  </label>
+                    {tx("Success metrics *")}</label>
                   <Textarea
                     value={formData.successMetrics}
                     onChange={(e) => updateField("successMetrics", e.target.value)}
@@ -567,8 +530,7 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
                 </div>
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">
-                    Proof of completion *
-                  </label>
+                    {tx("Proof of completion *")}</label>
                   <Textarea
                     value={formData.proofOfCompletion}
                     onChange={(e) =>
@@ -579,15 +541,14 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
                 </div>
                 <div>
                   <label className="mb-1 block text-sm font-medium text-foreground">
-                    Conflict of interest disclosure (optional)
-                  </label>
+                    {tx("Conflict of interest disclosure (optional)")}</label>
                   <Textarea
                     value={formData.conflictOfInterest}
                     onChange={(e) =>
                       updateField("conflictOfInterest", e.target.value)
                     }
                     className="bg-secondary"
-                    placeholder="Disclose any actual, potential, or perceived conflicts."
+                    placeholder={tx("Disclose any actual, potential, or perceived conflicts.")}
                   />
                 </div>
               </CardContent>
@@ -597,41 +558,39 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
           {step === LAST_STEP && (
             <Card className="border-border/50 bg-card">
               <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
-                <CardTitle>Review & submit</CardTitle>
+                <CardTitle>{tx("Review & submit")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 px-4 pb-4 sm:space-y-6 sm:px-6 sm:pb-6">
                 <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
                   <div>
                     <span className="text-xs text-muted-foreground">
-                      Application name
-                    </span>
+                      {tx("Application name")}</span>
                     <p className="font-medium text-foreground">
                       {formData.applicationTitle || "—"}
                     </p>
                   </div>
                   <div>
                     <span className="text-xs text-muted-foreground">
-                      Requested amount
-                    </span>
+                      {tx("Requested amount")}</span>
                     <p className="font-medium text-primary">
                       {formData.requestedAmountUsd || "—"}
                     </p>
                   </div>
                   <div>
-                    <span className="text-xs text-muted-foreground">Category</span>
+                    <span className="text-xs text-muted-foreground">{tx("Category")}</span>
                     <p className="font-medium text-foreground">
                       {formData.category || "—"}
                     </p>
                   </div>
                   <div>
-                    <span className="text-xs text-muted-foreground">Org / name</span>
+                    <span className="text-xs text-muted-foreground">{tx("Org / name")}</span>
                     <p className="font-medium text-foreground">
                       {formData.organizationOrIndividualName || "—"}
                     </p>
                   </div>
                 </div>
                 <div>
-                  <span className="text-xs text-muted-foreground">Summary</span>
+                  <span className="text-xs text-muted-foreground">{tx("Summary")}</span>
                   <p className="text-sm text-muted-foreground">
                     {formData.projectSummary || "—"}
                   </p>
@@ -642,9 +601,7 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
                     onCheckedChange={() => setConfirmed(!confirmed)}
                   />
                   <span className="text-sm text-foreground">
-                    I confirm all information is accurate and this application is for
-                    completed work only.
-                  </span>
+                    {tx("I confirm all information is accurate and this application is for completed work only.")}</span>
                 </label>
                 <Button
                   size="lg"
@@ -653,10 +610,10 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
                   onClick={() => void handleSubmitToGitHub()}
                 >
                   <FileText className="h-4 w-4" />
-                  {isSubmitting ? "Submitting…" : "Submit retroactive application"}
+                  {tx(isSubmitting ? "Submitting…" : "Submit retroactive application")}
                 </Button>
                 {submitError && (
-                  <p className="text-sm text-destructive">{submitError}</p>
+                  <p className="text-sm text-destructive">{tx(submitError)}</p>
                 )}
               </CardContent>
             </Card>
@@ -664,8 +621,7 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
 
           <div className="mt-4 flex items-center justify-between border-t border-border/50 pt-4 sm:mt-6 sm:pt-6">
             <Button variant="outline" size="sm" className="gap-1 text-muted-foreground">
-              <Save className="h-3.5 w-3.5" /> Save draft
-            </Button>
+              <Save className="h-3.5 w-3.5" /> {tx(" Save draft")}</Button>
             <div className="flex gap-2 sm:gap-3">
               {step > 0 && (
                 <Button
@@ -673,8 +629,7 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
                   onClick={() => setStep(step - 1)}
                   className="gap-1"
                 >
-                  <ChevronLeft className="h-4 w-4" /> Back
-                </Button>
+                  <ChevronLeft className="h-4 w-4" /> {tx(" Back")}</Button>
               )}
               {step < LAST_STEP && (
                 <Button
@@ -682,7 +637,7 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
                   disabled={step === 0 && !allTermsAccepted}
                   className="gap-1 bg-primary text-primary-foreground"
                 >
-                  Continue <ChevronRight className="h-4 w-4" />
+                  {tx("Continue ")}<ChevronRight className="h-4 w-4" />
                 </Button>
               )}
             </div>

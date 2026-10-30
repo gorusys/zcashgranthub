@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import Head from "next/head";
 import { Code2, Rss } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -38,20 +39,17 @@ const ENDPOINTS: Array<{ path: string; desc: string; params?: string; example: s
 ];
 
 export default function DevelopersPage() {
+  const { text: tx } = useUi();
   return (
     <div className="container mx-auto min-w-0 max-w-4xl px-4 py-6 sm:py-8">
       <Head>
-        <title>API & feeds · Zcash Grants Hub</title>
-        <meta name="description" content="Free, read-only JSON API and RSS feed for Zcash grants data." />
+        <title>{tx("API & feeds · Zcash Grants Hub")}</title>
+        <meta name="description" content={tx("Free, read-only JSON API and RSS feed for Zcash grants data.")} />
       </Head>
       <h1 className="flex items-center gap-2 text-2xl font-bold text-foreground sm:text-3xl">
-        <Code2 className="h-7 w-7 text-primary" /> API &amp; feeds
-      </h1>
+        <Code2 className="h-7 w-7 text-primary" /> {tx(" API & feeds")}</h1>
       <p className="mb-6 mt-2 text-sm text-muted-foreground sm:text-base">
-        Free, read-only, no key needed. Responses are JSON with CORS enabled, cached for about
-        five minutes, and built from the programs' public GitHub repositories and forum posts.
-        Fields are only added within <code>v1</code>, never renamed or removed.
-      </p>
+        {tx("Free, read-only, no key needed. Responses are JSON with CORS enabled, cached for about five minutes, and built from the programs' public GitHub repositories and forum posts. Fields are only added within ")}<code>v1</code>{tx(", never renamed or removed.")}</p>
       <div className="space-y-4">
         {ENDPOINTS.map((e) => (
           <Card key={e.path}>
@@ -62,10 +60,10 @@ export default function DevelopersPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-sm">
-              <p className="text-muted-foreground">{e.desc}</p>
+              <p className="text-muted-foreground">{tx(e.desc)}</p>
               {e.params && (
                 <p className="text-muted-foreground">
-                  <span className="font-medium text-foreground">Query: </span>
+                  <span className="font-medium text-foreground">{tx("Query: ")}</span>
                   <code className="break-words">{e.params}</code>
                 </p>
               )}
@@ -77,12 +75,10 @@ export default function DevelopersPage() {
         ))}
       </div>
       <p className="mt-6 text-sm text-muted-foreground">
-        Building something with this data? Open an issue or PR on{" "}
+        {tx("Building something with this data? Open an issue or PR on")}{" "}
         <a href="https://github.com/gorusys/zcashgranthub" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
-          GitHub
-        </a>
-        . The hub is open source, and other projects using the data helps keep it maintained.
-      </p>
+          {tx("GitHub")}</a>
+        {tx(". The hub is open source, and other projects using the data helps keep it maintained.")}</p>
     </div>
   );
 }

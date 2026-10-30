@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Script from "next/script";
@@ -25,6 +26,7 @@ const queryClient = new QueryClient({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
+  const { text: tx } = useUi();
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider
@@ -37,12 +39,12 @@ export default function App({ Component, pageProps }: AppProps) {
           <title>Zcash Grants Hub</title>
           <meta
             name="description"
-            content="Zcash Grants Hub: discover grants, submit proposals via GitHub, and explore treasury and funding insights for the Zcash community."
+            content={tx("Zcash Grants Hub: discover grants, submit proposals via GitHub, and explore treasury and funding insights for the Zcash community.")}
           />
           <meta property="og:title" content="Zcash Grants Hub" />
           <meta
             property="og:description"
-            content="A unified platform for Zcash grants discovery, proposal submission, and transparent treasury analytics."
+            content={tx("A unified platform for Zcash grants discovery, proposal submission, and transparent treasury analytics.")}
           />
           <meta property="og:url" content="https://zgrantshub.com" />
           <meta
@@ -53,7 +55,7 @@ export default function App({ Component, pageProps }: AppProps) {
             name="twitter:image"
             content="https://zgrantshub.com/favicon.svg"
           />
-          <link rel="alternate" type="application/rss+xml" title="Zcash Grants Hub: grant updates" href="/feed.xml" />
+          <link rel="alternate" type="application/rss+xml" title={tx("Zcash Grants Hub: grant updates")} href="/feed.xml" />
           <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
           <link rel="apple-touch-icon" href="/favicon.svg" />
         </Head>

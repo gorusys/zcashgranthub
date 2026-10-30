@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import Link from "next/link";
 import type { NextRouter } from "next/router";
 import { useRouter } from "next/router";
@@ -28,12 +29,13 @@ import { useT, type MessageKey } from "@/i18n";
 
 
 function ZecPricePill({ state, className }: { state: ZecUsdPriceState; className?: string }) {
+  const { text: tx, locale: uiLocale } = useUi();
   const { usd, change24hPct, status } = state;
   const loading = status === "idle" || status === "loading";
 
   const priceLabel =
     usd != null
-      ? `$${usd.toLocaleString(undefined, {
+      ? `$${usd.toLocaleString(uiLocale, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         })}`
@@ -57,7 +59,7 @@ function ZecPricePill({ state, className }: { state: ZecUsdPriceState; className
             up ? "text-emerald-400" : down ? "text-red-400" : "text-muted-foreground"
           }
         >
-          {label}
+          {tx(label)}
         </span>
       </>
     );
@@ -70,16 +72,17 @@ function ZecPricePill({ state, className }: { state: ZecUsdPriceState; className
   return (
     <div
       className={`flex items-center gap-1.5 rounded-md bg-secondary px-2.5 py-1.5 text-xs font-medium ${className ?? ""}`}
-      title="ZEC/USD from CoinGecko (refreshes about every 2 minutes)"
+      title={tx("ZEC/USD from CoinGecko (refreshes about every 2 minutes)")}
     >
-      <span className="text-muted-foreground">ZEC</span>
-      <span className="text-foreground">{priceLabel}</span>
+      <span className="text-muted-foreground">{tx("ZEC")}</span>
+      <span className="text-foreground">{tx(priceLabel)}</span>
       {changeEl}
     </div>
   );
 }
 
 function UpdatesMenu({ triggerClassName }: { triggerClassName?: string }) {
+  const { text: tx } = useUi();
   const { updates, markSeen, active } = useGrantUpdates();
   const { t } = useT();
   const count = updates.length;
@@ -90,7 +93,7 @@ function UpdatesMenu({ triggerClassName }: { triggerClassName?: string }) {
           variant="ghost"
           size="icon"
           className={triggerClassName ?? "relative h-9 w-9 text-muted-foreground"}
-          aria-label={count ? (count === 1 ? t("updates.countOne") : t("updates.count", { n: count })) : t("updates.none")}
+          aria-label={tx(count ? (count === 1 ? t("updates.countOne") : t("updates.count", { n: count })) : t("updates.none"))}
         >
           <Bell className="h-4 w-4" />
           {count > 0 && (
@@ -116,18 +119,18 @@ function UpdatesMenu({ triggerClassName }: { triggerClassName?: string }) {
               <Link href={`/grants/${u.grantId}`} className="flex cursor-pointer flex-col items-start gap-0.5">
                 <span className="line-clamp-1 w-full text-left text-sm text-foreground">{u.title}</span>
                 <span className="w-full text-left text-xs text-muted-foreground">
-                  {u.kind === "status"
-                    ? `${statusConfig[u.from!].label} → ${statusConfig[u.to!].label}`
+                  {tx(u.kind === "status"
+                    ? `${tx(statusConfig[u.from!].label)} → ${tx(statusConfig[u.to!].label)}`
                     : u.kind === "new"
-                      ? `${t("updates.yourApplication")} · ${statusConfig[u.to!].label}`
-                      : t("updates.newActivity")}
+                      ? `${t("updates.yourApplication")} · ${tx(statusConfig[u.to!].label)}`
+                      : t("updates.newActivity"))}
                 </span>
               </Link>
             </DropdownMenuItem>
           ))
         ) : (
           <p className="px-2 py-1.5 text-xs leading-relaxed text-muted-foreground">
-            {active ? t("updates.noChanges") : t("updates.empty")}
+            {tx(active ? t("updates.noChanges") : t("updates.empty"))}
           </p>
         )}
         {count > 6 && (
@@ -203,6 +206,7 @@ const navLinks: NavLink[] = [
 ];
 
 export function Navbar() {
+  const { text: tx } = useUi();
   const router = useRouter();
   const { t } = useT();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -245,13 +249,12 @@ export function Navbar() {
           />
           <div className="hidden flex-col sm:flex">
             <span className="whitespace-nowrap text-sm font-bold leading-none tracking-tight text-foreground">
-              Zcash Grants Hub
-            </span>
+              {tx("Zcash Grants Hub")}</span>
             <span className="mt-0.5 whitespace-nowrap text-[10px] leading-none text-muted-foreground">
               {t("nav.tagline")}
             </span>
           </div>
-          <span className="text-sm font-bold text-foreground sm:hidden">Zcash Grants Hub</span>
+          <span className="text-sm font-bold text-foreground sm:hidden">{tx("Zcash Grants Hub")}</span>
         </Link>
 
         <div className="hidden items-center gap-0.5 xl:flex">
@@ -301,8 +304,8 @@ export function Navbar() {
               onClick={clearGitHubSession}
             >
               <Github className="h-4 w-4" />
-              <span className="hidden lg:inline">@{sessionLogin} ({t("nav.disconnect")})</span>
-              <span className="lg:hidden">@{sessionLogin}</span>
+              <span className="hidden lg:inline">@{tx(sessionLogin)} ({t("nav.disconnect")})</span>
+              <span className="lg:hidden">@{tx(sessionLogin)}</span>
             </Button>
           ) : (
             <Button
@@ -313,7 +316,7 @@ export function Navbar() {
             >
               <Github className="h-4 w-4" />
               <span className="hidden 2xl:inline">{t("nav.connectGithub")}</span>
-              <span className="2xl:hidden">GitHub</span>
+              <span className="2xl:hidden">{tx("GitHub")}</span>
             </Button>
           )}
 
@@ -321,7 +324,7 @@ export function Navbar() {
             variant="ghost"
             size="icon"
             className="h-9 w-9 text-muted-foreground xl:hidden"
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-label={tx(mobileOpen ? "Close menu" : "Open menu")}
             onClick={() => setMobileOpen((prev) => !prev)}
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -379,7 +382,7 @@ export function Navbar() {
                 onClick={clearGitHubSession}
               >
                 <Github className="h-4 w-4" />
-                @{sessionLogin} ({t("nav.disconnect")})
+                @{tx(sessionLogin)} ({t("nav.disconnect")})
               </Button>
             ) : (
               <Button

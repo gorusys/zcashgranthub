@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import { useEffect, useMemo, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
@@ -48,11 +49,11 @@ const VOTE_ANALYSIS_THREAD = "https://forum.zcashcommunity.com/t/57910";
 const ZODL_VOTING_GUIDE_URL = "https://zodl.com/zodl-3-5-0-vote-with-your-zec/";
 const CIPHERSCAN_GOVERNANCE_URL = "https://cipherscan.app/governance";
 
-const usd = (n: number) =>
-  n.toLocaleString(undefined, { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+const usd = (locale: string, n: number) =>
+  n.toLocaleString(locale, { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 
-const fmtDate = (iso: string) =>
-  new Date(iso).toLocaleString(undefined, {
+const fmtDate = (locale: string, iso: string) =>
+  new Date(iso).toLocaleString(locale, {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -108,6 +109,7 @@ function phaseStepIndex(phase: RetroPhase): number {
 }
 
 function RoundTimeline({ round, phase }: { round: RetroRound; phase: RetroPhase }) {
+  const { text: tx, locale: uiLocale } = useUi();
   const active = phaseStepIndex(phase);
   const steps = [
     { title: "Submissions", from: round.submissionsOpen, to: round.submissionDeadline },
@@ -131,14 +133,14 @@ function RoundTimeline({ round, phase }: { round: RetroRound; phase: RetroPhase 
         >
           <div className="flex items-center gap-1.5 font-medium text-foreground">
             {i < active && <CheckCircle2 className="h-4 w-4 text-primary" />}
-            {s.title}
+            {tx(s.title)}
           </div>
           <div className="mt-1 text-xs text-muted-foreground">
-            {s.from && s.to
-              ? `${fmtDate(s.from)} – ${fmtDate(s.to)}`
+            {tx(s.from && s.to
+              ? `${fmtDate(uiLocale, s.from)} – ${fmtDate(uiLocale, s.to)}`
               : s.from
-                ? `After ${fmtDate(s.from)}`
-                : "TBA"}
+                ? `After ${fmtDate(uiLocale, s.from)}`
+                : "TBA")}
           </div>
         </li>
       ))}
@@ -146,7 +148,7 @@ function RoundTimeline({ round, phase }: { round: RetroRound; phase: RetroPhase 
   );
 }
 
-const CHECKLIST: Array<{ title: string; body: string }> = [
+const checklist = (locale: string): Array<{ title: string; body: string }> => [
   {
     title: "Completed, verifiable work only",
     body: "Planned or partially completed work is not eligible. Intended users (or their representatives) confirm the outputs before the proposal goes on the ballot. Planned work belongs in a ZCG application.",
@@ -160,7 +162,7 @@ const CHECKLIST: Array<{ title: string; body: string }> = [
     body: "Link repos, releases, deployments, and real usage numbers. Coinholders vote on demonstrated impact, and rejections usually come without written reasons.",
   },
   {
-    title: `KYC above ${usd(RETRO_KYC_THRESHOLD_USD)}`,
+    title: `KYC above ${usd(locale, RETRO_KYC_THRESHOLD_USD)}`,
     body: "Requests above the threshold require KYC with FPF before payout.",
   },
   {
@@ -181,11 +183,12 @@ const CHECKLIST: Array<{ title: string; body: string }> = [
   },
   {
     title: "How a vote passes",
-    body: `At least ${RETRO_QUORUM_ZEC.toLocaleString()} ZEC must be voted on the proposal (any answer), and a simple majority of that must be Approve. Each proposal is voted on independently.`,
+    body: `At least ${RETRO_QUORUM_ZEC.toLocaleString(locale)} ZEC must be voted on the proposal (any answer), and a simple majority of that must be Approve. Each proposal is voted on independently.`,
   },
 ];
 
 export default function RetroRoundsPage() {
+  const { text: tx, locale: uiLocale } = useUi();
   const now = useNow();
   const { data: grants = [], isLoading } = useGrants();
   const { data: feed } = useQuery<{ announcements: RetroAnnouncement[] }>({
@@ -211,23 +214,18 @@ export default function RetroRoundsPage() {
   return (
     <div className="container mx-auto min-w-0 px-4 py-6 sm:py-8">
       <Head>
-        <title>Coinholder retro rounds · Zcash Grants Hub</title>
+        <title>{tx("Coinholder retro rounds · Zcash Grants Hub")}</title>
         <meta
           name="description"
-          content="Deadlines, phases, checklist and past results for the Zcash Coinholder-Directed Retroactive Grants Program (ZIP 1016)."
+          content={tx("Deadlines, phases, checklist and past results for the Zcash Coinholder-Directed Retroactive Grants Program (ZIP 1016).")}
         />
       </Head>
 
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-foreground sm:text-3xl">
-          Coinholder retro grant rounds
-        </h1>
+          {tx("Coinholder retro grant rounds")}</h1>
         <p className="mt-2 max-w-3xl text-sm text-muted-foreground sm:text-base">
-          The Coinholder-Directed Retroactive Grants Program (ZIP 1016) pays for work that is
-          already done. It runs in quarterly rounds administered by the Financial Privacy
-          Foundation, and ZEC holders decide by shielded vote. Dates below come from FPF's forum
-          announcements.
-        </p>
+          {tx("The Coinholder-Directed Retroactive Grants Program (ZIP 1016) pays for work that is already done. It runs in quarterly rounds administered by the Financial Privacy Foundation, and ZEC holders decide by shielded vote. Dates below come from FPF's forum announcements.")}</p>
       </div>
 
       {/* Current round */}
@@ -236,11 +234,11 @@ export default function RetroRoundsPage() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <CardTitle className="flex items-center gap-2 text-xl">
               <CalendarClock className="h-5 w-5 text-primary" />
-              {round ? `${round.label} round` : "Current round"}
+              {tx(round ? `${round.label} round` : "Current round")}
             </CardTitle>
             {phase && (
               <Badge variant={phase === "submissions" || phase === "voting" ? "default" : "secondary"}>
-                {phaseLabel[phase]}
+                {tx(phaseLabel[phase])}
               </Badge>
             )}
           </div>
@@ -251,55 +249,53 @@ export default function RetroRoundsPage() {
               {milestone && now != null && (
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                   <span className="text-3xl font-bold tabular-nums text-foreground">
-                    {fmtCountdown(Date.parse(milestone.at) - now)}
+                    {tx(fmtCountdown(Date.parse(milestone.at) - now))}
                   </span>
                   <span className="text-sm text-muted-foreground">
-                    until {milestone.label.toLowerCase()} ({fmtDate(milestone.at)})
+                    {tx("until ")}{tx(milestone.label.toLowerCase())} ({tx(fmtDate(uiLocale, milestone.at))})
                   </span>
                 </div>
               )}
               <RoundTimeline round={round} phase={phase} />
-              {round.note && <p className="text-xs text-muted-foreground">{round.note}</p>}
+              {round.note && <p className="text-xs text-muted-foreground">{tx(round.note)}</p>}
               <div className="flex flex-wrap gap-2">
                 {(phase === "submissions" || phase === "upcoming") && (
                   <>
                     <Button asChild>
                       <Link href="/apply?tab=coinholder">
-                        <FileText className="mr-1.5 h-4 w-4" /> Start application
-                      </Link>
+                        <FileText className="mr-1.5 h-4 w-4" /> {tx(" Start application")}</Link>
                     </Button>
                     <Button asChild variant="outline">
                       <a href={RETRO_GITHUB_NEW_ISSUE_URL} target="_blank" rel="noopener noreferrer">
-                        GitHub template <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
+                        {tx("GitHub template ")}<ExternalLink className="ml-1.5 h-3.5 w-3.5" />
                       </a>
                     </Button>
                   </>
                 )}
                 <Button asChild variant="outline">
                   <a href={RETRO_FORUM_CATEGORY_URL} target="_blank" rel="noopener noreferrer">
-                    Retroactive Grants forum <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
+                    {tx("Retroactive Grants forum ")}<ExternalLink className="ml-1.5 h-3.5 w-3.5" />
                   </a>
                 </Button>
                 {round.resultsUrl && (
                   <Button asChild variant="outline">
                     <a href={round.resultsUrl} target="_blank" rel="noopener noreferrer">
-                      Results <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
+                      {tx("Results ")}<ExternalLink className="ml-1.5 h-3.5 w-3.5" />
                     </a>
                   </Button>
                 )}
               </div>
               <p className="text-xs text-muted-foreground">
-                Sources:{" "}
+                {tx("Sources:")}{" "}
                 {round.sources.map((s, i) => (
                   <span key={s}>
-                    {i > 0 && ", "}
+                    {tx(i > 0 && ", ")}
                     <a href={s} target="_blank" rel="noopener noreferrer" className="underline-offset-2 hover:underline">
-                      forum post {i + 1}
+                      {tx("forum post ")}{i + 1}
                     </a>
                   </span>
                 ))}
-                . Always confirm against the latest FPF post.
-              </p>
+                {tx(". Always confirm against the latest FPF post.")}</p>
             </>
           ) : (
             <div className="h-32 animate-pulse rounded-lg bg-muted" />
@@ -312,15 +308,14 @@ export default function RetroRoundsPage() {
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
-              <CheckCircle2 className="h-5 w-5 text-primary" /> Before you submit
-            </CardTitle>
+              <CheckCircle2 className="h-5 w-5 text-primary" /> {tx(" Before you submit")}</CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="grid gap-4 sm:grid-cols-2">
-              {CHECKLIST.map((c) => (
+              {checklist(uiLocale).map((c) => (
                 <li key={c.title}>
-                  <div className="text-sm font-medium text-foreground">{c.title}</div>
-                  <p className="mt-0.5 text-sm text-muted-foreground">{c.body}</p>
+                  <div className="text-sm font-medium text-foreground">{tx(c.title)}</div>
+                  <p className="mt-0.5 text-sm text-muted-foreground">{tx(c.body)}</p>
                 </li>
               ))}
             </ul>
@@ -331,8 +326,7 @@ export default function RetroRoundsPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
-              <Megaphone className="h-5 w-5 text-primary" /> Organizer announcements
-            </CardTitle>
+              <Megaphone className="h-5 w-5 text-primary" /> {tx(" Organizer announcements")}</CardTitle>
           </CardHeader>
           <CardContent>
             {feed?.announcements?.length ? (
@@ -348,17 +342,16 @@ export default function RetroRoundsPage() {
                       {a.title}
                     </a>
                     <div className="text-xs text-muted-foreground">
-                      {new Date(a.createdAt).toLocaleDateString()}
+                      {new Date(a.createdAt).toLocaleDateString(uiLocale)}
                     </div>
                   </li>
                 ))}
               </ul>
             ) : (
               <p className="text-sm text-muted-foreground">
-                Loading forum posts… or browse the{" "}
+                {tx("Loading forum posts… or browse the")}{" "}
                 <a href={RETRO_FORUM_CATEGORY_URL} className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
-                  forum category
-                </a>
+                  {tx("forum category")}</a>
                 .
               </p>
             )}
@@ -371,7 +364,7 @@ export default function RetroRoundsPage() {
         <Card className="mb-6">
           <CardHeader>
             <CardTitle className="text-lg">
-              {round.label} submissions{" "}
+              {tx(round.label)} {tx(" submissions")}{" "}
               {current && (
                 <span className="text-sm font-normal text-muted-foreground">
                   ({current.grants.filter((g) => retroOutcome(g) !== "not_voted").length})
@@ -393,7 +386,7 @@ export default function RetroRoundsPage() {
                         {g.title}
                       </Link>
                       <span className="text-sm tabular-nums text-muted-foreground">
-                        {g.amount > 0 ? usd(g.amount) : "—"}
+                        {tx(g.amount > 0 ? usd(uiLocale, g.amount) : "—")}
                       </span>
                       <StatusBadge status={g.status} />
                     </li>
@@ -401,8 +394,7 @@ export default function RetroRoundsPage() {
               </ul>
             ) : (
               <p className="text-sm text-muted-foreground">
-                No submissions on GitHub for this round yet.
-              </p>
+                {tx("No submissions on GitHub for this round yet.")}</p>
             )}
           </CardContent>
         </Card>
@@ -412,20 +404,19 @@ export default function RetroRoundsPage() {
       <Card className="mb-6">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg">
-            <Vote className="h-5 w-5 text-primary" /> Past rounds
-          </CardTitle>
+            <Vote className="h-5 w-5 text-primary" /> {tx(" Past rounds")}</CardTitle>
         </CardHeader>
         <CardContent className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Round</TableHead>
-                <TableHead className="text-right">On ballot</TableHead>
-                <TableHead className="text-right">Funded</TableHead>
-                <TableHead className="text-right">Rejected</TableHead>
-                <TableHead className="text-right">Requested</TableHead>
-                <TableHead className="text-right">Funded (USD)</TableHead>
-                <TableHead className="text-right">Funded by value</TableHead>
+                <TableHead>{tx("Round")}</TableHead>
+                <TableHead className="text-right">{tx("On ballot")}</TableHead>
+                <TableHead className="text-right">{tx("Funded")}</TableHead>
+                <TableHead className="text-right">{tx("Rejected")}</TableHead>
+                <TableHead className="text-right">{tx("Requested")}</TableHead>
+                <TableHead className="text-right">{tx("Funded (USD)")}</TableHead>
+                <TableHead className="text-right">{tx("Funded by value")}</TableHead>
                 <TableHead />
               </TableRow>
             </TableHeader>
@@ -434,27 +425,26 @@ export default function RetroRoundsPage() {
                 const s = stats.get(r.id);
                 return (
                   <TableRow key={r.id}>
-                    <TableCell className="font-medium">{r.label}</TableCell>
+                    <TableCell className="font-medium">{tx(r.label)}</TableCell>
                     <TableCell className="text-right tabular-nums">{s?.onBallot ?? "—"}</TableCell>
                     <TableCell className="text-right tabular-nums">{s?.funded ?? "—"}</TableCell>
                     <TableCell className="text-right tabular-nums">
                       {s ? s.rejected + s.vetoed : "—"}
                       {s && s.vetoed > 0 && (
-                        <span className="text-xs text-muted-foreground"> ({s.vetoed} vetoed)</span>
+                        <span className="text-xs text-muted-foreground"> ({s.vetoed} {tx(" vetoed)")}</span>
                       )}
                     </TableCell>
-                    <TableCell className="text-right tabular-nums">{s ? usd(s.requestedUsd) : "—"}</TableCell>
-                    <TableCell className="text-right tabular-nums">{s ? usd(s.fundedUsd) : "—"}</TableCell>
+                    <TableCell className="text-right tabular-nums">{tx(s ? usd(uiLocale, s.requestedUsd) : "—")}</TableCell>
+                    <TableCell className="text-right tabular-nums">{tx(s ? usd(uiLocale, s.fundedUsd) : "—")}</TableCell>
                     <TableCell className="text-right tabular-nums">
-                      {s && s.requestedUsd > 0
+                      {tx(s && s.requestedUsd > 0
                         ? `${Math.round((s.fundedUsd / s.requestedUsd) * 100)}%`
-                        : "—"}
+                        : "—")}
                     </TableCell>
                     <TableCell className="text-right">
                       {r.resultsUrl && (
                         <a href={r.resultsUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline">
-                          Results
-                        </a>
+                          {tx("Results")}</a>
                       )}
                     </TableCell>
                   </TableRow>
@@ -463,10 +453,8 @@ export default function RetroRoundsPage() {
             </TableBody>
           </Table>
           <p className="mt-3 text-xs text-muted-foreground">
-            Counts come from FPF's GitHub labels. USD amounts are parsed from each application, so
-            they can differ slightly from FPF's published totals.
-            {RETRO_ROUNDS.some((r) => r.status === "postponed") &&
-              " Q2 2026 was postponed and its submissions were voted on in Q3."}
+            {tx("Counts come from FPF's GitHub labels. USD amounts are parsed from each application, so they can differ slightly from FPF's published totals.")}{tx(RETRO_ROUNDS.some((r) => r.status === "postponed") &&
+              " Q2 2026 was postponed and its submissions were voted on in Q3.")}
           </p>
         </CardContent>
       </Card>
@@ -475,41 +463,30 @@ export default function RetroRoundsPage() {
       <Card className="mb-6">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg">
-            <Vote className="h-5 w-5 text-primary" /> How to vote (ZEC holders)
-          </CardTitle>
+            <Vote className="h-5 w-5 text-primary" /> {tx(" How to vote (ZEC holders)")}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 text-sm text-muted-foreground">
           <ol className="list-decimal space-y-2 pl-5">
             <li>
-              <span className="font-medium text-foreground">Hold shielded ZEC in a wallet that supports voting</span>{" "}
-              before the eligibility snapshot. Recent polls have run in Zodl (including Keystone
-              through Zodl), Zkool and Vizor. Each round's announcement gives the snapshot and which
-              funds count.
-            </li>
+              <span className="font-medium text-foreground">{tx("Hold shielded ZEC in a wallet that supports voting")}</span>{" "}
+              {tx("before the eligibility snapshot. Recent polls have run in Zodl (including Keystone through Zodl), Zkool and Vizor. Each round's announcement gives the snapshot and which funds count.")}</li>
             <li>
-              <span className="font-medium text-foreground">Vote during the voting window</span> from
-              your wallet's voting section. Each proposal is a separate question; either "Reject"
-              option counts as a no.
-            </li>
+              <span className="font-medium text-foreground">{tx("Vote during the voting window")}</span> {tx(" from your wallet's voting section. Each proposal is a separate question; either \"Reject\" option counts as a no.")}</li>
             <li>
-              <span className="font-medium text-foreground">Every answer counts toward quorum.</span>{" "}
-              A proposal needs {RETRO_QUORUM_ZEC.toLocaleString()} ZEC voted on it (any answer) before a
-              simple majority of Approve can pass it, so abstaining still helps a vote count.
-            </li>
+              <span className="font-medium text-foreground">{tx("Every answer counts toward quorum.")}</span>{" "}
+              {tx("A proposal needs ")}{RETRO_QUORUM_ZEC.toLocaleString(uiLocale)} {tx(" ZEC voted on it (any answer) before a simple majority of Approve can pass it, so abstaining still helps a vote count.")}</li>
             <li>
-              <span className="font-medium text-foreground">Your vote stays private.</span> Votes are
-              encrypted; the published tallies can be checked independently.
-            </li>
+              <span className="font-medium text-foreground">{tx("Your vote stays private.")}</span> {tx(" Votes are encrypted; the published tallies can be checked independently.")}</li>
           </ol>
           <div className="flex flex-wrap gap-2">
             <Button asChild variant="outline" size="sm">
               <a href={ZODL_VOTING_GUIDE_URL} target="_blank" rel="noopener noreferrer">
-                Zodl voting guide <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
+                {tx("Zodl voting guide ")}<ExternalLink className="ml-1.5 h-3.5 w-3.5" />
               </a>
             </Button>
             <Button asChild variant="outline" size="sm">
               <a href={CIPHERSCAN_GOVERNANCE_URL} target="_blank" rel="noopener noreferrer">
-                Upcoming votes & results (CipherScan) <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
+                {tx("Upcoming votes & results (CipherScan) ")}<ExternalLink className="ml-1.5 h-3.5 w-3.5" />
               </a>
             </Button>
           </div>
@@ -520,29 +497,25 @@ export default function RetroRoundsPage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg">
-            <Scale className="h-5 w-5 text-primary" /> Learn from past votes
-          </CardTitle>
+            <Scale className="h-5 w-5 text-primary" /> {tx(" Learn from past votes")}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 text-sm text-muted-foreground">
           <p>
-            Coinholder rejections don't come with written reasons. The shape of the vote is the
-            best signal: a low Accept share with little "lower amount" support usually means the
-            project wasn't backed at all, while a large "lower amount" share points to pricing.
-          </p>
+            {tx("Coinholder rejections don't come with written reasons. The shape of the vote is the best signal: a low Accept share with little \"lower amount\" support usually means the project wasn't backed at all, while a large \"lower amount\" share points to pricing.")}</p>
           <div className="flex flex-wrap gap-2">
             <Button asChild variant="outline" size="sm">
               <a href={OPENZCASH_RETRO_RESULTS_URL} target="_blank" rel="noopener noreferrer">
-                Per-proposal tallies (OpenZcash) <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
+                {tx("Per-proposal tallies (OpenZcash) ")}<ExternalLink className="ml-1.5 h-3.5 w-3.5" />
               </a>
             </Button>
             <Button asChild variant="outline" size="sm">
               <a href={OPENZCASH_RETRO_VERIFY_URL} target="_blank" rel="noopener noreferrer">
-                Verify the count yourself <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
+                {tx("Verify the count yourself ")}<ExternalLink className="ml-1.5 h-3.5 w-3.5" />
               </a>
             </Button>
             <Button asChild variant="outline" size="sm">
               <a href={VOTE_ANALYSIS_THREAD} target="_blank" rel="noopener noreferrer">
-                Q3 vote analysis thread <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
+                {tx("Q3 vote analysis thread ")}<ExternalLink className="ml-1.5 h-3.5 w-3.5" />
               </a>
             </Button>
           </div>

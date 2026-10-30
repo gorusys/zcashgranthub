@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import { useEffect, useMemo, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
@@ -73,6 +74,7 @@ async function copyText(text: string): Promise<boolean> {
 }
 
 function useCopy() {
+  const { text: tx } = useUi();
   const [copied, setCopied] = useState<string | null>(null);
 
   useEffect(() => {
@@ -84,17 +86,17 @@ function useCopy() {
   const copy = async (key: string, text: string, successMessage: string) => {
     if (await copyText(text)) {
       setCopied(key);
-      toast.success(successMessage);
+      toast.success(tx(successMessage));
     } else {
-      toast.error("Could not copy. Select the text and copy it manually.");
+      toast.error(tx("Could not copy. Select the text and copy it manually."));
     }
   };
 
   return { copied, copy };
 }
 
-function formatUsd(value: number): string {
-  return value.toLocaleString(undefined, {
+function formatUsd(locale: string, value: number): string {
+  return value.toLocaleString(locale, {
     style: "currency",
     currency: "USD",
     maximumFractionDigits: value < 10 ? 2 : 0,
@@ -180,6 +182,7 @@ const faqs = [
 ];
 
 export default function DonatePage() {
+  const { text: tx, locale: uiLocale } = useUi();
   const zecPrice = useZecUsdPrice();
   const { copied, copy } = useCopy();
   const [amountInput, setAmountInput] = useState("");
@@ -233,40 +236,33 @@ export default function DonatePage() {
   return (
     <div className="container mx-auto min-w-0 px-4 py-6 sm:py-8">
       <Head>
-        <title>Donate & contribute · Zcash Grants Hub</title>
+        <title>{tx("Donate & contribute · Zcash Grants Hub")}</title>
         <meta
           name="description"
-          content="Support Zcash Grants Hub with a shielded ZEC donation, or contribute code, feedback, and reviews to the Zcash grants ecosystem."
+          content={tx("Support Zcash Grants Hub with a shielded ZEC donation, or contribute code, feedback, and reviews to the Zcash grants ecosystem.")}
         />
-        <meta property="og:title" content="Donate & contribute · Zcash Grants Hub" />
+        <meta property="og:title" content={tx("Donate & contribute · Zcash Grants Hub")} />
       </Head>
 
       {/* Hero */}
       <div className="mb-8 max-w-3xl sm:mb-10">
         <Badge variant="outline" className="mb-3 gap-1.5 border-primary/40 text-primary">
           <ShieldCheck className="h-3.5 w-3.5" />
-          Shielded donations supported
-        </Badge>
+          {tx("Shielded donations supported")}</Badge>
         <h1 className="text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl">
-          Donate & contribute
-        </h1>
+          {tx("Donate & contribute")}</h1>
         <p className="mt-2 text-sm text-muted-foreground sm:text-base">
-          Zcash Grants Hub is a free, open-source, community-run index of Zcash funding programs.
-          You can help keep it independent and maintained by donating ZEC or by contributing your
-          time.
-        </p>
+          {tx("Zcash Grants Hub is a free, open-source, community-run index of Zcash funding programs. You can help keep it independent and maintained by donating ZEC or by contributing your time.")}</p>
         <div className="mt-4 flex flex-wrap gap-2">
           <Button className="gap-2" asChild>
             <a href="#donate">
               <Wallet className="h-4 w-4" />
-              Donate ZEC
-            </a>
+              {tx("Donate ZEC")}</a>
           </Button>
           <Button variant="outline" className="gap-2" asChild>
             <a href="#contribute">
               <Code className="h-4 w-4" />
-              Ways to contribute
-            </a>
+              {tx("Ways to contribute")}</a>
           </Button>
         </div>
       </div>
@@ -274,23 +270,21 @@ export default function DonatePage() {
       {/* Donate */}
       <section id="donate" className="scroll-mt-24" aria-labelledby="donate-heading">
         <h2 id="donate-heading" className="sr-only">
-          Donate ZEC
-        </h2>
+          {tx("Donate ZEC")}</h2>
 
         {!addressValid && (
           <Alert variant="destructive" className="mb-6">
             <AlertTriangle className="h-4 w-4" />
-            <AlertTitle>Donation address failed validation</AlertTitle>
+            <AlertTitle>{tx("Donation address failed validation")}</AlertTitle>
             <AlertDescription>
-              Please don't send funds. Report this on{" "}
+              {tx("Please don't send funds. Report this on")}{" "}
               <a
                 href={`${HUB_REPO_URL}/issues`}
                 className="underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                GitHub
-              </a>
+                {tx("GitHub")}</a>
               .
             </AlertDescription>
           </Alert>
@@ -301,13 +295,12 @@ export default function DonatePage() {
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Wallet className="h-4 w-4 text-primary" />
-                Send a donation
-              </CardTitle>
+                {tx("Send a donation")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Amount */}
               <div className="space-y-2">
-                <Label htmlFor="donate-amount">Amount (optional)</Label>
+                <Label htmlFor="donate-amount">{tx("Amount (optional)")}</Label>
                 <div className="flex flex-wrap gap-2">
                   {PRESET_AMOUNTS.map((preset) => (
                     <Button
@@ -318,8 +311,7 @@ export default function DonatePage() {
                       aria-pressed={amount === preset}
                       onClick={() => setAmountInput(amount === preset ? "" : preset)}
                     >
-                      {preset} ZEC
-                    </Button>
+                      {tx(preset)} {tx(" ZEC")}</Button>
                   ))}
                 </div>
                 <div className="relative">
@@ -327,7 +319,7 @@ export default function DonatePage() {
                     id="donate-amount"
                     inputMode="decimal"
                     autoComplete="off"
-                    placeholder="Custom amount"
+                    placeholder={tx("Custom amount")}
                     value={amountInput}
                     onChange={(e) => setAmountInput(e.target.value.replace(",", "."))}
                     aria-invalid={amountError}
@@ -335,30 +327,28 @@ export default function DonatePage() {
                     className="pr-14"
                   />
                   <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-sm text-muted-foreground">
-                    ZEC
-                  </span>
+                    {tx("ZEC")}</span>
                 </div>
                 <p
                   id="donate-amount-hint"
                   className={`text-xs ${amountError ? "text-destructive" : "text-muted-foreground"}`}
                 >
-                  {amountError
+                  {tx(amountError
                     ? "Enter a positive amount with up to 8 decimal places."
                     : usdEstimate != null
-                      ? `≈ ${formatUsd(usdEstimate)} at the current ZEC price`
-                      : "Leave empty to choose the amount in your wallet."}
+                      ? `≈ ${formatUsd(uiLocale, usdEstimate)} at the current ZEC price`
+                      : "Leave empty to choose the amount in your wallet.")}
                 </p>
               </div>
 
               {/* Memo */}
               <div className="space-y-2">
                 <div className="flex items-baseline justify-between gap-2">
-                  <Label htmlFor="donate-memo">Memo (optional, encrypted)</Label>
+                  <Label htmlFor="donate-memo">{tx("Memo (optional, encrypted)")}</Label>
                   <span
                     className={`text-xs tabular-nums ${memoTooLong ? "text-destructive" : "text-muted-foreground"}`}
                   >
-                    {memoBytes}/{MAX_MEMO_BYTES} bytes
-                  </span>
+                    {memoBytes}/{MAX_MEMO_BYTES} {tx(" bytes")}</span>
                 </div>
                 <Textarea
                   id="donate-memo"
@@ -366,48 +356,46 @@ export default function DonatePage() {
                   value={memo}
                   onChange={(e) => setMemo(e.target.value)}
                   aria-invalid={memoTooLong}
-                  placeholder="Add a note or contact handle"
+                  placeholder={tx("Add a note or contact handle")}
                   className="resize-none"
                 />
                 {memoTooLong && (
                   <p className="text-xs text-destructive">
-                    Memo exceeds 512 bytes and will be left out of the payment request.
-                  </p>
+                    {tx("Memo exceeds 512 bytes and will be left out of the payment request.")}</p>
                 )}
               </div>
 
               {/* Address */}
               <div className="space-y-2">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="text-sm font-medium leading-none">Unified address</span>
+                  <span className="text-sm font-medium leading-none">{tx("Unified address")}</span>
                   <div className="flex flex-wrap gap-1.5">
                     {DONATION_RECEIVERS.map((r) => (
                       <Badge
                         key={r}
                         variant="secondary"
                         className="text-[10px] font-medium"
-                        title={r === "Transparent" ? "Public receiver" : "Shielded receiver"}
+                        title={tx(r === "Transparent" ? "Public receiver" : "Shielded receiver")}
                       >
-                        {r}
+                        {tx(r)}
                       </Badge>
                     ))}
                   </div>
                 </div>
                 <div className="rounded-md border border-border/60 bg-secondary/40 p-3">
                   <p className="select-all break-all font-mono text-xs leading-relaxed text-foreground sm:text-[13px]">
-                    {DONATION_UNIFIED_ADDRESS}
+                    {tx(DONATION_UNIFIED_ADDRESS)}
                   </p>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Fingerprint:{" "}
+                  {tx("Fingerprint:")}{" "}
                   <span className="font-mono text-foreground/90">
-                    {addressFingerprint(DONATION_UNIFIED_ADDRESS)}
+                    {tx(addressFingerprint(DONATION_UNIFIED_ADDRESS))}
                   </span>
                   {addressValid && (
                     <span className="ml-2 inline-flex items-center gap-1 text-emerald-500">
                       <Check className="h-3 w-3" aria-hidden />
-                      checksum valid
-                    </span>
+                      {tx("checksum valid")}</span>
                   )}
                 </p>
               </div>
@@ -427,13 +415,11 @@ export default function DonatePage() {
                     ) : (
                       <Copy className="h-4 w-4" />
                     )}
-                    Copy address
-                  </Button>
+                    {tx("Copy address")}</Button>
                   <Button variant="outline" className="gap-2" asChild>
                     <a href={paymentUri} onClick={() => track("donate_open_wallet")}>
                       <ExternalLink className="h-4 w-4" />
-                      Open in wallet
-                    </a>
+                      {tx("Open in wallet")}</a>
                   </Button>
                   <Button
                     variant="outline"
@@ -445,8 +431,7 @@ export default function DonatePage() {
                     ) : (
                       <Copy className="h-4 w-4" />
                     )}
-                    Copy payment request
-                  </Button>
+                    {tx("Copy payment request")}</Button>
                 </div>
               )}
             </CardContent>
@@ -456,13 +441,12 @@ export default function DonatePage() {
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <QrCode className="h-4 w-4 text-primary" />
-                Scan with your wallet
-              </CardTitle>
+                {tx("Scan with your wallet")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div
                 role="radiogroup"
-                aria-label="QR code content"
+                aria-label={tx("QR code content")}
                 className="grid grid-cols-2 gap-1 rounded-md bg-muted p-1 text-sm"
               >
                 {(
@@ -483,7 +467,7 @@ export default function DonatePage() {
                         : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
-                    {label}
+                    {tx(label)}
                   </button>
                 ))}
               </div>
@@ -493,9 +477,9 @@ export default function DonatePage() {
                   <img
                     src={qrDataUrl}
                     alt={
-                      qrMode === "request"
+                      tx(qrMode === "request"
                         ? "QR code for a Zcash payment request to Zcash Grants Hub"
-                        : "QR code of the Zcash Grants Hub donation address"
+                        : "QR code of the Zcash Grants Hub donation address")
                     }
                     className="h-full w-full [image-rendering:pixelated]"
                   />
@@ -505,9 +489,9 @@ export default function DonatePage() {
               </div>
 
               <p className="text-center text-xs text-muted-foreground">
-                {qrMode === "request"
+                {tx(qrMode === "request"
                   ? "Includes the amount and memo above (ZIP-321). Your wallet will ask you to confirm."
-                  : "Plain address for wallets that don't read payment requests."}
+                  : "Plain address for wallets that don't read payment requests.")}
               </p>
 
               <Button
@@ -518,8 +502,7 @@ export default function DonatePage() {
                 disabled={!qrDataUrl || !addressValid}
               >
                 <Download className="h-4 w-4" />
-                Download QR code
-              </Button>
+                {tx("Download QR code")}</Button>
             </CardContent>
           </Card>
         </div>
@@ -527,48 +510,41 @@ export default function DonatePage() {
         <div className="mt-6 grid gap-6 md:grid-cols-2">
           <Card className="border-border/50 bg-card">
             <CardHeader className="pb-2">
-              <CardTitle className="text-base">How to donate</CardTitle>
+              <CardTitle className="text-base">{tx("How to donate")}</CardTitle>
             </CardHeader>
             <CardContent>
               <ol className="list-decimal space-y-2 pl-5 text-sm text-muted-foreground">
                 <li>
-                  Open a Zcash wallet that supports Unified Addresses (
-                  <a
+                  {tx("Open a Zcash wallet that supports Unified Addresses (")}<a
                     href={ZCASH_WALLETS_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-primary underline-offset-2 hover:underline"
                   >
-                    find one
-                  </a>
+                    {tx("find one")}</a>
                   ).
                 </li>
-                <li>Scan the QR code, tap “Open in wallet”, or paste the copied address.</li>
+                <li>{tx("Scan the QR code, tap “Open in wallet”, or paste the copied address.")}</li>
                 <li>
-                  Check that the address fingerprint in your wallet matches{" "}
+                  {tx("Check that the address fingerprint in your wallet matches")}{" "}
                   <span className="font-mono text-foreground/90">
-                    {addressFingerprint(DONATION_UNIFIED_ADDRESS)}
+                    {tx(addressFingerprint(DONATION_UNIFIED_ADDRESS))}
                   </span>
                   .
                 </li>
-                <li>Send from your shielded balance for a fully private donation.</li>
+                <li>{tx("Send from your shielded balance for a fully private donation.")}</li>
               </ol>
             </CardContent>
           </Card>
 
           <Alert className="border-primary/30 bg-primary/5">
             <ShieldCheck className="h-4 w-4 !text-primary" />
-            <AlertTitle>Privacy by default</AlertTitle>
+            <AlertTitle>{tx("Privacy by default")}</AlertTitle>
             <AlertDescription className="space-y-2 text-muted-foreground">
               <p>
-                Shielded wallets pay the Orchard receiver automatically, so the sender, amount, and
-                memo stay encrypted on-chain. This page doesn't track or store anything you enter.
-                The payment request is built entirely in your browser.
-              </p>
+                {tx("Shielded wallets pay the Orchard receiver automatically, so the sender, amount, and memo stay encrypted on-chain. This page doesn't track or store anything you enter. The payment request is built entirely in your browser.")}</p>
               <p>
-                Sending from an exchange? Most can't pay Unified Addresses yet. Withdraw to your own
-                wallet first.
-              </p>
+                {tx("Sending from an exchange? Most can't pay Unified Addresses yet. Withdraw to your own wallet first.")}</p>
             </AlertDescription>
           </Alert>
         </div>
@@ -582,12 +558,9 @@ export default function DonatePage() {
       >
         <div className="mb-6">
           <h2 id="contribute-heading" className="text-xl font-bold text-foreground sm:text-2xl">
-            Ways to contribute
-          </h2>
+            {tx("Ways to contribute")}</h2>
           <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-            Not every contribution is financial. Code, reviews, and feedback keep the Zcash grants
-            ecosystem healthy.
-          </p>
+            {tx("Not every contribution is financial. Code, reviews, and feedback keep the Zcash grants ecosystem healthy.")}</p>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -595,7 +568,7 @@ export default function DonatePage() {
             const Icon = item.icon;
             const cta = (
               <>
-                {item.cta}
+                {tx(item.cta)}
                 {item.external && <ExternalLink className="h-3.5 w-3.5" />}
               </>
             );
@@ -608,8 +581,8 @@ export default function DonatePage() {
                   <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10">
                     <Icon className="h-4 w-4 text-primary" />
                   </div>
-                  <h3 className="font-semibold text-foreground">{item.title}</h3>
-                  <p className="mt-1 flex-1 text-sm text-muted-foreground">{item.desc}</p>
+                  <h3 className="font-semibold text-foreground">{tx(item.title)}</h3>
+                  <p className="mt-1 flex-1 text-sm text-muted-foreground">{tx(item.desc)}</p>
                   <Button variant="link" className="mt-3 h-auto justify-start gap-1 p-0" asChild>
                     {item.external ? (
                       <a href={item.href} target="_blank" rel="noopener noreferrer">
@@ -629,8 +602,7 @@ export default function DonatePage() {
       {/* FAQ */}
       <section className="mt-12 sm:mt-16" aria-labelledby="donate-faq-heading">
         <h2 id="donate-faq-heading" className="mb-4 text-xl font-bold text-foreground sm:text-2xl">
-          Frequently asked questions
-        </h2>
+          {tx("Frequently asked questions")}</h2>
         <Card className="border-border/50 bg-card">
           <CardContent className="px-5 py-1">
             <Accordion type="single" collapsible>
@@ -641,10 +613,10 @@ export default function DonatePage() {
                   className={i === faqs.length - 1 ? "border-b-0" : undefined}
                 >
                   <AccordionTrigger className="text-left text-sm sm:text-base">
-                    {f.q}
+                    {tx(f.q)}
                   </AccordionTrigger>
                   <AccordionContent className="text-sm text-muted-foreground">
-                    {f.a}
+                    {tx(f.a)}
                   </AccordionContent>
                 </AccordionItem>
               ))}

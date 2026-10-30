@@ -1,3 +1,4 @@
+import { UiText } from "@/i18n/ui";
 import type { Components } from "react-markdown";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -23,7 +24,7 @@ export function ProposalDescription({ text }: { text: string }) {
   const trimmed = text?.trim() ?? "";
   if (!trimmed) {
     return (
-      <p className="text-sm italic text-muted-foreground">No description provided.</p>
+      <p className="text-sm italic text-muted-foreground"><UiText text="No description provided." /></p>
     );
   }
 

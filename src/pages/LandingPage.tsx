@@ -1,3 +1,5 @@
+import { formatSpreadsheetTimestamp } from "@/i18n/format";
+import { useUi } from "@/i18n/useUi";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -32,6 +34,7 @@ function AnimatedCounter({
   prefix?: string;
   suffix?: string;
 }) {
+  const { text: tx, locale: uiLocale } = useUi();
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const [started, setStarted] = useState(false);
@@ -71,11 +74,11 @@ function AnimatedCounter({
 
   return (
     <div ref={ref} className="text-2xl font-bold text-primary sm:text-3xl lg:text-4xl">
-      {prefix}
-      {target >= 1_000_000
-        ? `${(count / 1_000_000).toFixed(1)}M`
-        : count.toLocaleString()}
-      {suffix}
+      {tx(prefix)}
+      {tx(target >= 1_000_000
+        ? new Intl.NumberFormat(uiLocale, { notation: "compact", maximumFractionDigits: 1 }).format(count)
+        : count.toLocaleString(uiLocale))}
+      {tx(suffix)}
     </div>
   );
 }
@@ -142,6 +145,7 @@ const howItWorks = [
 ];
 
 export default function LandingPage() {
+  const { text: tx, locale: uiLocale } = useUi();
   const { data: grants = [], isLoading, isError: grantsError } = useGrants();
   const { t } = useT();
   const { data: sheet, isLoading: sheetLoading } = useZcgPublicSpreadsheet();
@@ -219,22 +223,21 @@ export default function LandingPage() {
             {metrics.map((metric) => (
               <div key={metric.label} className="text-center">
                 {metric.loading ? (
-                  <div className="mx-auto h-9 w-20 animate-pulse rounded bg-secondary" aria-label={`Loading ${metric.label}`} />
+                  <div className="mx-auto h-9 w-20 animate-pulse rounded bg-secondary" aria-label={tx(`Loading ${metric.label}`)} />
                 ) : metric.value == null ? (
-                  <div className="text-2xl font-bold text-muted-foreground sm:text-3xl lg:text-4xl" aria-label={`${metric.label} unavailable`}>—</div>
+                  <div className="text-2xl font-bold text-muted-foreground sm:text-3xl lg:text-4xl" aria-label={tx(`${metric.label} unavailable`)}>—</div>
                 ) : (
                   <AnimatedCounter target={metric.value} prefix={metric.prefix} />
                 )}
-                <div className="mt-1 text-sm text-muted-foreground">{metric.label}</div>
-                <div className="mt-1 text-xs text-muted-foreground">{metric.source}</div>
+                <div className="mt-1 text-sm text-muted-foreground">{tx(metric.label)}</div>
+                <div className="mt-1 text-xs text-muted-foreground">{tx(metric.source)}</div>
               </div>
             ))}
           </div>
           <p className="mt-5 text-center text-xs text-muted-foreground">
-            Financial figures: <a href={GRANTS_DASHBOARD_SHEET_URL} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">official ZCG spreadsheet</a>
-            {sheet?.zcg.blockTime && <> · as of {sheet.zcg.blockTime} UTC</>}.
-            {" "}Treasury includes ZEC valued at the sheet’s quoted price.
-          </p>
+            {tx("Financial figures: ")}<a href={GRANTS_DASHBOARD_SHEET_URL} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{tx("official ZCG spreadsheet")}</a>
+            {sheet?.zcg.blockTime && <> {tx(" · as of ")}{formatSpreadsheetTimestamp(sheet.zcg.blockTime, uiLocale)} {tx(" UTC")}</>}.
+            {" "}{tx("Treasury includes ZEC valued at the sheet’s quoted price.")}</p>
         </div>
       </section>
 
@@ -242,19 +245,16 @@ export default function LandingPage() {
       <section className="border-b border-border/50 bg-background">
         <div className="container mx-auto px-4 py-10 sm:py-14">
           <h2 className="mb-2 text-center text-xl font-bold text-foreground sm:text-2xl">
-            Programs &amp; dashboards
-          </h2>
+            {tx("Programs & dashboards")}</h2>
           <p className="mx-auto mb-8 max-w-2xl text-center text-sm text-muted-foreground sm:text-base">
-            Three application lanes plus the shared spreadsheet used for summaries and operations. Official
-            sites:{" "}
+            {tx("Three application lanes plus the shared spreadsheet used for summaries and operations. Official sites:")}{" "}
             <a
               href="https://zcashcommunitygrants.org/"
               className="text-primary underline-offset-2 hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Zcash Community Grants
-            </a>
+              {tx("Zcash Community Grants")}</a>
             ,{" "}
             <a
               href="https://github.com/Financial-Privacy-Foundation/ZcashCoinholderGrantsProgram"
@@ -262,24 +262,21 @@ export default function LandingPage() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Coinholder program (GitHub)
-            </a>
+              {tx("Coinholder program (GitHub)")}</a>
             .
           </p>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <Card className="border-border/50 bg-card">
               <CardContent className="flex flex-col gap-2 p-5">
                 <Github className="h-5 w-5 text-primary" />
-                <h3 className="font-semibold text-foreground">ZCG (GitHub)</h3>
+                <h3 className="font-semibold text-foreground">{tx("ZCG (GitHub)")}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Community grant applications in the ZCG repository—{" "}
+                  {tx("Community grant applications in the ZCG repository—")}{" "}
                   <Link href="/apply" className="text-primary hover:underline">
-                    apply
-                  </Link>
+                    {tx("apply")}</Link>
                   {" · "}
                   <Link href="/grants?program=zcg" className="text-primary hover:underline">
-                    browse
-                  </Link>
+                    {tx("browse")}</Link>
                   .
                 </p>
               </CardContent>
@@ -287,16 +284,14 @@ export default function LandingPage() {
             <Card className="border-border/50 bg-card">
               <CardContent className="flex flex-col gap-2 p-5">
                 <Github className="h-5 w-5 text-primary" />
-                <h3 className="font-semibold text-foreground">Coinholder (GitHub)</h3>
+                <h3 className="font-semibold text-foreground">{tx("Coinholder (GitHub)")}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Lockbox retroactive grants—{" "}
+                  {tx("Lockbox retroactive grants—")}{" "}
                   <Link href="/apply?tab=coinholder" className="text-primary hover:underline">
-                    apply
-                  </Link>
+                    {tx("apply")}</Link>
                   {" · "}
                   <Link href="/grants?program=coinholder" className="text-primary hover:underline">
-                    browse
-                  </Link>
+                    {tx("browse")}</Link>
                   .
                 </p>
               </CardContent>
@@ -304,12 +299,11 @@ export default function LandingPage() {
             <Card className="border-border/50 bg-card">
               <CardContent className="flex flex-col gap-2 p-5">
                 <Scale className="h-5 w-5 text-primary" />
-                <h3 className="font-semibold text-foreground">ZecHub DAO</h3>
+                <h3 className="font-semibold text-foreground">{tx("ZecHub DAO")}</h3>
                 <p className="text-sm text-muted-foreground">
-                  On-chain mini-grants on DAO DAO—{" "}
+                  {tx("On-chain mini-grants on DAO DAO—")}{" "}
                   <Link href="/zechub/proposals" className="text-primary hover:underline">
-                    proposal list
-                  </Link>
+                    {tx("proposal list")}</Link>
                   .
                 </p>
               </CardContent>
@@ -317,19 +311,16 @@ export default function LandingPage() {
             <Card className="border-border/50 bg-card">
               <CardContent className="flex flex-col gap-2 p-5">
                 <Table2 className="h-5 w-5 text-primary" />
-                <h3 className="font-semibold text-foreground">Ops dashboard</h3>
+                <h3 className="font-semibold text-foreground">{tx("Ops dashboard")}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Official Google Sheet for summaries, tracking, and payouts—not a separate grant type in this
-                  hub.
-                </p>
+                  {tx("Official Google Sheet for summaries, tracking, and payouts—not a separate grant type in this hub.")}</p>
                 <a
                   href={GRANTS_DASHBOARD_SHEET_URL}
                   className="text-sm font-medium text-primary hover:underline"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Open spreadsheet
-                </a>
+                  {tx("Open spreadsheet")}</a>
               </CardContent>
             </Card>
           </div>
@@ -339,11 +330,9 @@ export default function LandingPage() {
       {/* What We Fund */}
       <section className="container mx-auto px-4 py-12 sm:py-16 md:py-20">
         <h2 className="mb-2 text-center text-xl font-bold text-foreground sm:text-2xl">
-          What We Fund
-        </h2>
+          {tx("What We Fund")}</h2>
         <p className="mb-8 text-center text-sm text-muted-foreground sm:mb-12 sm:text-base">
-          Supporting the full spectrum of Zcash ecosystem development
-        </p>
+          {tx("Supporting the full spectrum of Zcash ecosystem development")}</p>
         <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
           {fundingCategories.map((cat) => (
             <Card
@@ -355,9 +344,9 @@ export default function LandingPage() {
                   <cat.icon className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground">{cat.title}</h3>
+                  <h3 className="font-semibold text-foreground">{tx(cat.title)}</h3>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {cat.desc}
+                    {tx(cat.desc)}
                   </p>
                 </div>
               </CardContent>
@@ -372,13 +361,12 @@ export default function LandingPage() {
           <div className="container mx-auto px-4 py-12 sm:py-16 md:py-20">
             <div className="mb-6 flex items-center justify-between sm:mb-8">
               <h2 className="text-xl font-bold text-foreground sm:text-2xl">
-                Recent Grant Applications
-              </h2>
+                {tx("Recent Grant Applications")}</h2>
               <Link
                 href="/grants"
                 className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
               >
-                View all <ChevronRight className="h-4 w-4" />
+                {tx("View all ")}<ChevronRight className="h-4 w-4" />
               </Link>
             </div>
 
@@ -413,8 +401,7 @@ export default function LandingPage() {
       {/* How It Works */}
       <section className="container mx-auto px-4 py-12 sm:py-16 md:py-20">
         <h2 className="mb-8 text-center text-xl font-bold text-foreground sm:mb-12 sm:text-2xl">
-          How ZCG Applications Work
-        </h2>
+          {tx("How ZCG Applications Work")}</h2>
         <div className="mx-auto max-w-2xl">
           {howItWorks.map((item, i) => (
             <div key={item.step} className="flex gap-4">
@@ -427,8 +414,8 @@ export default function LandingPage() {
                 )}
               </div>
               <div className="pb-10">
-                <h3 className="font-semibold text-foreground">{item.title}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{item.desc}</p>
+                <h3 className="font-semibold text-foreground">{tx(item.title)}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">{tx(item.desc)}</p>
               </div>
             </div>
           ))}

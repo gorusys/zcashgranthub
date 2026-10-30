@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CalendarClock } from "lucide-react";
@@ -6,6 +7,7 @@ import { currentRound, nextMilestone, roundPhase } from "@/lib/retroRounds";
 
 /** One-line link to /retro with the current round's phase; hidden when nothing is upcoming. */
 export function RetroRoundNotice() {
+  const { text: tx, locale: uiLocale } = useUi();
   const [now, setNow] = useState<number | null>(null);
   const { t, locale } = useT();
   useEffect(() => setNow(Date.now()), []);
@@ -15,7 +17,7 @@ export function RetroRoundNotice() {
   const milestone = round ? nextMilestone(round, now) : null;
   if (!round || !milestone) return null;
 
-  const date = new Date(milestone.at).toLocaleDateString(locale, {
+  const date = new Date(milestone.at).toLocaleDateString(uiLocale, {
     month: "short",
     day: "numeric",
     timeZone: "UTC",
@@ -28,7 +30,7 @@ export function RetroRoundNotice() {
       <CalendarClock className="h-3.5 w-3.5 text-primary" />
       <span>
         {t("retro.notice", {
-          round: round.label,
+          round: tx(round.label),
           phase: t(`retro.phase.${roundPhase(round, now)}` as MessageKey),
           milestone: t(`retro.ms.${milestone.label}` as MessageKey),
           date,
