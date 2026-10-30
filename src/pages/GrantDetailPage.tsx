@@ -23,6 +23,7 @@ import { WorkflowStepper } from "@/components/WorkflowStepper";
 import { MilestoneProgressBar } from "@/components/MilestoneProgressBar";
 import { useGrant } from "@/hooks/useGrants";
 import { CommitteeDecisionsCard } from "@/components/CommitteeDecisions";
+import { WatchButton } from "@/components/WatchButton";
 import { useRelatedForGrant } from "@/hooks/useRelatedForGrant";
 import { zechubDaoDaodaoUrl } from "@/lib/daodao/zechubConfig";
 import {
@@ -224,7 +225,7 @@ export default function GrantDetailPage({ id }: { id?: string }) {
             </div>
           </div>
 
-          {/* Amount + share */}
+          {/* Amount + watch + share */}
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             <div className="text-left sm:text-right">
               <div className="text-xs text-muted-foreground">Requested</div>
@@ -232,6 +233,7 @@ export default function GrantDetailPage({ id }: { id?: string }) {
                 {grant.amount > 0 ? `$${grant.amount.toLocaleString()}` : "TBD"}
               </div>
             </div>
+            <WatchButton grant={grant} />
             <Button
               variant="outline"
               size="icon"

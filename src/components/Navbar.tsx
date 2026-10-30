@@ -22,6 +22,8 @@ import { useZecUsdPrice } from "@/hooks/useZecUsdPrice";
 import type { ZecUsdPriceState } from "@/hooks/useZecUsdPrice";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { ZCG_COMMUNITY_GRANTS_FORUM_CATEGORY_URL } from "@/lib/grantPrograms";
+import { useGrantUpdates } from "@/hooks/useWatchlist";
+import { statusConfig } from "@/data/grantTypes";
 
 const ZCG_FORUM_GRANTS = ZCG_COMMUNITY_GRANTS_FORUM_CATEGORY_URL;
 
@@ -78,6 +80,8 @@ function ZecPricePill({ state, className }: { state: ZecUsdPriceState; className
 }
 
 function UpdatesMenu({ triggerClassName }: { triggerClassName?: string }) {
+  const { updates, markSeen, watchedCount, active } = useGrantUpdates();
+  const count = updates.length;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -85,39 +89,71 @@ function UpdatesMenu({ triggerClassName }: { triggerClassName?: string }) {
           variant="ghost"
           size="icon"
           className={triggerClassName ?? "relative h-9 w-9 text-muted-foreground"}
-          aria-label="Updates and useful links"
+          aria-label={count ? `${count} grant update${count === 1 ? "" : "s"}` : "Grant updates"}
         >
           <Bell className="h-4 w-4" />
+          {count > 0 && (
+            <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-primary-foreground">
+              {count > 9 ? "9+" : count}
+            </span>
+          )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-72">
-        <DropdownMenuLabel>Updates & links</DropdownMenuLabel>
+      <DropdownMenuContent align="end" className="w-80">
+        <DropdownMenuLabel className="flex items-center justify-between">
+          Updates
+          {count > 0 && (
+            <button type="button" onClick={markSeen} className="text-xs font-normal text-primary hover:underline">
+              Mark all seen
+            </button>
+          )}
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {count > 0 ? (
+          updates.slice(0, 6).map((u) => (
+            <DropdownMenuItem key={u.grantId} asChild>
+              <Link href={`/grants/${u.grantId}`} className="flex cursor-pointer flex-col items-start gap-0.5">
+                <span className="line-clamp-1 w-full text-left text-sm text-foreground">{u.title}</span>
+                <span className="w-full text-left text-xs text-muted-foreground">
+                  {u.kind === "status"
+                    ? `${statusConfig[u.from!].label} → ${statusConfig[u.to!].label}`
+                    : u.kind === "new"
+                      ? `Your application · ${statusConfig[u.to!].label}`
+                      : "New activity on GitHub"}
+                </span>
+              </Link>
+            </DropdownMenuItem>
+          ))
+        ) : (
+          <p className="px-2 py-1.5 text-xs leading-relaxed text-muted-foreground">
+            {active
+              ? `No changes on your ${watchedCount ? `${watchedCount} watched grant${watchedCount === 1 ? "" : "s"}` : "applications"} since you last looked.`
+              : "Press Watch on any grant to see its status changes and new activity here. Your watchlist stays in this browser."}
+          </p>
+        )}
+        {count > 6 && (
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard?tab=notifications" className="cursor-pointer text-xs text-primary">
+              See all {count} updates
+            </Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/dashboard" className="cursor-pointer">
-            My dashboard
+          <Link href="/dashboard?tab=notifications" className="cursor-pointer">
+            Watchlist &amp; notifications
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/grants" className="cursor-pointer">
-            Browse grants
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <a
-            href={ZCG_FORUM_GRANTS}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cursor-pointer"
-          >
-            ZCG forum (grants)
+          <a href="/calendar.ics" className="cursor-pointer">
+            Subscribe to deadlines (calendar)
           </a>
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <p className="px-2 py-1.5 text-xs leading-relaxed text-muted-foreground">
-          In-app notifications are not wired yet. Watch your GitHub issues and the forum for grant
-          updates.
-        </p>
+        <DropdownMenuItem asChild>
+          <a href="/feed.xml" className="cursor-pointer">
+            Grant updates (RSS)
+          </a>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

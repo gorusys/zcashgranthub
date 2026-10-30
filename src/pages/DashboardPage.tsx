@@ -6,11 +6,18 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { useGrants } from "@/hooks/useGrants";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { WatchlistPanel } from "@/components/WatchlistPanel";
 import { readGitHubSession, subscribeToGitHubAuth } from "@/lib/githubAuth";
 
 export default function DashboardPage() {
   const { data: grants = [], isLoading } = useGrants();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("applications");
+  useEffect(() => {
+    const tab = router.query.tab;
+    if (typeof tab === "string" && ["applications", "milestones", "notifications"].includes(tab)) setActiveTab(tab);
+  }, [router.query.tab]);
   /** `undefined` = not hydrated yet (avoid SSR/client mismatch). */
   const [login, setLogin] = useState<string | null | undefined>(undefined);
 
@@ -183,15 +190,7 @@ export default function DashboardPage() {
         </TabsContent>
 
         <TabsContent value="notifications">
-          <Card className="border-border/50 bg-card">
-            <CardContent className="p-6 text-sm text-muted-foreground">
-              <p className="mb-2 font-medium text-foreground">No in-app notifications yet</p>
-              <p>
-                Watch your grant issue on GitHub and the Zcash Community Forum for review updates.
-                This hub does not poll GitHub for comments or labels into a notification feed yet.
-              </p>
-            </CardContent>
-          </Card>
+          <WatchlistPanel />
         </TabsContent>
       </Tabs>
     </div>
