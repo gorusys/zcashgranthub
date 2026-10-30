@@ -53,6 +53,7 @@ export default function App({ Component, pageProps }: AppProps) {
             name="twitter:image"
             content="https://zgrantshub.com/favicon.svg"
           />
+          <link rel="alternate" type="application/rss+xml" title="Zcash Grants Hub: grant updates" href="/feed.xml" />
           <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
           <link rel="apple-touch-icon" href="/favicon.svg" />
         </Head>
