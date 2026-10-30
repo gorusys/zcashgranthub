@@ -149,7 +149,12 @@ export function labelToStatus(
     return "PENDING_REVIEW";
   }
 
-  if (state === "closed") return "COMPLETED";
+  if (state === "closed") {
+    // Closed without ever being approved: withdrawn or never decided.
+    const wasFunded =
+      has("grant approved") || has("grant complete") || has("payment") || has("milestone");
+    return wasFunded ? "COMPLETED" : "WITHDRAWN";
+  }
   if (has("startup payment")) return "ACTIVE";
   if (has("grant approved")) return "APPROVED";
   if (has("ready for zcg review"))
@@ -265,8 +270,17 @@ function parseDocuments(
 // Forum link
 // ---------------------------------------------------------------------------
 
-/** Forum topics linked from the application template itself, not the proposal's thread. */
-const TEMPLATE_FORUM_TOPICS = /\/t\/(?:[^/\s]*code-of-conduct[^/\s]*\/)?41787\b|code-of-conduct/i;
+/**
+ * Forum topics linked from the ZCG / Coinholder application templates (code of
+ * conduct, communication guidelines, category "About" posts), not proposal threads.
+ */
+const TEMPLATE_FORUM_TOPIC_IDS = new Set([41787, 44284, 52106]);
+const TEMPLATE_FORUM_SLUG = /\/t\/(?:[^/]*code-of-conduct|[^/]*communication-guidelines|about-the-[^/]*)\//i;
+
+function isTemplateForumLink(url: string): boolean {
+  const id = url.match(/\/t\/(?:[^/]+\/)?(\d+)/)?.[1];
+  return TEMPLATE_FORUM_SLUG.test(url) || (id != null && TEMPLATE_FORUM_TOPIC_IDS.has(Number(id)));
+}
 
 /** The proposal's forum thread: first linked forum topic that isn't a template link. */
 export function forumLink(body: string, comments: Pick<GitHubComment, "body">[] = []): string {
@@ -274,7 +288,7 @@ export function forumLink(body: string, comments: Pick<GitHubComment, "body">[] 
   const urls = (text.match(/https?:\/\/forum\.zcashcommunity\.com\/t\/[^\s)\]>"'`]+/g) ?? []).map((u) =>
     u.replace(/[.,;:!?]+$/, "")
   );
-  const thread = urls.find((u) => !TEMPLATE_FORUM_TOPICS.test(u));
+  const thread = urls.find((u) => !isTemplateForumLink(u));
   return thread ?? ZCG_COMMUNITY_GRANTS_FORUM_CATEGORY_URL;
 }
 
