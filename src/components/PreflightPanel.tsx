@@ -84,8 +84,12 @@ export function PreflightPanel({
             <Search className="h-4 w-4 text-primary" /> Similar past applications
           </div>
           <p className="mb-3 text-xs text-muted-foreground">
-            Read how these were received. If one was rejected, check its forum thread and the
-            ZCG minutes for the reasons, and say in your application what is different.
+            Read how these were received. If one was declined, open it to see the committee's
+            reasoning (or search the{" "}
+            <Link href="/decisions" target="_blank" className="text-primary hover:underline">
+              decisions archive
+            </Link>
+            ), and say in your application what is different.
           </p>
           <ul className="divide-y divide-border">
             {similar.map(({ grant }) => (

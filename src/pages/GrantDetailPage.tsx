@@ -22,6 +22,7 @@ import { CategoryBadge } from "@/components/CategoryBadge";
 import { WorkflowStepper } from "@/components/WorkflowStepper";
 import { MilestoneProgressBar } from "@/components/MilestoneProgressBar";
 import { useGrant } from "@/hooks/useGrants";
+import { CommitteeDecisionsCard } from "@/components/CommitteeDecisions";
 import { useRelatedForGrant } from "@/hooks/useRelatedForGrant";
 import { zechubDaoDaodaoUrl } from "@/lib/daodao/zechubConfig";
 import {
@@ -335,6 +336,10 @@ export default function GrantDetailPage({ id }: { id?: string }) {
           </a>
         </Button>
       </div>
+
+      {grant.program === "zcg" && (
+        <CommitteeDecisionsCard forumLink={grant.forumLink} title={grant.title} />
+      )}
 
       {/* ── Content + sidebar ─────────────────────────────────────────────── */}
       <div className="flex flex-col gap-6 lg:flex-row">
