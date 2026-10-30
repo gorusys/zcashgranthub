@@ -667,6 +667,17 @@ export default function ApplyPage({
         mini-grants via DAO DAO on Juno. Connect GitHub before submitting ZCG or
         Coinholder forms.
       </p>
+      <p className="mb-4 text-sm text-muted-foreground sm:mb-6">
+        Not sure which one fits?{" "}
+        <Link href="/find-funding" className="font-medium text-primary hover:underline">
+          Use the Funding Finder
+        </Link>{" "}
+        or check the{" "}
+        <Link href="/retro" className="font-medium text-primary hover:underline">
+          current retro round dates
+        </Link>
+        .
+      </p>
 
       <Tabs value={applyTab} onValueChange={setApplyTab} className="w-full">
         <TabsList className="mb-6 grid h-auto w-full max-w-xl grid-cols-3 p-1 sm:w-auto">

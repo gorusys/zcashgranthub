@@ -12,6 +12,7 @@ Official domain: [zgrantshub.com](https://zgrantshub.com)
 - **Browse & filter** — Search, status, category, and **program** filter on `/grants`.
 - **Grant detail** — Application fields, milestones, team, budget, risks, comments; **no** embedded DAO vote as ZCG status—only relationship suggestions and clear separation of programs.
 - **Apply wizards** — Single `/apply` page with **ZCG**, **Coinholder**, and **ZecHub DAO** tabs. ZCG/Coinholder create GitHub issues; ZecHub links to DAO DAO. `/apply/coinholder` redirects to `/apply?tab=coinholder`.
+- **Funding Finder** — `/find-funding` asks three questions (work stage, size, kind) and ranks the routes that fit (Coinholder retro, ZCG, ZecHub bounties, ZecHub DAO) with each program's rules and next steps.
 - **Coinholder retro rounds** — `/retro` shows the current round phase with a countdown, the FPF timeline, a pre-submission checklist, this round's submissions, past-round outcomes (counts from FPF GitHub labels) and live organizer announcements from the forum. Round dates live in `src/data/retro-rounds.json`; add each new round from FPF's forum post and cite it in `sources`.
 - **Analytics dashboard**.
 
@@ -99,7 +100,7 @@ Optional explicit mappings live in **`src/data/grant-links.json`** (validated by
 ## Official program links
 
 - [Zcash Community Grants](https://zcashcommunitygrants.org/)
-- [Zcash Foundation grants](https://zfnd.org/grants/)
+- [ZecHub bounties](https://bounties.zechub.wiki/)
 - [Coinholder program (GitHub)](https://github.com/Financial-Privacy-Foundation/ZcashCoinholderGrantsProgram)
 - [ZecHub DAO (wiki)](https://zechub.wiki/dao)
 

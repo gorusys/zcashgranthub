@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { GrantCard } from "@/components/GrantCard";
 import { useGrants } from "@/hooks/useGrants";
+import { RetroRoundNotice } from "@/components/RetroRoundNotice";
 import { useZcgPublicSpreadsheet } from "@/hooks/useZcgPublicSpreadsheet";
 import { useEffect, useRef, useState } from "react";
 import { GRANTS_DASHBOARD_SHEET_URL } from "@/lib/grantPrograms";
@@ -173,6 +174,9 @@ export default function LandingPage() {
         <div className="grid-pattern grid-pattern-soft-light absolute inset-0" />
         <div className="absolute left-1/2 top-1/3 h-64 w-64 -translate-x-1/2 rounded-full bg-primary/10 blur-[120px] animate-glow-pulse" />
         <div className="relative container mx-auto px-4 py-16 text-center sm:py-24 lg:py-36">
+          <div className="mb-6 flex justify-center">
+            <RetroRoundNotice />
+          </div>
           <h1 className="mx-auto max-w-4xl text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-6xl">
             Fund the Future of{" "}
             <span className="text-gradient-gold">Zcash Privacy</span>
@@ -207,6 +211,12 @@ export default function LandingPage() {
               </Button>
             </Link>
           </div>
+          <p className="mt-5 text-sm text-muted-foreground">
+            Not sure which program fits your work?{" "}
+            <Link href="/find-funding" className="font-medium text-primary hover:underline">
+              Find the right funding →
+            </Link>
+          </p>
         </div>
       </section>
 
@@ -267,15 +277,6 @@ export default function LandingPage() {
               rel="noopener noreferrer"
             >
               Zcash Community Grants
-            </a>
-            ,{" "}
-            <a
-              href="https://zfnd.org/grants/"
-              className="text-primary underline-offset-2 hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Zcash Foundation grants
             </a>
             ,{" "}
             <a
