@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import { useState, useMemo, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/router";
 import { Search, SlidersHorizontal, X, AlertCircle } from "lucide-react";
@@ -31,6 +32,7 @@ const STATUSES: GrantStatus[] = [
   "ACTIVE",
   "COMPLETED",
   "REJECTED",
+  "WITHDRAWN",
 ];
 
 const CATEGORIES: GrantCategory[] = [
@@ -67,6 +69,7 @@ function GrantCardSkeleton() {
 }
 
 export default function GrantsPage() {
+  const { text: tx } = useUi();
   const router = useRouter();
   const { data: grants = [], isLoading, isError, error } = useGrants();
 
@@ -208,23 +211,23 @@ export default function GrantsPage() {
   const FilterPanel = () => (
     <div className="space-y-6">
       <div>
-        <h3 className="mb-3 text-sm font-semibold text-foreground">Program</h3>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">{tx("Program")}</h3>
         <Select
           value={programFilter}
           onValueChange={(v) => setProgramFilterAndUrl(v as "all" | GrantProgram)}
         >
           <SelectTrigger className="bg-secondary">
-            <SelectValue placeholder="Program" />
+            <SelectValue placeholder={tx("Program")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All programs</SelectItem>
-            <SelectItem value="zcg">{programLabel("zcg")}</SelectItem>
-            <SelectItem value="coinholder">{programLabel("coinholder")}</SelectItem>
+            <SelectItem value="all">{tx("All programs")}</SelectItem>
+            <SelectItem value="zcg">{tx(programLabel("zcg"))}</SelectItem>
+            <SelectItem value="coinholder">{tx(programLabel("coinholder"))}</SelectItem>
           </SelectContent>
         </Select>
       </div>
       <div>
-        <h3 className="mb-3 text-sm font-semibold text-foreground">Status</h3>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">{tx("Status")}</h3>
         <div className="space-y-2">
           {STATUSES.map((s) => (
             <label
@@ -235,13 +238,13 @@ export default function GrantsPage() {
                 checked={selectedStatuses.includes(s)}
                 onCheckedChange={() => toggleStatus(s)}
               />
-              {s.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
+              {tx(s.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()))}
             </label>
           ))}
         </div>
       </div>
       <div>
-        <h3 className="mb-3 text-sm font-semibold text-foreground">Category</h3>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">{tx("Category")}</h3>
         <div className="space-y-2">
           {CATEGORIES.map((c) => (
             <label
@@ -252,7 +255,7 @@ export default function GrantsPage() {
                 checked={selectedCategories.includes(c)}
                 onCheckedChange={() => toggleCategory(c)}
               />
-              {c}
+              {tx(c)}
             </label>
           ))}
         </div>
@@ -270,8 +273,7 @@ export default function GrantsPage() {
           }}
           className="text-muted-foreground"
         >
-          <X className="mr-1 h-3 w-3" /> Clear filters
-        </Button>
+          <X className="mr-1 h-3 w-3" /> {tx(" Clear filters")}</Button>
       )}
     </div>
   );
@@ -298,28 +300,26 @@ export default function GrantsPage() {
     <div className="container mx-auto px-4 py-6 sm:py-8">
       <div className="mb-5 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground sm:text-3xl">{pageTitle}</h1>
+          <h1 className="text-2xl font-bold text-foreground sm:text-3xl">{tx(pageTitle)}</h1>
           <p className="mt-1 text-sm text-muted-foreground sm:text-base">
             {programFilter === "zcg" && (
               <>
-                Zcash Community Grants applications from GitHub.
-              </>
+                {tx("Zcash Community Grants applications from GitHub.")}</>
             )}
             {programFilter === "coinholder" && (
               <>
-                Financial Privacy Foundation coinholder program applications from GitHub.
-              </>
+                {tx("Financial Privacy Foundation coinholder program applications from GitHub.")}</>
             )}
             {programFilter === "all" && (
               <>
-                ZCG and Coinholder grant applications from GitHub (composite ids such as{" "}
-                <code className="rounded bg-secondary px-1 text-xs">zcg-42</code>
+                {tx("ZCG and Coinholder grant applications from GitHub (composite ids such as")}{" "}
+                <code className="rounded bg-secondary px-1 text-xs">{tx("zcg-42")}</code>
                 ).
               </>
             )}
           </p>
         </div>
-        <Button onClick={() => void router.push(applyHref)}>{applyLabel}</Button>
+        <Button onClick={() => void router.push(applyHref)}>{tx(applyLabel)}</Button>
       </div>
 
       <div className="flex gap-6 lg:gap-8">
@@ -329,7 +329,7 @@ export default function GrantsPage() {
             <div className="relative mb-6">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder="Search grants..."
+                placeholder={tx("Search grants...")}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="bg-secondary pl-9"
@@ -343,11 +343,11 @@ export default function GrantsPage() {
         <div className="flex-1">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <span className="text-sm text-muted-foreground">
-              {isLoading
+              {tx(isLoading
                 ? "Loading grants from GitHub…"
                 : filtered.length === 0
                   ? `0 matching · ${grants.length} loaded from GitHub`
-                  : `Rows ${rangeStart}–${rangeEnd} of ${filtered.length} matching · ${grants.length} loaded from GitHub`}
+                  : `Rows ${rangeStart}–${rangeEnd} of ${filtered.length} matching · ${grants.length} loaded from GitHub`)}
             </span>
             <div className="flex items-center gap-2">
               <Button
@@ -357,8 +357,7 @@ export default function GrantsPage() {
                 onClick={() => setShowFilters(!showFilters)}
               >
                 <SlidersHorizontal className="h-4 w-4" />
-                Filters
-                {activeFilterCount > 0 && (
+                {tx("Filters")}{activeFilterCount > 0 && (
                   <span className="flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
                     {activeFilterCount}
                   </span>
@@ -369,8 +368,8 @@ export default function GrantsPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="newest">Newest First</SelectItem>
-                  <SelectItem value="amount-desc">Amount: High to Low</SelectItem>
+                  <SelectItem value="newest">{tx("Newest First")}</SelectItem>
+                  <SelectItem value="amount-desc">{tx("Amount: High to Low")}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -380,7 +379,7 @@ export default function GrantsPage() {
           <div className="relative mb-3 lg:hidden">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search grants..."
+              placeholder={tx("Search grants...")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="h-11 bg-secondary pl-9"
@@ -400,11 +399,10 @@ export default function GrantsPage() {
                 <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-400" />
                 <div>
                   <p className="text-sm font-medium text-red-400">
-                    Failed to load grants
-                  </p>
+                    {tx("Failed to load grants")}</p>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    {(error as Error)?.message ||
-                      "Could not fetch from GitHub API. Try again later."}
+                    {tx((error as Error)?.message ||
+                      "Could not fetch from GitHub API. Try again later.")}
                   </p>
                 </div>
               </CardContent>
@@ -439,7 +437,7 @@ export default function GrantsPage() {
 
           {!isLoading && filtered.length === 0 && !isError && (
             <div className="py-16 text-center sm:py-20">
-              <p className="text-muted-foreground">No grants match your filters.</p>
+              <p className="text-muted-foreground">{tx("No grants match your filters.")}</p>
               {activeFilterCount > 0 && (
                 <Button
                   variant="ghost"
@@ -451,8 +449,7 @@ export default function GrantsPage() {
                     setProgramFilterAndUrl("all");
                   }}
                 >
-                  <X className="mr-1 h-3 w-3" /> Clear all filters
-                </Button>
+                  <X className="mr-1 h-3 w-3" /> {tx(" Clear all filters")}</Button>
               )}
             </div>
           )}

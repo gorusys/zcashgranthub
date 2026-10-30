@@ -1,3 +1,5 @@
+import { formatSpreadsheetValue } from "@/i18n/format";
+import { useUi } from "@/i18n/useUi";
 import { useMemo, type ReactNode } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -47,14 +49,15 @@ function Metric({
   label: string;
   value: string | undefined;
 }) {
+  const { text: tx } = useUi();
   if (!value) return null;
   return (
     <div className="rounded-lg border border-border/40 bg-secondary/15 px-3 py-2.5 transition-colors hover:bg-secondary/25">
       <div className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
-        {label}
+        {tx(label)}
       </div>
       <div className="mt-1 font-mono text-sm font-semibold text-foreground sm:text-[15px]">
-        {value}
+        {tx(value)}
       </div>
     </div>
   );
@@ -67,11 +70,12 @@ function SectionTitle({
   children: ReactNode;
   hint?: string;
 }) {
+  const { text: tx } = useUi();
   return (
     <div className="mb-3">
       <h3 className="text-sm font-semibold text-foreground">{children}</h3>
       {hint ? (
-        <p className="mt-0.5 text-xs text-muted-foreground">{hint}</p>
+        <p className="mt-0.5 text-xs text-muted-foreground">{tx(hint)}</p>
       ) : null}
     </div>
   );
@@ -84,6 +88,7 @@ type Props = {
 };
 
 export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
+  const { text: tx, locale: uiLocale } = useUi();
   const scenarioChartData = useMemo(() => {
     if (!sheet) return [];
     const zcg = sheet.zcg.sensitivityCurrent;
@@ -141,8 +146,7 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
           <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-destructive" />
           <div>
             <p className="font-medium text-destructive">
-              Could not load the public spreadsheet
-            </p>
+              {tx("Could not load the public spreadsheet")}</p>
             <p className="mt-1 text-sm text-muted-foreground">{error.message}</p>
           </div>
         </CardContent>
@@ -174,12 +178,11 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
           <div>
             <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
               <Table2 className="h-5 w-5 text-primary" />
-              Community grants analytics
-            </CardTitle>
+              {tx("Community grants analytics")}</CardTitle>
             <p className="mt-1 max-w-3xl text-xs leading-relaxed text-muted-foreground sm:text-sm">
-              Figures reflect the sheet at{" "}
+              {tx("Figures reflect the sheet at")}{" "}
               <span className="font-mono text-foreground">
-                {new Date(s.fetchedAt).toLocaleString()}
+                {new Date(s.fetchedAt).toLocaleString(uiLocale)}
               </span>
               .
             </p>
@@ -190,8 +193,7 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 self-start rounded-md border border-border bg-secondary/30 px-3 py-1.5 text-xs font-medium text-foreground hover:bg-secondary/50"
           >
-            Open sheet
-            <ExternalLink className="h-3.5 w-3.5 opacity-70" />
+            {tx("Open sheet")}<ExternalLink className="h-3.5 w-3.5 opacity-70" />
           </a>
         </div>
       </CardHeader>
@@ -199,80 +201,73 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
         <Tabs defaultValue="overview" className="w-full">
           <TabsList className="mb-4 flex h-auto min-h-10 w-full flex-wrap justify-start gap-1 bg-muted/80 p-1">
             <TabsTrigger value="overview" className="text-xs sm:text-sm">
-              Overview
-            </TabsTrigger>
+              {tx("Overview")}</TabsTrigger>
             <TabsTrigger value="treasury" className="text-xs sm:text-sm">
-              Treasury
-            </TabsTrigger>
+              {tx("Treasury")}</TabsTrigger>
             <TabsTrigger value="zcg-ops" className="text-xs sm:text-sm">
-              ZCG operations
-            </TabsTrigger>
+              {tx("ZCG operations")}</TabsTrigger>
             <TabsTrigger value="coinholder" className="text-xs sm:text-sm">
-              Coinholder
-            </TabsTrigger>
+              {tx("Coinholder")}</TabsTrigger>
             <TabsTrigger value="registers" className="text-xs sm:text-sm">
-              Grant registers
-            </TabsTrigger>
+              {tx("Grant registers")}</TabsTrigger>
             <TabsTrigger value="reference" className="text-xs sm:text-sm">
-              Inputs
-            </TabsTrigger>
+              {tx("Inputs")}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               <Metric
-                label="ZCG milestone payments"
+                label={tx("ZCG milestone payments")}
                 value={String(s.zcgGrants.totals.milestoneRows)}
               />
               <Metric
-                label="ZEC disbursed (sum milestones)"
-                value={`${s.zcgGrants.totals.sumZec.toLocaleString()} ZEC`}
+                label={tx("ZEC disbursed (sum milestones)")}
+                value={`${s.zcgGrants.totals.sumZec.toLocaleString(uiLocale)} ZEC`}
               />
               <Metric
-                label="Independent contractor payouts"
+                label={tx("Independent contractor payouts")}
                 value={String(s.icPayouts.totals.lines)}
               />
               <Metric
-                label="Coinholder funded proposals"
+                label={tx("Coinholder funded proposals")}
                 value={String(s.coinholderGrants.totals.rows)}
               />
               <Metric
-                label="Liquidity transfers"
+                label={tx("Liquidity transfers")}
                 value={String(s.liquidity.transfers.length)}
               />
               <Metric
-                label="2026 Disc. budget spent / annual"
+                label={tx("2026 Disc. budget spent / annual")}
                 value={
                   s.discBudget2026.spentUsd != null &&
                   s.discBudget2026.annualBudgetUsd != null
-                    ? `$${Math.round(s.discBudget2026.spentUsd).toLocaleString()} / $${Math.round(s.discBudget2026.annualBudgetUsd).toLocaleString()}`
+                    ? `$${Math.round(s.discBudget2026.spentUsd).toLocaleString(uiLocale)} / $${Math.round(s.discBudget2026.annualBudgetUsd).toLocaleString(uiLocale)}`
                     : undefined
                 }
               />
               <Metric
-                label="Committee stipend payments"
+                label={tx("Committee stipend payments")}
                 value={String(s.stipend.totals.lines)}
               />
               <Metric
-                label="ZCG proposal history"
+                label={tx("ZCG proposal history")}
                 value={String(s.zcgAllGrantsTracking.totalRows)}
               />
             </div>
             <div className="grid gap-4 lg:grid-cols-2">
               <Card className="border-border/40 bg-secondary/10">
                 <CardHeader className="py-3">
-                  <CardTitle className="text-sm">ZCG grant status mix</CardTitle>
+                  <CardTitle className="text-sm">{tx("ZCG grant status mix")}</CardTitle>
                 </CardHeader>
                 <CardContent className="h-[220px]">
                   {s.zcgGrants.byStatus.length === 0 ? (
                     <p className="flex h-full items-center justify-center text-sm text-muted-foreground">
-                      Status information unavailable.
-                    </p>
+                      {tx("Status information unavailable.")}</p>
                   ) : (
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie
-                          data={s.zcgGrants.byStatus.slice(0, 8)}
+                          data={s.zcgGrants.byStatus.slice(0, 8).map((row) => ({ ...row, name: tx(row.name) }))}
                           dataKey="count"
                           nameKey="name"
                           cx="50%"
@@ -297,19 +292,17 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
               <Card className="border-border/40 bg-secondary/10">
                 <CardHeader className="py-3">
                   <CardTitle className="text-sm">
-                    Coinholder decision mix
-                  </CardTitle>
+                    {tx("Coinholder decision mix")}</CardTitle>
                 </CardHeader>
                 <CardContent className="h-[220px]">
                   {s.coinholderAllGrantsTracking.byDecision.length === 0 ? (
                     <p className="flex h-full items-center justify-center text-sm text-muted-foreground">
-                      No historical decisions available.
-                    </p>
+                      {tx("No historical decisions available.")}</p>
                   ) : (
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie
-                          data={s.coinholderAllGrantsTracking.byDecision}
+                          data={s.coinholderAllGrantsTracking.byDecision.map((row) => ({ ...row, name: tx(row.name) }))}
                           dataKey="count"
                           nameKey="name"
                           cx="50%"
@@ -337,95 +330,95 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
 
           <TabsContent value="treasury" className="space-y-8">
             <p className="text-xs text-muted-foreground">
-              <span className="text-foreground">{s.zcg.status ?? "—"}</span>
-              {" · ZCG block "}
-              <span className="font-mono">{s.zcg.blockHeight ?? "—"}</span>
-              {" · Coinholder block "}
-              <span className="font-mono">{s.coinholder.blockHeight ?? "—"}</span>
+              <span className="text-foreground">{tx(s.zcg.status ?? "—")}</span>
+              {tx(" · ZCG block ")}
+              <span className="font-mono">{formatSpreadsheetValue(s.zcg.blockHeight, uiLocale) ?? "—"}</span>
+              {tx(" · Coinholder block ")}
+              <span className="font-mono">{formatSpreadsheetValue(s.coinholder.blockHeight, uiLocale) ?? "—"}</span>
               {" · "}
-              {s.zcg.zecUsdPriceDisplay ?? s.coinholder.zecUsdPriceDisplay}
+              {formatSpreadsheetValue(s.zcg.zecUsdPriceDisplay ?? s.coinholder.zecUsdPriceDisplay, uiLocale)}
             </p>
             <div className="grid gap-8 lg:grid-cols-2">
               <div>
-                <SectionTitle>Zcash Community Grants</SectionTitle>
+                <SectionTitle>{tx("Zcash Community Grants")}</SectionTitle>
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   <Metric
-                    label="Current ZEC balance"
-                    value={s.zcg.metrics["Current ZEC balance:"]}
+                    label={tx("Current ZEC balance")}
+                    value={formatSpreadsheetValue(s.zcg.metrics["Current ZEC balance:"], uiLocale)}
                   />
                   <Metric
-                    label="USD value of current holdings"
-                    value={s.zcg.metrics["USD value of current holdings:"]}
+                    label={tx("USD value of current holdings")}
+                    value={formatSpreadsheetValue(s.zcg.metrics["USD value of current holdings:"], uiLocale)}
                   />
                   <Metric
-                    label="USD available (after liabilities)"
+                    label={tx("USD available (after liabilities)")}
                     value={
-                      s.zcg.metrics["USD value available current holdings:"]
+                      formatSpreadsheetValue(s.zcg.metrics["USD value available current holdings:"], uiLocale)
                     }
                   />
                   <Metric
-                    label="Future grant liabilities (USD)"
+                    label={tx("Future grant liabilities (USD)")}
                     value={
-                      s.zcg.metrics["Future grant liabilities (total in USD):"]
+                      formatSpreadsheetValue(s.zcg.metrics["Future grant liabilities (total in USD):"], uiLocale)
                     }
                   />
                   <Metric
-                    label="Total ZEC accrued to date"
-                    value={s.zcg.metrics["Total ZEC accrued to date:"]}
+                    label={tx("Total ZEC accrued to date")}
+                    value={formatSpreadsheetValue(s.zcg.metrics["Total ZEC accrued to date:"], uiLocale)}
                   />
                   <Metric
-                    label="Total ZEC outflow"
-                    value={s.zcg.metrics["Total ZEC outflow:"]}
+                    label={tx("Total ZEC outflow")}
+                    value={formatSpreadsheetValue(s.zcg.metrics["Total ZEC outflow:"], uiLocale)}
                   />
                   <Metric
-                    label="Total USD outflow"
-                    value={s.zcg.metrics["Total USD outflow:"]}
+                    label={tx("Total USD outflow")}
+                    value={formatSpreadsheetValue(s.zcg.metrics["Total USD outflow:"], uiLocale)}
                   />
                   <Metric
-                    label="USD reserves (hedging)"
-                    value={s.zcg.metrics["USD reserves:"]}
+                    label={tx("USD reserves (hedging)")}
+                    value={formatSpreadsheetValue(s.zcg.metrics["USD reserves:"], uiLocale)}
                   />
                 </div>
               </div>
               <div>
-                <SectionTitle>Coinholder Grants</SectionTitle>
+                <SectionTitle>{tx("Coinholder Grants")}</SectionTitle>
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   <Metric
-                    label="Current ZEC balance"
-                    value={s.coinholder.metrics["Current ZEC balance:"]}
+                    label={tx("Current ZEC balance")}
+                    value={formatSpreadsheetValue(s.coinholder.metrics["Current ZEC balance:"], uiLocale)}
                   />
                   <Metric
-                    label="USD value of current ZEC"
+                    label={tx("USD value of current ZEC")}
                     value={
-                      s.coinholder.metrics["USD value of current ZEC balance:"]
+                      formatSpreadsheetValue(s.coinholder.metrics["USD value of current ZEC balance:"], uiLocale)
                     }
                   />
                   <Metric
-                    label="USD available (after liabilities)"
+                    label={tx("USD available (after liabilities)")}
                     value={
-                      s.coinholder.metrics[
+                      formatSpreadsheetValue(s.coinholder.metrics[
                         "USD value available current holdings:"
-                      ]
+                      ], uiLocale)
                     }
                   />
                   <Metric
-                    label="Future grant liabilities (USD)"
+                    label={tx("Future grant liabilities (USD)")}
                     value={
-                      s.coinholder.metrics[
+                      formatSpreadsheetValue(s.coinholder.metrics[
                         "Future grant liabilities (total in USD):"
-                      ]
+                      ], uiLocale)
                     }
                   />
                   <Metric
-                    label="Total ZEC accrued to date"
+                    label={tx("Total ZEC accrued to date")}
                     value={
-                      s.coinholder.metrics["Total ZEC accrued to date:"]
+                      formatSpreadsheetValue(s.coinholder.metrics["Total ZEC accrued to date:"], uiLocale)
                     }
                   />
                   <Metric
-                    label="Total ZEC paid to recipients"
+                    label={tx("Total ZEC paid to recipients")}
                     value={
-                      s.coinholder.metrics["Total ZEC paid to grant recipients:"]
+                      formatSpreadsheetValue(s.coinholder.metrics["Total ZEC paid to grant recipients:"], uiLocale)
                     }
                   />
                 </div>
@@ -433,10 +426,9 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
             </div>
             <div>
               <SectionTitle
-                hint="Scenario comparison across market price assumptions (values in millions USD)."
+                hint={tx("Scenario comparison across market price assumptions (values in millions USD).")}
               >
-                Treasury vs alternate ZEC/USD prices
-              </SectionTitle>
+                {tx("Treasury vs alternate ZEC/USD prices")}</SectionTitle>
               <div className="h-[300px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={scenarioChartData}>
@@ -448,7 +440,7 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
                     <Line
                       type="monotone"
                       dataKey="zcgCurrentUsdM"
-                      name="ZCG current assets"
+                      name={tx("ZCG current assets")}
                       stroke="hsl(40, 90%, 56%)"
                       strokeWidth={2}
                       dot={{ r: 3 }}
@@ -456,7 +448,7 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
                     <Line
                       type="monotone"
                       dataKey="zcgWithReceivableUsdM"
-                      name="ZCG + receivables (3rd fund)"
+                      name={tx("ZCG + receivables (3rd fund)")}
                       stroke="hsl(173, 58%, 45%)"
                       strokeWidth={2}
                       dot={{ r: 3 }}
@@ -464,7 +456,7 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
                     <Line
                       type="monotone"
                       dataKey="coinholderUsdM"
-                      name="Coinholder current assets"
+                      name={tx("Coinholder current assets")}
                       stroke="hsl(280, 65%, 60%)"
                       strokeWidth={2}
                       dot={{ r: 3 }}
@@ -479,13 +471,13 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
             <div className="grid gap-6 lg:grid-cols-2">
               <Card className="border-border/40">
                 <CardHeader className="py-3">
-                  <CardTitle className="text-sm">ZCG Grants — top categories by milestone USD</CardTitle>
+                  <CardTitle className="text-sm">{tx("ZCG Grants — top categories by milestone USD")}</CardTitle>
                 </CardHeader>
                 <CardContent className="h-[280px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart
                       layout="vertical"
-                      data={s.zcgGrants.byCategory.slice(0, 10)}
+                      data={s.zcgGrants.byCategory.slice(0, 10).map((row) => ({ ...row, name: tx(row.name) }))}
                       margin={{ left: 8, right: 16 }}
                     >
                       <CartesianGrid strokeDasharray="3 3" stroke="hsl(220, 20%, 18%)" />
@@ -499,15 +491,15 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
                           String(v).length > 16 ? `${String(v).slice(0, 16)}…` : String(v)
                         }
                       />
-                      <Tooltip contentStyle={TT} formatter={(v: number) => `$${v.toLocaleString()}`} />
-                      <Bar dataKey="amountUsd" fill="hsl(40, 90%, 50%)" radius={[0, 4, 4, 0]} name="USD" />
+                      <Tooltip contentStyle={TT} formatter={(v: number) => `$${v.toLocaleString(uiLocale)}`} />
+                      <Bar dataKey="amountUsd" fill="hsl(40, 90%, 50%)" radius={[0, 4, 4, 0]} name={tx("USD")} />
                     </BarChart>
                   </ResponsiveContainer>
                 </CardContent>
               </Card>
               <Card className="border-border/40">
                 <CardHeader className="py-3">
-                  <CardTitle className="text-sm">Top projects by ZEC disbursed (milestones)</CardTitle>
+                  <CardTitle className="text-sm">{tx("Top projects by ZEC disbursed (milestones)")}</CardTitle>
                 </CardHeader>
                 <CardContent className="h-[280px]">
                   <ResponsiveContainer width="100%" height="100%">
@@ -528,7 +520,7 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
                         }
                       />
                       <Tooltip contentStyle={TT} />
-                      <Bar dataKey="zec" fill="hsl(210, 70%, 50%)" radius={[0, 4, 4, 0]} name="ZEC" />
+                      <Bar dataKey="zec" fill="hsl(210, 70%, 50%)" radius={[0, 4, 4, 0]} name={tx("ZEC")} />
                     </BarChart>
                   </ResponsiveContainer>
                 </CardContent>
@@ -538,24 +530,23 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
               <Card className="border-border/40">
                 <CardHeader className="py-3">
                   <CardTitle className="text-sm">
-                    IC payouts — ZEC by category ({s.icPayouts.totals.sumZec} ZEC total)
-                  </CardTitle>
+                    {tx("IC payouts — ZEC by category (")}{s.icPayouts.totals.sumZec} {tx(" ZEC total)")}</CardTitle>
                 </CardHeader>
                 <CardContent className="h-[260px]">
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={s.icPayouts.byCategory.slice(0, 10)}>
+                    <BarChart data={s.icPayouts.byCategory.slice(0, 10).map((row) => ({ ...row, name: tx(row.name) }))}>
                       <CartesianGrid strokeDasharray="3 3" stroke="hsl(220, 20%, 18%)" />
                       <XAxis dataKey="name" tick={AXIS} interval={0} angle={-25} textAnchor="end" height={70} />
                       <YAxis tick={AXIS} />
                       <Tooltip contentStyle={TT} />
-                      <Bar dataKey="zec" fill="hsl(173, 58%, 42%)" radius={[4, 4, 0, 0]} name="ZEC" />
+                      <Bar dataKey="zec" fill="hsl(173, 58%, 42%)" radius={[4, 4, 0, 0]} name={tx("ZEC")} />
                     </BarChart>
                   </ResponsiveContainer>
                 </CardContent>
               </Card>
               <Card className="border-border/40">
                 <CardHeader className="py-3">
-                  <CardTitle className="text-sm">Liquidity — ZEC per transfer</CardTitle>
+                  <CardTitle className="text-sm">{tx("Liquidity — ZEC per transfer")}</CardTitle>
                 </CardHeader>
                 <CardContent className="h-[260px]">
                   <ResponsiveContainer width="100%" height="100%">
@@ -578,37 +569,37 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
             </div>
             <div className="grid gap-4 lg:grid-cols-2">
               <div>
-                <SectionTitle hint="Wallet performance indicators">Liquidity KPIs</SectionTitle>
+                <SectionTitle hint={tx("Wallet performance indicators")}>{tx("Liquidity KPIs")}</SectionTitle>
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   {s.liquidity.kpis.map((k) => (
-                    <Metric key={k.label + k.value} label={k.label} value={k.value} />
+                    <Metric key={k.label + k.value} label={tx(k.label)} value={k.value} />
                   ))}
                 </div>
               </div>
               <div>
-                <SectionTitle>ZCG 2026 discretionary budget</SectionTitle>
+                <SectionTitle>{tx("ZCG 2026 discretionary budget")}</SectionTitle>
                 <div className="mb-3 grid grid-cols-3 gap-2">
                   <Metric
-                    label="Annual (USD)"
+                    label={tx("Annual (USD)")}
                     value={
                       s.discBudget2026.annualBudgetUsd != null
-                        ? `$${Math.round(s.discBudget2026.annualBudgetUsd).toLocaleString()}`
+                        ? `$${Math.round(s.discBudget2026.annualBudgetUsd).toLocaleString(uiLocale)}`
                         : undefined
                     }
                   />
                   <Metric
-                    label="Spent (USD)"
+                    label={tx("Spent (USD)")}
                     value={
                       s.discBudget2026.spentUsd != null
-                        ? `$${Math.round(s.discBudget2026.spentUsd).toLocaleString()}`
+                        ? `$${Math.round(s.discBudget2026.spentUsd).toLocaleString(uiLocale)}`
                         : undefined
                     }
                   />
                   <Metric
-                    label="Remaining (USD)"
+                    label={tx("Remaining (USD)")}
                     value={
                       s.discBudget2026.remainingUsd != null
-                        ? `$${Math.round(s.discBudget2026.remainingUsd).toLocaleString()}`
+                        ? `$${Math.round(s.discBudget2026.remainingUsd).toLocaleString(uiLocale)}`
                         : undefined
                     }
                   />
@@ -620,28 +611,27 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
                       style={{ width: `${discSpendRatio}%` }}
                     />
                     <p className="mt-1 text-[11px] text-muted-foreground">
-                      {discSpendRatio}% of annual USD budget spent (sheet figures)
-                    </p>
+                      {discSpendRatio}{tx("% of annual USD budget spent (sheet figures)")}</p>
                   </div>
                 )}
                 <div className="max-h-56 overflow-auto rounded-md border border-border/40 text-xs">
                   <table className="w-full text-left">
                     <thead className="sticky top-0 bg-secondary/80">
                       <tr className="border-b border-border/50 text-muted-foreground">
-                        <th className="p-2 font-medium">Date</th>
-                        <th className="p-2 font-medium">Recipient</th>
-                        <th className="p-2 font-medium text-right">USD</th>
+                        <th className="p-2 font-medium">{tx("Date")}</th>
+                        <th className="p-2 font-medium">{tx("Recipient")}</th>
+                        <th className="p-2 font-medium text-right">{tx("USD")}</th>
                       </tr>
                     </thead>
                     <tbody>
                       {s.discBudget2026.lines.map((line, i) => (
                         <tr key={i} className="border-b border-border/30">
-                          <td className="p-2 font-mono text-[11px]">{line.date}</td>
-                          <td className="p-2">{line.recipient}</td>
+                          <td className="p-2 font-mono text-[11px]">{tx(line.date)}</td>
+                          <td className="p-2">{tx(line.recipient)}</td>
                           <td className="p-2 text-right font-mono">
-                            {line.usd != null
-                              ? `$${Math.round(line.usd).toLocaleString()}`
-                              : "—"}
+                            {tx(line.usd != null
+                              ? `$${Math.round(line.usd).toLocaleString(uiLocale)}`
+                              : "—")}
                           </td>
                         </tr>
                       ))}
@@ -651,18 +641,18 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
               </div>
             </div>
             <div>
-              <SectionTitle hint="Current stipend payment history">Committee stipend payouts</SectionTitle>
+              <SectionTitle hint={tx("Current stipend payment history")}>{tx("Committee stipend payouts")}</SectionTitle>
               <div className="mb-4 grid gap-3 sm:grid-cols-3">
                 <Metric
-                  label="Payments"
+                  label={tx("Payments")}
                   value={String(s.stipend.totals.lines)}
                 />
                 <Metric
-                  label="Sum USD"
-                  value={`$${s.stipend.totals.sumUsd.toLocaleString()}`}
+                  label={tx("Sum USD")}
+                  value={`$${s.stipend.totals.sumUsd.toLocaleString(uiLocale)}`}
                 />
                 <Metric
-                  label="Sum ZEC"
+                  label={tx("Sum ZEC")}
                   value={String(s.stipend.totals.sumZec)}
                 />
               </div>
@@ -673,7 +663,7 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
                     <XAxis dataKey="name" tick={AXIS} interval={0} angle={-20} textAnchor="end" height={72} />
                     <YAxis tick={AXIS} tickFormatter={(v) => `$${v >= 1000 ? `${v / 1000}k` : v}`} />
                     <Tooltip contentStyle={TT} />
-                    <Bar dataKey="usd" fill="hsl(35, 85%, 48%)" radius={[4, 4, 0, 0]} name="USD" />
+                    <Bar dataKey="usd" fill="hsl(35, 85%, 48%)" radius={[4, 4, 0, 0]} name={tx("USD")} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -684,18 +674,17 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
             <div className="grid gap-6 lg:grid-cols-2">
               <Card className="border-border/40">
                 <CardHeader className="py-3">
-                  <CardTitle className="text-sm">Coinholder proposal status</CardTitle>
+                  <CardTitle className="text-sm">{tx("Coinholder proposal status")}</CardTitle>
                 </CardHeader>
                 <CardContent className="h-[240px]">
                   {s.coinholderGrants.byStatus.length === 0 ? (
                     <p className="flex h-full items-center justify-center text-sm text-muted-foreground">
-                      No proposal data available.
-                    </p>
+                      {tx("No proposal data available.")}</p>
                   ) : (
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie
-                          data={s.coinholderGrants.byStatus}
+                          data={s.coinholderGrants.byStatus.map((row) => ({ ...row, name: tx(row.name) }))}
                           dataKey="count"
                           nameKey="name"
                           cx="50%"
@@ -718,28 +707,27 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
               </Card>
               <Card className="border-border/40">
                 <CardHeader className="py-3">
-                  <CardTitle className="text-sm">Coinholder Grants — USD by category</CardTitle>
+                  <CardTitle className="text-sm">{tx("Coinholder Grants — USD by category")}</CardTitle>
                 </CardHeader>
                 <CardContent className="h-[240px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart
                       layout="vertical"
-                      data={s.coinholderGrants.byCategory}
+                      data={s.coinholderGrants.byCategory.map((row) => ({ ...row, name: tx(row.name) }))}
                       margin={{ left: 4, right: 12 }}
                     >
                       <CartesianGrid strokeDasharray="3 3" stroke="hsl(220, 20%, 18%)" />
                       <XAxis type="number" tick={AXIS} />
                       <YAxis type="category" dataKey="name" width={100} tick={AXIS} />
-                      <Tooltip contentStyle={TT} formatter={(v: number) => `$${v.toLocaleString()}`} />
+                      <Tooltip contentStyle={TT} formatter={(v: number) => `$${v.toLocaleString(uiLocale)}`} />
                       <Bar dataKey="amountUsd" fill="hsl(280, 55%, 55%)" radius={[0, 4, 4, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 </CardContent>
               </Card>
             </div>
-            <SectionTitle hint="Top recipients by total disbursement">
-              Top recipients (Coinholder distribution)
-            </SectionTitle>
+            <SectionTitle hint={tx("Top recipients by total disbursement")}>
+              {tx("Top recipients (Coinholder distribution)")}</SectionTitle>
             <div className="h-[320px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
@@ -750,7 +738,7 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(220, 20%, 18%)" />
                   <XAxis type="number" tick={AXIS} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
                   <YAxis type="category" dataKey="name" width={130} tick={AXIS} />
-                  <Tooltip contentStyle={TT} formatter={(v: number) => `$${v.toLocaleString()}`} />
+                  <Tooltip contentStyle={TT} formatter={(v: number) => `$${v.toLocaleString(uiLocale)}`} />
                   <Bar dataKey="paidUsd" fill="hsl(265, 60%, 52%)" radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -762,13 +750,12 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
               <Card className="border-border/40">
                 <CardHeader className="py-3">
                   <CardTitle className="text-sm">
-                    ZCG committee outcomes ({s.zcgAllGrantsTracking.totalRows}{" "}
-                    proposals reviewed)
-                  </CardTitle>
+                    {tx("ZCG committee outcomes (")}{s.zcgAllGrantsTracking.totalRows}{" "}
+                    {tx("proposals reviewed)")}</CardTitle>
                 </CardHeader>
                 <CardContent className="h-[280px]">
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={s.zcgAllGrantsTracking.byStatus.slice(0, 12)}>
+                    <BarChart data={s.zcgAllGrantsTracking.byStatus.slice(0, 12).map((row) => ({ ...row, name: tx(row.name) }))}>
                       <CartesianGrid strokeDasharray="3 3" stroke="hsl(220, 20%, 18%)" />
                       <XAxis dataKey="name" tick={AXIS} interval={0} angle={-22} textAnchor="end" height={80} />
                       <YAxis tick={AXIS} allowDecimals={false} />
@@ -781,13 +768,11 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
               <Card className="border-border/40">
                 <CardHeader className="py-3">
                   <CardTitle className="text-sm">
-                    Coinholder decisions (
-                    {s.coinholderAllGrantsTracking.totalRows} proposals reviewed)
-                  </CardTitle>
+                    {tx("Coinholder decisions (")}{s.coinholderAllGrantsTracking.totalRows} {tx(" proposals reviewed)")}</CardTitle>
                 </CardHeader>
                 <CardContent className="h-[280px]">
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={s.coinholderAllGrantsTracking.byDecision}>
+                    <BarChart data={s.coinholderAllGrantsTracking.byDecision.map((row) => ({ ...row, name: tx(row.name) }))}>
                       <CartesianGrid strokeDasharray="3 3" stroke="hsl(220, 20%, 18%)" />
                       <XAxis dataKey="name" tick={AXIS} interval={0} angle={-18} textAnchor="end" height={70} />
                       <YAxis tick={AXIS} allowDecimals={false} />
@@ -798,27 +783,25 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
                 </CardContent>
               </Card>
             </div>
-            <SectionTitle hint="Portfolio allocation by funding category (USD)">
-              ZCG allocation by funding category
-            </SectionTitle>
+            <SectionTitle hint={tx("Portfolio allocation by funding category (USD)")}>
+              {tx("ZCG allocation by funding category")}</SectionTitle>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   layout="vertical"
-                  data={s.zcgFundsDistribution.bySideClassification.slice(0, 14)}
+                  data={s.zcgFundsDistribution.bySideClassification.slice(0, 14).map((row) => ({ ...row, name: tx(row.name) }))}
                   margin={{ left: 4, right: 16 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(220, 20%, 18%)" />
                   <XAxis type="number" tick={AXIS} tickFormatter={(v) => `$${(v / 1e6).toFixed(2)}M`} />
                   <YAxis type="category" dataKey="name" width={130} tick={AXIS} />
-                  <Tooltip contentStyle={TT} formatter={(v: number) => `$${v.toLocaleString()}`} />
+                  <Tooltip contentStyle={TT} formatter={(v: number) => `$${v.toLocaleString(uiLocale)}`} />
                   <Bar dataKey="usd" fill="hsl(40, 85%, 48%)" radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            <SectionTitle hint="Largest recipients by total disbursement to date">
-              ZCG top recipients (paid out)
-            </SectionTitle>
+            <SectionTitle hint={tx("Largest recipients by total disbursement to date")}>
+              {tx("ZCG top recipients (paid out)")}</SectionTitle>
             <div className="h-[340px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
@@ -829,7 +812,7 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(220, 20%, 18%)" />
                   <XAxis type="number" tick={AXIS} tickFormatter={(v) => `$${(v / 1e6).toFixed(2)}M`} />
                   <YAxis type="category" dataKey="name" width={120} tick={AXIS} />
-                  <Tooltip contentStyle={TT} formatter={(v: number) => `$${v.toLocaleString()}`} />
+                  <Tooltip contentStyle={TT} formatter={(v: number) => `$${v.toLocaleString(uiLocale)}`} />
                   <Bar dataKey="paidUsd" fill="hsl(173, 50%, 42%)" radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -837,9 +820,8 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
           </TabsContent>
 
           <TabsContent value="reference" className="space-y-6">
-            <SectionTitle hint="Reference market and treasury inputs used in calculations">
-              Model inputs snapshot
-            </SectionTitle>
+            <SectionTitle hint={tx("Reference market and treasury inputs used in calculations")}>
+              {tx("Model inputs snapshot")}</SectionTitle>
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {Object.entries(s.inputs.metrics)
                 .filter(([k, v]) => k && v && !k.startsWith('"'))
@@ -847,28 +829,27 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
                 .map(([k, v]) => (
                   <Metric
                     key={k}
-                    label={k.replace(/:\s*$/, "").trim()}
-                    value={v}
+                    label={tx(k.replace(/:\s*$/, "").trim())}
+                    value={formatSpreadsheetValue(v, uiLocale)}
                   />
                 ))}
             </div>
             {(s.inputs.lockboxSecondFundZec || s.inputs.lockboxThirdFundZec) && (
               <div className="grid gap-2 sm:grid-cols-2">
                 <Metric
-                  label="Lockbox ZEC accrued (2nd dev fund / ZIP 1015)"
+                  label={tx("Lockbox ZEC accrued (2nd dev fund / ZIP 1015)")}
                   value={s.inputs.lockboxSecondFundZec ?? undefined}
                 />
                 <Metric
-                  label="Lockbox ZEC to accrue (3rd dev fund / ZIP 1016)"
+                  label={tx("Lockbox ZEC to accrue (3rd dev fund / ZIP 1016)")}
                   value={s.inputs.lockboxThirdFundZec ?? undefined}
                 />
               </div>
             )}
             {lockboxBarData && lockboxBarData.rows.length > 0 ? (
               <div>
-                <SectionTitle hint="USD value of lockbox ZEC at spot, 2×, and 3× the sheet ZEC/USD (millions USD)">
-                  Lockbox USD scenarios
-                </SectionTitle>
+                <SectionTitle hint={tx("USD value of lockbox ZEC at spot, 2×, and 3× the sheet ZEC/USD (millions USD)")}>
+                  {tx("Lockbox USD scenarios")}</SectionTitle>
                 <div className="h-[280px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={lockboxBarData.rows}>
@@ -877,7 +858,7 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
                       <YAxis
                         tick={AXIS}
                         label={{
-                          value: "USD (M)",
+                          value: tx("USD (M)"),
                           angle: -90,
                           position: "insideLeft",
                           fill: AXIS.fill,
@@ -892,7 +873,7 @@ export function ZcgWorkbookAnalytics({ sheet, loading, error }: Props) {
                           dataKey={k}
                           fill={PIE_COLORS[i % PIE_COLORS.length]}
                           radius={[4, 4, 0, 0]}
-                          name={k.length > 28 ? `${k.slice(0, 28)}…` : k}
+                          name={tx(k.length > 28 ? `${k.slice(0, 28)}…` : k)}
                         />
                       ))}
                     </BarChart>

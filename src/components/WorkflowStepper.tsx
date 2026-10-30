@@ -1,8 +1,10 @@
+import { useUi } from "@/i18n/useUi";
 import { Check } from "lucide-react";
 import { workflowSteps, getWorkflowStep, type GrantStatus } from "@/data/grantTypes";
 import { cn } from "@/lib/utils";
 
 export function WorkflowStepper({ status }: { status: GrantStatus }) {
+  const { text: tx } = useUi();
   const current = getWorkflowStep(status);
   const isTerminal = current === -1;
 
@@ -34,7 +36,7 @@ export function WorkflowStepper({ status }: { status: GrantStatus }) {
                     (done || active) ? "text-primary" : "text-muted-foreground"
                   )}
                 >
-                  {step}
+                  {tx(step)}
                 </span>
               </div>
 

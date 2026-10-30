@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -22,6 +23,9 @@ import { CategoryBadge } from "@/components/CategoryBadge";
 import { WorkflowStepper } from "@/components/WorkflowStepper";
 import { MilestoneProgressBar } from "@/components/MilestoneProgressBar";
 import { useGrant } from "@/hooks/useGrants";
+import { CommitteeDecisionsCard } from "@/components/CommitteeDecisions";
+import { WatchButton } from "@/components/WatchButton";
+import { DeliverySignalsCard } from "@/components/DeliverySignalsCard";
 import { useRelatedForGrant } from "@/hooks/useRelatedForGrant";
 import { zechubDaoDaodaoUrl } from "@/lib/daodao/zechubConfig";
 import {
@@ -70,13 +74,14 @@ function CollapsibleSection({
   expanded: boolean;
   onToggle: (id: string) => void;
 }) {
+  const { text: tx } = useUi();
   return (
     <div className="border-b border-border/50 last:border-0">
       <button
         onClick={() => onToggle(sectionId)}
         className="flex w-full items-center justify-between py-3 text-left text-sm font-medium text-foreground transition-colors hover:text-primary"
       >
-        <span>{title}</span>
+        <span>{tx(title)}</span>
         <ChevronDown
           className={`ml-2 h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 ${
             expanded ? "rotate-180" : ""
@@ -85,7 +90,7 @@ function CollapsibleSection({
       </button>
       {expanded && (
         <p className="pb-4 text-sm leading-relaxed text-muted-foreground break-words whitespace-pre-line">
-          {content || <span className="italic">Not provided</span>}
+          {content || <span className="italic">{tx("Not provided")}</span>}
         </p>
       )}
     </div>
@@ -107,6 +112,7 @@ const TABS = [
 ];
 
 export default function GrantDetailPage({ id }: { id?: string }) {
+  const { text: tx, locale: uiLocale } = useUi();
   const { data: grant, isLoading, isError, error } = useGrant(id);
   const {
     data: related,
@@ -129,12 +135,12 @@ export default function GrantDetailPage({ id }: { id?: string }) {
     return (
       <div className="container mx-auto px-4 py-20 text-center">
         <AlertCircle className="mx-auto mb-4 h-10 w-10 text-red-400" />
-        <h1 className="text-2xl font-bold text-foreground">Could not load grant</h1>
+        <h1 className="text-2xl font-bold text-foreground">{tx("Could not load grant")}</h1>
         <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-          {(error as Error)?.message ?? "Failed to fetch from GitHub API."}
+          {tx((error as Error)?.message ?? "Failed to fetch from GitHub API.")}
         </p>
         <Link href="/grants">
-          <Button variant="outline" className="mt-6">Back to Grants</Button>
+          <Button variant="outline" className="mt-6">{tx("Back to Grants")}</Button>
         </Link>
       </div>
     );
@@ -144,9 +150,9 @@ export default function GrantDetailPage({ id }: { id?: string }) {
   if (!grant) {
     return (
       <div className="container mx-auto px-4 py-20 text-center">
-        <h1 className="text-2xl font-bold text-foreground">Grant not found</h1>
+        <h1 className="text-2xl font-bold text-foreground">{tx("Grant not found")}</h1>
         <Link href="/grants">
-          <Button variant="outline" className="mt-4">Back to Grants</Button>
+          <Button variant="outline" className="mt-4">{tx("Back to Grants")}</Button>
         </Link>
       </div>
     );
@@ -176,15 +182,14 @@ export default function GrantDetailPage({ id }: { id?: string }) {
         className="mb-5 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4" />
-        Back to Grants
-      </Link>
+        {tx("Back to Grants")}</Link>
 
       {/* ── Header ─────────────────────────────────────────────────────── */}
       <div className="mb-6">
         {/* Badges row */}
         <div className="mb-3 flex flex-wrap gap-2">
           <Badge variant="outline" className="font-normal">
-            {programLabel(grant.program)}
+            {tx(programLabel(grant.program))}
           </Badge>
           <StatusBadge status={grant.status} />
           <CategoryBadge category={grant.category} />
@@ -214,28 +219,29 @@ export default function GrantDetailPage({ id }: { id?: string }) {
               </div>
               <div className="flex items-center gap-1">
                 <Calendar className="h-3.5 w-3.5 shrink-0" />
-                {new Date(grant.submittedDate).toLocaleDateString()}
+                {new Date(grant.submittedDate).toLocaleDateString(uiLocale)}
               </div>
               <div className="flex items-center gap-1">
                 <Clock className="h-3.5 w-3.5 shrink-0" />
-                Updated {new Date(grant.lastUpdated).toLocaleDateString()}
+                {tx("Updated ")}{new Date(grant.lastUpdated).toLocaleDateString(uiLocale)}
               </div>
             </div>
           </div>
 
-          {/* Amount + share */}
+          {/* Amount + watch + share */}
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             <div className="text-left sm:text-right">
-              <div className="text-xs text-muted-foreground">Requested</div>
+              <div className="text-xs text-muted-foreground">{tx("Requested")}</div>
               <div className="text-xl font-bold text-primary sm:text-2xl">
-                {grant.amount > 0 ? `$${grant.amount.toLocaleString()}` : "TBD"}
+                {tx(grant.amount > 0 ? `$${grant.amount.toLocaleString(uiLocale)}` : "TBD")}
               </div>
             </div>
+            <WatchButton grant={grant} />
             <Button
               variant="outline"
               size="icon"
               className="shrink-0"
-              title="Copy link"
+              title={tx("Copy link")}
               onClick={() => navigator.clipboard.writeText(window.location.href)}
             >
               <Share2 className="h-4 w-4" />
@@ -256,19 +262,14 @@ export default function GrantDetailPage({ id }: { id?: string }) {
         <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0 space-y-1">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              Official summary &amp; operations dashboard
-            </p>
+              {tx("Official summary & operations dashboard")}</p>
             <p className="text-sm text-foreground">
-              Community spreadsheets track applications, payouts, and cross-grant tracking. This hub
-              does not treat the sheet as a separate grant type—use it alongside GitHub and DAO DAO
-              records.
-            </p>
+              {tx("Community spreadsheets track applications, payouts, and cross-grant tracking. This hub does not treat the sheet as a separate grant type—use it alongside GitHub and DAO DAO records.")}</p>
           </div>
           <Button variant="outline" size="sm" className="shrink-0 gap-2" asChild>
             <a href={GRANTS_DASHBOARD_SHEET_URL} target="_blank" rel="noopener noreferrer">
               <Table2 className="h-4 w-4" />
-              Open dashboard (Google Sheet)
-            </a>
+              {tx("Open dashboard (Google Sheet)")}</a>
           </Button>
         </CardContent>
       </Card>
@@ -321,20 +322,24 @@ export default function GrantDetailPage({ id }: { id?: string }) {
       <div className="mb-4 flex gap-2 overflow-x-auto scrollbar-hide pb-1 lg:hidden">
         <Button variant="outline" size="sm" className="shrink-0 gap-1.5 text-xs" asChild>
           <a href={grant.forumLink} target="_blank" rel="noopener noreferrer">
-            <MessageSquare className="h-3.5 w-3.5" /> Forum
-          </a>
+            <MessageSquare className="h-3.5 w-3.5" /> {tx(" Forum")}</a>
         </Button>
         <Button variant="outline" size="sm" className="shrink-0 gap-1.5 text-xs" asChild>
           <a href={grant.githubLink} target="_blank" rel="noopener noreferrer">
-            <Github className="h-3.5 w-3.5" /> GitHub Issue
-          </a>
+            <Github className="h-3.5 w-3.5" /> {tx(" GitHub Issue")}</a>
         </Button>
         <Button variant="outline" size="sm" className="shrink-0 gap-1.5 text-xs" asChild>
           <a href={programContactHref} target="_blank" rel="noopener noreferrer">
-            <ExternalLink className="h-3.5 w-3.5" /> {programContactLabel}
+            <ExternalLink className="h-3.5 w-3.5" /> {tx(programContactLabel)}
           </a>
         </Button>
       </div>
+
+      {grant.program === "zcg" && (
+        <CommitteeDecisionsCard forumLink={grant.forumLink} title={grant.title} />
+      )}
+
+      <DeliverySignalsCard grant={grant} />
 
       {/* ── Content + sidebar ─────────────────────────────────────────────── */}
       <div className="flex flex-col gap-6 lg:flex-row">
@@ -351,7 +356,7 @@ export default function GrantDetailPage({ id }: { id?: string }) {
                     value={t.value}
                     className="px-3 text-xs sm:px-4 sm:text-sm"
                   >
-                    {t.label}
+                    {tx(t.label)}
                   </TabsTrigger>
                 ))}
               </TabsList>
@@ -378,8 +383,8 @@ export default function GrantDetailPage({ id }: { id?: string }) {
                     <CollapsibleSection
                       key={s.id}
                       id={s.id}
-                      title={s.title}
-                      content={s.content}
+                      title={tx(s.title)}
+                      content={tx(s.content)}
                       expanded={expandedSections.includes(s.id)}
                       onToggle={toggleSection}
                     />
@@ -392,12 +397,12 @@ export default function GrantDetailPage({ id }: { id?: string }) {
             <TabsContent value="team">
               <Card className="mb-4 border-border/50 bg-card">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-base">Project Lead</CardTitle>
+                  <CardTitle className="text-base">{tx("Project Lead")}</CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
                   <div className="flex items-start gap-3 sm:gap-4">
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/20 text-base font-bold text-primary sm:h-12 sm:w-12">
-                      {grant.teamLead.name[0]?.toUpperCase() ?? "?"}
+                      {tx(grant.teamLead.name[0]?.toUpperCase() ?? "?")}
                     </div>
                     <div className="min-w-0">
                       <div className="font-semibold text-foreground">{grant.teamLead.name}</div>
@@ -409,7 +414,7 @@ export default function GrantDetailPage({ id }: { id?: string }) {
                       )}
                       {grant.teamLead.responsibilities && (
                         <p className="mt-1 break-words text-sm text-muted-foreground">
-                          <strong className="text-foreground/80">Responsibilities:</strong>{" "}
+                          <strong className="text-foreground/80">{tx("Responsibilities:")}</strong>{" "}
                           {grant.teamLead.responsibilities}
                         </p>
                       )}
@@ -439,7 +444,7 @@ export default function GrantDetailPage({ id }: { id?: string }) {
                 </div>
               )}
               {grant.teamMembers.length === 0 && (
-                <p className="py-4 text-sm text-muted-foreground">No additional team members listed.</p>
+                <p className="py-4 text-sm text-muted-foreground">{tx("No additional team members listed.")}</p>
               )}
             </TabsContent>
 
@@ -451,8 +456,8 @@ export default function GrantDetailPage({ id }: { id?: string }) {
                     <table className="w-full min-w-[280px] text-sm">
                       <thead>
                         <tr className="border-b border-border/50 text-muted-foreground">
-                          <th className="pb-2 text-left font-medium">Category</th>
-                          <th className="pb-2 text-right font-medium">Amount</th>
+                          <th className="pb-2 text-left font-medium">{tx("Category")}</th>
+                          <th className="pb-2 text-right font-medium">{tx("Amount")}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -464,14 +469,14 @@ export default function GrantDetailPage({ id }: { id?: string }) {
                           ] as [string, number][]
                         ).map(([cat, amt]) => (
                           <tr key={cat} className="border-b border-border/50">
-                            <td className="py-3 text-foreground">{cat}</td>
-                            <td className="py-3 text-right text-foreground">${amt.toLocaleString()}</td>
+                            <td className="py-3 text-foreground">{tx(cat)}</td>
+                            <td className="py-3 text-right text-foreground">${amt.toLocaleString(uiLocale)}</td>
                           </tr>
                         ))}
                         <tr className="font-bold">
-                          <td className="pt-3 text-foreground">Total</td>
+                          <td className="pt-3 text-foreground">{tx("Total")}</td>
                           <td className="pt-3 text-right text-primary">
-                            ${grant.budget.total.toLocaleString()}
+                            ${grant.budget.total.toLocaleString(uiLocale)}
                           </td>
                         </tr>
                       </tbody>
@@ -489,10 +494,9 @@ export default function GrantDetailPage({ id }: { id?: string }) {
                     <CardContent className="p-4 sm:p-5">
                       <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-sm">
                         <span className="text-muted-foreground">
-                          {grant.milestonesCompleted} of {grant.totalMilestones} milestones paid
-                        </span>
+                          {grant.milestonesCompleted} {tx(" of ")}{grant.totalMilestones} {tx(" milestones paid")}</span>
                         <span className="font-medium text-primary">
-                          ${grant.amountPaid.toLocaleString()} of ${grant.amount.toLocaleString()}
+                          ${grant.amountPaid.toLocaleString(uiLocale)} {tx(" of $")}{grant.amount.toLocaleString(uiLocale)}
                         </span>
                       </div>
                       <MilestoneProgressBar milestones={grant.milestones} />
@@ -504,23 +508,22 @@ export default function GrantDetailPage({ id }: { id?: string }) {
                       <Card key={m.number} className="border-border/50 bg-card">
                         <CardContent className="p-4 sm:p-5">
                           <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-                            <h3 className="font-semibold text-foreground">Milestone {m.number}</h3>
+                            <h3 className="font-semibold text-foreground">{tx("Milestone ")}{m.number}</h3>
                             <StatusBadge status={milestoneStatusBadge(m.status)} />
                           </div>
                           <div className="mb-3 flex flex-wrap gap-3 text-sm text-muted-foreground">
-                            <span className="font-medium text-primary">${m.amount.toLocaleString()}</span>
+                            <span className="font-medium text-primary">${m.amount.toLocaleString(uiLocale)}</span>
                             {m.dueDate && (
-                              <span>Due: {new Date(m.dueDate).toLocaleDateString()}</span>
+                              <span>{tx("Due: ")}{new Date(m.dueDate).toLocaleDateString(uiLocale)}</span>
                             )}
                           </div>
                           {m.userStories.length > 0 && (
                             <div className="mb-3">
                               <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                                User Stories
-                              </div>
+                                {tx("User Stories")}</div>
                               <ul className="space-y-1 pl-4 text-sm text-muted-foreground">
                                 {m.userStories.map((s, i) => (
-                                  <li key={i} className="list-disc break-words">{s}</li>
+                                  <li key={i} className="list-disc break-words">{tx(s)}</li>
                                 ))}
                               </ul>
                             </div>
@@ -528,18 +531,17 @@ export default function GrantDetailPage({ id }: { id?: string }) {
                           {m.deliverables.length > 0 && (
                             <div className="mb-3">
                               <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                                Deliverables
-                              </div>
+                                {tx("Deliverables")}</div>
                               <ul className="space-y-1 pl-4 text-sm text-muted-foreground">
                                 {m.deliverables.map((d, i) => (
-                                  <li key={i} className="list-disc break-words">{d}</li>
+                                  <li key={i} className="list-disc break-words">{tx(d)}</li>
                                 ))}
                               </ul>
                             </div>
                           )}
                           {m.acceptanceCriteria && (
                             <div className="rounded-md bg-secondary/50 p-2.5 text-xs text-muted-foreground">
-                              <span className="font-semibold text-foreground/80">Acceptance: </span>
+                              <span className="font-semibold text-foreground/80">{tx("Acceptance: ")}</span>
                               <span className="break-words">{m.acceptanceCriteria}</span>
                             </div>
                           )}
@@ -550,8 +552,7 @@ export default function GrantDetailPage({ id }: { id?: string }) {
                 </>
               ) : (
                 <p className="py-10 text-center text-sm text-muted-foreground">
-                  No milestone details provided.
-                </p>
+                  {tx("No milestone details provided.")}</p>
               )}
             </TabsContent>
 
@@ -572,7 +573,7 @@ export default function GrantDetailPage({ id }: { id?: string }) {
                     </CardHeader>
                     <CardContent className="pb-4">
                       <p className="break-words text-sm leading-relaxed text-muted-foreground whitespace-pre-line">
-                        {r.content || "Not provided"}
+                        {tx(r.content || "Not provided")}
                       </p>
                     </CardContent>
                   </Card>
@@ -601,7 +602,7 @@ export default function GrantDetailPage({ id }: { id?: string }) {
                           @{c.author}
                         </a>
                         <span className="text-xs text-muted-foreground">
-                          {new Date(c.timestamp).toLocaleDateString(undefined, {
+                          {new Date(c.timestamp).toLocaleDateString(uiLocale, {
                             year: "numeric", month: "short", day: "numeric",
                           })}
                         </span>
@@ -615,21 +616,18 @@ export default function GrantDetailPage({ id }: { id?: string }) {
 
                 {grant.comments.length === 0 && (
                   <p className="py-10 text-center text-sm text-muted-foreground">
-                    No comments yet.
-                  </p>
+                    {tx("No comments yet.")}</p>
                 )}
 
                 {/* CTA */}
                 <Card className="border-border/50 bg-card">
                   <CardContent className="flex flex-col gap-2 p-4 sm:flex-row sm:items-center sm:justify-between">
                     <p className="text-xs text-muted-foreground">
-                      Comments live on GitHub. Click to join the discussion.
-                    </p>
+                      {tx("Comments live on GitHub. Click to join the discussion.")}</p>
                     <Button size="sm" variant="outline" className="shrink-0 gap-2" asChild>
                       <a href={grant.githubLink} target="_blank" rel="noopener noreferrer">
                         <Github className="h-4 w-4" />
-                        Comment on GitHub
-                      </a>
+                        {tx("Comment on GitHub")}</a>
                     </Button>
                   </CardContent>
                 </Card>
@@ -651,8 +649,7 @@ export default function GrantDetailPage({ id }: { id?: string }) {
                         </div>
                         <Button variant="outline" size="sm" className="shrink-0 gap-1" asChild>
                           <a href={d.url} target="_blank" rel="noopener noreferrer">
-                            <FileText className="h-3.5 w-3.5" /> Open
-                          </a>
+                            <FileText className="h-3.5 w-3.5" /> {tx(" Open")}</a>
                         </Button>
                       </CardContent>
                     </Card>
@@ -660,8 +657,7 @@ export default function GrantDetailPage({ id }: { id?: string }) {
                 </div>
               ) : (
                 <p className="py-10 text-center text-sm text-muted-foreground">
-                  No documents attached.
-                </p>
+                  {tx("No documents attached.")}</p>
               )}
             </TabsContent>
           </Tabs>
@@ -673,8 +669,7 @@ export default function GrantDetailPage({ id }: { id?: string }) {
           <Card className="border-border/50 bg-card">
             <CardContent className="p-4">
               <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Grant Status
-              </h3>
+                {tx("Grant Status")}</h3>
               <StatusBadge status={grant.status} />
             </CardContent>
           </Card>
@@ -683,8 +678,7 @@ export default function GrantDetailPage({ id }: { id?: string }) {
           <Card className="border-border/50 bg-card">
             <CardContent className="p-4">
               <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Committee
-              </h3>
+                {tx("Committee")}</h3>
               {grant.committeeMembers.length > 0 ? (
                 <div className="flex flex-wrap gap-1.5">
                   {grant.committeeMembers.map((m) => (
@@ -695,12 +689,12 @@ export default function GrantDetailPage({ id }: { id?: string }) {
                       rel="noopener noreferrer"
                       className="flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:text-primary"
                     >
-                      @{m}
+                      @{tx(m)}
                     </a>
                   ))}
                 </div>
               ) : (
-                <p className="text-xs text-muted-foreground">Not yet assigned</p>
+                <p className="text-xs text-muted-foreground">{tx("Not yet assigned")}</p>
               )}
             </CardContent>
           </Card>
@@ -710,15 +704,13 @@ export default function GrantDetailPage({ id }: { id?: string }) {
             <Card className="border-border/50 bg-card">
               <CardContent className="p-4">
                 <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Milestones
-                </h3>
+                  {tx("Milestones")}</h3>
                 <div className="mb-2">
                   <MilestoneProgressBar milestones={grant.milestones} />
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  {grant.milestonesCompleted} / {grant.totalMilestones} paid
-                  {" · "}
-                  <span className="text-primary">${grant.amountPaid.toLocaleString()}</span>
+                  {grant.milestonesCompleted} / {grant.totalMilestones} {tx(" paid")}{" · "}
+                  <span className="text-primary">${grant.amountPaid.toLocaleString(uiLocale)}</span>
                 </p>
               </CardContent>
             </Card>
@@ -733,12 +725,11 @@ export default function GrantDetailPage({ id }: { id?: string }) {
             </Button> */}
             <Button variant="outline" className="w-full justify-start gap-2 text-sm" asChild>
               <a href={grant.githubLink} target="_blank" rel="noopener noreferrer">
-                <Github className="h-4 w-4 shrink-0" /> GitHub Issue
-              </a>
+                <Github className="h-4 w-4 shrink-0" /> {tx(" GitHub Issue")}</a>
             </Button>
             <Button variant="outline" className="w-full justify-start gap-2 text-sm" asChild>
               <a href={programContactHref} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="h-4 w-4 shrink-0" /> {programContactLabel}
+                <ExternalLink className="h-4 w-4 shrink-0" /> {tx(programContactLabel)}
               </a>
             </Button>
           </div>

@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import { useCallback, useEffect, useMemo, useState, useRef } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -58,7 +59,8 @@ function filterAndSortRows(
   rows: ZechubProposalCardRow[],
   search: string,
   selectedStatuses: string[],
-  sortBy: string
+  sortBy: string,
+  locale: string
 ): ZechubProposalCardRow[] {
   let list = [...rows];
   if (search.trim()) {
@@ -75,7 +77,7 @@ function filterAndSortRows(
     list.sort((a, b) => a.id - b.id);
   } else if (sortBy === "title") {
     list.sort((a, b) =>
-      a.proposal.title.localeCompare(b.proposal.title, undefined, {
+      a.proposal.title.localeCompare(b.proposal.title, locale, {
         sensitivity: "base",
       })
     );
@@ -102,6 +104,7 @@ function ProposalCardSkeleton() {
 }
 
 export default function ZechubProposalsPage() {
+  const { text: tx, locale: uiLocale } = useUi();
   const router = useRouter();
   const { data: daoMeta } = useZechubDaoMeta();
   const [items, setItems] = useState<ZechubProposalCardRow[]>([]);
@@ -119,8 +122,8 @@ export default function ZechubProposalsPage() {
     search.trim().length > 0 || selectedStatuses.length > 0;
 
   const filtered = useMemo(
-    () => filterAndSortRows(items, search, selectedStatuses, sortBy),
-    [items, search, selectedStatuses, sortBy]
+    () => filterAndSortRows(items, search, selectedStatuses, sortBy, uiLocale),
+    [items, search, selectedStatuses, sortBy, uiLocale]
   );
 
   const statusOptions = useMemo(() => {
@@ -128,8 +131,8 @@ export default function ZechubProposalsPage() {
     for (const row of items) {
       seen.add(row.proposal.status);
     }
-    return [...seen].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
-  }, [items]);
+    return [...seen].sort((a, b) => tx(a).localeCompare(tx(b), uiLocale, { sensitivity: "base" }));
+  }, [items, tx, uiLocale]);
 
   const toggleStatus = (s: string) =>
     setSelectedStatuses((prev) =>
@@ -161,7 +164,7 @@ export default function ZechubProposalsPage() {
     let rows = [...items];
     let cursor = nextStartBefore;
 
-    const filteredNow = filterAndSortRows(rows, search, selectedStatuses, sortBy);
+    const filteredNow = filterAndSortRows(rows, search, selectedStatuses, sortBy, uiLocale);
     if (filteredNow.length >= needed) {
       setLoading(false);
       setPageFetching(false);
@@ -180,7 +183,7 @@ export default function ZechubProposalsPage() {
       setLoadError(null);
       try {
         while (!cancelled) {
-          const f = filterAndSortRows(rows, search, selectedStatuses, sortBy);
+          const f = filterAndSortRows(rows, search, selectedStatuses, sortBy, uiLocale);
           if (f.length >= needed) break;
           if (rows.length > 0 && cursor === null) break;
 
@@ -212,7 +215,6 @@ export default function ZechubProposalsPage() {
       cancelled = true;
       fetchingRef.current = false;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- controlled sync: fetch when page/filters need more rows
   }, [
     router.isReady,
     currentPage,
@@ -221,6 +223,7 @@ export default function ZechubProposalsPage() {
     sortBy,
     items,
     nextStartBefore,
+    uiLocale,
   ]);
 
   const goToPage = useCallback(
@@ -296,9 +299,9 @@ export default function ZechubProposalsPage() {
   const FilterPanel = () => (
     <div className="space-y-6">
       <div>
-        <h3 className="mb-3 text-sm font-semibold text-foreground">Proposal status</h3>
+        <h3 className="mb-3 text-sm font-semibold text-foreground">{tx("Proposal status")}</h3>
         {statusOptions.length === 0 && !loading ? (
-          <p className="text-xs text-muted-foreground">No statuses yet.</p>
+          <p className="text-xs text-muted-foreground">{tx("No statuses yet.")}</p>
         ) : (
           <div className="space-y-2">
             {statusOptions.map((s) => (
@@ -310,7 +313,7 @@ export default function ZechubProposalsPage() {
                   checked={selectedStatuses.includes(s)}
                   onCheckedChange={() => toggleStatus(s)}
                 />
-                <span className="truncate">{s}</span>
+                <span className="truncate">{tx(s)}</span>
               </label>
             ))}
           </div>
@@ -323,8 +326,7 @@ export default function ZechubProposalsPage() {
           onClick={() => setSelectedStatuses([])}
           className="text-muted-foreground"
         >
-          <X className="mr-1 h-3 w-3" /> Clear status filters
-        </Button>
+          <X className="mr-1 h-3 w-3" /> {tx(" Clear status filters")}</Button>
       )}
     </div>
   );
@@ -353,53 +355,49 @@ export default function ZechubProposalsPage() {
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
       <Head>
-        <title>ZecHub DAO proposals · Zcash Grants Hub</title>
+        <title>{tx("ZecHub DAO proposals · Zcash Grants Hub")}</title>
         <meta
           name="description"
-          content="Browse on-chain ZecHub DAO proposals on Juno via DAO DAO—mini-grants and governance separate from ZCG GitHub review."
+          content={tx("Browse on-chain ZecHub DAO proposals on Juno via DAO DAO—mini-grants and governance separate from ZCG GitHub review.")}
         />
       </Head>
       <div className="mb-5 space-y-4 sm:mb-8">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
-            <h1 className="text-2xl font-bold text-foreground sm:text-3xl">ZecHub DAO proposals</h1>
+            <h1 className="text-2xl font-bold text-foreground sm:text-3xl">{tx("ZecHub DAO proposals")}</h1>
             <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-              On-chain mini-grants and governance through{" "}
-              <span className="font-medium text-foreground/90">DAO DAO</span> on{" "}
-              <span className="font-medium text-foreground/90">Juno</span>—separate from ZCG committee
-              review on GitHub. See{" "}
+              {tx("On-chain mini-grants and governance through")}{" "}
+              <span className="font-medium text-foreground/90">{tx("DAO DAO")}</span> {tx(" on")}{" "}
+              <span className="font-medium text-foreground/90">{tx("Juno")}</span>{tx("—separate from ZCG committee review on GitHub. See")}{" "}
               <a
                 href="https://zechub.wiki/dao"
                 className="text-primary underline-offset-2 hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                ZecHub DAO docs
-              </a>{" "}
-              for program context.
-            </p>
+                {tx("ZecHub DAO docs")}</a>{" "}
+              {tx("for program context.")}</p>
           </div>
           <Button className="w-full shrink-0 gap-2 sm:w-auto" asChild>
             <a href={createProposalUrl} target="_blank" rel="noopener noreferrer">
               <FileEdit className="h-4 w-4" />
-              Create proposal
-            </a>
+              {tx("Create proposal")}</a>
           </Button>
         </div>
         {daoMeta && (
           <div className="flex flex-wrap gap-3 rounded-lg border border-border/50 bg-card/60 px-4 py-3 text-sm">
             <div>
-              <span className="text-muted-foreground">DAO </span>
-              <span className="font-medium text-foreground">{daoMeta.name}</span>
+              <span className="text-muted-foreground">{tx("DAO ")}</span>
+              <span className="font-medium text-foreground">{tx(daoMeta.name)}</span>
             </div>
             <span className="hidden text-border sm:inline">·</span>
             <div>
-              <span className="text-muted-foreground">Chain </span>
-              <span className="font-mono text-foreground">{daoMeta.chainId}</span>
+              <span className="text-muted-foreground">{tx("Chain ")}</span>
+              <span className="font-mono text-foreground">{tx(daoMeta.chainId)}</span>
             </div>
             <span className="hidden text-border sm:inline">·</span>
             <div>
-              <span className="text-muted-foreground">Proposals (on-chain) </span>
+              <span className="text-muted-foreground">{tx("Proposals (on-chain) ")}</span>
               <span className="font-medium text-foreground">{daoMeta.proposalCount}</span>
             </div>
           </div>
@@ -408,14 +406,12 @@ export default function ZechubProposalsPage() {
           <Button variant="outline" size="sm" className="gap-2" asChild>
             <Link href="/zechub/proposals/guide">
               <BookOpen className="h-4 w-4" />
-              How to create & vote
-            </Link>
+              {tx("How to create & vote")}</Link>
           </Button>
           <Button variant="outline" size="sm" className="gap-2" asChild>
             <a href={daoUrl} target="_blank" rel="noopener noreferrer">
               <ExternalLink className="h-4 w-4" />
-              Open ZecHub on DAO DAO
-            </a>
+              {tx("Open ZecHub on DAO DAO")}</a>
           </Button>
         </div>
       </div>
@@ -426,7 +422,7 @@ export default function ZechubProposalsPage() {
             <div className="relative mb-6">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder="Search proposals…"
+                placeholder={tx("Search proposals…")}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="bg-secondary pl-9"
@@ -439,12 +435,11 @@ export default function ZechubProposalsPage() {
         <div className="flex-1">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <span className="text-sm text-muted-foreground">
-              {summaryLine}
+              {tx(summaryLine)}
               {pageFetching && !loading && (
                 <span className="ml-2 inline-flex items-center gap-1 text-xs text-primary">
                   <Loader2 className="h-3 w-3 animate-spin" />
-                  Loading page…
-                </span>
+                  {tx("Loading page…")}</span>
               )}
             </span>
             <div className="flex items-center gap-2">
@@ -455,8 +450,7 @@ export default function ZechubProposalsPage() {
                 onClick={() => setShowFilters(!showFilters)}
               >
                 <SlidersHorizontal className="h-4 w-4" />
-                Filters
-                {activeFilterCount > 0 && (
+                {tx("Filters")}{activeFilterCount > 0 && (
                   <span className="flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
                     {activeFilterCount}
                   </span>
@@ -467,9 +461,9 @@ export default function ZechubProposalsPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="newest">Newest first</SelectItem>
-                  <SelectItem value="oldest">Oldest first</SelectItem>
-                  <SelectItem value="title">Title A–Z</SelectItem>
+                  <SelectItem value="newest">{tx("Newest first")}</SelectItem>
+                  <SelectItem value="oldest">{tx("Oldest first")}</SelectItem>
+                  <SelectItem value="title">{tx("Title A–Z")}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -478,7 +472,7 @@ export default function ZechubProposalsPage() {
           <div className="relative mb-3 lg:hidden">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search proposals…"
+              placeholder={tx("Search proposals…")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="h-11 bg-secondary pl-9"
@@ -496,8 +490,8 @@ export default function ZechubProposalsPage() {
               <CardContent className="flex items-start gap-3 p-4">
                 <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-400" />
                 <div>
-                  <p className="text-sm font-medium text-red-400">Failed to load proposals</p>
-                  <p className="mt-1 text-xs text-muted-foreground">{loadError}</p>
+                  <p className="text-sm font-medium text-red-400">{tx("Failed to load proposals")}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{tx(loadError)}</p>
                 </div>
               </CardContent>
             </Card>
@@ -517,8 +511,7 @@ export default function ZechubProposalsPage() {
                 <div className="absolute inset-0 z-10 flex items-start justify-center rounded-lg bg-background/40 pt-8 backdrop-blur-[1px]">
                   <span className="flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm text-muted-foreground shadow-sm">
                     <Loader2 className="h-4 w-4 animate-spin text-primary" />
-                    Loading proposals…
-                  </span>
+                    {tx("Loading proposals…")}</span>
                 </div>
               )}
               {paginatedProposals.map((row) => (
@@ -537,7 +530,7 @@ export default function ZechubProposalsPage() {
 
           {!loading && filtered.length === 0 && !loadError && (
             <div className="py-16 text-center sm:py-20">
-              <p className="text-muted-foreground">No proposals match your filters.</p>
+              <p className="text-muted-foreground">{tx("No proposals match your filters.")}</p>
               {activeFilterCount > 0 && (
                 <Button
                   variant="ghost"
@@ -545,8 +538,7 @@ export default function ZechubProposalsPage() {
                   className="mt-3 text-primary"
                   onClick={() => setSelectedStatuses([])}
                 >
-                  <X className="mr-1 h-3 w-3" /> Clear filters
-                </Button>
+                  <X className="mr-1 h-3 w-3" /> {tx(" Clear filters")}</Button>
               )}
             </div>
           )}

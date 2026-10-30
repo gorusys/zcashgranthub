@@ -122,6 +122,7 @@ export function labelToStatus(
 
   if (
     has("rejected") ||
+    has("vetoed") ||
     has("declined") ||
     has("does not meet criteria") ||
     has("not meet criteria")
@@ -134,19 +135,26 @@ export function labelToStatus(
 
   /** Lockbox / Coinholder repo label workflow */
   if (program === "coinholder") {
+    if (has("past deadline")) return "WITHDRAWN";
     if (has("funds disbursed")) return "COMPLETED";
     if (has("approved by coinholders"))
       return "APPROVED";
+    // Closed without a coinholder decision: withdrawn, duplicate, or never voted.
+    if (state === "closed") return "WITHDRAWN";
     if (
       has("ready for vote") ||
       has("all steps completed")
     )
       return "COMMUNITY_REVIEW";
-    if (state === "closed") return "COMPLETED";
     return "PENDING_REVIEW";
   }
 
-  if (state === "closed") return "COMPLETED";
+  if (state === "closed") {
+    // Closed without ever being approved: withdrawn or never decided.
+    const wasFunded =
+      has("grant approved") || has("grant complete") || has("payment") || has("milestone");
+    return wasFunded ? "COMPLETED" : "WITHDRAWN";
+  }
   if (has("startup payment")) return "ACTIVE";
   if (has("grant approved")) return "APPROVED";
   if (has("ready for zcg review"))
@@ -262,10 +270,26 @@ function parseDocuments(
 // Forum link
 // ---------------------------------------------------------------------------
 
-function forumLink(body: string, comments: GitHubComment[]): string {
+/**
+ * Forum topics linked from the ZCG / Coinholder application templates (code of
+ * conduct, communication guidelines, category "About" posts), not proposal threads.
+ */
+const TEMPLATE_FORUM_TOPIC_IDS = new Set([41787, 44284, 52106]);
+const TEMPLATE_FORUM_SLUG = /\/t\/(?:[^/]*code-of-conduct|[^/]*communication-guidelines|about-the-[^/]*)\//i;
+
+function isTemplateForumLink(url: string): boolean {
+  const id = url.match(/\/t\/(?:[^/]+\/)?(\d+)/)?.[1];
+  return TEMPLATE_FORUM_SLUG.test(url) || (id != null && TEMPLATE_FORUM_TOPIC_IDS.has(Number(id)));
+}
+
+/** The proposal's forum thread: first linked forum topic that isn't a template link. */
+export function forumLink(body: string, comments: Pick<GitHubComment, "body">[] = []): string {
   const text = [body, ...comments.map((c) => c.body)].join(" ");
-  const m = text.match(/https?:\/\/forum\.zcashcommunity\.com\/[^\s)>]+/);
-  return m ? m[0] : ZCG_COMMUNITY_GRANTS_FORUM_CATEGORY_URL;
+  const urls = (text.match(/https?:\/\/forum\.zcashcommunity\.com\/t\/[^\s)\]>"'`]+/g) ?? []).map((u) =>
+    u.replace(/[.,;:!?]+$/, "")
+  );
+  const thread = urls.find((u) => !isTemplateForumLink(u));
+  return thread ?? ZCG_COMMUNITY_GRANTS_FORUM_CATEGORY_URL;
 }
 
 /**
@@ -311,6 +335,7 @@ export function parseIssueToGrant(
     program: ctx.program,
     sourceRepo: ctx.sourceRepo,
     issueNumber: issue.number,
+    labels: issue.labels.map((l) => l.name),
     title,
     applicant: issue.user.login,
     applicantAvatar: issue.user.avatar_url,

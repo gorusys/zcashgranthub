@@ -1,0 +1,4122 @@
+{
+  "Could not load analytics": [
+    "No se pudieron cargar las estadísticas",
+    "Não foi possível carregar as estatísticas"
+  ],
+  "Failed to fetch grants from GitHub.": [
+    "No se pudieron obtener las solicitudes de GitHub.",
+    "Não foi possível obter as solicitações do GitHub."
+  ],
+  "Analytics": [
+    "Estadísticas",
+    "Estatísticas"
+  ],
+  "Application and category metrics from GitHub Issues, plus official ZCG / Coinholder treasury figures from the public": [
+    "Métricas de solicitudes y categorías de GitHub Issues, junto con cifras oficiales de tesorería de ZCG y Coinholder de la",
+    "Métricas de solicitações e categorias do GitHub Issues, além dos dados oficiais de tesouraria de ZCG e Coinholder da"
+  ],
+  "Zcash Community Grants + Coinholder Grants dashboard sheet": [
+    "hoja del panel de Zcash Community Grants y Coinholder Grants",
+    "planilha do painel de Zcash Community Grants e Coinholder Grants"
+  ],
+  "GitHub grant applications": [
+    "Solicitudes de financiación en GitHub",
+    "Solicitações de financiamento no GitHub"
+  ],
+  "Issue-based pipeline for applications in connected repos — independent of the treasury workbook above.": [
+    "Seguimiento de solicitudes en los repositorios conectados, independiente de la hoja de tesorería anterior.",
+    "Acompanhamento de solicitações nos repositórios conectados, independente da planilha de tesouraria acima."
+  ],
+  "Total Grant Applications": [
+    "Total de solicitudes de financiación",
+    "Total de solicitações de financiamento"
+  ],
+  "Total USD Requested": [
+    "Total solicitado en USD",
+    "Total solicitado em USD"
+  ],
+  "Active Grantees": [
+    "Beneficiarios activos",
+    "Beneficiários ativos"
+  ],
+  "Categories Funded": [
+    "Categorías financiadas",
+    "Categorias financiadas"
+  ],
+  "Applications per Month (last 12 months)": [
+    "Solicitudes por mes (últimos 12 meses)",
+    "Solicitações por mês (últimos 12 meses)"
+  ],
+  "Applications": [
+    "Solicitudes",
+    "Solicitações"
+  ],
+  "Applications by Category": [
+    "Solicitudes por categoría",
+    "Solicitações por categoria"
+  ],
+  "No data yet.": [
+    "Aún no hay datos.",
+    "Ainda não há dados."
+  ],
+  "Top Applicants by Total Requested": [
+    "Principales solicitantes por importe total solicitado",
+    "Principais solicitantes por valor total solicitado"
+  ],
+  "Applicant": [
+    "Solicitante",
+    "Solicitante"
+  ],
+  "Requested": [
+    "Solicitado",
+    "Solicitado"
+  ],
+  "Apps": [
+    "Solicitudes",
+    "Solicitações"
+  ],
+  "I agree to the": [
+    "Acepto las condiciones del",
+    "Aceito os termos do"
+  ],
+  "Grant Agreement": [
+    "Acuerdo de financiación",
+    "Acordo de financiamento"
+  ],
+  "terms if funded": [
+    "si recibo financiación",
+    "em caso de financiamento"
+  ],
+  "I agree to": [
+    "Acepto",
+    "Concordo em"
+  ],
+  "Provide KYC information": [
+    "Proporcionar información KYC",
+    "Fornecer informações de KYC"
+  ],
+  "if funded above $50,000 USD": [
+    "si recibo más de 50.000 USD de financiación",
+    "se receber mais de US$ 50.000 em financiamento"
+  ],
+  "I agree to disclose conflicts of interest": [
+    "Acepto declarar los conflictos de interés",
+    "Concordo em declarar conflitos de interesse"
+  ],
+  "I agree to adhere to the": [
+    "Acepto cumplir el",
+    "Concordo em seguir o"
+  ],
+  "Code of Conduct": [
+    "Código de conducta",
+    "Código de conduta"
+  ],
+  "and": [
+    "y",
+    "e"
+  ],
+  "Communication Guidelines": [
+    "las Directrices de comunicación",
+    "as Diretrizes de comunicação"
+  ],
+  "I understand all milestone deliverables will be validated and accepted by their intended users or their representatives, who will confirm that the deliverables meet the required quality, functionality, and usability for each user story.": [
+    "Entiendo que todos los entregables de cada hito serán validados y aceptados por sus usuarios previstos o sus representantes, quienes confirmarán que cumplen los requisitos de calidad, funcionalidad y usabilidad de cada historia de usuario.",
+    "Entendo que todas as entregas dos marcos serão validadas e aceitas pelos usuários previstos ou seus representantes, que confirmarão o cumprimento dos requisitos de qualidade, funcionalidade e usabilidade de cada história de usuário."
+  ],
+  "I agree that for any new open-source software, I will create a": [
+    "Acepto que, para cualquier software nuevo de código abierto, crearé un archivo",
+    "Concordo que, para qualquer novo software de código aberto, criarei um arquivo"
+  ],
+  "file that reflects the high standards of Zcash development, using the": [
+    "que refleje los altos estándares de desarrollo de Zcash, utilizando las",
+    "que reflita os altos padrões de desenvolvimento do Zcash, usando os"
+  ],
+  "librustzcash style guides": [
+    "guías de estilo de librustzcash",
+    "guias de estilo do librustzcash"
+  ],
+  "as a primary reference.": [
+    "como referencia principal.",
+    "como referência principal."
+  ],
+  "I understand when contributing to existing Zcash code, I am required to adhere to the project specific contribution guidelines, paying close attention to any": [
+    "Entiendo que, al contribuir al código existente de Zcash, debo seguir las directrices de contribución del proyecto, prestando especial atención a las reglas de",
+    "Entendo que, ao contribuir para o código existente do Zcash, devo seguir as diretrizes de contribuição do projeto, com atenção especial às regras de"
+  ],
+  "merge": [
+    "integración",
+    "integração"
+  ],
+  "branch": [
+    "ramas",
+    "ramificações"
+  ],
+  "pull request": [
+    "solicitudes de incorporación",
+    "pull requests"
+  ],
+  ", and": [
+    ", y",
+    ", e"
+  ],
+  "commit": [
+    "confirmaciones",
+    "commits"
+  ],
+  "guidelines as exemplified in the": [
+    "según los ejemplos del repositorio",
+    "conforme os exemplos do repositório"
+  ],
+  "repository.": [
+    ".",
+    "."
+  ],
+  "I agree to post request details on the": [
+    "Acepto publicar los detalles de la solicitud en el",
+    "Concordo em publicar os detalhes da solicitação no"
+  ],
+  "Community Forum": [
+    "Foro de la comunidad",
+    "Fórum da comunidade"
+  ],
+  "I understand it is my responsibility to post a link to this issue on the": [
+    "Entiendo que es mi responsabilidad publicar un enlace a esta solicitud en los",
+    "Entendo que é minha responsabilidade publicar um link para esta solicitação nos"
+  ],
+  "Zcash Community Forums": [
+    "Foros de la comunidad Zcash",
+    "Fóruns da comunidade Zcash"
+  ],
+  "after this application has been submitted so the community can give input. I understand this is required in order for ZCG to discuss and vote on this grant application.": [
+    "después de enviarla para que la comunidad pueda opinar. Entiendo que esto es obligatorio para que ZCG debata y vote sobre esta solicitud de financiación.",
+    "após o envio para que a comunidade possa opinar. Entendo que isso é obrigatório para que o ZCG discuta e vote esta solicitação de financiamento."
+  ],
+  "Apply for a grant": [
+    "Solicitar financiación",
+    "Solicitar financiamento"
+  ],
+  "Choose": [
+    "Elige",
+    "Escolha"
+  ],
+  "for forward-looking proposals,": [
+    "para propuestas de trabajo futuro,",
+    "para propostas de trabalho futuro,"
+  ],
+  "for Lockbox retroactive (completed work) applications, or": [
+    "para solicitudes retroactivas de Lockbox (trabajo terminado), o",
+    "para solicitações retroativas do Lockbox (trabalho concluído), ou"
+  ],
+  "for on-chain mini-grants via DAO DAO on Juno. Connect GitHub before submitting ZCG or Coinholder forms.": [
+    "para pequeñas subvenciones en cadena mediante DAO DAO en Juno. Conecta GitHub antes de enviar formularios de ZCG o Coinholder.",
+    "para pequenos financiamentos on-chain pelo DAO DAO na Juno. Conecte o GitHub antes de enviar formulários de ZCG ou Coinholder."
+  ],
+  "Not sure which one fits?": [
+    "¿No sabes cuál elegir?",
+    "Não sabe qual escolher?"
+  ],
+  "Use the Funding Finder": [
+    "Usa el buscador de financiación",
+    "Use o buscador de financiamento"
+  ],
+  "or check the": [
+    "o consulta las",
+    "ou consulte as"
+  ],
+  "current retro round dates": [
+    "fechas de la ronda retroactiva actual",
+    "datas da rodada retroativa atual"
+  ],
+  "Terms & Conditions": [
+    "Términos y condiciones",
+    "Termos e condições"
+  ],
+  "All terms must be accepted to proceed.": [
+    "Debes aceptar todos los términos para continuar.",
+    "Você deve aceitar todos os termos para continuar."
+  ],
+  "Organization": [
+    "Organización",
+    "Organização"
+  ],
+  "Application Owners (@Octocat, @Octocat1) *": [
+    "Responsables de la solicitud (@Octocat, @Octocat1) *",
+    "Responsáveis pela solicitação (@Octocat, @Octocat1) *"
+  ],
+  "Organization Name": [
+    "Nombre de la organización",
+    "Nome da organização"
+  ],
+  "Your Organization": [
+    "Tu organización",
+    "Sua organização"
+  ],
+  "How did you learn about ZCG?": [
+    "¿Cómo conociste ZCG?",
+    "Como você conheceu o ZCG?"
+  ],
+  "Project Overview": [
+    "Descripción general del proyecto",
+    "Visão geral do projeto"
+  ],
+  "Grant Title *": [
+    "Título de la solicitud *",
+    "Título da solicitação *"
+  ],
+  "Enter your grant title": [
+    "Introduce el título de la solicitud",
+    "Digite o título da solicitação"
+  ],
+  "Requested Amount (USD) *": [
+    "Importe solicitado (USD) *",
+    "Valor solicitado (USD) *"
+  ],
+  "Category *": [
+    "Categoría *",
+    "Categoria *"
+  ],
+  "Select a category": [
+    "Selecciona una categoría",
+    "Selecione uma categoria"
+  ],
+  "Project Lead": [
+    "Responsable del proyecto",
+    "Responsável pelo projeto"
+  ],
+  "Name": [
+    "Nombre",
+    "Nome"
+  ],
+  "Role": [
+    "Función",
+    "Função"
+  ],
+  "Background": [
+    "Experiencia",
+    "Experiência"
+  ],
+  "Responsibilities": [
+    "Responsabilidades",
+    "Responsabilidades"
+  ],
+  "Team Member": [
+    "Miembro del equipo",
+    "Integrante da equipe"
+  ],
+  "Add Team Member": [
+    "Añadir miembro del equipo",
+    "Adicionar integrante da equipe"
+  ],
+  "Project Details": [
+    "Detalles del proyecto",
+    "Detalhes do projeto"
+  ],
+  "Budget": [
+    "Presupuesto",
+    "Orçamento"
+  ],
+  "Hardware/Software Justification": [
+    "Justificación de hardware y software",
+    "Justificativa de hardware e software"
+  ],
+  "Service Costs Justification": [
+    "Justificación de costes de servicios",
+    "Justificativa dos custos de serviços"
+  ],
+  "Compensation Costs Justification": [
+    "Justificación de costes de remuneración",
+    "Justificativa dos custos de remuneração"
+  ],
+  "Previous Funding": [
+    "Financiación anterior",
+    "Financiamento anterior"
+  ],
+  "Select one": [
+    "Selecciona una opción",
+    "Selecione uma opção"
+  ],
+  "Yes": [
+    "Sí",
+    "Sim"
+  ],
+  "No": [
+    "No",
+    "Não"
+  ],
+  "Previous Funding Details": [
+    "Detalles de financiación anterior",
+    "Detalhes do financiamento anterior"
+  ],
+  "Other Funding Sources": [
+    "Otras fuentes de financiación",
+    "Outras fontes de financiamento"
+  ],
+  "Other Funding Sources Details": [
+    "Detalles de otras fuentes de financiación",
+    "Detalhes de outras fontes de financiamento"
+  ],
+  "Total Budget": [
+    "Presupuesto total",
+    "Orçamento total"
+  ],
+  "Startup Funding": [
+    "Financiación inicial",
+    "Financiamento inicial"
+  ],
+  "Startup Funding Justification": [
+    "Justificación de financiación inicial",
+    "Justificativa do financiamento inicial"
+  ],
+  "Milestone": [
+    "Hito",
+    "Marco"
+  ],
+  "Amount (USD)": [
+    "Importe (USD)",
+    "Valor (USD)"
+  ],
+  "Expected Completion": [
+    "Finalización prevista",
+    "Conclusão prevista"
+  ],
+  "Acceptance Criteria": [
+    "Criterios de aceptación",
+    "Critérios de aceitação"
+  ],
+  "User Stories": [
+    "Historias de usuario",
+    "Histórias de usuário"
+  ],
+  "As a [type of user], I want [some goal], so that [some reason]": [
+    "Como [tipo de usuario], quiero [objetivo], para [motivo]",
+    "Como [tipo de usuário], quero [objetivo], para [motivo]"
+  ],
+  "Add User Story": [
+    "Añadir historia de usuario",
+    "Adicionar história de usuário"
+  ],
+  "Deliverables": [
+    "Entregables",
+    "Entregas"
+  ],
+  "[List specific deliverables that fulfill the user stories]": [
+    "[Enumera entregables específicos que cumplan las historias de usuario]",
+    "[Liste entregas específicas que atendam às histórias de usuário]"
+  ],
+  "Add Deliverable": [
+    "Añadir entregable",
+    "Adicionar entrega"
+  ],
+  "Add Milestone": [
+    "Añadir hito",
+    "Adicionar marco"
+  ],
+  "Supporting Documents": [
+    "Documentos de apoyo",
+    "Documentos de apoio"
+  ],
+  "Drag & drop files or click to upload": [
+    "Arrastra archivos o haz clic para subirlos",
+    "Arraste arquivos ou clique para enviar"
+  ],
+  "Description": [
+    "Descripción",
+    "Descrição"
+  ],
+  "Add URL": [
+    "Añadir URL",
+    "Adicionar URL"
+  ],
+  "Review & Submit": [
+    "Revisar y enviar",
+    "Revisar e enviar"
+  ],
+  "Title": [
+    "Título",
+    "Título"
+  ],
+  "Amount": [
+    "Importe",
+    "Valor"
+  ],
+  "Category": [
+    "Categoría",
+    "Categoria"
+  ],
+  "Summary": [
+    "Resumen",
+    "Resumo"
+  ],
+  "milestones": [
+    "hitos",
+    "marcos"
+  ],
+  "I confirm all information is accurate": [
+    "Confirmo que toda la información es correcta",
+    "Confirmo que todas as informações estão corretas"
+  ],
+  "Submitting...": [
+    "Enviando...",
+    "Enviando..."
+  ],
+  "Submit Grant Application": [
+    "Enviar solicitud de financiación",
+    "Enviar solicitação de financiamento"
+  ],
+  "Create Draft Grant Application": [
+    "Crear borrador de solicitud",
+    "Criar rascunho da solicitação"
+  ],
+  "Save Draft": [
+    "Guardar borrador",
+    "Salvar rascunho"
+  ],
+  "Back": [
+    "Atrás",
+    "Voltar"
+  ],
+  "Continue": [
+    "Continuar",
+    "Continuar"
+  ],
+  "ZecHub DAO (on-chain)": [
+    "ZecHub DAO (en cadena)",
+    "ZecHub DAO (on-chain)"
+  ],
+  "ZecHub mini-grants and governance run on": [
+    "Las pequeñas subvenciones y la gobernanza de ZecHub funcionan en",
+    "Os pequenos financiamentos e a governança do ZecHub funcionam no"
+  ],
+  "on": [
+    "en",
+    "na"
+  ],
+  ". You do not file a GitHub issue here—connect a wallet on DAO DAO to create proposals, vote when voting is open, and follow execution there.": [
+    ". Aquí no se crea una solicitud de GitHub: conecta una cartera en DAO DAO para crear propuestas, votar cuando la votación esté abierta y seguir su ejecución allí.",
+    ". Aqui você não cria uma solicitação no GitHub: conecte uma carteira no DAO DAO para criar propostas, votar quando a votação estiver aberta e acompanhar a execução por lá."
+  ],
+  "Create a proposal": [
+    "Crear una propuesta",
+    "Criar uma proposta"
+  ],
+  "Open the official proposal builder, draft your title and description (markdown supported), add actions such as spends or contract messages, then submit and sign with your Juno wallet.": [
+    "Abre el editor oficial, redacta el título y la descripción (admite Markdown), añade acciones como pagos o mensajes a contratos, y envía y firma con tu cartera de Juno.",
+    "Abra o editor oficial, escreva o título e a descrição (aceita Markdown), adicione ações como pagamentos ou mensagens a contratos e envie e assine com sua carteira Juno."
+  ],
+  "Create proposal on DAO DAO": [
+    "Crear propuesta en DAO DAO",
+    "Criar proposta no DAO DAO"
+  ],
+  "Open ZecHub DAO": [
+    "Abrir ZecHub DAO",
+    "Abrir ZecHub DAO"
+  ],
+  "Browse & vote": [
+    "Explorar y votar",
+    "Explorar e votar"
+  ],
+  "This hub lists proposals from the DAO DAO indexer. Use": [
+    "Este portal muestra propuestas del indexador de DAO DAO. Usa",
+    "Este portal lista propostas do indexador do DAO DAO. Use"
+  ],
+  "Vote on DAO DAO": [
+    "Votar en DAO DAO",
+    "Votar no DAO DAO"
+  ],
+  "on a proposal when its status is open for voting.": [
+    "en una propuesta cuando esté abierta a votación.",
+    "em uma proposta quando ela estiver aberta para votação."
+  ],
+  "Browse ZecHub proposals": [
+    "Explorar propuestas de ZecHub",
+    "Explorar propostas do ZecHub"
+  ],
+  "DAO DAO UI": [
+    "Interfaz de DAO DAO",
+    "Interface do DAO DAO"
+  ],
+  "Learn more": [
+    "Más información",
+    "Saiba mais"
+  ],
+  "How to create proposals & vote": [
+    "Cómo crear propuestas y votar",
+    "Como criar propostas e votar"
+  ],
+  "ZecHub DAO docs (wiki)": [
+    "Documentación de ZecHub DAO (wiki)",
+    "Documentação do ZecHub DAO (wiki)"
+  ],
+  "DAO DAO documentation": [
+    "Documentación de DAO DAO",
+    "Documentação do DAO DAO"
+  ],
+  "Manual Check Needed Before Final GitHub Submit": [
+    "Revisión manual antes del envío final a GitHub",
+    "Revisão manual antes do envio final ao GitHub"
+  ],
+  "GitHub issue-form interactive controls can behave differently from API-created markdown. Please review these fields manually on the opened GitHub issue page:": [
+    "Los controles interactivos de los formularios de GitHub pueden comportarse de forma distinta al Markdown creado mediante la API. Revisa manualmente estos campos en la página de la solicitud de GitHub:",
+    "Os controles interativos dos formulários do GitHub podem se comportar de forma diferente do Markdown criado pela API. Revise manualmente estes campos na página da solicitação no GitHub:"
+  ],
+  "- Terms and Conditions checkboxes": [
+    "- Casillas de términos y condiciones",
+    "- Caixas de termos e condições"
+  ],
+  "- Category (dropdown value)": [
+    "- Categoría (valor del desplegable)",
+    "- Categoria (valor da lista)"
+  ],
+  "- Previous Funding (Yes/No dropdown)": [
+    "- Financiación anterior (desplegable Sí/No)",
+    "- Financiamento anterior (lista Sim/Não)"
+  ],
+  "- Other Funding Sources (Yes/No dropdown)": [
+    "- Otras fuentes de financiación (desplegable Sí/No)",
+    "- Outras fontes de financiamento (lista Sim/Não)"
+  ],
+  "Cancel": [
+    "Cancelar",
+    "Cancelar"
+  ],
+  "Continue and Create Draft": [
+    "Continuar y crear borrador",
+    "Continuar e criar rascunho"
+  ],
+  "{0} · Zcash Grants Hub": [
+    "{0} · Zcash Grants Hub",
+    "{0} · Zcash Grants Hub"
+  ],
+  "Open ZEC bounties from ZecHub and beginner-friendly issues in Zebra, librustzcash, Zingo and other Zcash projects, in one list.": [
+    "Recompensas en ZEC de ZecHub y tareas para principiantes en Zebra, librustzcash, Zingo y otros proyectos de Zcash, en una sola lista.",
+    "Recompensas em ZEC do ZecHub e tarefas para iniciantes no Zebra, librustzcash, Zingo e outros projetos Zcash, em uma única lista."
+  ],
+  "Search bounties and issues": [
+    "Buscar recompensas y tareas",
+    "Buscar recompensas e tarefas"
+  ],
+  "I understand that this grant program is only eligible for": [
+    "Entiendo que este programa de financiación solo admite",
+    "Entendo que este programa de financiamento aceita apenas"
+  ],
+  "completed work": [
+    "trabajo terminado",
+    "trabalho concluído"
+  ],
+  ", as it is a retroactive grant program. Applications for planned or partially completed work will not be considered.": [
+    ", ya que es un programa de financiación retroactiva. No se considerarán solicitudes para trabajo planificado o parcialmente terminado.",
+    ", pois é um programa de financiamento retroativo. Solicitações para trabalho planejado ou parcialmente concluído não serão consideradas."
+  ],
+  "file aligned with the": [
+    "acorde con las",
+    "alinhado com os"
+  ],
+  "I understand when contributing to existing Zcash code, I will follow project contribution guidelines (merge, branch, PR, commit) as in librustzcash.": [
+    "Entiendo que, al contribuir al código existente de Zcash, seguiré las directrices de contribución del proyecto (integración, ramas, PR y commits), como en librustzcash.",
+    "Entendo que, ao contribuir para o código existente do Zcash, seguirei as diretrizes de contribuição do projeto (merge, branch, PR e commit), como no librustzcash."
+  ],
+  "I understand grants are valued in USD but disbursed in Shielded ZEC, and amounts may fluctuate with the exchange rate at payment time.": [
+    "Entiendo que las subvenciones se valoran en USD, pero se pagan en ZEC blindado, y que el importe puede variar con el tipo de cambio en el momento del pago.",
+    "Entendo que os financiamentos são avaliados em USD, mas pagos em ZEC blindado, e que o valor pode variar com a taxa de câmbio no momento do pagamento."
+  ],
+  "Zcash Community Forums (Retroactive Grants)": [
+    "Foros de Zcash (Subvenciones retroactivas)",
+    "Fóruns Zcash (Financiamentos retroativos)"
+  ],
+  "after submission so the community can discuss and vote. If I cannot post (e.g. new user limits), I will comment on the issue for help with permissions.": [
+    "después del envío para que la comunidad pueda debatir y votar. Si no puedo publicar (por ejemplo, por límites a nuevos usuarios), comentaré en la solicitud para pedir ayuda con los permisos.",
+    "após o envio para que a comunidade possa discutir e votar. Se eu não puder publicar (por exemplo, por restrições a novos usuários), comentarei na solicitação para pedir ajuda com as permissões."
+  ],
+  "ZCG (forward-looking) grant application": [
+    "Solicitud ZCG (trabajo futuro)",
+    "Solicitação ZCG (trabalho futuro)"
+  ],
+  "Browse Coinholder grants": [
+    "Explorar subvenciones Coinholder",
+    "Explorar financiamentos Coinholder"
+  ],
+  "Lockbox — Coinholder retroactive grant application": [
+    "Lockbox — Solicitud de financiación retroactiva Coinholder",
+    "Lockbox — Solicitação de financiamento retroativo Coinholder"
+  ],
+  "All items must be accepted to continue (including the forum posting commitment).": [
+    "Debes aceptar todos los puntos para continuar (incluido el compromiso de publicar en el foro).",
+    "Você deve aceitar todos os itens para continuar (incluindo o compromisso de publicar no fórum)."
+  ],
+  "Applicant & organization": [
+    "Solicitante y organización",
+    "Solicitante e organização"
+  ],
+  "Application owners (@octocat, @octocat1) *": [
+    "Responsables de la solicitud (@octocat, @octocat1) *",
+    "Responsáveis pela solicitação (@octocat, @octocat1) *"
+  ],
+  "Organization or individual name *": [
+    "Nombre de la organización o persona *",
+    "Nome da organização ou pessoa *"
+  ],
+  "Additional team members *": [
+    "Miembros adicionales del equipo *",
+    "Integrantes adicionais da equipe *"
+  ],
+  "YAML-style list. Use “None” or “N/A” if you are the only person.": [
+    "Lista en formato YAML. Usa “None” o “N/A” si eres la única persona.",
+    "Lista no formato YAML. Use “None” ou “N/A” se você for a única pessoa."
+  ],
+  "How did you learn about the Lockbox: Coinholder Retroactive Grants Program? *": [
+    "¿Cómo conociste Lockbox: Programa de financiación retroactiva Coinholder? *",
+    "Como você conheceu o Lockbox: Programa de financiamento retroativo Coinholder? *"
+  ],
+  "Project overview": [
+    "Descripción general del proyecto",
+    "Visão geral do projeto"
+  ],
+  "Application name (used in issue title) *": [
+    "Nombre de la solicitud (usado en el título de GitHub) *",
+    "Nome da solicitação (usado no título do GitHub) *"
+  ],
+  "Short name for your retroactive application": [
+    "Nombre breve para tu solicitud retroactiva",
+    "Nome curto para sua solicitação retroativa"
+  ],
+  "Requested grant amount (USD) *": [
+    "Importe de financiación solicitado (USD) *",
+    "Valor do financiamento solicitado (USD) *"
+  ],
+  "Project summary *": [
+    "Resumen del proyecto *",
+    "Resumo do projeto *"
+  ],
+  "Project description *": [
+    "Descripción del proyecto *",
+    "Descrição do projeto *"
+  ],
+  "Technical approach (how you did it) *": [
+    "Enfoque técnico (cómo lo hiciste) *",
+    "Abordagem técnica (como você fez) *"
+  ],
+  "Time period of work completion *": [
+    "Período de realización del trabajo *",
+    "Período de realização do trabalho *"
+  ],
+  "e.g. Q3 2024 or July 2024 – September 2024": [
+    "p. ej., T3 2024 o julio de 2024 – septiembre de 2024",
+    "por exemplo, T3 de 2024 ou julho de 2024 – setembro de 2024"
+  ],
+  "Budget & funding": [
+    "Presupuesto y financiación",
+    "Orçamento e financiamento"
+  ],
+  "Total budget (USD) *": [
+    "Presupuesto total (USD) *",
+    "Orçamento total (USD) *"
+  ],
+  "Budget breakdown *": [
+    "Desglose del presupuesto *",
+    "Detalhamento do orçamento *"
+  ],
+  "Previous funding (Coinholder program)": [
+    "Financiación anterior (programa Coinholder)",
+    "Financiamento anterior (programa Coinholder)"
+  ],
+  "Previous funding details": [
+    "Detalles de financiación anterior",
+    "Detalhes do financiamento anterior"
+  ],
+  "Other funding sources": [
+    "Otras fuentes de financiación",
+    "Outras fontes de financiamento"
+  ],
+  "Other funding sources details": [
+    "Detalles de otras fuentes de financiación",
+    "Detalhes de outras fontes de financiamento"
+  ],
+  "Impact & evidence": [
+    "Impacto y pruebas",
+    "Impacto e evidências"
+  ],
+  "Success metrics *": [
+    "Métricas de éxito *",
+    "Métricas de sucesso *"
+  ],
+  "Proof of completion *": [
+    "Pruebas de finalización *",
+    "Comprovação de conclusão *"
+  ],
+  "Conflict of interest disclosure (optional)": [
+    "Declaración de conflictos de interés (opcional)",
+    "Declaração de conflitos de interesse (opcional)"
+  ],
+  "Disclose any actual, potential, or perceived conflicts.": [
+    "Declara cualquier conflicto real, potencial o percibido.",
+    "Declare qualquer conflito real, potencial ou percebido."
+  ],
+  "Review & submit": [
+    "Revisar y enviar",
+    "Revisar e enviar"
+  ],
+  "Application name": [
+    "Nombre de la solicitud",
+    "Nome da solicitação"
+  ],
+  "Requested amount": [
+    "Importe solicitado",
+    "Valor solicitado"
+  ],
+  "Org / name": [
+    "Organización / nombre",
+    "Organização / nome"
+  ],
+  "I confirm all information is accurate and this application is for completed work only.": [
+    "Confirmo que toda la información es correcta y que esta solicitud corresponde únicamente a trabajo terminado.",
+    "Confirmo que todas as informações estão corretas e que esta solicitação é apenas para trabalho concluído."
+  ],
+  "Submitting…": [
+    "Enviando…",
+    "Enviando…"
+  ],
+  "Submit retroactive application": [
+    "Enviar solicitud retroactiva",
+    "Enviar solicitação retroativa"
+  ],
+  "Save draft": [
+    "Guardar borrador",
+    "Salvar rascunho"
+  ],
+  "Dashboard": [
+    "Panel",
+    "Painel"
+  ],
+  "My Applications": [
+    "Mis solicitudes",
+    "Minhas solicitações"
+  ],
+  "Milestone Reports": [
+    "Informes de hitos",
+    "Relatórios de marcos"
+  ],
+  "Notifications": [
+    "Notificaciones",
+    "Notificações"
+  ],
+  "Checking GitHub session…": [
+    "Comprobando sesión de GitHub…",
+    "Verificando sessão do GitHub…"
+  ],
+  "Connect GitHub with the same account you use on grant issues so we can list applications where you are the GitHub author.": [
+    "Conecta GitHub con la misma cuenta que usas en las solicitudes de financiación para ver las que has creado.",
+    "Conecte o GitHub com a mesma conta usada nas solicitações de financiamento para ver as que você criou."
+  ],
+  "Grant rows are matched by the issue author field from GitHub—not by email.": [
+    "Las solicitudes se vinculan por el autor de GitHub, no por correo electrónico.",
+    "As solicitações são vinculadas pelo autor no GitHub, não pelo e-mail."
+  ],
+  "Loading grants from GitHub…": [
+    "Cargando solicitudes desde GitHub…",
+    "Carregando solicitações do GitHub…"
+  ],
+  "No grants found for": [
+    "No se encontraron solicitudes de",
+    "Nenhuma solicitação encontrada para"
+  ],
+  "in the configured repos. Open an application from": [
+    "en los repositorios configurados. Crea una solicitud desde",
+    "nos repositórios configurados. Crie uma solicitação em"
+  ],
+  "Apply": [
+    "Solicitar",
+    "Solicitar"
+  ],
+  "or browse": [
+    "o explora",
+    "ou explore"
+  ],
+  "Grants": [
+    "Subvenciones",
+    "Financiamentos"
+  ],
+  "Status": [
+    "Estado",
+    "Status"
+  ],
+  "Submitted": [
+    "Enviada",
+    "Enviada"
+  ],
+  "Actions": [
+    "Acciones",
+    "Ações"
+  ],
+  "View": [
+    "Ver",
+    "Ver"
+  ],
+  "Connect GitHub to see milestones for your grants.": [
+    "Conecta GitHub para ver los hitos de tus subvenciones.",
+    "Conecte o GitHub para ver os marcos dos seus financiamentos."
+  ],
+  "No open milestones for your active grants, or you have no active grants yet.": [
+    "No hay hitos pendientes de tus subvenciones activas, o todavía no tienes subvenciones activas.",
+    "Não há marcos pendentes nos seus financiamentos ativos, ou você ainda não tem financiamentos ativos."
+  ],
+  "Due:": [
+    "Fecha límite:",
+    "Prazo:"
+  ],
+  "Open on GitHub": [
+    "Abrir en GitHub",
+    "Abrir no GitHub"
+  ],
+  "No issue link": [
+    "Sin enlace a GitHub",
+    "Sem link do GitHub"
+  ],
+  "All": [
+    "Todos",
+    "Todos"
+  ],
+  "Approved": [
+    "Aprobada",
+    "Aprovada"
+  ],
+  "Declined": [
+    "Rechazada",
+    "Recusada"
+  ],
+  "Remains open": [
+    "Sigue abierta",
+    "Continua aberta"
+  ],
+  "ZCG decisions archive · Zcash Grants Hub": [
+    "Archivo de decisiones ZCG · Zcash Grants Hub",
+    "Arquivo de decisões ZCG · Zcash Grants Hub"
+  ],
+  "Search Zcash Community Grants committee decisions and each member's stated reasoning, parsed from the published meeting minutes.": [
+    "Busca decisiones del comité Zcash Community Grants y los motivos de cada miembro, extraídos de las actas publicadas.",
+    "Pesquise decisões do comitê Zcash Community Grants e os motivos de cada integrante, extraídos das atas publicadas."
+  ],
+  "ZCG decisions archive": [
+    "Archivo de decisiones ZCG",
+    "Arquivo de decisões ZCG"
+  ],
+  "What the Zcash Community Grants committee decided on each proposal, and why, in members' own words. Parsed from the meeting minutes the committee publishes on the forum. Search for your topic before applying to see what reviewers have said about similar work.": [
+    "Qué decidió el comité Zcash Community Grants sobre cada propuesta y por qué, en palabras de sus miembros. Extraído de las actas publicadas en el foro. Busca tu tema antes de solicitar financiación para conocer las opiniones sobre trabajos similares.",
+    "O que o comitê Zcash Community Grants decidiu sobre cada proposta e por quê, nas palavras de seus integrantes. Extraído das atas publicadas no fórum. Pesquise seu tema antes de solicitar financiamento para conhecer as opiniões sobre trabalhos semelhantes."
+  ],
+  "From": [
+    "De",
+    "De"
+  ],
+  "meetings; latest decision per proposal. Approval rate counts only approved vs declined.": [
+    "reuniones; última decisión por propuesta. La tasa de aprobación solo tiene en cuenta aprobaciones y rechazos.",
+    "reuniões; última decisão por proposta. A taxa de aprovação considera apenas aprovações e recusas."
+  ],
+  "Search proposals and reasoning (e.g. wallet, explorer, marketing)": [
+    "Buscar propuestas y motivos (p. ej., cartera, explorador, marketing)",
+    "Buscar propostas e motivos (por exemplo, carteira, explorador, marketing)"
+  ],
+  "Search decisions": [
+    "Buscar decisiones",
+    "Buscar decisões"
+  ],
+  "Couldn't load decisions:": [
+    "No se pudieron cargar las decisiones:",
+    "Não foi possível carregar as decisões:"
+  ],
+  ". The forum may be rate-limiting; try again in a few minutes.": [
+    ". Puede que el foro esté limitando las consultas; inténtalo de nuevo en unos minutos.",
+    ". O fórum pode estar limitando as consultas; tente novamente em alguns minutos."
+  ],
+  "No matching decisions.": [
+    "No hay decisiones que coincidan.",
+    "Nenhuma decisão encontrada."
+  ],
+  "Show more (": [
+    "Mostrar más (",
+    "Mostrar mais ("
+  ],
+  "left)": [
+    "restantes)",
+    "restantes)"
+  ],
+  "All ZCG and Coinholder grant applications, normalized: status, category, USD amounts, milestone progress, raw GitHub labels and links.": [
+    "Todas las solicitudes ZCG y Coinholder normalizadas: estado, categoría, importes USD, progreso de hitos, etiquetas originales de GitHub y enlaces.",
+    "Todas as solicitações ZCG e Coinholder normalizadas: status, categoria, valores USD, progresso dos marcos, rótulos originais do GitHub e links."
+  ],
+  "Coinholder retro rounds: official dates, current phase, next milestone, and per-round outcomes (on ballot, funded, rejected, USD totals, grant ids).": [
+    "Rondas retroactivas Coinholder: fechas oficiales, fase actual, próximo hito y resultados por ronda (en votación, financiadas, rechazadas, totales USD e identificadores).",
+    "Rodadas retroativas Coinholder: datas oficiais, fase atual, próximo marco e resultados por rodada (em votação, financiadas, recusadas, totais USD e identificadores)."
+  ],
+  "ZCG committee decisions parsed from meeting minutes: outcome, requested amount, summary and each member's statement.": [
+    "Decisiones del comité ZCG extraídas de actas: resultado, importe solicitado, resumen y declaración de cada miembro.",
+    "Decisões do comitê ZCG extraídas das atas: resultado, valor solicitado, resumo e declaração de cada integrante."
+  ],
+  "Open ZecHub ZEC bounties and unassigned good-first-issue / help-wanted issues across Zcash GitHub orgs.": [
+    "Recompensas ZEC de ZecHub y tareas sin asignar para principiantes en las organizaciones Zcash de GitHub.",
+    "Recompensas ZEC do ZecHub e tarefas não atribuídas para iniciantes nas organizações Zcash do GitHub."
+  ],
+  "Current mainnet height and block time (Blockchair, with an estimate fallback).": [
+    "Altura actual de la red principal y hora del bloque (Blockchair, con estimación como alternativa).",
+    "Altura atual da rede principal e horário do bloco (Blockchair, com estimativa como alternativa)."
+  ],
+  "RSS 2.0 feed of the 50 most recently updated grants. Add ?program=zcg or ?program=coinholder via /api/v1/feed.": [
+    "Fuente RSS 2.0 de las 50 solicitudes actualizadas más recientemente. Añade ?program=zcg o ?program=coinholder mediante /api/v1/feed.",
+    "Feed RSS 2.0 das 50 solicitações atualizadas mais recentemente. Adicione ?program=zcg ou ?program=coinholder por /api/v1/feed."
+  ],
+  "API & feeds · Zcash Grants Hub": [
+    "API y fuentes · Zcash Grants Hub",
+    "API e feeds · Zcash Grants Hub"
+  ],
+  "Free, read-only JSON API and RSS feed for Zcash grants data.": [
+    "API JSON y fuente RSS gratuitas de solo lectura para datos de subvenciones Zcash.",
+    "API JSON e feed RSS gratuitos e somente leitura para dados de financiamentos Zcash."
+  ],
+  "API & feeds": [
+    "API y fuentes",
+    "API e feeds"
+  ],
+  "Free, read-only, no key needed. Responses are JSON with CORS enabled, cached for about five minutes, and built from the programs' public GitHub repositories and forum posts. Fields are only added within": [
+    "Gratuita, de solo lectura y sin clave. Las respuestas son JSON con CORS habilitado, se almacenan en caché unos cinco minutos y proceden de repositorios públicos de GitHub y publicaciones del foro. En",
+    "Gratuita, somente leitura e sem chave. As respostas são JSON com CORS ativado, armazenadas em cache por cerca de cinco minutos e obtidas de repositórios públicos do GitHub e publicações do fórum. Em"
+  ],
+  ", never renamed or removed.": [
+    "los campos solo se añaden, nunca se renombran ni eliminan.",
+    "os campos são apenas adicionados, nunca renomeados nem removidos."
+  ],
+  "Query:": [
+    "Consulta:",
+    "Consulta:"
+  ],
+  "Building something with this data? Open an issue or PR on": [
+    "¿Estás creando algo con estos datos? Abre una incidencia o PR en",
+    "Está criando algo com estes dados? Abra uma issue ou PR no"
+  ],
+  ". The hub is open source, and other projects using the data helps keep it maintained.": [
+    ". El portal es de código abierto; que otros proyectos usen sus datos ayuda a mantenerlo.",
+    ". O portal é de código aberto; outros projetos usarem os dados ajuda a mantê-lo."
+  ],
+  "Contribute code": [
+    "Contribuir código",
+    "Contribuir com código"
+  ],
+  "Zcash Grants Hub is open source. Pick up an issue, improve the UI, or add data sources.": [
+    "Zcash Grants Hub es de código abierto. Resuelve una incidencia, mejora la interfaz o añade fuentes de datos.",
+    "O Zcash Grants Hub é de código aberto. Resolva uma issue, melhore a interface ou adicione fontes de dados."
+  ],
+  "Report bugs & ideas": [
+    "Informar de errores e ideas",
+    "Relatar erros e ideias"
+  ],
+  "Found something broken or missing? Open an issue with steps to reproduce or a feature proposal.": [
+    "¿Algo falla o falta? Abre una incidencia con pasos para reproducir el problema o una propuesta de mejora.",
+    "Algo está com defeito ou faltando? Abra uma issue com os passos para reproduzir o problema ou uma proposta de melhoria."
+  ],
+  "Building for Zcash? Submit a proposal to Zcash Community Grants or the Coinholder program.": [
+    "¿Desarrollas para Zcash? Envía una propuesta a Zcash Community Grants o al programa Coinholder.",
+    "Desenvolve para Zcash? Envie uma proposta ao Zcash Community Grants ou ao programa Coinholder."
+  ],
+  "Review proposals": [
+    "Revisar propuestas",
+    "Revisar propostas"
+  ],
+  "Grant committees rely on community feedback. Weigh in on open proposals in the forum.": [
+    "Los comités necesitan comentarios de la comunidad. Opina sobre las propuestas abiertas en el foro.",
+    "Os comitês precisam dos comentários da comunidade. Opine sobre as propostas abertas no fórum."
+  ],
+  "Take part in on-chain governance and mini-grants through the ZecHub DAO.": [
+    "Participa en la gobernanza en cadena y las pequeñas subvenciones de ZecHub DAO.",
+    "Participe da governança on-chain e dos pequenos financiamentos do ZecHub DAO."
+  ],
+  "Spread the word": [
+    "Dar a conocer",
+    "Divulgar"
+  ],
+  "Share funded projects and open calls with builders who could use a grant.": [
+    "Comparte proyectos financiados y convocatorias con personas que puedan necesitar financiación.",
+    "Compartilhe projetos financiados e chamadas abertas com pessoas que possam precisar de financiamento."
+  ],
+  "Donate & contribute · Zcash Grants Hub": [
+    "Donar y contribuir · Zcash Grants Hub",
+    "Doar e contribuir · Zcash Grants Hub"
+  ],
+  "Support Zcash Grants Hub with a shielded ZEC donation, or contribute code, feedback, and reviews to the Zcash grants ecosystem.": [
+    "Apoya Zcash Grants Hub con una donación en ZEC blindado o contribuye con código, comentarios y revisiones al ecosistema de financiación Zcash.",
+    "Apoie o Zcash Grants Hub com uma doação em ZEC blindado ou contribua com código, comentários e revisões para o ecossistema de financiamento Zcash."
+  ],
+  "Shielded donations supported": [
+    "Se admiten donaciones blindadas",
+    "Doações blindadas disponíveis"
+  ],
+  "Donate & contribute": [
+    "Donar y contribuir",
+    "Doar e contribuir"
+  ],
+  "Zcash Grants Hub is a free, open-source, community-run index of Zcash funding programs. You can help keep it independent and maintained by donating ZEC or by contributing your time.": [
+    "Zcash Grants Hub es un índice gratuito, de código abierto y gestionado por la comunidad de los programas de financiación Zcash. Ayuda a mantenerlo independiente con una donación en ZEC o dedicando tu tiempo.",
+    "O Zcash Grants Hub é um índice gratuito, de código aberto e mantido pela comunidade dos programas de financiamento Zcash. Ajude a mantê-lo independente com uma doação em ZEC ou dedicando seu tempo."
+  ],
+  "Donate ZEC": [
+    "Donar ZEC",
+    "Doar ZEC"
+  ],
+  "Ways to contribute": [
+    "Formas de contribuir",
+    "Formas de contribuir"
+  ],
+  "Donation address failed validation": [
+    "La dirección de donación no superó la validación",
+    "O endereço de doação não passou na validação"
+  ],
+  "Please don't send funds. Report this on": [
+    "No envíes fondos. Informa de esto en",
+    "Não envie fundos. Relate o problema no"
+  ],
+  "Send a donation": [
+    "Enviar una donación",
+    "Enviar uma doação"
+  ],
+  "Amount (optional)": [
+    "Importe (opcional)",
+    "Valor (opcional)"
+  ],
+  "Custom amount": [
+    "Importe personalizado",
+    "Valor personalizado"
+  ],
+  "Enter a positive amount with up to 8 decimal places.": [
+    "Introduce un importe positivo con hasta 8 decimales.",
+    "Digite um valor positivo com até 8 casas decimais."
+  ],
+  "≈ {0} at the current ZEC price": [
+    "≈ {0} al precio actual de ZEC",
+    "≈ {0} ao preço atual do ZEC"
+  ],
+  "Leave empty to choose the amount in your wallet.": [
+    "Déjalo vacío para elegir el importe en tu cartera.",
+    "Deixe em branco para escolher o valor na carteira."
+  ],
+  "Memo (optional, encrypted)": [
+    "Memo (opcional, cifrado)",
+    "Memo (opcional, criptografado)"
+  ],
+  "bytes": [
+    "bytes",
+    "bytes"
+  ],
+  "Add a note or contact handle": [
+    "Añade una nota o un contacto",
+    "Adicione uma nota ou contato"
+  ],
+  "Memo exceeds 512 bytes and will be left out of the payment request.": [
+    "El memo supera 512 bytes y se omitirá de la solicitud de pago.",
+    "O memo excede 512 bytes e será omitido da solicitação de pagamento."
+  ],
+  "Unified address": [
+    "Dirección unificada",
+    "Endereço unificado"
+  ],
+  "Transparent": [
+    "Transparente",
+    "Transparente"
+  ],
+  "Public receiver": [
+    "Receptor público",
+    "Receptor público"
+  ],
+  "Shielded receiver": [
+    "Receptor blindado",
+    "Receptor blindado"
+  ],
+  "Fingerprint:": [
+    "Huella:",
+    "Impressão digital:"
+  ],
+  "checksum valid": [
+    "suma de verificación válida",
+    "soma de verificação válida"
+  ],
+  "Copy address": [
+    "Copiar dirección",
+    "Copiar endereço"
+  ],
+  "Open in wallet": [
+    "Abrir en la cartera",
+    "Abrir na carteira"
+  ],
+  "Copy payment request": [
+    "Copiar solicitud de pago",
+    "Copiar solicitação de pagamento"
+  ],
+  "Scan with your wallet": [
+    "Escanear con tu cartera",
+    "Escanear com sua carteira"
+  ],
+  "QR code content": [
+    "Contenido del código QR",
+    "Conteúdo do código QR"
+  ],
+  "QR code for a Zcash payment request to Zcash Grants Hub": [
+    "Código QR de una solicitud de pago Zcash a Zcash Grants Hub",
+    "Código QR de uma solicitação de pagamento Zcash para o Zcash Grants Hub"
+  ],
+  "QR code of the Zcash Grants Hub donation address": [
+    "Código QR de la dirección de donaciones de Zcash Grants Hub",
+    "Código QR do endereço de doações do Zcash Grants Hub"
+  ],
+  "Includes the amount and memo above (ZIP-321). Your wallet will ask you to confirm.": [
+    "Incluye el importe y el memo anteriores (ZIP-321). Tu cartera te pedirá confirmación.",
+    "Inclui o valor e o memo acima (ZIP-321). Sua carteira pedirá confirmação."
+  ],
+  "Plain address for wallets that don't read payment requests.": [
+    "Dirección simple para carteras que no leen solicitudes de pago.",
+    "Endereço simples para carteiras que não leem solicitações de pagamento."
+  ],
+  "Download QR code": [
+    "Descargar código QR",
+    "Baixar código QR"
+  ],
+  "How to donate": [
+    "Cómo donar",
+    "Como doar"
+  ],
+  "Open a Zcash wallet that supports Unified Addresses (": [
+    "Abre una cartera Zcash compatible con direcciones unificadas (",
+    "Abra uma carteira Zcash compatível com endereços unificados ("
+  ],
+  "find one": [
+    "encuentra una",
+    "encontre uma"
+  ],
+  "Scan the QR code, tap “Open in wallet”, or paste the copied address.": [
+    "Escanea el QR, pulsa “Abrir en la cartera” o pega la dirección copiada.",
+    "Escaneie o QR, toque em “Abrir na carteira” ou cole o endereço copiado."
+  ],
+  "Check that the address fingerprint in your wallet matches": [
+    "Comprueba que la huella de la dirección en tu cartera coincida con",
+    "Verifique se a impressão digital do endereço na carteira corresponde a"
+  ],
+  "Send from your shielded balance for a fully private donation.": [
+    "Envía desde tu saldo blindado para una donación totalmente privada.",
+    "Envie do seu saldo blindado para uma doação totalmente privada."
+  ],
+  "Privacy by default": [
+    "Privacidad por defecto",
+    "Privacidade por padrão"
+  ],
+  "Shielded wallets pay the Orchard receiver automatically, so the sender, amount, and memo stay encrypted on-chain. This page doesn't track or store anything you enter. The payment request is built entirely in your browser.": [
+    "Las carteras blindadas pagan automáticamente al receptor Orchard, por lo que el remitente, el importe y el memo permanecen cifrados en cadena. Esta página no rastrea ni almacena lo que introduces. La solicitud de pago se crea íntegramente en tu navegador.",
+    "As carteiras blindadas pagam automaticamente ao receptor Orchard, mantendo remetente, valor e memo criptografados on-chain. Esta página não rastreia nem armazena o que você digita. A solicitação de pagamento é criada inteiramente no seu navegador."
+  ],
+  "Sending from an exchange? Most can't pay Unified Addresses yet. Withdraw to your own wallet first.": [
+    "¿Envías desde una plataforma de intercambio? La mayoría aún no admite direcciones unificadas. Retira primero a tu propia cartera.",
+    "Vai enviar de uma corretora? A maioria ainda não aceita endereços unificados. Primeiro retire para sua própria carteira."
+  ],
+  "Not every contribution is financial. Code, reviews, and feedback keep the Zcash grants ecosystem healthy.": [
+    "No todas las contribuciones son económicas. El código, las revisiones y los comentarios mantienen sano el ecosistema de financiación Zcash.",
+    "Nem toda contribuição é financeira. Código, revisões e comentários mantêm saudável o ecossistema de financiamento Zcash."
+  ],
+  "Frequently asked questions": [
+    "Preguntas frecuentes",
+    "Perguntas frequentes"
+  ],
+  "Forum discussions · Zcash Grants Hub": [
+    "Debates del foro · Zcash Grants Hub",
+    "Discussões do fórum · Zcash Grants Hub"
+  ],
+  "Browse active Community Grants discussions from the Zcash forum.": [
+    "Explora debates activos de Community Grants en el foro Zcash.",
+    "Explore discussões ativas de Community Grants no fórum Zcash."
+  ],
+  "Forum discussions": [
+    "Debates del foro",
+    "Discussões do fórum"
+  ],
+  "Live feed from the": [
+    "Actividad en directo de la",
+    "Atividade ao vivo da"
+  ],
+  "Community Grants forum category": [
+    "categoría Community Grants del foro",
+    "categoria Community Grants do fórum"
+  ],
+  "Browse grants": [
+    "Explorar subvenciones",
+    "Explorar financiamentos"
+  ],
+  "Open forum": [
+    "Abrir foro",
+    "Abrir fórum"
+  ],
+  "Search topics...": [
+    "Buscar temas...",
+    "Buscar tópicos..."
+  ],
+  "Latest activity": [
+    "Actividad más reciente",
+    "Atividade mais recente"
+  ],
+  "Most replies": [
+    "Más respuestas",
+    "Mais respostas"
+  ],
+  "Title A-Z": [
+    "Título A-Z",
+    "Título A-Z"
+  ],
+  "Could not load forum topics": [
+    "No se pudieron cargar los temas del foro",
+    "Não foi possível carregar os tópicos do fórum"
+  ],
+  "No discussions match your search.": [
+    "No hay debates que coincidan con tu búsqueda.",
+    "Nenhuma discussão corresponde à sua busca."
+  ],
+  "posts": [
+    "publicaciones",
+    "publicações"
+  ],
+  "Last activity:": [
+    "Última actividad:",
+    "Última atividade:"
+  ],
+  "Previous": [
+    "Anterior",
+    "Anterior"
+  ],
+  "Next": [
+    "Siguiente",
+    "Próxima"
+  ],
+  "Forum page": [
+    "Página del foro",
+    "Página do fórum"
+  ],
+  "· End of available topics": [
+    "· Fin de los temas disponibles",
+    "· Fim dos tópicos disponíveis"
+  ],
+  "Answer three questions to find which Zcash funding route fits your work: ZCG, Coinholder retroactive grants, ZecHub bounties or the ZecHub DAO.": [
+    "Responde tres preguntas para encontrar la financiación Zcash adecuada: ZCG, subvenciones retroactivas Coinholder, recompensas ZecHub o ZecHub DAO.",
+    "Responda a três perguntas para encontrar o financiamento Zcash adequado: ZCG, financiamentos retroativos Coinholder, recompensas ZecHub ou ZecHub DAO."
+  ],
+  "Funding streams & NU7 · Zcash Grants Hub": [
+    "Flujos de financiación y NU7 · Zcash Grants Hub",
+    "Fluxos de financiamento e NU7 · Zcash Grants Hub"
+  ],
+  "Where each Zcash block reward goes before and after NU7, when the dev-fund streams end, and a treasury runway scenario for the ZCG funding debate.": [
+    "Cómo se reparte la recompensa de cada bloque Zcash antes y después de NU7, cuándo terminan los flujos del fondo de desarrollo y un escenario de duración de la tesorería ZCG.",
+    "Como a recompensa de cada bloco Zcash é distribuída antes e depois do NU7, quando terminam os fluxos do fundo de desenvolvimento e um cenário de duração da tesouraria ZCG."
+  ],
+  "Funding streams & NU7": [
+    "Flujos de financiación y NU7",
+    "Fluxos de financiamento e NU7"
+  ],
+  "Every block's subsidy is split between miners (80%), Zcash Community Grants (8%) and the Coinholder-Controlled Fund (12%). NU7 cuts block time from 75 to 25 seconds and divides the per-block subsidy by three, so daily issuance stays the same. All values follow the ZIPs; dates are estimates at target block spacing.": [
+    "El subsidio de cada bloque se reparte entre mineros (80%), Zcash Community Grants (8%) y el fondo controlado por coinholders (12%). NU7 reduce el tiempo de bloque de 75 a 25 segundos y divide el subsidio por tres, manteniendo la emisión diaria. Los valores siguen las ZIP; las fechas se estiman con el intervalo objetivo de bloque.",
+    "O subsídio de cada bloco é dividido entre mineradores (80%), Zcash Community Grants (8%) e o fundo controlado por coinholders (12%). O NU7 reduz o tempo de bloco de 75 para 25 segundos e divide o subsídio por três, mantendo a emissão diária. Os valores seguem as ZIPs; as datas são estimadas pelo intervalo-alvo de bloco."
+  ],
+  "Chain height": [
+    "Altura de la cadena",
+    "Altura da cadeia"
+  ],
+  "Estimated (explorer unavailable)": [
+    "Estimación (explorador no disponible)",
+    "Estimativa (explorador indisponível)"
+  ],
+  "Live, via Blockchair": [
+    "En directo, vía Blockchair",
+    "Ao vivo, via Blockchair"
+  ],
+  "NU7 active since": [
+    "NU7 activo desde",
+    "NU7 ativo desde"
+  ],
+  "NU7 activation": [
+    "Activación de NU7",
+    "Ativação do NU7"
+  ],
+  "{0} blocks to go (height {1})": [
+    "Faltan {0} bloques (altura {1})",
+    "Faltam {0} blocos (altura {1})"
+  ],
+  "Height {0}": [
+    "Altura {0}",
+    "Altura {0}"
+  ],
+  "Issued per day": [
+    "Emisión diaria",
+    "Emissão diária"
+  ],
+  "Grant streams end": [
+    "Fin de los flujos de financiación",
+    "Fim dos fluxos de financiamento"
+  ],
+  "Third halving, height {0}": [
+    "Tercer halving, altura {0}",
+    "Terceiro halving, altura {0}"
+  ],
+  "Where each block goes": [
+    "Destino de cada bloque",
+    "Destino de cada bloco"
+  ],
+  "Recipient": [
+    "Destinatario",
+    "Destinatário"
+  ],
+  "Per block, before NU7": [
+    "Por bloque, antes de NU7",
+    "Por bloco, antes do NU7"
+  ],
+  "Per block, after NU7": [
+    "Por bloque, después de NU7",
+    "Por bloco, depois do NU7"
+  ],
+  "Per day": [
+    "Por día",
+    "Por dia"
+  ],
+  "Per day (USD)": [
+    "Por día (USD)",
+    "Por dia (USD)"
+  ],
+  "Blocks every": [
+    "Bloques cada",
+    "Blocos a cada"
+  ],
+  "per day). Transaction fees go to miners, except that from NU7": [
+    "al día). Las comisiones van a los mineros, salvo que desde NU7 se retira de circulación el",
+    "ao dia). As taxas vão para os mineradores, exceto que, a partir do NU7, é retirado de circulação"
+  ],
+  "% of fees are removed from circulation (ZIP 235). Per-block values use ZIP 218's rounding, so three post-NU7 blocks pay a few zatoshi less than one pre-NU7 block.": [
+    "% de las comisiones (ZIP 235). Los valores por bloque usan el redondeo de ZIP 218, por lo que tres bloques posteriores a NU7 pagan unos pocos zatoshi menos que uno anterior.",
+    "% das taxas (ZIP 235). Os valores por bloco usam o arredondamento da ZIP 218, de modo que três blocos após o NU7 pagam alguns zatoshi a menos que um bloco anterior."
+  ],
+  "What changes when": [
+    "Qué cambia y cuándo",
+    "O que muda e quando"
+  ],
+  "height": [
+    "altura",
+    "altura"
+  ],
+  "Scenario: ZCG treasury runway": [
+    "Escenario: duración de la tesorería ZCG",
+    "Cenário: duração da tesouraria ZCG"
+  ],
+  "forum proposal": [
+    "propuesta del foro",
+    "proposta do fórum"
+  ],
+  "(Oct 26, 2026) would end the 8% ZCG stream at NU8 and send it to the NSM instead;": [
+    "(26 de octubre de 2026) terminaría el flujo ZCG del 8% en NU8 y lo redirigiría al NSM;",
+    "(26 de outubro de 2026) encerraria o fluxo ZCG de 8% no NU8 e o redirecionaria ao NSM;"
+  ],
+  "press coverage": [
+    "la cobertura de prensa",
+    "a cobertura da imprensa"
+  ],
+  "attributes a related draft to Sean Bowe. This compares how long ZCG's treasury lasts if the stream runs to the third halving versus stopping on a date you choose. It is a simple model: constant ZEC price and spending, no new policy. Change any input.": [
+    "atribuye un borrador relacionado a Sean Bowe. Se compara cuánto dura la tesorería ZCG si el flujo continúa hasta el tercer halving o termina en la fecha que elijas. Es un modelo simple: precio ZEC y gasto constantes, sin nuevas políticas. Cambia cualquier dato.",
+    "atribui um rascunho relacionado a Sean Bowe. Compara-se a duração da tesouraria ZCG se o fluxo continuar até o terceiro halving ou terminar na data escolhida. É um modelo simples: preço do ZEC e gastos constantes, sem novas políticas. Altere qualquer dado."
+  ],
+  "ZCG treasury (ZEC)": [
+    "Tesorería ZCG (ZEC)",
+    "Tesouraria ZCG (ZEC)"
+  ],
+  "Default: OpenZcash, Oct 2026": [
+    "Predeterminado: OpenZcash, octubre de 2026",
+    "Padrão: OpenZcash, outubro de 2026"
+  ],
+  "Spending per quarter (USD)": [
+    "Gasto trimestral (USD)",
+    "Gasto trimestral (USD)"
+  ],
+  "Default: Q1 2026 ZCG expenses (FPF)": [
+    "Predeterminado: gastos ZCG del T1 2026 (FPF)",
+    "Padrão: despesas ZCG do T1 de 2026 (FPF)"
+  ],
+  "ZEC price (USD)": [
+    "Precio ZEC (USD)",
+    "Preço do ZEC (USD)"
+  ],
+  "Live price": [
+    "Precio en directo",
+    "Preço ao vivo"
+  ],
+  "Your value": [
+    "Tu valor",
+    "Seu valor"
+  ],
+  "Stream stops early on": [
+    "El flujo termina antes el",
+    "O fluxo termina antes em"
+  ],
+  "NU8 has no scheduled date": [
+    "NU8 no tiene fecha programada",
+    "O NU8 não tem data programada"
+  ],
+  "Stream continues to the third halving: treasury": [
+    "El flujo continúa hasta el tercer halving: tesorería",
+    "O fluxo continua até o terceiro halving: tesouraria"
+  ],
+  "Stream stops": [
+    "El flujo termina",
+    "O fluxo termina"
+  ],
+  ": treasury": [
+    ": tesorería",
+    ": tesouraria"
+  ],
+  "ZCG treasury balance (ZEC), constant price": [
+    "Saldo de tesorería ZCG (ZEC), precio constante",
+    "Saldo da tesouraria ZCG (ZEC), preço constante"
+  ],
+  "ZCG treasury balance over time under both scenarios": [
+    "Saldo de tesorería ZCG a lo largo del tiempo en ambos escenarios",
+    "Saldo da tesouraria ZCG ao longo do tempo nos dois cenários"
+  ],
+  "Hide": [
+    "Ocultar",
+    "Ocultar"
+  ],
+  "Show": [
+    "Mostrar",
+    "Mostrar"
+  ],
+  "data table": [
+    "tabla de datos",
+    "tabela de dados"
+  ],
+  "Month": [
+    "Mes",
+    "Mês"
+  ],
+  "Stream to third halving (ZEC)": [
+    "Flujo hasta el tercer halving (ZEC)",
+    "Fluxo até o terceiro halving (ZEC)"
+  ],
+  "Stream stops early (ZEC)": [
+    "El flujo termina antes (ZEC)",
+    "O fluxo termina antes (ZEC)"
+  ],
+  "Not modelled: price changes, investment returns, approved-but-unpaid milestones, and the proposal's transfer of the remaining treasury to the NSM. The Coinholder fund (12%) is unaffected by the proposal.": [
+    "No se modelan cambios de precio, rendimientos de inversión, hitos aprobados sin pagar ni el traslado al NSM de la tesorería restante previsto en la propuesta. El fondo Coinholder (12%) no cambia con la propuesta.",
+    "Não são modelados: mudanças de preço, retornos de investimentos, marcos aprovados ainda não pagos nem a transferência ao NSM da tesouraria restante prevista na proposta. O fundo Coinholder (12%) não é afetado pela proposta."
+  ],
+  "Sources:": [
+    "Fuentes:",
+    "Fontes:"
+  ],
+  "Connecting your GitHub account...": [
+    "Conectando tu cuenta de GitHub...",
+    "Conectando sua conta do GitHub..."
+  ],
+  "GitHub connected successfully": [
+    "GitHub conectado correctamente",
+    "GitHub conectado com sucesso"
+  ],
+  "Redirecting you to the dashboard.": [
+    "Redirigiendo al panel.",
+    "Redirecionando ao painel."
+  ],
+  "Could not connect GitHub": [
+    "No se pudo conectar GitHub",
+    "Não foi possível conectar o GitHub"
+  ],
+  "Back to Home": [
+    "Volver al inicio",
+    "Voltar ao início"
+  ],
+  "Not provided": [
+    "No indicado",
+    "Não informado"
+  ],
+  "Overview": [
+    "Descripción general",
+    "Visão geral"
+  ],
+  "Team": [
+    "Equipo",
+    "Equipe"
+  ],
+  "Milestones": [
+    "Hitos",
+    "Marcos"
+  ],
+  "Risk": [
+    "Riesgos",
+    "Riscos"
+  ],
+  "Discussion": [
+    "Debate",
+    "Discussão"
+  ],
+  "Documents": [
+    "Documentos",
+    "Documentos"
+  ],
+  "Could not load grant": [
+    "No se pudo cargar la subvención",
+    "Não foi possível carregar o financiamento"
+  ],
+  "Failed to fetch from GitHub API.": [
+    "No se pudieron obtener datos de la API de GitHub.",
+    "Não foi possível obter dados da API do GitHub."
+  ],
+  "Back to Grants": [
+    "Volver a subvenciones",
+    "Voltar aos financiamentos"
+  ],
+  "Grant not found": [
+    "Subvención no encontrada",
+    "Financiamento não encontrado"
+  ],
+  "Updated": [
+    "Actualizada",
+    "Atualizada"
+  ],
+  "TBD": [
+    "Por determinar",
+    "A definir"
+  ],
+  "Copy link": [
+    "Copiar enlace",
+    "Copiar link"
+  ],
+  "Official summary & operations dashboard": [
+    "Panel oficial de resumen y operaciones",
+    "Painel oficial de resumo e operações"
+  ],
+  "Community spreadsheets track applications, payouts, and cross-grant tracking. This hub does not treat the sheet as a separate grant type—use it alongside GitHub and DAO DAO records.": [
+    "Las hojas de la comunidad registran solicitudes, pagos y seguimiento entre subvenciones. Este portal no trata la hoja como un tipo de subvención aparte: úsala junto con los registros de GitHub y DAO DAO.",
+    "As planilhas da comunidade registram solicitações, pagamentos e acompanhamento entre financiamentos. Este portal não trata a planilha como um tipo de financiamento separado: use-a junto aos registros do GitHub e DAO DAO."
+  ],
+  "Open dashboard (Google Sheet)": [
+    "Abrir panel (Google Sheets)",
+    "Abrir painel (Google Sheets)"
+  ],
+  "Forum": [
+    "Foro",
+    "Fórum"
+  ],
+  "GitHub Issue": [
+    "Solicitud de GitHub",
+    "Solicitação do GitHub"
+  ],
+  "Project Description": [
+    "Descripción del proyecto",
+    "Descrição do projeto"
+  ],
+  "Proposed Problem": [
+    "Problema propuesto",
+    "Problema proposto"
+  ],
+  "Proposed Solution": [
+    "Solución propuesta",
+    "Solução proposta"
+  ],
+  "Solution Format": [
+    "Formato de la solución",
+    "Formato da solução"
+  ],
+  "Dependencies": [
+    "Dependencias",
+    "Dependências"
+  ],
+  "Technical Approach": [
+    "Enfoque técnico",
+    "Abordagem técnica"
+  ],
+  "Upstream Merge Opportunities": [
+    "Oportunidades de integración en el proyecto original",
+    "Oportunidades de integração no projeto original"
+  ],
+  "Responsibilities:": [
+    "Responsabilidades:",
+    "Responsabilidades:"
+  ],
+  "No additional team members listed.": [
+    "No se indican otros miembros del equipo.",
+    "Nenhum outro integrante da equipe informado."
+  ],
+  "Total": [
+    "Total",
+    "Total"
+  ],
+  "of": [
+    "de",
+    "de"
+  ],
+  "milestones paid": [
+    "hitos pagados",
+    "marcos pagos"
+  ],
+  "of $": [
+    "de $",
+    "de US$"
+  ],
+  "Acceptance:": [
+    "Aceptación:",
+    "Aceitação:"
+  ],
+  "No milestone details provided.": [
+    "No se proporcionaron detalles de los hitos.",
+    "Nenhum detalhe dos marcos informado."
+  ],
+  "Implementation Risks": [
+    "Riesgos de implementación",
+    "Riscos de implementação"
+  ],
+  "Potential Side Effects": [
+    "Posibles efectos secundarios",
+    "Possíveis efeitos colaterais"
+  ],
+  "Success Metrics": [
+    "Métricas de éxito",
+    "Métricas de sucesso"
+  ],
+  "No comments yet.": [
+    "Aún no hay comentarios.",
+    "Ainda não há comentários."
+  ],
+  "Comments live on GitHub. Click to join the discussion.": [
+    "Los comentarios están en GitHub. Haz clic para participar.",
+    "Os comentários estão no GitHub. Clique para participar."
+  ],
+  "Comment on GitHub": [
+    "Comentar en GitHub",
+    "Comentar no GitHub"
+  ],
+  "Open": [
+    "Abierta",
+    "Aberta"
+  ],
+  "No documents attached.": [
+    "No hay documentos adjuntos.",
+    "Nenhum documento anexado."
+  ],
+  "Grant Status": [
+    "Estado de la subvención",
+    "Status do financiamento"
+  ],
+  "Committee": [
+    "Comité",
+    "Comitê"
+  ],
+  "Not yet assigned": [
+    "Aún no asignado",
+    "Ainda não atribuído"
+  ],
+  "paid": [
+    "pagado",
+    "pago"
+  ],
+  "Program": [
+    "Programa",
+    "Programa"
+  ],
+  "All programs": [
+    "Todos los programas",
+    "Todos os programas"
+  ],
+  "Clear filters": [
+    "Borrar filtros",
+    "Limpar filtros"
+  ],
+  "Zcash Community Grants applications from GitHub.": [
+    "Solicitudes Zcash Community Grants de GitHub.",
+    "Solicitações Zcash Community Grants do GitHub."
+  ],
+  "Financial Privacy Foundation coinholder program applications from GitHub.": [
+    "Solicitudes del programa Coinholder de Financial Privacy Foundation en GitHub.",
+    "Solicitações do programa Coinholder da Financial Privacy Foundation no GitHub."
+  ],
+  "ZCG and Coinholder grant applications from GitHub (composite ids such as": [
+    "Solicitudes ZCG y Coinholder de GitHub (identificadores compuestos como",
+    "Solicitações ZCG e Coinholder do GitHub (identificadores compostos como"
+  ],
+  "Search grants...": [
+    "Buscar subvenciones...",
+    "Buscar financiamentos..."
+  ],
+  "0 matching · {0} loaded from GitHub": [
+    "0 coincidencias · {0} cargadas desde GitHub",
+    "0 resultados · {0} carregadas do GitHub"
+  ],
+  "Rows {0}–{1} of {2} matching · {3} loaded from GitHub": [
+    "Filas {0}–{1} de {2} coincidencias · {3} cargadas desde GitHub",
+    "Linhas {0}–{1} de {2} resultados · {3} carregadas do GitHub"
+  ],
+  "Filters": [
+    "Filtros",
+    "Filtros"
+  ],
+  "Newest First": [
+    "Más recientes primero",
+    "Mais recentes primeiro"
+  ],
+  "Amount: High to Low": [
+    "Importe: de mayor a menor",
+    "Valor: do maior para o menor"
+  ],
+  "Failed to load grants": [
+    "No se pudieron cargar las subvenciones",
+    "Não foi possível carregar os financiamentos"
+  ],
+  "Could not fetch from GitHub API. Try again later.": [
+    "No se pudieron obtener datos de la API de GitHub. Inténtalo más tarde.",
+    "Não foi possível obter dados da API do GitHub. Tente novamente mais tarde."
+  ],
+  "No grants match your filters.": [
+    "Ninguna subvención coincide con los filtros.",
+    "Nenhum financiamento corresponde aos filtros."
+  ],
+  "Clear all filters": [
+    "Borrar todos los filtros",
+    "Limpar todos os filtros"
+  ],
+  "Wallets & SDKs": [
+    "Carteras y SDK",
+    "Carteiras e SDKs"
+  ],
+  "User-facing wallet applications and developer toolkits": [
+    "Aplicaciones de cartera y herramientas de desarrollo",
+    "Aplicativos de carteira e ferramentas de desenvolvimento"
+  ],
+  "Core Infrastructure": [
+    "Infraestructura central",
+    "Infraestrutura central"
+  ],
+  "Node software, consensus, and protocol-level improvements": [
+    "Software de nodos, consenso y mejoras del protocolo",
+    "Software de nós, consenso e melhorias do protocolo"
+  ],
+  "Interoperability": [
+    "Interoperabilidad",
+    "Interoperabilidade"
+  ],
+  "Cross-chain bridges and integration protocols": [
+    "Puentes entre cadenas y protocolos de integración",
+    "Pontes entre cadeias e protocolos de integração"
+  ],
+  "Education & Media": [
+    "Educación y medios",
+    "Educação e mídia"
+  ],
+  "Content, courses, and awareness campaigns": [
+    "Contenido, cursos y campañas de difusión",
+    "Conteúdo, cursos e campanhas de divulgação"
+  ],
+  "Research & Development": [
+    "Investigación y desarrollo",
+    "Pesquisa e desenvolvimento"
+  ],
+  "Cryptographic research and formal verification": [
+    "Investigación criptográfica y verificación formal",
+    "Pesquisa criptográfica e verificação formal"
+  ],
+  "Community & Events": [
+    "Comunidad y eventos",
+    "Comunidade e eventos"
+  ],
+  "Meetups, conferences, and grassroots adoption": [
+    "Encuentros, conferencias y adopción comunitaria",
+    "Encontros, conferências e adoção comunitária"
+  ],
+  "Submit Application": [
+    "Enviar solicitud",
+    "Enviar solicitação"
+  ],
+  "Fill out the comprehensive grant application form with project details, budget, and milestones.": [
+    "Completa el formulario de financiación con los detalles del proyecto, el presupuesto y los hitos.",
+    "Preencha o formulário de financiamento com os detalhes do projeto, o orçamento e os marcos."
+  ],
+  "Community Review": [
+    "Revisión comunitaria",
+    "Revisão comunitária"
+  ],
+  "Publish your proposal on the Zcash forum for community review and feedback.": [
+    "Publica tu propuesta en el foro Zcash para recibir comentarios de la comunidad.",
+    "Publique sua proposta no fórum Zcash para receber comentários da comunidade."
+  ],
+  "Committee Review": [
+    "Revisión del comité",
+    "Revisão do comitê"
+  ],
+  "ZCG committee members evaluate the application in their published meeting process.": [
+    "El comité ZCG evalúa la solicitud según su proceso de reuniones publicado.",
+    "O comitê ZCG avalia a solicitação conforme seu processo de reuniões publicado."
+  ],
+  "Application Finalized": [
+    "Solicitud finalizada",
+    "Solicitação finalizada"
+  ],
+  "Committee votes on approval. Applicant may be asked for revisions.": [
+    "El comité vota la aprobación. Se pueden pedir cambios al solicitante.",
+    "O comitê vota a aprovação. Podem ser solicitadas alterações ao solicitante."
+  ],
+  "Grant Agreement & Payments": [
+    "Acuerdo de financiación y pagos",
+    "Acordo de financiamento e pagamentos"
+  ],
+  "Sign the grant agreement and receive milestone-based payments as you deliver.": [
+    "Firma el acuerdo de financiación y recibe pagos por hitos a medida que entregas el trabajo.",
+    "Assine o acordo de financiamento e receba pagamentos por marcos conforme entrega o trabalho."
+  ],
+  "Grant Applications": [
+    "Solicitudes de financiación",
+    "Solicitações de financiamento"
+  ],
+  "ZCG Grant Milestones Paid": [
+    "Hitos ZCG pagados",
+    "Marcos ZCG pagos"
+  ],
+  "Approved or Active Grants": [
+    "Subvenciones aprobadas o activas",
+    "Financiamentos aprovados ou ativos"
+  ],
+  "ZCG Treasury": [
+    "Tesorería ZCG",
+    "Tesouraria ZCG"
+  ],
+  "Loading {0}": [
+    "Cargando {0}",
+    "Carregando {0}"
+  ],
+  "{0} unavailable": [
+    "{0} no disponible",
+    "{0} indisponível"
+  ],
+  "Financial figures:": [
+    "Cifras financieras:",
+    "Dados financeiros:"
+  ],
+  "official ZCG spreadsheet": [
+    "hoja oficial de ZCG",
+    "planilha oficial do ZCG"
+  ],
+  "· as of": [
+    "· a fecha de",
+    "· em"
+  ],
+  "Treasury includes ZEC valued at the sheet’s quoted price.": [
+    "La tesorería incluye ZEC valorado al precio indicado en la hoja.",
+    "A tesouraria inclui ZEC avaliado pelo preço indicado na planilha."
+  ],
+  "Programs & dashboards": [
+    "Programas y paneles",
+    "Programas e painéis"
+  ],
+  "Three application lanes plus the shared spreadsheet used for summaries and operations. Official sites:": [
+    "Tres vías de solicitud y una hoja compartida para resúmenes y operaciones. Sitios oficiales:",
+    "Três vias de solicitação e uma planilha compartilhada para resumos e operações. Sites oficiais:"
+  ],
+  "Coinholder program (GitHub)": [
+    "Programa Coinholder (GitHub)",
+    "Programa Coinholder (GitHub)"
+  ],
+  "ZCG (GitHub)": [
+    "ZCG (GitHub)",
+    "ZCG (GitHub)"
+  ],
+  "Community grant applications in the ZCG repository—": [
+    "Solicitudes de financiación comunitaria en el repositorio ZCG:",
+    "Solicitações de financiamento comunitário no repositório ZCG:"
+  ],
+  "apply": [
+    "solicitar",
+    "solicitar"
+  ],
+  "browse": [
+    "explorar",
+    "explorar"
+  ],
+  "Coinholder (GitHub)": [
+    "Coinholder (GitHub)",
+    "Coinholder (GitHub)"
+  ],
+  "Lockbox retroactive grants—": [
+    "Subvenciones retroactivas Lockbox:",
+    "Financiamentos retroativos Lockbox:"
+  ],
+  "On-chain mini-grants on DAO DAO—": [
+    "Pequeñas subvenciones en cadena en DAO DAO:",
+    "Pequenos financiamentos on-chain no DAO DAO:"
+  ],
+  "proposal list": [
+    "lista de propuestas",
+    "lista de propostas"
+  ],
+  "Ops dashboard": [
+    "Panel de operaciones",
+    "Painel de operações"
+  ],
+  "Official Google Sheet for summaries, tracking, and payouts—not a separate grant type in this hub.": [
+    "Hoja oficial de Google para resúmenes, seguimiento y pagos; no es un tipo de subvención independiente en este portal.",
+    "Planilha oficial do Google para resumos, acompanhamento e pagamentos; não é um tipo de financiamento separado neste portal."
+  ],
+  "Open spreadsheet": [
+    "Abrir hoja",
+    "Abrir planilha"
+  ],
+  "What We Fund": [
+    "Qué financiamos",
+    "O que financiamos"
+  ],
+  "Supporting the full spectrum of Zcash ecosystem development": [
+    "Apoyo a todo el desarrollo del ecosistema Zcash",
+    "Apoio a todo o desenvolvimento do ecossistema Zcash"
+  ],
+  "Recent Grant Applications": [
+    "Solicitudes de financiación recientes",
+    "Solicitações de financiamento recentes"
+  ],
+  "View all": [
+    "Ver todas",
+    "Ver todas"
+  ],
+  "How ZCG Applications Work": [
+    "Cómo funcionan las solicitudes ZCG",
+    "Como funcionam as solicitações ZCG"
+  ],
+  "Oops! Page not found": [
+    "La página no existe",
+    "Página não encontrada"
+  ],
+  "Return to Home": [
+    "Volver al inicio",
+    "Voltar ao início"
+  ],
+  "Active": [
+    "Activo",
+    "Ativo"
+  ],
+  "Quiet": [
+    "Poca actividad",
+    "Pouca atividade"
+  ],
+  "Dormant": [
+    "Inactivo",
+    "Inativo"
+  ],
+  "Not loaded yet": [
+    "Aún no cargado",
+    "Ainda não carregado"
+  ],
+  "Not found": [
+    "No encontrado",
+    "Não encontrado"
+  ],
+  "Archived": [
+    "Archivado",
+    "Arquivado"
+  ],
+  "· pushed": [
+    "· último envío",
+    "· último envio"
+  ],
+  "Core infrastructure": [
+    "Infraestructura central",
+    "Infraestrutura central"
+  ],
+  "The repositories wallets and nodes depend on: how active they are, whether a recent release mentions NU7, and how many people committed in the last 90 days. Few active maintainers on critical code is a funding gap worth knowing about.": [
+    "Los repositorios de los que dependen las carteras y los nodos: actividad, menciones de NU7 en versiones recientes y personas que han contribuido en los últimos 90 días. Pocos responsables activos en código crítico pueden indicar una necesidad de financiación.",
+    "Os repositórios dos quais dependem carteiras e nós: atividade, menções ao NU7 em versões recentes e pessoas que contribuíram nos últimos 90 dias. Poucos mantenedores ativos em código crítico podem indicar uma necessidade de financiamento."
+  ],
+  "have a recent release mentioning NU7.": [
+    "tienen una versión reciente que menciona NU7.",
+    "têm uma versão recente que menciona o NU7."
+  ],
+  "Project": [
+    "Proyecto",
+    "Projeto"
+  ],
+  "Activity": [
+    "Actividad",
+    "Atividade"
+  ],
+  "Latest release": [
+    "Última versión",
+    "Última versão"
+  ],
+  "NU7 in releases": [
+    "NU7 en versiones",
+    "NU7 nas versões"
+  ],
+  "Committers (90d)": [
+    "Autores de commits (90 d)",
+    "Autores de commits (90 d)"
+  ],
+  "Linked grants": [
+    "Subvenciones vinculadas",
+    "Financiamentos vinculados"
+  ],
+  "Loading…": [
+    "Cargando…",
+    "Carregando…"
+  ],
+  "No releases": [
+    "Sin versiones",
+    "Sem versões"
+  ],
+  "Not mentioned": [
+    "Sin mención",
+    "Sem menção"
+  ],
+  "Few active maintainers": [
+    "Pocos responsables activos",
+    "Poucos mantenedores ativos"
+  ],
+  "From GitHub, refreshed daily. \"NU7 in releases\" means one of the last ten releases names NU7 in its title or notes: a signal, not a guarantee of compatibility. Committers counts distinct non-bot authors across up to 100 recent commits on the default branch.": [
+    "Datos de GitHub, actualizados a diario. “NU7 en versiones” indica que una de las diez últimas versiones menciona NU7 en el título o las notas: es una señal, no una garantía de compatibilidad. Se cuentan autores distintos que no sean bots en hasta 100 commits recientes de la rama principal.",
+    "Dados do GitHub, atualizados diariamente. “NU7 nas versões” indica que uma das dez últimas versões menciona o NU7 no título ou nas notas: é um sinal, não uma garantia de compatibilidade. Contam-se autores distintos que não sejam bots em até 100 commits recentes da ramificação principal."
+  ],
+  "Rows without data are waiting on GitHub's rate limit and fill in on a later visit.": [
+    "Las filas sin datos esperan al límite de consultas de GitHub y se completarán en una visita posterior.",
+    "As linhas sem dados aguardam o limite de consultas do GitHub e serão preenchidas em uma visita posterior."
+  ],
+  "funded grant": [
+    "subvención financiada",
+    "financiamento aprovado"
+  ],
+  "({0} paid)": [
+    "({0} pagado)",
+    "({0} pago)"
+  ],
+  "Repositories linked in applications": [
+    "Repositorios vinculados en solicitudes",
+    "Repositórios vinculados nas solicitações"
+  ],
+  "No GitHub repositories linked in these applications.": [
+    "No hay repositorios de GitHub vinculados en estas solicitudes.",
+    "Nenhum repositório do GitHub vinculado nestas solicitações."
+  ],
+  "Projects & infrastructure · Zcash Grants Hub": [
+    "Proyectos e infraestructura · Zcash Grants Hub",
+    "Projetos e infraestrutura · Zcash Grants Hub"
+  ],
+  "Who has been funded to build what in Zcash, the repositories behind each grant, and the health and NU7 readiness of core infrastructure.": [
+    "Quién ha recibido financiación para desarrollar Zcash, los repositorios de cada subvención y la salud y preparación para NU7 de la infraestructura central.",
+    "Quem recebeu financiamento para desenvolver o Zcash, os repositórios de cada financiamento e a saúde e preparação para o NU7 da infraestrutura central."
+  ],
+  "Projects & infrastructure": [
+    "Proyectos e infraestructura",
+    "Projetos e infraestrutura"
+  ],
+  "Funded work across ZCG and Coinholder grants, grouped by team, with the code it links to. Use it to check a team's track record, find who maintains what, and spot critical code with few maintainers.": [
+    "Trabajo financiado por ZCG y Coinholder, agrupado por equipo y con enlaces al código. Consulta la trayectoria de un equipo, encuentra responsables y detecta código crítico con pocos colaboradores.",
+    "Trabalho financiado por ZCG e Coinholder, agrupado por equipe e com links para o código. Consulte o histórico de uma equipe, encontre mantenedores e identifique código crítico com poucos colaboradores."
+  ],
+  "Couldn't load projects:": [
+    "No se pudieron cargar los proyectos:",
+    "Não foi possível carregar os projetos:"
+  ],
+  "Funded teams": [
+    "Equipos financiados",
+    "Equipes financiadas"
+  ],
+  "teams ·": [
+    "equipos ·",
+    "equipes ·"
+  ],
+  "funded ·": [
+    "financiados ·",
+    "financiados ·"
+  ],
+  "recorded as paid. Amounts are parsed from applications and GitHub labels; the program spreadsheets and OpenZcash are the accounting record.": [
+    "registrados como pagados. Los importes se extraen de solicitudes y etiquetas GitHub; las hojas de los programas y OpenZcash son el registro contable.",
+    "registrados como pagos. Os valores são extraídos das solicitações e rótulos do GitHub; as planilhas dos programas e o OpenZcash são o registro contábil."
+  ],
+  "Search by team, grant or repository": [
+    "Buscar por equipo, subvención o repositorio",
+    "Buscar por equipe, financiamento ou repositório"
+  ],
+  "Search projects": [
+    "Buscar proyectos",
+    "Buscar projetos"
+  ],
+  "No matching teams.": [
+    "No hay equipos que coincidan.",
+    "Nenhuma equipe encontrada."
+  ],
+  "Payment ledger on OpenZcash": [
+    "Registro de pagos en OpenZcash",
+    "Registro de pagamentos no OpenZcash"
+  ],
+  "Submissions": [
+    "Solicitudes",
+    "Solicitações"
+  ],
+  "30-day review": [
+    "Revisión de 30 días",
+    "Revisão de 30 dias"
+  ],
+  "Coinholder vote": [
+    "Votación Coinholder",
+    "Votação Coinholder"
+  ],
+  "Results & payout": [
+    "Resultados y pago",
+    "Resultados e pagamento"
+  ],
+  "After {0}": [
+    "Después de {0}",
+    "Após {0}"
+  ],
+  "TBA": [
+    "Por anunciar",
+    "A anunciar"
+  ],
+  "Completed, verifiable work only": [
+    "Solo trabajo terminado y verificable",
+    "Apenas trabalho concluído e verificável"
+  ],
+  "Planned or partially completed work is not eligible. Intended users (or their representatives) confirm the outputs before the proposal goes on the ballot. Planned work belongs in a ZCG application.": [
+    "No se admite trabajo planificado o parcialmente terminado. Los usuarios previstos o sus representantes confirman los resultados antes de la votación. El trabajo futuro corresponde a una solicitud ZCG.",
+    "Não é aceito trabalho planejado ou parcialmente concluído. Os usuários previstos ou seus representantes confirmam os resultados antes da votação. Trabalho futuro deve ser solicitado ao ZCG."
+  ],
+  "Two places: GitHub + forum": [
+    "Dos lugares: GitHub y foro",
+    "Dois lugares: GitHub e fórum"
+  ],
+  "Fill the FPF GitHub template, then paste it into a new thread in the Community Grants › Retroactive Grants forum category so people can review it.": [
+    "Completa la plantilla GitHub de FPF y publícala en un nuevo tema de Community Grants › Retroactive Grants para que la comunidad la revise.",
+    "Preencha o modelo do GitHub da FPF e publique-o em um novo tópico de Community Grants › Retroactive Grants para revisão da comunidade."
+  ],
+  "Show evidence and usage": [
+    "Muestra pruebas y uso",
+    "Mostre evidências e uso"
+  ],
+  "Link repos, releases, deployments, and real usage numbers. Coinholders vote on demonstrated impact, and rejections usually come without written reasons.": [
+    "Enlaza repositorios, versiones, despliegues y cifras reales de uso. Los coinholders votan el impacto demostrado; los rechazos suelen carecer de motivos escritos.",
+    "Vincule repositórios, versões, implantações e dados reais de uso. Os coinholders votam pelo impacto demonstrado; recusas geralmente não incluem justificativas escritas."
+  ],
+  "KYC above {0}": [
+    "KYC por encima de {0}",
+    "KYC acima de {0}"
+  ],
+  "Requests above the threshold require KYC with FPF before payout.": [
+    "Las solicitudes que superen el umbral requieren KYC con FPF antes del pago.",
+    "Solicitações acima do limite exigem KYC com a FPF antes do pagamento."
+  ],
+  "Valued in USD, paid in shielded ZEC": [
+    "Valorado en USD, pagado en ZEC blindado",
+    "Avaliado em USD, pago em ZEC blindado"
+  ],
+  "The ZEC amount is set by the ZEC/USD rate at the time of payment.": [
+    "El importe ZEC se fija con el tipo de cambio ZEC/USD al pagar.",
+    "O valor em ZEC é definido pela taxa ZEC/USD no momento do pagamento."
+  ],
+  "Open-source hygiene": [
+    "Buenas prácticas de código abierto",
+    "Boas práticas de código aberto"
+  ],
+  "New open-source software needs a CONTRIBUTING.md modeled on librustzcash; contributions to existing Zcash code follow that project's merge, branch, PR and commit rules. Disclose conflicts of interest.": [
+    "El software nuevo de código abierto necesita un CONTRIBUTING.md basado en librustzcash; las contribuciones al código Zcash existente siguen las reglas de integración, ramas, PR y commits del proyecto. Declara los conflictos de interés.",
+    "Novo software de código aberto precisa de um CONTRIBUTING.md baseado no librustzcash; contribuições ao código Zcash existente seguem as regras de merge, branch, PR e commit do projeto. Declare conflitos de interesse."
+  ],
+  "Be present during review": [
+    "Participa durante la revisión",
+    "Participe durante a revisão"
+  ],
+  "Answer questions in your forum thread during the mandatory 30-day review period.": [
+    "Responde preguntas en tu tema del foro durante los 30 días obligatorios de revisión.",
+    "Responda às perguntas no seu tópico do fórum durante os 30 dias obrigatórios de revisão."
+  ],
+  "Your ballot text is frozen": [
+    "El texto de votación queda fijado",
+    "O texto de votação fica fixo"
+  ],
+  "Voters see the application as submitted, and it can't be edited once voting opens. Put final, current numbers in it before the review period ends.": [
+    "Los votantes ven la solicitud tal como se envió y no puede editarse una vez abierta la votación. Incluye cifras finales y actuales antes de que termine la revisión.",
+    "Os votantes veem a solicitação como foi enviada e ela não pode ser editada após a abertura da votação. Inclua dados finais e atuais antes do fim da revisão."
+  ],
+  "How a vote passes": [
+    "Cómo se aprueba una votación",
+    "Como uma votação é aprovada"
+  ],
+  "At least {0} ZEC must be voted on the proposal (any answer), and a simple majority of that must be Approve. Each proposal is voted on independently.": [
+    "Deben votar al menos {0} ZEC sobre la propuesta (cualquier respuesta) y una mayoría simple debe elegir Aprobar. Cada propuesta se vota de forma independiente.",
+    "Pelo menos {0} ZEC devem votar na proposta (qualquer resposta), e uma maioria simples deve escolher Aprovar. Cada proposta é votada de forma independente."
+  ],
+  "Coinholder retro rounds · Zcash Grants Hub": [
+    "Rondas retroactivas Coinholder · Zcash Grants Hub",
+    "Rodadas retroativas Coinholder · Zcash Grants Hub"
+  ],
+  "Deadlines, phases, checklist and past results for the Zcash Coinholder-Directed Retroactive Grants Program (ZIP 1016).": [
+    "Plazos, fases, lista de requisitos y resultados anteriores del programa de financiación retroactiva dirigido por coinholders Zcash (ZIP 1016).",
+    "Prazos, fases, lista de requisitos e resultados anteriores do programa de financiamento retroativo dirigido por coinholders Zcash (ZIP 1016)."
+  ],
+  "Coinholder retro grant rounds": [
+    "Rondas de financiación retroactiva Coinholder",
+    "Rodadas de financiamento retroativo Coinholder"
+  ],
+  "The Coinholder-Directed Retroactive Grants Program (ZIP 1016) pays for work that is already done. It runs in quarterly rounds administered by the Financial Privacy Foundation, and ZEC holders decide by shielded vote. Dates below come from FPF's forum announcements.": [
+    "El programa de financiación retroactiva dirigido por coinholders (ZIP 1016) paga trabajo ya terminado. Funciona en rondas trimestrales administradas por Financial Privacy Foundation, y los titulares de ZEC deciden mediante voto blindado. Las fechas proceden de los anuncios de FPF en el foro.",
+    "O programa de financiamento retroativo dirigido por coinholders (ZIP 1016) paga por trabalho já concluído. Funciona em rodadas trimestrais administradas pela Financial Privacy Foundation, e os detentores de ZEC decidem por voto blindado. As datas vêm dos anúncios da FPF no fórum."
+  ],
+  "{0} round": [
+    "Ronda {0}",
+    "Rodada {0}"
+  ],
+  "Current round": [
+    "Ronda actual",
+    "Rodada atual"
+  ],
+  "until": [
+    "hasta",
+    "até"
+  ],
+  "Start application": [
+    "Iniciar solicitud",
+    "Iniciar solicitação"
+  ],
+  "GitHub template": [
+    "Plantilla de GitHub",
+    "Modelo do GitHub"
+  ],
+  "Retroactive Grants forum": [
+    "Foro de subvenciones retroactivas",
+    "Fórum de financiamentos retroativos"
+  ],
+  "Results": [
+    "Resultados",
+    "Resultados"
+  ],
+  "forum post": [
+    "publicación del foro",
+    "publicação do fórum"
+  ],
+  ". Always confirm against the latest FPF post.": [
+    ". Confirma siempre con la última publicación de FPF.",
+    ". Sempre confirme na publicação mais recente da FPF."
+  ],
+  "Before you submit": [
+    "Antes de enviar",
+    "Antes de enviar"
+  ],
+  "Organizer announcements": [
+    "Anuncios del organizador",
+    "Anúncios do organizador"
+  ],
+  "Loading forum posts… or browse the": [
+    "Cargando publicaciones… o explora la",
+    "Carregando publicações… ou explore a"
+  ],
+  "forum category": [
+    "categoría del foro",
+    "categoria do fórum"
+  ],
+  "submissions": [
+    "solicitudes",
+    "solicitações"
+  ],
+  "No submissions on GitHub for this round yet.": [
+    "Aún no hay solicitudes en GitHub para esta ronda.",
+    "Ainda não há solicitações no GitHub para esta rodada."
+  ],
+  "Past rounds": [
+    "Rondas anteriores",
+    "Rodadas anteriores"
+  ],
+  "Round": [
+    "Ronda",
+    "Rodada"
+  ],
+  "On ballot": [
+    "En votación",
+    "Em votação"
+  ],
+  "Funded": [
+    "Financiada",
+    "Financiada"
+  ],
+  "Rejected": [
+    "Rechazada",
+    "Recusada"
+  ],
+  "Funded (USD)": [
+    "Financiado (USD)",
+    "Financiado (USD)"
+  ],
+  "Funded by value": [
+    "Financiado por valor",
+    "Financiado por valor"
+  ],
+  "vetoed)": [
+    "vetadas)",
+    "vetadas)"
+  ],
+  "Counts come from FPF's GitHub labels. USD amounts are parsed from each application, so they can differ slightly from FPF's published totals.": [
+    "Los recuentos proceden de las etiquetas GitHub de FPF. Los importes USD se extraen de cada solicitud y pueden diferir ligeramente de los totales publicados por FPF.",
+    "As contagens vêm dos rótulos do GitHub da FPF. Os valores USD são extraídos de cada solicitação e podem diferir ligeiramente dos totais publicados pela FPF."
+  ],
+  "postponed": [
+    "aplazada",
+    "adiada"
+  ],
+  "Q2 2026 was postponed and its submissions were voted on in Q3.": [
+    "El T2 2026 se aplazó y sus solicitudes se votaron en el T3.",
+    "O T2 de 2026 foi adiado e suas solicitações foram votadas no T3."
+  ],
+  "How to vote (ZEC holders)": [
+    "Cómo votar (titulares de ZEC)",
+    "Como votar (detentores de ZEC)"
+  ],
+  "Hold shielded ZEC in a wallet that supports voting": [
+    "Mantén ZEC blindado en una cartera compatible con votación",
+    "Mantenha ZEC blindado em uma carteira compatível com votação"
+  ],
+  "before the eligibility snapshot. Recent polls have run in Zodl (including Keystone through Zodl), Zkool and Vizor. Each round's announcement gives the snapshot and which funds count.": [
+    "antes de la captura de elegibilidad. Las últimas votaciones han usado Zodl (incluido Keystone mediante Zodl), Zkool y Vizor. Cada anuncio indica la captura y los fondos elegibles.",
+    "antes do registro de elegibilidade. As votações recentes usaram Zodl (incluindo Keystone pelo Zodl), Zkool e Vizor. Cada anúncio informa o registro e os fundos elegíveis."
+  ],
+  "Vote during the voting window": [
+    "Vota durante el período de votación",
+    "Vote durante o período de votação"
+  ],
+  "from your wallet's voting section. Each proposal is a separate question; either \"Reject\" option counts as a no.": [
+    "desde la sección de votación de tu cartera. Cada propuesta es una pregunta independiente; cualquiera de las opciones “Rechazar” cuenta como un no.",
+    "na seção de votação da carteira. Cada proposta é uma pergunta independente; qualquer opção “Recusar” conta como não."
+  ],
+  "Every answer counts toward quorum.": [
+    "Todas las respuestas cuentan para el cuórum.",
+    "Todas as respostas contam para o quórum."
+  ],
+  "A proposal needs": [
+    "Una propuesta necesita",
+    "Uma proposta precisa de"
+  ],
+  "ZEC voted on it (any answer) before a simple majority of Approve can pass it, so abstaining still helps a vote count.": [
+    "ZEC en votos (cualquier respuesta) antes de que una mayoría simple de Aprobar pueda aprobarla; abstenerse también ayuda a alcanzar el cuórum.",
+    "ZEC em votos (qualquer resposta) antes que uma maioria simples de Aprovar possa aprová-la; abster-se também ajuda a atingir o quórum."
+  ],
+  "Your vote stays private.": [
+    "Tu voto permanece privado.",
+    "Seu voto permanece privado."
+  ],
+  "Votes are encrypted; the published tallies can be checked independently.": [
+    "Los votos se cifran y los resultados publicados pueden verificarse de forma independiente.",
+    "Os votos são criptografados e os resultados publicados podem ser verificados de forma independente."
+  ],
+  "Zodl voting guide": [
+    "Guía de votación de Zodl",
+    "Guia de votação do Zodl"
+  ],
+  "Upcoming votes & results (CipherScan)": [
+    "Próximas votaciones y resultados (CipherScan)",
+    "Próximas votações e resultados (CipherScan)"
+  ],
+  "Learn from past votes": [
+    "Aprende de votaciones anteriores",
+    "Aprenda com votações anteriores"
+  ],
+  "Coinholder rejections don't come with written reasons. The shape of the vote is the best signal: a low Accept share with little \"lower amount\" support usually means the project wasn't backed at all, while a large \"lower amount\" share points to pricing.": [
+    "Los rechazos Coinholder no incluyen motivos escritos. La distribución del voto es la mejor señal: poco apoyo a Aceptar y a “importe menor” suele indicar falta de respaldo al proyecto, mientras que mucho apoyo a “importe menor” apunta al precio.",
+    "As recusas Coinholder não incluem justificativas escritas. A distribuição dos votos é o melhor sinal: pouco apoio a Aceitar e a “valor menor” geralmente indica falta de apoio ao projeto, enquanto muito apoio a “valor menor” aponta para o preço."
+  ],
+  "Per-proposal tallies (OpenZcash)": [
+    "Resultados por propuesta (OpenZcash)",
+    "Resultados por proposta (OpenZcash)"
+  ],
+  "Verify the count yourself": [
+    "Verifica el recuento tú mismo",
+    "Verifique a contagem por conta própria"
+  ],
+  "Q3 vote analysis thread": [
+    "Debate sobre el análisis de votos del T3",
+    "Discussão da análise dos votos do T3"
+  ],
+  "Create & vote · ZecHub DAO · Zcash Grants Hub": [
+    "Crear y votar · ZecHub DAO · Zcash Grants Hub",
+    "Criar e votar · ZecHub DAO · Zcash Grants Hub"
+  ],
+  "How to create ZecHub DAO proposals and vote using DAO DAO on Juno—wallet, links, and steps.": [
+    "Cómo crear propuestas de ZecHub DAO y votar con DAO DAO en Juno: cartera, enlaces y pasos.",
+    "Como criar propostas do ZecHub DAO e votar com DAO DAO na Juno: carteira, links e etapas."
+  ],
+  "Back to proposals": [
+    "Volver a propuestas",
+    "Voltar às propostas"
+  ],
+  "ZecHub DAO: create proposals & vote": [
+    "ZecHub DAO: crear propuestas y votar",
+    "ZecHub DAO: criar propostas e votar"
+  ],
+  "ZecHub uses": [
+    "ZecHub usa",
+    "O ZecHub usa"
+  ],
+  ". This site only lists proposals from the indexer—you": [
+    ". Este sitio solo muestra propuestas del indexador: debes",
+    ". Este site apenas lista propostas do indexador: você deve"
+  ],
+  "connect a wallet on DAO DAO": [
+    "conectar una cartera en DAO DAO",
+    "conectar uma carteira no DAO DAO"
+  ],
+  "to create or vote. Nothing here signs transactions.": [
+    "para crear o votar. Aquí no se firman transacciones.",
+    "para criar ou votar. Nenhuma transação é assinada aqui."
+  ],
+  "Context": [
+    "Contexto",
+    "Contexto"
+  ],
+  "handles on-chain mini-grants and governance separately from ZCG or Coinholder GitHub programs. Rules, treasury, and membership are defined on-chain in the DAO contracts.": [
+    "gestiona pequeñas subvenciones en cadena y gobernanza por separado de los programas GitHub de ZCG y Coinholder. Las reglas, la tesorería y la membresía se definen en los contratos del DAO.",
+    "gerencia pequenos financiamentos on-chain e governança separadamente dos programas GitHub de ZCG e Coinholder. As regras, a tesouraria e a participação são definidas nos contratos do DAO."
+  ],
+  "Official UI for submitting and voting is": [
+    "La interfaz oficial para enviar propuestas y votar es",
+    "A interface oficial para enviar propostas e votar é"
+  ],
+  "(same data this hub reads from the indexer).": [
+    "(los mismos datos que este portal lee del indexador).",
+    "(os mesmos dados que este portal lê do indexador)."
+  ],
+  "Wallet & network": [
+    "Cartera y red",
+    "Carteira e rede"
+  ],
+  "Install a Cosmos wallet that supports Juno (commonly": [
+    "Instala una cartera Cosmos compatible con Juno (habitualmente",
+    "Instale uma carteira Cosmos compatível com Juno (geralmente"
+  ],
+  "or": [
+    "o",
+    "ou"
+  ],
+  "ZecHub on DAO DAO": [
+    "ZecHub en DAO DAO",
+    "ZecHub no DAO DAO"
+  ],
+  "and connect your wallet when prompted.": [
+    "y conecta tu cartera cuando se te pida.",
+    "e conecte sua carteira quando solicitado."
+  ],
+  "Voting power and who may create proposals depend on this DAO’s configuration (e.g. staked governance tokens). Check the DAO page and": [
+    "El poder de voto y quién puede crear propuestas dependen de la configuración de este DAO (por ejemplo, tokens de gobernanza en staking). Consulta la página del DAO y la",
+    "O poder de voto e quem pode criar propostas dependem da configuração deste DAO (por exemplo, tokens de governança em staking). Consulte a página do DAO e a"
+  ],
+  "ZecHub DAO docs": [
+    "documentación de ZecHub DAO",
+    "documentação do ZecHub DAO"
+  ],
+  "for the latest policy.": [
+    "para conocer las políticas actuales.",
+    "para conhecer as políticas atuais."
+  ],
+  "Create a new proposal": [
+    "Crear una propuesta nueva",
+    "Criar uma nova proposta"
+  ],
+  "Go to": [
+    "Ve a",
+    "Acesse"
+  ],
+  "for this DAO (opens DAO DAO).": [
+    "de este DAO (abre DAO DAO).",
+    "deste DAO (abre o DAO DAO)."
+  ],
+  "Choose proposal type and actions (e.g. spend, contract execute) per your goal. Use clear title and description; markdown is supported in the DAO DAO editor.": [
+    "Elige el tipo de propuesta y las acciones (por ejemplo, pagos o ejecución de contratos) según tu objetivo. Usa un título y una descripción claros; el editor de DAO DAO admite Markdown.",
+    "Escolha o tipo de proposta e as ações (por exemplo, pagamentos ou execução de contratos) conforme seu objetivo. Use título e descrição claros; o editor do DAO DAO aceita Markdown."
+  ],
+  "Review deposit requirements, voting duration, and fees shown in the UI, then submit and sign in your wallet.": [
+    "Revisa los depósitos requeridos, la duración de la votación y las comisiones de la interfaz; después envía y firma en tu cartera.",
+    "Revise os depósitos exigidos, a duração da votação e as taxas da interface; depois envie e assine na carteira."
+  ],
+  "Optional: build": [
+    "Opcional: crea",
+    "Opcional: crie"
+  ],
+  "autofill links": [
+    "enlaces de autocompletado",
+    "links de preenchimento automático"
+  ],
+  ") to pre-populate the form for your community.": [
+    ") para rellenar previamente el formulario de tu comunidad.",
+    ") para preencher previamente o formulário da sua comunidade."
+  ],
+  "Vote on an active proposal": [
+    "Votar una propuesta activa",
+    "Votar em uma proposta ativa"
+  ],
+  "From this hub, open any proposal and use": [
+    "Desde este portal, abre cualquier propuesta y usa",
+    "Neste portal, abra qualquer proposta e use"
+  ],
+  "(or": [
+    "(o",
+    "(ou"
+  ],
+  "Open on DAO DAO": [
+    "Abrir en DAO DAO",
+    "Abrir no DAO DAO"
+  ],
+  ")—both go to the same proposal page on DAO DAO.": [
+    "): ambos llevan a la misma página de propuesta en DAO DAO.",
+    "): ambos levam à mesma página da proposta no DAO DAO."
+  ],
+  "Connect your wallet on that page. If your wallet has voting power for this DAO, you can cast Yes / No / Abstain (options depend on the proposal module).": [
+    "Conecta tu cartera en esa página. Si tiene poder de voto en este DAO, podrás elegir Sí / No / Abstención (según el módulo de propuesta).",
+    "Conecte sua carteira nessa página. Se ela tiver poder de voto neste DAO, você poderá escolher Sim / Não / Abstenção (conforme o módulo da proposta)."
+  ],
+  "Pay attention to the voting end time shown on the proposal and in this hub’s sidebar when voting is open.": [
+    "Presta atención al cierre de votación indicado en la propuesta y en la barra lateral de este portal cuando la votación esté abierta.",
+    "Observe o encerramento da votação indicado na proposta e na barra lateral deste portal quando a votação estiver aberta."
+  ],
+  "Security": [
+    "Seguridad",
+    "Segurança"
+  ],
+  "Only approve transactions you understand. Official DAO DAO UI is": [
+    "Aprueba solo transacciones que entiendas. La interfaz oficial de DAO DAO es",
+    "Aprove apenas transações que você entende. A interface oficial do DAO DAO é"
+  ],
+  ". This grants hub never asks for seed phrases or private keys.": [
+    ". Este portal nunca pide frases semilla ni claves privadas.",
+    ". Este portal nunca pede frases-semente nem chaves privadas."
+  ],
+  "In voting": [
+    "En votación",
+    "Em votação"
+  ],
+  "Passed": [
+    "Aprobada",
+    "Aprovada"
+  ],
+  "Closed": [
+    "Cerrada",
+    "Encerrada"
+  ],
+  "Draft": [
+    "Borrador",
+    "Rascunho"
+  ],
+  "Invalid proposal id": [
+    "Identificador de propuesta no válido",
+    "Identificador de proposta inválido"
+  ],
+  "Could not load proposal": [
+    "No se pudo cargar la propuesta",
+    "Não foi possível carregar a proposta"
+  ],
+  "Indexer or network error.": [
+    "Error del indexador o de la red.",
+    "Erro do indexador ou da rede."
+  ],
+  "· ZecHub DAO · Zcash Grants Hub": [
+    "· ZecHub DAO · Zcash Grants Hub",
+    "· ZecHub DAO · Zcash Grants Hub"
+  ],
+  "ZecHub DAO proposal A{0} on Juno (DAO DAO). {1}": [
+    "Propuesta ZecHub DAO A{0} en Juno (DAO DAO). {1}",
+    "Proposta ZecHub DAO A{0} na Juno (DAO DAO). {1}"
+  ],
+  "All ZecHub proposals": [
+    "Todas las propuestas de ZecHub",
+    "Todas as propostas do ZecHub"
+  ],
+  "On-chain status (": [
+    "Estado en cadena (",
+    "Status on-chain ("
+  ],
+  "Voting is open": [
+    "La votación está abierta",
+    "A votação está aberta"
+  ],
+  "DAO members vote on": [
+    "Los miembros del DAO votan en",
+    "Os integrantes do DAO votam no"
+  ],
+  ": connect a Juno wallet there (e.g. Keplr or Leap), then cast Yes / No / Abstain. This hub does not sign transactions.": [
+    ": conecta allí una cartera Juno (p. ej., Keplr o Leap) y elige Sí / No / Abstención. Este portal no firma transacciones.",
+    ": conecte uma carteira Juno lá (por exemplo, Keplr ou Leap) e escolha Sim / Não / Abstenção. Este portal não assina transações."
+  ],
+  "Votes": [
+    "Votos",
+    "Votos"
+  ],
+  "This page reads live data from the DAO DAO indexer. ZecHub proposals are independent from ZCG or Coinholder GitHub applications; use": [
+    "Esta página lee datos en directo del indexador de DAO DAO. Las propuestas de ZecHub son independientes de las solicitudes GitHub de ZCG y Coinholder; consulta",
+    "Esta página lê dados ao vivo do indexador do DAO DAO. As propostas ZecHub são independentes das solicitações GitHub de ZCG e Coinholder; consulte"
+  ],
+  "Related records": [
+    "Registros relacionados",
+    "Registros relacionados"
+  ],
+  "for cross-program hints.": [
+    "para encontrar conexiones entre programas.",
+    "para encontrar conexões entre programas."
+  ],
+  "on DAO DAO.": [
+    "en DAO DAO.",
+    "no DAO DAO."
+  ],
+  "Voting ends": [
+    "Fin de votación",
+    "Fim da votação"
+  ],
+  "Proposal status": [
+    "Estado de la propuesta",
+    "Status da proposta"
+  ],
+  "No statuses yet.": [
+    "Aún no hay estados.",
+    "Ainda não há status."
+  ],
+  "Clear status filters": [
+    "Borrar filtros de estado",
+    "Limpar filtros de status"
+  ],
+  "ZecHub DAO proposals · Zcash Grants Hub": [
+    "Propuestas de ZecHub DAO · Zcash Grants Hub",
+    "Propostas do ZecHub DAO · Zcash Grants Hub"
+  ],
+  "Browse on-chain ZecHub DAO proposals on Juno via DAO DAO—mini-grants and governance separate from ZCG GitHub review.": [
+    "Explora propuestas de ZecHub DAO en Juno mediante DAO DAO: pequeñas subvenciones y gobernanza independientes de la revisión ZCG en GitHub.",
+    "Explore propostas do ZecHub DAO na Juno pelo DAO DAO: pequenos financiamentos e governança independentes da revisão ZCG no GitHub."
+  ],
+  "ZecHub DAO proposals": [
+    "Propuestas de ZecHub DAO",
+    "Propostas do ZecHub DAO"
+  ],
+  "On-chain mini-grants and governance through": [
+    "Pequeñas subvenciones en cadena y gobernanza mediante",
+    "Pequenos financiamentos on-chain e governança pelo"
+  ],
+  "—separate from ZCG committee review on GitHub. See": [
+    ", por separado de la revisión del comité ZCG en GitHub. Consulta",
+    ", separadamente da revisão do comitê ZCG no GitHub. Consulte"
+  ],
+  "for program context.": [
+    "para conocer el contexto del programa.",
+    "para conhecer o contexto do programa."
+  ],
+  "Create proposal": [
+    "Crear propuesta",
+    "Criar proposta"
+  ],
+  "Chain": [
+    "Cadena",
+    "Cadeia"
+  ],
+  "Proposals (on-chain)": [
+    "Propuestas (en cadena)",
+    "Propostas (on-chain)"
+  ],
+  "How to create & vote": [
+    "Cómo crear y votar",
+    "Como criar e votar"
+  ],
+  "Open ZecHub on DAO DAO": [
+    "Abrir ZecHub en DAO DAO",
+    "Abrir ZecHub no DAO DAO"
+  ],
+  "Search proposals…": [
+    "Buscar propuestas…",
+    "Buscar propostas…"
+  ],
+  "Loading page…": [
+    "Cargando página…",
+    "Carregando página…"
+  ],
+  "Newest first": [
+    "Más recientes primero",
+    "Mais recentes primeiro"
+  ],
+  "Oldest first": [
+    "Más antiguas primero",
+    "Mais antigas primeiro"
+  ],
+  "Title A–Z": [
+    "Título A–Z",
+    "Título A–Z"
+  ],
+  "Failed to load proposals": [
+    "No se pudieron cargar las propuestas",
+    "Não foi possível carregar as propostas"
+  ],
+  "Loading proposals…": [
+    "Cargando propuestas…",
+    "Carregando propostas…"
+  ],
+  "No proposals match your filters.": [
+    "Ninguna propuesta coincide con los filtros.",
+    "Nenhuma proposta corresponde aos filtros."
+  ],
+  "Announcement": [
+    "Anuncio",
+    "Anúncio"
+  ],
+  "Discussed": [
+    "Debatida",
+    "Discutida"
+  ],
+  "· requested $": [
+    "· solicitado $",
+    "· solicitado US$"
+  ],
+  "Minutes": [
+    "Actas",
+    "Atas"
+  ],
+  "committee reasoning (": [
+    "motivos del comité (",
+    "motivos do comitê ("
+  ],
+  "ZCG committee decisions": [
+    "Decisiones del comité ZCG",
+    "Decisões do comitê ZCG"
+  ],
+  "Parsed from the committee's published meeting minutes. The minutes are the authoritative record.": [
+    "Extraído de las actas publicadas del comité. Las actas son el registro oficial.",
+    "Extraído das atas publicadas do comitê. As atas são o registro oficial."
+  ],
+  "Delivery signals": [
+    "Indicadores de entrega",
+    "Indicadores de entrega"
+  ],
+  "Paid out": [
+    "Pagado",
+    "Pago"
+  ],
+  "{0}% paid": [
+    "{0}% pagado",
+    "{0}% pago"
+  ],
+  "Milestones paid": [
+    "Hitos pagados",
+    "Marcos pagos"
+  ],
+  "Last update on the application": [
+    "Última actualización de la solicitud",
+    "Última atualização da solicitação"
+  ],
+  "Today": [
+    "Hoy",
+    "Hoje"
+  ],
+  "{0} day{1} ago": [
+    "hace {0} día{1}",
+    "há {0} dia{1}"
+  ],
+  "Repositories linked in the application": [
+    "Repositorios vinculados en la solicitud",
+    "Repositórios vinculados na solicitação"
+  ],
+  "activity not loaded yet": [
+    "actividad aún no cargada",
+    "atividade ainda não carregada"
+  ],
+  "not found (renamed, private or deleted)": [
+    "no encontrado (renombrado, privado o eliminado)",
+    "não encontrado (renomeado, privado ou excluído)"
+  ],
+  "archived": [
+    "archivado",
+    "arquivado"
+  ],
+  "active": [
+    "activo",
+    "ativo"
+  ],
+  "quiet": [
+    "poca actividad",
+    "pouca atividade"
+  ],
+  "no pushes in a year": [
+    "sin envíos en un año",
+    "sem envios há um ano"
+  ],
+  "last push {0}": [
+    "último envío {0}",
+    "último envio {0}"
+  ],
+  "release {0}": [
+    "versión {0}",
+    "versão {0}"
+  ],
+  "{0}{1} committer{2} in 90 days": [
+    "{0}{1} autor{2} de commits en 90 días",
+    "{0}{1} autor{2} de commits em 90 dias"
+  ],
+  "Facts from GitHub, not a judgement: repositories can move, and some work (events, research, content) leaves no code trail. Milestone reports on the forum are the record.": [
+    "Datos de GitHub, no una valoración: los repositorios pueden trasladarse y algunos trabajos (eventos, investigación, contenido) no dejan código. El registro son los informes de hitos en el foro.",
+    "Dados do GitHub, não um julgamento: repositórios podem mudar e alguns trabalhos (eventos, pesquisa, conteúdo) não deixam código. Os relatórios de marcos no fórum são o registro."
+  ],
+  "View Grant": [
+    "Ver subvención",
+    "Ver financiamento"
+  ],
+  "Page": [
+    "Página",
+    "Página"
+  ],
+  "ZEC/USD from CoinGecko (refreshes about every 2 minutes)": [
+    "ZEC/USD de CoinGecko (se actualiza aproximadamente cada 2 minutos)",
+    "ZEC/USD do CoinGecko (atualizado aproximadamente a cada 2 minutos)"
+  ],
+  "Close menu": [
+    "Cerrar menú",
+    "Fechar menu"
+  ],
+  "Open menu": [
+    "Abrir menú",
+    "Abrir menu"
+  ],
+  "Preflight: no issues found": [
+    "Comprobación previa: sin problemas",
+    "Verificação prévia: nenhum problema"
+  ],
+  "Preflight:": [
+    "Comprobación previa:",
+    "Verificação prévia:"
+  ],
+  "to fix,": [
+    "por corregir,",
+    "a corrigir,"
+  ],
+  "to consider": [
+    "por considerar",
+    "a considerar"
+  ],
+  "Fix": [
+    "Corregir",
+    "Corrigir"
+  ],
+  "These checks are advisory and cover what reviewers commonly ask about. They don't predict the committee's decision.": [
+    "Estas comprobaciones son orientativas y cubren preguntas habituales de los revisores. No predicen la decisión del comité.",
+    "Estas verificações são orientativas e abrangem perguntas comuns dos revisores. Não preveem a decisão do comitê."
+  ],
+  "Similar past applications": [
+    "Solicitudes anteriores similares",
+    "Solicitações anteriores semelhantes"
+  ],
+  "Read how these were received. If one was declined, open it to see the committee's reasoning (or search the": [
+    "Lee cómo se recibieron. Si alguna fue rechazada, ábrela para ver los motivos del comité (o busca en el",
+    "Leia como foram recebidas. Se alguma foi recusada, abra-a para ver os motivos do comitê (ou pesquise no"
+  ],
+  "decisions archive": [
+    "archivo de decisiones",
+    "arquivo de decisões"
+  ],
+  "), and say in your application what is different.": [
+    ") e indica qué diferencia tu solicitud.",
+    ") e explique o que diferencia sua solicitação."
+  ],
+  "One real-world application can appear in multiple places (ZCG GitHub, Coinholder GitHub, ZecHub mini-grants on DAO DAO). Links below are suggestions from maintainer mappings, cross-references in text, and title similarity—not merged status.": [
+    "Una solicitud puede aparecer en varios lugares (GitHub ZCG, GitHub Coinholder, pequeñas subvenciones ZecHub en DAO DAO). Los enlaces son sugerencias basadas en correspondencias de responsables, referencias cruzadas y títulos similares; los estados no se combinan.",
+    "Uma solicitação pode aparecer em vários lugares (GitHub ZCG, GitHub Coinholder, pequenos financiamentos ZecHub no DAO DAO). Os links são sugestões baseadas em mapeamentos de mantenedores, referências cruzadas e títulos semelhantes; os status não são combinados."
+  ],
+  "Loading suggestions…": [
+    "Cargando sugerencias…",
+    "Carregando sugestões…"
+  ],
+  "Could not load related records.": [
+    "No se pudieron cargar los registros relacionados.",
+    "Não foi possível carregar os registros relacionados."
+  ],
+  "No related records found yet. Browse": [
+    "Aún no hay registros relacionados. Explora",
+    "Ainda não há registros relacionados. Explore"
+  ],
+  "ZecHub proposals": [
+    "propuestas de ZecHub",
+    "propostas do ZecHub"
+  ],
+  "or add explicit links in": [
+    "o añade enlaces explícitos en",
+    "ou adicione links explícitos em"
+  ],
+  "Switch to {0} mode": [
+    "Cambiar al modo {0}",
+    "Mudar para o modo {0}"
+  ],
+  "Stop watching": [
+    "Dejar de seguir",
+    "Deixar de acompanhar"
+  ],
+  "Get notified here when this grant changes (stored only in this browser)": [
+    "Recibe avisos cuando cambie esta subvención (solo se guarda en este navegador)",
+    "Receba avisos quando este financiamento mudar (salvo apenas neste navegador)"
+  ],
+  "Watching": [
+    "Siguiendo",
+    "Acompanhando"
+  ],
+  "Watch": [
+    "Seguir",
+    "Acompanhar"
+  ],
+  "Updates (": [
+    "Actualizaciones (",
+    "Atualizações ("
+  ],
+  "Mark all seen": [
+    "Marcar todo como visto",
+    "Marcar tudo como visto"
+  ],
+  "Nothing new. Status changes and new GitHub activity on grants you watch (and your own applications, when GitHub is connected) appear here and under the bell.": [
+    "Sin novedades. Los cambios de estado y la actividad de GitHub de las subvenciones que sigues (y tus solicitudes al conectar GitHub) aparecen aquí y en la campana.",
+    "Sem novidades. Mudanças de status e atividade do GitHub nos financiamentos acompanhados (e nas suas solicitações ao conectar o GitHub) aparecem aqui e no sino."
+  ],
+  "Your application": [
+    "Tu solicitud",
+    "Sua solicitação"
+  ],
+  "New activity": [
+    "Nueva actividad",
+    "Nova atividade"
+  ],
+  "Watching (": [
+    "Siguiendo (",
+    "Acompanhando ("
+  ],
+  "Press": [
+    "Pulsa",
+    "Clique em"
+  ],
+  "on any grant page. Your watchlist is stored only in this browser; nothing is sent to a server.": [
+    "en cualquier página de subvención. Tu lista se guarda solo en este navegador; no se envía nada a un servidor.",
+    "em qualquer página de financiamento. Sua lista fica apenas neste navegador; nada é enviado a um servidor."
+  ],
+  "Unwatch": [
+    "Dejar de seguir",
+    "Deixar de acompanhar"
+  ],
+  "Get reminders outside the site": [
+    "Recibir recordatorios fuera del sitio",
+    "Receber lembretes fora do site"
+  ],
+  "Deadlines calendar (.ics)": [
+    "Calendario de plazos (.ics)",
+    "Calendário de prazos (.ics)"
+  ],
+  "Grant updates (RSS)": [
+    "Actualizaciones de subvenciones (RSS)",
+    "Atualizações de financiamentos (RSS)"
+  ],
+  "Subscribe to the calendar URL in Google Calendar, Apple Calendar or Thunderbird to get Coinholder retro round deadlines, voting windows and protocol milestones.": [
+    "Suscríbete a la URL del calendario en Google Calendar, Apple Calendar o Thunderbird para recibir plazos de rondas retroactivas Coinholder, períodos de votación e hitos del protocolo.",
+    "Assine a URL do calendário no Google Calendar, Apple Calendar ou Thunderbird para receber prazos das rodadas retroativas Coinholder, períodos de votação e marcos do protocolo."
+  ],
+  "On-chain proposal (DAO DAO)": [
+    "Propuesta en cadena (DAO DAO)",
+    "Proposta on-chain (DAO DAO)"
+  ],
+  "Votes · Yes": [
+    "Votos · Sí",
+    "Votos · Sim"
+  ],
+  "· No": [
+    "· No",
+    "· Não"
+  ],
+  "· Abstain {0}": [
+    "· Abstención {0}",
+    "· Abstenção {0}"
+  ],
+  "Vote": [
+    "Votar",
+    "Votar"
+  ],
+  "View proposal": [
+    "Ver propuesta",
+    "Ver proposta"
+  ],
+  "Could not load the public spreadsheet": [
+    "No se pudo cargar la hoja pública",
+    "Não foi possível carregar a planilha pública"
+  ],
+  "Community grants analytics": [
+    "Estadísticas de subvenciones comunitarias",
+    "Estatísticas de financiamentos comunitários"
+  ],
+  "Figures reflect the sheet at": [
+    "Las cifras reflejan la hoja a fecha de",
+    "Os dados refletem a planilha em"
+  ],
+  "Open sheet": [
+    "Abrir hoja",
+    "Abrir planilha"
+  ],
+  "Treasury": [
+    "Tesorería",
+    "Tesouraria"
+  ],
+  "ZCG operations": [
+    "Operaciones ZCG",
+    "Operações ZCG"
+  ],
+  "Grant registers": [
+    "Registros de subvenciones",
+    "Registros de financiamentos"
+  ],
+  "Inputs": [
+    "Datos de entrada",
+    "Dados de entrada"
+  ],
+  "ZCG milestone payments": [
+    "Pagos de hitos ZCG",
+    "Pagamentos de marcos ZCG"
+  ],
+  "ZEC disbursed (sum milestones)": [
+    "ZEC desembolsado (suma de hitos)",
+    "ZEC desembolsado (soma dos marcos)"
+  ],
+  "Independent contractor payouts": [
+    "Pagos a contratistas independientes",
+    "Pagamentos a prestadores independentes"
+  ],
+  "Coinholder funded proposals": [
+    "Propuestas financiadas por Coinholder",
+    "Propostas financiadas pelo Coinholder"
+  ],
+  "Liquidity transfers": [
+    "Transferencias de liquidez",
+    "Transferências de liquidez"
+  ],
+  "2026 Disc. budget spent / annual": [
+    "Presupuesto discrecional 2026: gastado / anual",
+    "Orçamento discricionário 2026: gasto / anual"
+  ],
+  "Committee stipend payments": [
+    "Pagos de estipendios del comité",
+    "Pagamentos de estipêndios do comitê"
+  ],
+  "ZCG proposal history": [
+    "Historial de propuestas ZCG",
+    "Histórico de propostas ZCG"
+  ],
+  "ZCG grant status mix": [
+    "Distribución de estados de subvenciones ZCG",
+    "Distribuição de status dos financiamentos ZCG"
+  ],
+  "Status information unavailable.": [
+    "Información de estado no disponible.",
+    "Informações de status indisponíveis."
+  ],
+  "Coinholder decision mix": [
+    "Distribución de decisiones Coinholder",
+    "Distribuição de decisões Coinholder"
+  ],
+  "No historical decisions available.": [
+    "No hay decisiones históricas disponibles.",
+    "Nenhuma decisão histórica disponível."
+  ],
+  "· ZCG block": [
+    "· bloque ZCG",
+    "· bloco ZCG"
+  ],
+  "· Coinholder block": [
+    "· bloque Coinholder",
+    "· bloco Coinholder"
+  ],
+  "Current ZEC balance": [
+    "Saldo ZEC actual",
+    "Saldo ZEC atual"
+  ],
+  "USD value of current holdings": [
+    "Valor USD de los fondos actuales",
+    "Valor USD dos fundos atuais"
+  ],
+  "USD available (after liabilities)": [
+    "USD disponible (tras obligaciones)",
+    "USD disponível (após obrigações)"
+  ],
+  "Future grant liabilities (USD)": [
+    "Obligaciones futuras de subvenciones (USD)",
+    "Obrigações futuras de financiamentos (USD)"
+  ],
+  "Total ZEC accrued to date": [
+    "Total ZEC acumulado hasta la fecha",
+    "Total ZEC acumulado até o momento"
+  ],
+  "Total ZEC outflow": [
+    "Salidas ZEC totales",
+    "Saídas ZEC totais"
+  ],
+  "Total USD outflow": [
+    "Salidas USD totales",
+    "Saídas USD totais"
+  ],
+  "USD reserves (hedging)": [
+    "Reservas USD (cobertura)",
+    "Reservas USD (proteção)"
+  ],
+  "Coinholder Grants": [
+    "Subvenciones Coinholder",
+    "Financiamentos Coinholder"
+  ],
+  "USD value of current ZEC": [
+    "Valor USD del ZEC actual",
+    "Valor USD do ZEC atual"
+  ],
+  "Total ZEC paid to recipients": [
+    "Total ZEC pagado a destinatarios",
+    "Total ZEC pago a destinatários"
+  ],
+  "Scenario comparison across market price assumptions (values in millions USD).": [
+    "Comparación de escenarios con distintos precios de mercado (valores en millones USD).",
+    "Comparação de cenários com diferentes preços de mercado (valores em milhões USD)."
+  ],
+  "Treasury vs alternate ZEC/USD prices": [
+    "Tesorería frente a otros precios ZEC/USD",
+    "Tesouraria em outros preços ZEC/USD"
+  ],
+  "ZCG current assets": [
+    "Activos actuales ZCG",
+    "Ativos atuais ZCG"
+  ],
+  "ZCG + receivables (3rd fund)": [
+    "ZCG + derechos de cobro (3.er fondo)",
+    "ZCG + recebíveis (3º fundo)"
+  ],
+  "Coinholder current assets": [
+    "Activos actuales Coinholder",
+    "Ativos atuais Coinholder"
+  ],
+  "ZCG Grants — top categories by milestone USD": [
+    "Subvenciones ZCG — principales categorías por USD en hitos",
+    "Financiamentos ZCG — principais categorias por USD em marcos"
+  ],
+  "Top projects by ZEC disbursed (milestones)": [
+    "Principales proyectos por ZEC desembolsado (hitos)",
+    "Principais projetos por ZEC desembolsado (marcos)"
+  ],
+  "IC payouts — ZEC by category (": [
+    "Pagos a contratistas — ZEC por categoría (",
+    "Pagamentos a prestadores — ZEC por categoria ("
+  ],
+  "ZEC total)": [
+    "ZEC total)",
+    "ZEC total)"
+  ],
+  "Liquidity — ZEC per transfer": [
+    "Liquidez — ZEC por transferencia",
+    "Liquidez — ZEC por transferência"
+  ],
+  "Wallet performance indicators": [
+    "Indicadores de rendimiento de carteras",
+    "Indicadores de desempenho de carteiras"
+  ],
+  "Liquidity KPIs": [
+    "Indicadores de liquidez",
+    "Indicadores de liquidez"
+  ],
+  "ZCG 2026 discretionary budget": [
+    "Presupuesto discrecional ZCG 2026",
+    "Orçamento discricionário ZCG 2026"
+  ],
+  "Annual (USD)": [
+    "Anual (USD)",
+    "Anual (USD)"
+  ],
+  "Spent (USD)": [
+    "Gastado (USD)",
+    "Gasto (USD)"
+  ],
+  "Remaining (USD)": [
+    "Restante (USD)",
+    "Restante (USD)"
+  ],
+  "% of annual USD budget spent (sheet figures)": [
+    "% del presupuesto USD anual gastado (cifras de la hoja)",
+    "% do orçamento USD anual gasto (dados da planilha)"
+  ],
+  "Date": [
+    "Fecha",
+    "Data"
+  ],
+  "Current stipend payment history": [
+    "Historial actual de pagos de estipendios",
+    "Histórico atual de pagamentos de estipêndios"
+  ],
+  "Committee stipend payouts": [
+    "Pagos de estipendios del comité",
+    "Pagamentos de estipêndios do comitê"
+  ],
+  "Payments": [
+    "Pagos",
+    "Pagamentos"
+  ],
+  "Sum USD": [
+    "Suma USD",
+    "Soma USD"
+  ],
+  "Sum ZEC": [
+    "Suma ZEC",
+    "Soma ZEC"
+  ],
+  "Coinholder proposal status": [
+    "Estado de propuestas Coinholder",
+    "Status das propostas Coinholder"
+  ],
+  "No proposal data available.": [
+    "No hay datos de propuestas disponibles.",
+    "Nenhum dado de proposta disponível."
+  ],
+  "Coinholder Grants — USD by category": [
+    "Subvenciones Coinholder — USD por categoría",
+    "Financiamentos Coinholder — USD por categoria"
+  ],
+  "Top recipients by total disbursement": [
+    "Principales destinatarios por desembolso total",
+    "Principais destinatários por desembolso total"
+  ],
+  "Top recipients (Coinholder distribution)": [
+    "Principales destinatarios (distribución Coinholder)",
+    "Principais destinatários (distribuição Coinholder)"
+  ],
+  "ZCG committee outcomes (": [
+    "Decisiones del comité ZCG (",
+    "Decisões do comitê ZCG ("
+  ],
+  "proposals reviewed)": [
+    "propuestas revisadas)",
+    "propostas revisadas)"
+  ],
+  "Coinholder decisions (": [
+    "Decisiones Coinholder (",
+    "Decisões Coinholder ("
+  ],
+  "Portfolio allocation by funding category (USD)": [
+    "Distribución de la cartera por categoría de financiación (USD)",
+    "Distribuição da carteira por categoria de financiamento (USD)"
+  ],
+  "ZCG allocation by funding category": [
+    "Distribución ZCG por categoría de financiación",
+    "Distribuição ZCG por categoria de financiamento"
+  ],
+  "Largest recipients by total disbursement to date": [
+    "Principales destinatarios por desembolsos totales hasta la fecha",
+    "Principais destinatários por desembolsos totais até o momento"
+  ],
+  "ZCG top recipients (paid out)": [
+    "Principales destinatarios ZCG (pagado)",
+    "Principais destinatários ZCG (pago)"
+  ],
+  "Reference market and treasury inputs used in calculations": [
+    "Datos de referencia de mercado y tesorería usados en los cálculos",
+    "Dados de referência de mercado e tesouraria usados nos cálculos"
+  ],
+  "Model inputs snapshot": [
+    "Datos de entrada del modelo",
+    "Dados de entrada do modelo"
+  ],
+  "Lockbox ZEC accrued (2nd dev fund / ZIP 1015)": [
+    "ZEC acumulado en Lockbox (2.º fondo de desarrollo / ZIP 1015)",
+    "ZEC acumulado no Lockbox (2º fundo de desenvolvimento / ZIP 1015)"
+  ],
+  "Lockbox ZEC to accrue (3rd dev fund / ZIP 1016)": [
+    "ZEC por acumular en Lockbox (3.er fondo de desarrollo / ZIP 1016)",
+    "ZEC a acumular no Lockbox (3º fundo de desenvolvimento / ZIP 1016)"
+  ],
+  "USD value of lockbox ZEC at spot, 2×, and 3× the sheet ZEC/USD (millions USD)": [
+    "Valor USD del ZEC de Lockbox al precio de la hoja, 2× y 3× (millones USD)",
+    "Valor USD do ZEC do Lockbox ao preço da planilha, 2× e 3× (milhões USD)"
+  ],
+  "Lockbox USD scenarios": [
+    "Escenarios USD de Lockbox",
+    "Cenários USD do Lockbox"
+  ],
+  "USD (M)": [
+    "USD (M)",
+    "USD (M)"
+  ],
+  "Pending Review": [
+    "Pendiente de revisión",
+    "Aguardando revisão"
+  ],
+  "Completed": [
+    "Completada",
+    "Concluída"
+  ],
+  "Suspended": [
+    "Suspendida",
+    "Suspensa"
+  ],
+  "Closed (no decision)": [
+    "Cerrada (sin decisión)",
+    "Encerrada (sem decisão)"
+  ],
+  "Give the project a real title (no template placeholder).": [
+    "Pon un título real al proyecto (sin texto de plantilla).",
+    "Dê um título real ao projeto (sem texto de modelo)."
+  ],
+  "The summary is very short. Say in two or three sentences what you will deliver and who uses it.": [
+    "El resumen es muy breve. Explica en dos o tres frases qué entregarás y quién lo usará.",
+    "O resumo é muito curto. Explique em duas ou três frases o que será entregue e quem usará."
+  ],
+  "The budget is empty. Break the request into hardware/software, services and compensation.": [
+    "El presupuesto está vacío. Desglosa hardware/software, servicios y remuneración.",
+    "O orçamento está vazio. Detalhe hardware/software, serviços e remuneração."
+  ],
+  "Requested amount ({0}) does not match the budget total ({1}).": [
+    "El importe solicitado ({0}) no coincide con el presupuesto total ({1}).",
+    "O valor solicitado ({0}) não corresponde ao orçamento total ({1})."
+  ],
+  "Justify the {0} cost (rates, hours, or quotes).": [
+    "Justifica el coste de {0} (tarifas, horas o presupuestos).",
+    "Justifique o custo de {0} (taxas, horas ou cotações)."
+  ],
+  "The startup payment is larger than the whole budget.": [
+    "El pago inicial supera el presupuesto total.",
+    "O pagamento inicial é maior que o orçamento total."
+  ],
+  "Explain why a startup payment is needed.": [
+    "Explica por qué necesitas un pago inicial.",
+    "Explique por que precisa de um pagamento inicial."
+  ],
+  "You said you received Zcash funding before. Link those grants and their outcomes.": [
+    "Has indicado financiación Zcash anterior. Enlaza esas subvenciones y sus resultados.",
+    "Você informou financiamento Zcash anterior. Vincule esses financiamentos e seus resultados."
+  ],
+  "Disclose the other funding sources for this work (including other Zcash programs).": [
+    "Declara las otras fuentes de financiación de este trabajo (incluidos otros programas Zcash).",
+    "Declare as outras fontes de financiamento deste trabalho (incluindo outros programas Zcash)."
+  ],
+  "Add at least one milestone with a date, deliverables and acceptance criteria.": [
+    "Añade al menos un hito con fecha, entregables y criterios de aceptación.",
+    "Adicione pelo menos um marco com data, entregas e critérios de aceitação."
+  ],
+  "Milestones{0} add up to {1}, but the budget total is {2}.": [
+    "Los hitos{0} suman {1}, pero el presupuesto total es {2}.",
+    "Os marcos{0} somam {1}, mas o orçamento total é {2}."
+  ],
+  "Milestone {0} has no completion date.": [
+    "El hito {0} no tiene fecha de finalización.",
+    "O marco {0} não tem data de conclusão."
+  ],
+  "Milestone {0} is dated in the past ({1}). Finished work fits the Coinholder retro program better.": [
+    "La fecha del hito {0} ya pasó ({1}). El trabajo terminado encaja mejor en el programa retroactivo Coinholder.",
+    "A data do marco {0} já passou ({1}). Trabalho concluído se encaixa melhor no programa retroativo Coinholder."
+  ],
+  "Milestone {0} is due before milestone {1}.": [
+    "El hito {0} vence antes que el hito {1}.",
+    "O marco {0} vence antes do marco {1}."
+  ],
+  "Milestone {0} has no amount.": [
+    "El hito {0} no tiene importe.",
+    "O marco {0} não tem valor."
+  ],
+  "Milestone {0} lists no deliverables.": [
+    "El hito {0} no tiene entregables.",
+    "O marco {0} não tem entregas."
+  ],
+  "Milestone {0} has no acceptance criteria. Say how reviewers can verify it is done.": [
+    "El hito {0} no tiene criterios de aceptación. Explica cómo verificar que está terminado.",
+    "O marco {0} não tem critérios de aceitação. Explique como verificar sua conclusão."
+  ],
+  "For a request this size, reviewers expect several smaller milestones; no single milestone should be most of the budget.": [
+    "Para este importe, los revisores esperan varios hitos pequeños; ninguno debería representar la mayor parte del presupuesto.",
+    "Para este valor, os revisores esperam vários marcos menores; nenhum deve representar a maior parte do orçamento."
+  ],
+  "Add success metrics.": [
+    "Añade métricas de éxito.",
+    "Adicione métricas de sucesso."
+  ],
+  "Make success metrics measurable (numbers and dates, e.g. users, downloads, merged PRs).": [
+    "Haz que las métricas sean medibles (cifras y fechas: usuarios, descargas, PR integradas).",
+    "Torne as métricas mensuráveis (números e datas: usuários, downloads, PRs integrados)."
+  ],
+  "Describe implementation risks and how you will handle them.": [
+    "Describe los riesgos de implementación y cómo los gestionarás.",
+    "Descreva os riscos de implementação e como lidará com eles."
+  ],
+  "Add the project lead's background and links to prior work.": [
+    "Añade la experiencia del responsable del proyecto y enlaces a trabajos anteriores.",
+    "Adicione a experiência do responsável pelo projeto e links de trabalhos anteriores."
+  ],
+  "Requests above {0} need KYC with FPF before any payout. You can stay pseudonymous publicly.": [
+    "Las solicitudes superiores a {0} requieren KYC con FPF antes de cualquier pago. Puedes usar un seudónimo públicamente.",
+    "Solicitações acima de {0} exigem KYC com a FPF antes de qualquer pagamento. Você pode usar um pseudônimo publicamente."
+  ],
+  "If funded, post monthly progress updates on your forum thread. They are required before milestone payouts.": [
+    "Si recibes financiación, publica avances mensuales en tu tema del foro. Son obligatorios antes de los pagos por hitos.",
+    "Se receber financiamento, publique atualizações mensais no seu tópico do fórum. Elas são obrigatórias antes dos pagamentos por marcos."
+  ],
+  "{0}; yours is {1}× that. Explain the scope, or split it into phases.": [
+    "{0}; la tuya es {1}× esa cifra. Explica el alcance o divide el trabajo en fases.",
+    "{0}; a sua é {1}× esse valor. Explique o escopo ou divida o trabalho em fases."
+  ],
+  "{0}. Yours: {1}.": [
+    "{0}. La tuya: {1}.",
+    "{0}. A sua: {1}."
+  ],
+  "Non-Wallet Applications": [
+    "Aplicaciones que no son carteras",
+    "Aplicativos que não são carteiras"
+  ],
+  "Zcash Protocol Extension": [
+    "Extensión del protocolo Zcash",
+    "Extensão do protocolo Zcash"
+  ],
+  "Dedicated Resource": [
+    "Recurso dedicado",
+    "Recurso dedicado"
+  ],
+  "Retroactive Event Funding": [
+    "Financiación retroactiva de eventos",
+    "Financiamento retroativo de eventos"
+  ],
+  "Event Sponsorships": [
+    "Patrocinio de eventos",
+    "Patrocínio de eventos"
+  ],
+  "Risk Assessment": [
+    "Evaluación de riesgos",
+    "Avaliação de riscos"
+  ],
+  "Schedule & Milestones": [
+    "Calendario e hitos",
+    "Cronograma e marcos"
+  ],
+  "Infrastructure": [
+    "Infraestructura",
+    "Infraestrutura"
+  ],
+  "Community": [
+    "Comunidad",
+    "Comunidade"
+  ],
+  "Education": [
+    "Educación",
+    "Educação"
+  ],
+  "Integration": [
+    "Integración",
+    "Integração"
+  ],
+  "Wallets": [
+    "Carteras",
+    "Carteiras"
+  ],
+  "Media": [
+    "Medios",
+    "Mídia"
+  ],
+  "None or N/A": [
+    "None o N/A",
+    "None ou N/A"
+  ],
+  "User Stories:": [
+    "Historias de usuario:",
+    "Histórias de usuário:"
+  ],
+  "- \"As a [type of user], I want [some goal], so that [some reason]\"": [
+    "- \"Como [tipo de usuario], quiero [objetivo], para [motivo]\"",
+    "- \"Como [tipo de usuário], quero [objetivo], para [motivo]\""
+  ],
+  "- \"As a [different type of user], I want [some goal], so that [some reason]\" (optional - add more as needed)": [
+    "- \"Como [otro tipo de usuario], quiero [objetivo], para [motivo]\" (opcional: añade más si es necesario)",
+    "- \"Como [outro tipo de usuário], quero [objetivo], para [motivo]\" (opcional: adicione mais se necessário)"
+  ],
+  "Deliverables:": [
+    "Entregables:",
+    "Entregas:"
+  ],
+  "- [List specific deliverables that fulfill the user stories]": [
+    "- [Enumera entregables específicos que cumplan las historias de usuario]",
+    "- [Liste entregas específicas que atendam às histórias de usuário]"
+  ],
+  "- [Each deliverable should clearly address one or more user stories]": [
+    "- [Cada entregable debe cubrir una o más historias de usuario]",
+    "- [Cada entrega deve atender a uma ou mais histórias de usuário]"
+  ],
+  "[How will the target users validate this milestone is complete?]": [
+    "[¿Cómo validarán los usuarios que el hito está terminado?]",
+    "[Como os usuários validarão que o marco está concluído?]"
+  ],
+  "Supporting file": [
+    "Archivo de apoyo",
+    "Arquivo de apoio"
+  ],
+  "Application Name": [
+    "Nombre de la solicitud",
+    "Nome da solicitação"
+  ],
+  "Restored a saved draft from this browser.": [
+    "Se ha restaurado un borrador guardado en este navegador.",
+    "Um rascunho salvo neste navegador foi restaurado."
+  ],
+  "Not authenticated. Connect GitHub first.": [
+    "No has iniciado sesión. Conecta GitHub primero.",
+    "Você não está autenticado. Conecte o GitHub primeiro."
+  ],
+  "Failed to create issue.": [
+    "No se pudo crear la solicitud.",
+    "Não foi possível criar a solicitação."
+  ],
+  "Issue created but URL missing in response.": [
+    "Se creó la solicitud, pero la respuesta no incluye la URL.",
+    "A solicitação foi criada, mas a resposta não inclui a URL."
+  ],
+  "Could not build real draft issue URL.": [
+    "No se pudo crear la URL del borrador.",
+    "Não foi possível criar a URL do rascunho."
+  ],
+  "Draft saved in this browser. It is cleared after a successful submit.": [
+    "Borrador guardado en este navegador. Se borrará después de un envío correcto.",
+    "Rascunho salvo neste navegador. Ele será apagado após um envio bem-sucedido."
+  ],
+  "Could not save draft.": [
+    "No se pudo guardar el borrador.",
+    "Não foi possível salvar o rascunho."
+  ],
+  "Project Summary *": [
+    "Resumen del proyecto *",
+    "Resumo do projeto *"
+  ],
+  "Project Description *": [
+    "Descripción del proyecto *",
+    "Descrição do projeto *"
+  ],
+  "Proposed Problem *": [
+    "Problema propuesto *",
+    "Problema proposto *"
+  ],
+  "Proposed Solution *": [
+    "Solución propuesta *",
+    "Solução proposta *"
+  ],
+  "Technical Approach *": [
+    "Enfoque técnico *",
+    "Abordagem técnica *"
+  ],
+  "Hardware/Software": [
+    "Hardware/Software",
+    "Hardware/Software"
+  ],
+  "Services": [
+    "Servicios",
+    "Serviços"
+  ],
+  "Compensation": [
+    "Remuneración",
+    "Remuneração"
+  ],
+  "Paid": [
+    "Pagado",
+    "Pago"
+  ],
+  "Proposals discussed": [
+    "Propuestas debatidas",
+    "Propostas discutidas"
+  ],
+  "Approval rate": [
+    "Tasa de aprobación",
+    "Taxa de aprovação"
+  ],
+  "Could not copy. Select the text and copy it manually.": [
+    "No se pudo copiar. Selecciona el texto y cópialo manualmente.",
+    "Não foi possível copiar. Selecione o texto e copie manualmente."
+  ],
+  "View repository": [
+    "Ver repositorio",
+    "Ver repositório"
+  ],
+  "Open an issue": [
+    "Abrir una incidencia",
+    "Abrir uma issue"
+  ],
+  "Start an application": [
+    "Iniciar una solicitud",
+    "Iniciar uma solicitação"
+  ],
+  "Join discussions": [
+    "Participar en debates",
+    "Participar das discussões"
+  ],
+  "See proposals": [
+    "Ver propuestas",
+    "Ver propostas"
+  ],
+  "Where do donations go?": [
+    "¿A qué se destinan las donaciones?",
+    "Qual é o destino das doações?"
+  ],
+  "Donations fund hosting, infrastructure, and ongoing development of Zcash Grants Hub. This address belongs to the hub. It is not the Zcash Community Grants, Coinholder, or ZecHub DAO treasury.": [
+    "Las donaciones financian el alojamiento, la infraestructura y el desarrollo de Zcash Grants Hub. Esta dirección pertenece al portal, no a las tesorerías de Zcash Community Grants, Coinholder ni ZecHub DAO.",
+    "As doações financiam a hospedagem, a infraestrutura e o desenvolvimento do Zcash Grants Hub. Este endereço pertence ao portal, não às tesourarias do Zcash Community Grants, Coinholder ou ZecHub DAO."
+  ],
+  "Is my donation private?": [
+    "¿Es privada mi donación?",
+    "Minha doação é privada?"
+  ],
+  "Yes, if you send from a shielded wallet. Orchard and Sapling payments encrypt the sender, amount, and memo on-chain. If your wallet can only pay the transparent receiver, the transaction is publicly visible, like a Bitcoin payment.": [
+    "Sí, si envías desde una cartera blindada. Los pagos Orchard y Sapling cifran remitente, importe y memo en cadena. Si tu cartera solo admite el receptor transparente, la transacción es pública, como un pago Bitcoin.",
+    "Sim, se você enviar de uma carteira blindada. Os pagamentos Orchard e Sapling criptografam remetente, valor e memo on-chain. Se a carteira só aceitar o receptor transparente, a transação será pública, como um pagamento Bitcoin."
+  ],
+  "My exchange rejects this address. What should I do?": [
+    "Mi plataforma de intercambio rechaza esta dirección. ¿Qué hago?",
+    "Minha corretora rejeita este endereço. O que faço?"
+  ],
+  "Many exchanges don't support Unified Addresses yet. Withdraw ZEC to your own shielded wallet first, then donate from there. This also keeps your donation private.": [
+    "Muchas plataformas aún no admiten direcciones unificadas. Retira ZEC a tu propia cartera blindada y dona desde allí. Así también mantienes la privacidad de tu donación.",
+    "Muitas corretoras ainda não aceitam endereços unificados. Retire ZEC para sua própria carteira blindada e doe de lá. Isso também mantém sua doação privada."
+  ],
+  "Which wallets can I use?": [
+    "¿Qué carteras puedo usar?",
+    "Quais carteiras posso usar?"
+  ],
+  "Any wallet that supports Unified Addresses (ZIP-316). Most current Zcash wallets do, and many also read ZIP-321 payment QR codes, which fill in the amount and memo for you.": [
+    "Cualquier cartera compatible con direcciones unificadas (ZIP-316). La mayoría de carteras Zcash actuales las admite, y muchas también leen QR de pago ZIP-321 para rellenar el importe y el memo.",
+    "Qualquer carteira compatível com endereços unificados (ZIP-316). A maioria das carteiras Zcash atuais aceita, e muitas também leem QR de pagamento ZIP-321 para preencher o valor e o memo."
+  ],
+  "How do I make sure I'm sending to the right address?": [
+    "¿Cómo compruebo que envío a la dirección correcta?",
+    "Como verifico se estou enviando para o endereço correto?"
+  ],
+  "After you paste or scan, check that the first and last 8 characters in your wallet match the fingerprint shown on this page. Only trust this address on zgrantshub.com over HTTPS or in the project's source code.": [
+    "Después de pegar o escanear, comprueba que los primeros y últimos 8 caracteres coincidan con la huella de esta página. Confía solo en esta dirección en zgrantshub.com por HTTPS o en el código fuente del proyecto.",
+    "Depois de colar ou escanear, verifique se os primeiros e últimos 8 caracteres correspondem à impressão digital desta página. Confie apenas neste endereço em zgrantshub.com por HTTPS ou no código-fonte do projeto."
+  ],
+  "Do I need to include a memo?": [
+    "¿Debo incluir un memo?",
+    "Preciso incluir um memo?"
+  ],
+  "No, the memo is optional. Add a handle or contact if you'd like a thank-you, or clear it to donate anonymously. Memos are only delivered on shielded payments.": [
+    "No, el memo es opcional. Añade un contacto si quieres recibir un agradecimiento, o déjalo vacío para donar anónimamente. Los memos solo se entregan en pagos blindados.",
+    "Não, o memo é opcional. Adicione um contato se quiser receber um agradecimento ou deixe em branco para doar anonimamente. Memos só são entregues em pagamentos blindados."
+  ],
+  "Donation address copied": [
+    "Dirección de donación copiada",
+    "Endereço de doação copiado"
+  ],
+  "Payment request copied": [
+    "Solicitud de pago copiada",
+    "Solicitação de pagamento copiada"
+  ],
+  "Payment request": [
+    "Solicitud de pago",
+    "Solicitação de pagamento"
+  ],
+  "Address only": [
+    "Solo dirección",
+    "Apenas endereço"
+  ],
+  "Unknown": [
+    "Desconocido",
+    "Desconhecido"
+  ],
+  "Unexpected API error": [
+    "Error inesperado de la API",
+    "Erro inesperado da API"
+  ],
+  "Miners (80%)": [
+    "Mineros (80%)",
+    "Mineradores (80%)"
+  ],
+  "Zcash Community Grants (8%)": [
+    "Zcash Community Grants (8%)",
+    "Zcash Community Grants (8%)"
+  ],
+  "Coinholder-Controlled Fund (12%)": [
+    "Fondo controlado por coinholders (12%)",
+    "Fundo controlado por coinholders (12%)"
+  ],
+  "Total subsidy": [
+    "Subsidio total",
+    "Subsídio total"
+  ],
+  "25-second blocks; subsidy per block ÷ 3; 60% of fees removed from circulation; Sprout funds become unspendable; ZCG and Coinholder streams extended to the new third-halving height.": [
+    "Bloques de 25 segundos; subsidio por bloque ÷ 3; 60% de las comisiones fuera de circulación; los fondos Sprout dejan de poder gastarse; los flujos ZCG y Coinholder se extienden a la nueva altura del tercer halving.",
+    "Blocos de 25 segundos; subsídio por bloco ÷ 3; 60% das taxas fora de circulação; fundos Sprout ficam indisponíveis para gastos; fluxos ZCG e Coinholder estendidos até a nova altura do terceiro halving."
+  ],
+  "Third halving": [
+    "Tercer halving",
+    "Terceiro halving"
+  ],
+  "Subsidy halves. The 8% ZCG and 12% Coinholder streams end (ZIP 1016 / ZIP 214 rev. 3) unless a later upgrade changes them.": [
+    "El subsidio se reduce a la mitad. Los flujos ZCG (8%) y Coinholder (12%) terminan (ZIP 1016 / ZIP 214 rev. 3), salvo cambios en una actualización posterior.",
+    "O subsídio cai pela metade. Os fluxos ZCG (8%) e Coinholder (12%) terminam (ZIP 1016 / ZIP 214 rev. 3), salvo mudanças em uma atualização posterior."
+  ],
+  "The Network Sustainability Mechanism begins paying ZEC removed from circulation back out through block rewards (ZIP 237).": [
+    "El mecanismo de sostenibilidad de la red empieza a reemitir mediante recompensas de bloque el ZEC retirado de circulación (ZIP 237).",
+    "O mecanismo de sustentabilidade da rede começa a reemitir por recompensas de bloco o ZEC retirado de circulação (ZIP 237)."
+  ],
+  "Stream to third halving": [
+    "Flujo hasta el tercer halving",
+    "Fluxo até o terceiro halving"
+  ],
+  "Stream stops early": [
+    "El flujo termina antes",
+    "O fluxo termina antes"
+  ],
+  "OpenZcash treasury": [
+    "Tesorería OpenZcash",
+    "Tesouraria OpenZcash"
+  ],
+  "Missing OAuth callback parameters.": [
+    "Faltan parámetros de retorno OAuth.",
+    "Faltam parâmetros de retorno OAuth."
+  ],
+  "GitHub OAuth failed.": [
+    "La conexión OAuth de GitHub falló.",
+    "A conexão OAuth do GitHub falhou."
+  ],
+  "Contact ZCG (forum)": [
+    "Contactar con ZCG (foro)",
+    "Entrar em contato com ZCG (fórum)"
+  ],
+  "In Progress": [
+    "En curso",
+    "Em andamento"
+  ],
+  "Hardware / Software": [
+    "Hardware / Software",
+    "Hardware / Software"
+  ],
+  "Coinholder grants": [
+    "Subvenciones Coinholder",
+    "Financiamentos Coinholder"
+  ],
+  "Apply for Coinholder grant": [
+    "Solicitar subvención Coinholder",
+    "Solicitar financiamento Coinholder"
+  ],
+  "Apply for ZCG grant": [
+    "Solicitar subvención ZCG",
+    "Solicitar financiamento ZCG"
+  ],
+  "ZCG + Coinholder · GitHub": [
+    "ZCG + Coinholder · GitHub",
+    "ZCG + Coinholder · GitHub"
+  ],
+  "Abstain": [
+    "Abstención",
+    "Abstenção"
+  ],
+  "Load failed": [
+    "Error de carga",
+    "Falha no carregamento"
+  ],
+  "No matching proposals": [
+    "No hay propuestas que coincidan",
+    "Nenhuma proposta encontrada"
+  ],
+  "Pending": [
+    "Pendiente",
+    "Pendente"
+  ],
+  "light": [
+    "claro",
+    "claro"
+  ],
+  "dark": [
+    "oscuro",
+    "escuro"
+  ],
+  "{0} day ago": [
+    "hace {0} día",
+    "há {0} dia"
+  ],
+  "{0} days ago": [
+    "hace {0} días",
+    "há {0} dias"
+  ],
+  "{0} committer in 90 days": [
+    "{0} autor de commits en 90 días",
+    "{0} autor de commits em 90 dias"
+  ],
+  "{0} committers in 90 days": [
+    "{0} autores de commits en 90 días",
+    "{0} autores de commits em 90 dias"
+  ],
+  "ZCG · USD value of payouts": [
+    "ZCG · valor USD de los pagos",
+    "ZCG · valor USD dos pagamentos"
+  ],
+  "ZCG · holdings before liabilities": [
+    "ZCG · fondos antes de obligaciones",
+    "ZCG · fundos antes das obrigações"
+  ],
+  "e.g. $50,000": [
+    "p. ej., $50,000",
+    "por exemplo, US$ 50.000"
+  ],
+  "Node": [
+    "Nodo",
+    "Nó"
+  ],
+  "Library": [
+    "Biblioteca",
+    "Biblioteca"
+  ],
+  "Specification": [
+    "Especificación",
+    "Especificação"
+  ],
+  "Wallet": [
+    "Cartera",
+    "Carteira"
+  ],
+  "Rust full node (Zcash Foundation)": [
+    "Nodo completo Rust (Zcash Foundation)",
+    "Nó completo Rust (Zcash Foundation)"
+  ],
+  "Full-node wallet replacing zcashd's wallet": [
+    "Cartera de nodo completo que sustituye a la de zcashd",
+    "Carteira de nó completo que substitui a do zcashd"
+  ],
+  "Indexer serving light clients from Zebra": [
+    "Indexador para clientes ligeros a partir de Zebra",
+    "Indexador para clientes leves a partir do Zebra"
+  ],
+  "Light-client server (Go)": [
+    "Servidor de clientes ligeros (Go)",
+    "Servidor de clientes leves (Go)"
+  ],
+  "Core Rust crates for wallets and nodes": [
+    "Bibliotecas Rust centrales para carteras y nodos",
+    "Bibliotecas Rust centrais para carteiras e nós"
+  ],
+  "Orchard shielded protocol": [
+    "Protocolo blindado Orchard",
+    "Protocolo blindado Orchard"
+  ],
+  "Ironwood shielded protocol": [
+    "Protocolo blindado Ironwood",
+    "Protocolo blindado Ironwood"
+  ],
+  "Proving system": [
+    "Sistema de pruebas",
+    "Sistema de provas"
+  ],
+  "Sapling shielded protocol": [
+    "Protocolo blindado Sapling",
+    "Protocolo blindado Sapling"
+  ],
+  "Note commitment trees": [
+    "Árboles de compromisos de notas",
+    "Árvores de compromissos de notas"
+  ],
+  "Threshold signatures": [
+    "Firmas de umbral",
+    "Assinaturas de limiar"
+  ],
+  "Zcash Improvement Proposals": [
+    "Propuestas de mejora de Zcash",
+    "Propostas de melhoria do Zcash"
+  ],
+  "Mobile wallet": [
+    "Cartera móvil",
+    "Carteira móvel"
+  ],
+  "Mobile wallet SDK": [
+    "SDK de cartera móvil",
+    "SDK de carteira móvel"
+  ],
+  "Wallet library behind Zingo": [
+    "Biblioteca de cartera de Zingo",
+    "Biblioteca de carteira do Zingo"
+  ],
+  "Desktop wallet": [
+    "Cartera de escritorio",
+    "Carteira para computador"
+  ],
+  "Vote cancelled; Q2 submissions carried forward into the Q3 2026 round.": [
+    "Votación cancelada; las solicitudes del T2 pasan a la ronda del T3 2026.",
+    "Votação cancelada; as solicitações do T2 passam para a rodada do T3 de 2026."
+  ],
+  "Dates announced by FPF, subject to minor adjustments.": [
+    "Fechas anunciadas por FPF, sujetas a pequeños ajustes.",
+    "Datas anunciadas pela FPF, sujeitas a pequenos ajustes."
+  ],
+  "Submissions open": [
+    "Apertura de solicitudes",
+    "Abertura das solicitações"
+  ],
+  "Submission deadline": [
+    "Cierre de solicitudes",
+    "Prazo de solicitações"
+  ],
+  "Review period starts": [
+    "Inicio de revisión",
+    "Início da revisão"
+  ],
+  "Review period ends": [
+    "Fin de revisión",
+    "Fim da revisão"
+  ],
+  "Voting opens": [
+    "Apertura de votación",
+    "Abertura da votação"
+  ],
+  "Voting closes": [
+    "Cierre de votación",
+    "Encerramento da votação"
+  ],
+  "Approved vs declined": [
+    "Aprobadas y rechazadas",
+    "Aprovadas e recusadas"
+  ],
+  "plus startup payment": [
+    "más pago inicial",
+    "mais pagamento inicial"
+  ],
+  "hardware/software": [
+    "hardware/software",
+    "hardware/software"
+  ],
+  "services": [
+    "servicios",
+    "serviços"
+  ],
+  "compensation": [
+    "remuneración",
+    "remuneração"
+  ],
+  "Spot": [
+    "Actual",
+    "Atual"
+  ],
+  "easy": [
+    "fácil",
+    "fácil"
+  ],
+  "medium": [
+    "media",
+    "média"
+  ],
+  "hard": [
+    "difícil",
+    "difícil"
+  ],
+  "Invalid OAuth state. Please try connecting again.": [
+    "Estado OAuth no válido. Intenta conectar de nuevo.",
+    "Estado OAuth inválido. Tente conectar novamente."
+  ],
+  "Missing PKCE verifier. Please try connecting again.": [
+    "Falta el verificador PKCE. Intenta conectar de nuevo.",
+    "Falta o verificador PKCE. Tente conectar novamente."
+  ],
+  "Failed to exchange GitHub OAuth code.": [
+    "No se pudo intercambiar el código OAuth de GitHub.",
+    "Não foi possível trocar o código OAuth do GitHub."
+  ],
+  "open": [
+    "Abierta",
+    "Aberta"
+  ],
+  "voting": [
+    "En votación",
+    "Em votação"
+  ],
+  "executed": [
+    "Ejecutada",
+    "Executada"
+  ],
+  "passed": [
+    "Aprobada",
+    "Aprovada"
+  ],
+  "rejected": [
+    "Rechazada",
+    "Recusada"
+  ],
+  "draft": [
+    "Borrador",
+    "Rascunho"
+  ],
+  "closed": [
+    "Cerrada",
+    "Encerrada"
+  ],
+  "execution_failed": [
+    "Ejecución fallida",
+    "Falha na execução"
+  ],
+  "No description provided.": [
+    "No se proporcionó descripción.",
+    "Nenhuma descrição informada."
+  ],
+  "Close": [
+    "Cerrar",
+    "Fechar"
+  ],
+  "More": [
+    "Más",
+    "Mais"
+  ],
+  "Previous slide": [
+    "Diapositiva anterior",
+    "Slide anterior"
+  ],
+  "Next slide": [
+    "Diapositiva siguiente",
+    "Próximo slide"
+  ],
+  "high": [
+    "alta",
+    "alta"
+  ],
+  "low": [
+    "baja",
+    "baixa"
+  ],
+  "explicit link": [
+    "enlace explícito",
+    "link explícito"
+  ],
+  "title similarity": [
+    "similitud de títulos",
+    "semelhança de títulos"
+  ],
+  "maintainer mapping": [
+    "correspondencia de responsables",
+    "mapeamento de mantenedores"
+  ],
+  "Q1 2026": [
+    "T1 2026",
+    "T1 2026"
+  ],
+  "Q2 2026": [
+    "T2 2026",
+    "T2 2026"
+  ],
+  "Q3 2026": [
+    "T3 2026",
+    "T3 2026"
+  ],
+  "Q4 2026": [
+    "T4 2026",
+    "T4 2026"
+  ],
+  "Q4 2025": [
+    "T4 2025",
+    "T4 2025"
+  ],
+  "lasts 20+ years": [
+    "dura más de 20 años",
+    "dura mais de 20 anos"
+  ],
+  "Redirecting to apply…": [
+    "Redirigiendo a solicitudes…",
+    "Redirecionando para solicitações…"
+  ],
+  "Zcash Grants Hub: discover grants, submit proposals via GitHub, and explore treasury and funding insights for the Zcash community.": [
+    "Zcash Grants Hub: descubre subvenciones, envía propuestas mediante GitHub y consulta datos de tesorería y financiación de la comunidad Zcash.",
+    "Zcash Grants Hub: descubra financiamentos, envie propostas pelo GitHub e consulte dados de tesouraria e financiamento da comunidade Zcash."
+  ],
+  "A unified platform for Zcash grants discovery, proposal submission, and transparent treasury analytics.": [
+    "Una plataforma para descubrir subvenciones Zcash, enviar propuestas y consultar estadísticas transparentes de tesorería.",
+    "Uma plataforma para descobrir financiamentos Zcash, enviar propostas e consultar estatísticas transparentes de tesouraria."
+  ],
+  "Funded {0} grants in the last two years had a median request of {1} ({2} grants)": [
+    "Las subvenciones financiadas de {0} en los últimos dos años tuvieron una solicitud mediana de {1} ({2} subvenciones)",
+    "Os financiamentos aprovados de {0} nos últimos dois anos tiveram uma solicitação mediana de {1} ({2} financiamentos)"
+  ],
+  "Zcash Grants Hub: grant updates": [
+    "Zcash Grants Hub: novedades de subvenciones",
+    "Zcash Grants Hub: atualizações de financiamentos"
+  ],
+  "ZecHub bounty board": [
+    "Tablero de recompensas ZecHub",
+    "Quadro de recompensas ZecHub"
+  ]
+}

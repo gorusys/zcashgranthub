@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { Loader2 } from "lucide-react";
@@ -5,6 +6,7 @@ import { completeGitHubOAuth } from "@/lib/githubAuth";
 import { Button } from "@/components/ui/button";
 
 export default function GitHubOAuthCallbackPage() {
+  const { text: tx } = useUi();
   const router = useRouter();
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
   const [error, setError] = useState<string>("");
@@ -56,24 +58,23 @@ export default function GitHubOAuthCallbackPage() {
         {status === "loading" && (
           <>
             <Loader2 className="mx-auto mb-3 h-8 w-8 animate-spin text-primary" />
-            <h1 className="text-lg font-semibold text-foreground">Connecting your GitHub account...</h1>
+            <h1 className="text-lg font-semibold text-foreground">{tx("Connecting your GitHub account...")}</h1>
           </>
         )}
 
         {status === "success" && (
           <>
-            <h1 className="text-lg font-semibold text-foreground">GitHub connected successfully</h1>
-            <p className="mt-2 text-sm text-muted-foreground">Redirecting you to the dashboard.</p>
+            <h1 className="text-lg font-semibold text-foreground">{tx("GitHub connected successfully")}</h1>
+            <p className="mt-2 text-sm text-muted-foreground">{tx("Redirecting you to the dashboard.")}</p>
           </>
         )}
 
         {status === "error" && (
           <>
-            <h1 className="text-lg font-semibold text-destructive">Could not connect GitHub</h1>
-            <p className="mt-2 text-sm text-muted-foreground">{message}</p>
+            <h1 className="text-lg font-semibold text-destructive">{tx("Could not connect GitHub")}</h1>
+            <p className="mt-2 text-sm text-muted-foreground">{tx(message)}</p>
             <Button className="mt-5" onClick={() => void router.push("/")}>
-              Back to Home
-            </Button>
+              {tx("Back to Home")}</Button>
           </>
         )}
       </div>

@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import Link from "next/link";
 import { ArrowRight, Scale } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -32,6 +33,7 @@ function isVotingOpen(status: string): boolean {
 }
 
 export function ZechubProposalCard({ row }: { row: ZechubProposalCardRow }) {
+  const { text: tx } = useUi();
   const y = row.proposal.votes.yes || "0";
   const n = row.proposal.votes.no || "0";
   const a = row.proposal.votes.abstain || "0";
@@ -49,12 +51,11 @@ export function ZechubProposalCard({ row }: { row: ZechubProposalCardRow }) {
           <div className="mb-3 flex items-start justify-between gap-3">
             <div className="flex flex-wrap gap-2">
               <Badge variant="secondary" className="font-normal">
-                ZecHub DAO
-              </Badge>
+                {tx("ZecHub DAO")}</Badge>
               <span
                 className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusPillClass(row.proposal.status)}`}
               >
-                {row.proposal.status}
+                {tx(row.proposal.status)}
               </span>
             </div>
           </div>
@@ -65,12 +66,12 @@ export function ZechubProposalCard({ row }: { row: ZechubProposalCardRow }) {
 
           <div className="mb-3 flex items-center gap-2 text-sm text-muted-foreground">
             <Scale className="h-4 w-4 shrink-0 text-primary/70" />
-            <span>On-chain proposal (DAO DAO)</span>
+            <span>{tx("On-chain proposal (DAO DAO)")}</span>
           </div>
 
           <div className="mb-3 text-sm font-medium text-primary">
-            Votes · Yes {y} · No {n}
-            {a !== "0" ? ` · Abstain ${a}` : ""}
+            {tx("Votes · Yes ")}{tx(y)} {tx(" · No ")}{tx(n)}
+            {tx(a !== "0" ? ` · Abstain ${a}` : "")}
           </div>
         </Link>
 
@@ -87,14 +88,13 @@ export function ZechubProposalCard({ row }: { row: ZechubProposalCardRow }) {
                 className="text-xs font-medium text-primary underline-offset-2 hover:underline"
                 onClick={(e) => e.stopPropagation()}
               >
-                Vote
-              </a>
+                {tx("Vote")}</a>
             )}
             <Link
               href={detailHref}
               className="flex items-center gap-1 text-xs font-medium text-primary transition-opacity sm:opacity-0 sm:group-hover:opacity-100"
             >
-              View proposal <ArrowRight className="h-3 w-3" />
+              {tx("View proposal ")}<ArrowRight className="h-3 w-3" />
             </Link>
           </div>
         </div>

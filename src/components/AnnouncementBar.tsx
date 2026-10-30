@@ -1,5 +1,7 @@
+import { useUi } from "@/i18n/useUi";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useT } from "@/i18n";
 import { useRouter } from "next/router";
 import { ArrowRight, Heart, X } from "lucide-react";
 
@@ -15,7 +17,9 @@ function readDismissed(): boolean {
 }
 
 export function AnnouncementBar() {
+  const { text: tx } = useUi();
   const router = useRouter();
+  const { t } = useT();
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
@@ -36,31 +40,31 @@ export function AnnouncementBar() {
   return (
     <div
       role="region"
-      aria-label="Announcement"
+      aria-label={tx("Announcement")}
       className="relative border-b border-primary/20 bg-gradient-to-r from-primary/15 via-primary/10 to-primary/15"
     >
       <div className="container mx-auto flex min-h-10 items-center justify-center gap-x-3 px-10 py-2 text-center text-xs sm:text-sm">
         <span className="hidden shrink-0 rounded-full bg-primary px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary-foreground sm:inline">
-          New
+          {t("announce.new")}
         </span>
         <p className="text-foreground/90">
           <Heart className="mr-1.5 inline h-3.5 w-3.5 -translate-y-px text-primary" aria-hidden />
           <span className="hidden sm:inline">
-            Support Zcash Grants Hub with a shielded ZEC donation, or help build it.{" "}
+            {t("announce.long")}{" "}
           </span>
-          <span className="sm:hidden">Support the hub: </span>
+          <span className="sm:hidden">{t("announce.short")} </span>
           <Link
             href="/donate"
             className="font-semibold text-primary underline-offset-2 hover:underline"
           >
-            Donate
+            {t("announce.donate")}
           </Link>
           <span className="mx-1.5 text-muted-foreground">·</span>
           <Link
             href="/donate#contribute"
             className="inline-flex items-center gap-0.5 font-semibold text-primary underline-offset-2 hover:underline"
           >
-            Contribute
+            {t("announce.contribute")}
             <ArrowRight className="h-3.5 w-3.5" aria-hidden />
           </Link>
         </p>
@@ -68,7 +72,7 @@ export function AnnouncementBar() {
       <button
         type="button"
         onClick={dismiss}
-        aria-label="Dismiss announcement"
+        aria-label={t("announce.dismiss")}
         className="absolute right-2 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-primary/10 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:right-4"
       >
         <X className="h-4 w-4" />

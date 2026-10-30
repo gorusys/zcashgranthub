@@ -1,6 +1,6 @@
 /**
  * Grant domain types and UI config (status badges, categories, workflow).
- * Live rows are built in src/hooks/useGrants.ts from GitHub issues.
+ * Live rows are built server-side in src/lib/server/grantsStore.ts from GitHub issues.
  */
 
 import type { GrantProgram } from "@/lib/grantPrograms";
@@ -14,7 +14,9 @@ export type GrantStatus =
   | "ACTIVE"
   | "COMPLETED"
   | "REJECTED"
-  | "SUSPENDED";
+  | "SUSPENDED"
+  /** Closed without a decision: withdrawn, duplicate, or submitted past the deadline. */
+  | "WITHDRAWN";
 
 export type GrantCategory =
   | "Infrastructure"
@@ -55,6 +57,8 @@ export interface Grant {
   /** GitHub repo slug, e.g. `ZcashCommunityGrants/zcashcommunitygrants` */
   sourceRepo: string;
   issueNumber: number;
+  /** Raw GitHub label names, as published by the program. */
+  labels: string[];
   title: string;
   applicant: string;
   applicantAvatar: string;
@@ -137,6 +141,10 @@ export const statusConfig: Record<
     label: "Suspended",
     color: "bg-orange-500/20 text-orange-400",
   },
+  WITHDRAWN: {
+    label: "Closed (no decision)",
+    color: "bg-muted text-muted-foreground",
+  },
 };
 
 export const categoryConfig: Record<GrantCategory, { color: string }> = {
@@ -194,6 +202,7 @@ export function getWorkflowStep(status: GrantStatus): number {
     COMPLETED: 5,
     REJECTED: -1,
     SUSPENDED: -1,
+    WITHDRAWN: -1,
   };
   return map[status];
 }

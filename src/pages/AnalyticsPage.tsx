@@ -1,3 +1,4 @@
+import { useUi } from "@/i18n/useUi";
 import { useMemo, useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useGrants } from "@/hooks/useGrants";
@@ -43,6 +44,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 function Counter({ target, prefix = "" }: { target: number; prefix?: string }) {
+  const { text: tx, locale: uiLocale } = useUi();
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const [started, setStarted] = useState(false);
@@ -77,15 +79,16 @@ function Counter({ target, prefix = "" }: { target: number; prefix?: string }) {
 
   return (
     <div ref={ref} className="text-2xl font-bold text-primary sm:text-3xl">
-      {prefix}
-      {target >= 1_000_000
-        ? `${(count / 1_000_000).toFixed(1)}M`
-        : count.toLocaleString()}
+      {tx(prefix)}
+      {tx(target >= 1_000_000
+        ? new Intl.NumberFormat(uiLocale, { notation: "compact", maximumFractionDigits: 1 }).format(count)
+        : count.toLocaleString(uiLocale))}
     </div>
   );
 }
 
 export default function AnalyticsPage() {
+  const { text: tx, locale: uiLocale } = useUi();
   const { data: grants = [], isLoading, isError, error } = useGrants();
   const {
     data: sheet,
@@ -114,13 +117,13 @@ export default function AnalyticsPage() {
     // Build last 12 months labels
     for (let i = 11; i >= 0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      const key = d.toLocaleString("en-US", { month: "short", year: "2-digit" });
+      const key = d.toLocaleString(uiLocale, { month: "short", year: "2-digit" });
       buckets[key] = 0;
     }
 
     for (const grant of grants) {
       const d = new Date(grant.submittedDate);
-      const key = d.toLocaleString("en-US", { month: "short", year: "2-digit" });
+      const key = d.toLocaleString(uiLocale, { month: "short", year: "2-digit" });
       if (key in buckets) buckets[key]++;
     }
 
@@ -128,7 +131,7 @@ export default function AnalyticsPage() {
       month,
       grants,
     }));
-  }, [grants]);
+  }, [grants, uiLocale]);
 
   // Category breakdown
   const categoryData = useMemo(() => {
@@ -138,12 +141,12 @@ export default function AnalyticsPage() {
     }
     return Object.entries(counts)
       .map(([name, value]) => ({
-        name,
+        name: tx(name),
         value: value as number,
         color: CATEGORY_COLORS[name] ?? "#64748B",
       }))
       .sort((a, b) => b.value - a.value);
-  }, [grants]);
+  }, [grants, tx]);
 
   // Top grantees by total requested amount
   const topGrantees = useMemo(() => {
@@ -164,10 +167,9 @@ export default function AnalyticsPage() {
       <div className="container mx-auto px-4 py-20 text-center">
         <AlertCircle className="mx-auto mb-4 h-10 w-10 text-red-400" />
         <h1 className="text-xl font-bold text-foreground">
-          Could not load analytics
-        </h1>
+          {tx("Could not load analytics")}</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          {(error as Error)?.message ?? "Failed to fetch grants from GitHub."}
+          {tx((error as Error)?.message ?? "Failed to fetch grants from GitHub.")}
         </p>
       </div>
     );
@@ -177,18 +179,16 @@ export default function AnalyticsPage() {
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
-      <h1 className="mb-2 text-2xl font-bold text-foreground sm:text-3xl">Analytics</h1>
+      <h1 className="mb-2 text-2xl font-bold text-foreground sm:text-3xl">{tx("Analytics")}</h1>
       <p className="mb-6 text-sm text-muted-foreground sm:mb-8 sm:text-base">
-        Application and category metrics from GitHub Issues, plus official ZCG /
-        Coinholder treasury figures from the public{" "}
+        {tx("Application and category metrics from GitHub Issues, plus official ZCG / Coinholder treasury figures from the public")}{" "}
         <a
           href={ZCG_PUBLIC_SPREADSHEET_URL}
           target="_blank"
           rel="noopener noreferrer"
           className="text-primary underline-offset-4 hover:underline"
         >
-          Zcash Community Grants + Coinholder Grants dashboard sheet
-        </a>
+          {tx("Zcash Community Grants + Coinholder Grants dashboard sheet")}</a>
       </p>
 
       <ZcgWorkbookAnalytics
@@ -198,12 +198,9 @@ export default function AnalyticsPage() {
       />
 
       <h2 className="mb-4 mt-2 text-lg font-semibold text-foreground">
-        GitHub grant applications
-      </h2>
+        {tx("GitHub grant applications")}</h2>
       <p className="mb-6 text-xs text-muted-foreground sm:text-sm">
-        Issue-based pipeline for applications in connected repos — independent
-        of the treasury workbook above.
-      </p>
+        {tx("Issue-based pipeline for applications in connected repos — independent of the treasury workbook above.")}</p>
 
       {/* Stat cards */}
       <div className={`mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4 ${skeletonClass}`}>
@@ -225,7 +222,7 @@ export default function AnalyticsPage() {
                 <Counter target={s.value} prefix={s.prefix ?? ""} />
               )}
               <div className="mt-1 text-xs text-muted-foreground">
-                {s.label}
+                {tx(s.label)}
               </div>
             </CardContent>
           </Card>
@@ -237,8 +234,7 @@ export default function AnalyticsPage() {
         <Card className="border-border/50 bg-card">
           <CardHeader>
             <CardTitle className="text-base">
-              Applications per Month (last 12 months)
-            </CardTitle>
+              {tx("Applications per Month (last 12 months)")}</CardTitle>
           </CardHeader>
           <CardContent>
             {isLoading ? (
@@ -263,7 +259,7 @@ export default function AnalyticsPage() {
                     dataKey="grants"
                     fill="hsl(40, 90%, 56%)"
                     radius={[4, 4, 0, 0]}
-                    name="Applications"
+                    name={tx("Applications")}
                   />
                 </BarChart>
               </ResponsiveContainer>
@@ -274,7 +270,7 @@ export default function AnalyticsPage() {
         {/* Category donut */}
         <Card className="border-border/50 bg-card">
           <CardHeader>
-            <CardTitle className="text-base">Applications by Category</CardTitle>
+            <CardTitle className="text-base">{tx("Applications by Category")}</CardTitle>
           </CardHeader>
           <CardContent>
             {isLoading ? (
@@ -316,8 +312,7 @@ export default function AnalyticsPage() {
               </>
             ) : (
               <p className="py-8 text-center text-sm text-muted-foreground">
-                No data yet.
-              </p>
+                {tx("No data yet.")}</p>
             )}
           </CardContent>
         </Card>
@@ -326,8 +321,7 @@ export default function AnalyticsPage() {
         <Card className="border-border/50 bg-card">
           <CardHeader>
             <CardTitle className="text-base">
-              Top Applicants by Total Requested
-            </CardTitle>
+              {tx("Top Applicants by Total Requested")}</CardTitle>
           </CardHeader>
           <CardContent>
             {isLoading ? (
@@ -344,9 +338,9 @@ export default function AnalyticsPage() {
               <table className="w-full min-w-[280px] text-sm">
                 <thead>
                   <tr className="border-b border-border/50 text-muted-foreground">
-                    <th className="pb-2 text-left font-medium">Applicant</th>
-                    <th className="pb-2 text-right font-medium">Requested</th>
-                    <th className="pb-2 text-right font-medium">Apps</th>
+                    <th className="pb-2 text-left font-medium">{tx("Applicant")}</th>
+                    <th className="pb-2 text-right font-medium">{tx("Requested")}</th>
+                    <th className="pb-2 text-right font-medium">{tx("Apps")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -366,7 +360,7 @@ export default function AnalyticsPage() {
                         </a>
                       </td>
                       <td className="py-2 text-right font-medium text-primary">
-                        ${g.total.toLocaleString()}
+                        ${g.total.toLocaleString(uiLocale)}
                       </td>
                       <td className="py-2 text-right text-muted-foreground">
                         {g.grants}
@@ -378,8 +372,7 @@ export default function AnalyticsPage() {
               </div>
             ) : (
               <p className="py-8 text-center text-sm text-muted-foreground">
-                No data yet.
-              </p>
+                {tx("No data yet.")}</p>
             )}
           </CardContent>
         </Card>

@@ -11,7 +11,9 @@
     "preview": "next start",
     "start": "next start",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:i18n": "node scripts/i18n/audit.mjs && vitest run src/test/i18n.test.ts src/test/uiTranslation.test.tsx",
+    "test:i18n:browser": "node scripts/i18n/smoke.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

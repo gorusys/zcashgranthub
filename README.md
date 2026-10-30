@@ -12,7 +12,22 @@ Official domain: [zgrantshub.com](https://zgrantshub.com)
 - **Browse & filter** — Search, status, category, and **program** filter on `/grants`.
 - **Grant detail** — Application fields, milestones, team, budget, risks, comments; **no** embedded DAO vote as ZCG status—only relationship suggestions and clear separation of programs.
 - **Apply wizards** — Single `/apply` page with **ZCG**, **Coinholder**, and **ZecHub DAO** tabs. ZCG/Coinholder create GitHub issues; ZecHub links to DAO DAO. `/apply/coinholder` redirects to `/apply?tab=coinholder`.
+- **Funding streams & NU7** — `/funding-streams` shows the live chain height, the 80/8/12 split per block and per day before and after NU7 (ZIP 218 values), when the streams end (height 6,132,390) and NSM reissuance starts, and a ZCG treasury runway scenario for the proposal to end the 8% stream. Chain tip from Blockchair via `/api/chain/tip`, with an estimate fallback.
+- **Notifications without accounts** — press Watch on any grant; the bell and Dashboard → Notifications show status changes and new GitHub activity since you last looked (your own applications are watched automatically when GitHub is connected). The watchlist lives only in the browser. `/calendar.ics` is a subscribable calendar of retro round deadlines, voting windows and protocol milestones; `/feed.xml` is RSS.
+- **Projects & infrastructure** — `/projects` groups funded ZCG and Coinholder grants by team (totals, paid, linked repos) and tracks core infrastructure (`src/data/core-repos.json`): activity, latest release, whether recent releases mention NU7, and committers in the last 90 days (flagging two or fewer). Funded grant pages show a **Delivery signals** card (payout and milestone progress, last update, activity of linked repos). Repo stats come from `/api/repos`, cached 24 h on disk (`REPO_STATS_CACHE_PATH`); this needs `GITHUB_API_TOKEN` to fill in quickly.
+- **Bounties & first issues** — `/bounties` lists open, unclaimed ZecHub ZEC bounties (public `zechub.zone` API) and unassigned good-first-issue / help-wanted / bounty issues across zcash, ZcashFoundation, zingolabs, zodl-inc and ZecHub (`/api/opportunities`, cached 30 min).
+- **ZCG decisions archive** — `/decisions` and a card on each ZCG grant page show what the committee decided and each member's stated reasoning, parsed from @ZCG meeting minutes on the forum (`/api/zcg/decisions`). Minutes are fetched once, cached on disk (`MINUTES_CACHE_PATH`) and refreshed hourly, with backoff when the forum rate-limits.
+- **Public API & RSS** — read-only, CORS-enabled `/api/v1/grants` (filters: `program`, `status`, `category`, `q`, `updatedSince`), `/api/v1/retro-rounds`, and an RSS feed at `/feed.xml`; documented at `/developers`. Set `NEXT_PUBLIC_SITE_URL` if not deployed at zgrantshub.com.
+- **Proposal preflight** — the ZCG wizard's Review step checks budget/milestone consistency, dated milestones with deliverables and acceptance criteria, measurable KPIs, funding disclosure and KYC, with a Fix link to the right step, and lists similar past applications and their outcomes.
+- **Funding Finder** — `/find-funding` asks three questions (work stage, size, kind) and ranks the routes that fit (Coinholder retro, ZCG, ZecHub bounties, ZecHub DAO) with each program's rules and next steps.
+- **Coinholder retro rounds** — `/retro` shows the current round phase with a countdown, the FPF timeline, a pre-submission checklist, this round's submissions, past-round outcomes (counts from FPF GitHub labels) and live organizer announcements from the forum. Round dates live in `src/data/retro-rounds.json`; add each new round from FPF's forum post and cite it in `sources`.
 - **Analytics dashboard**.
+
+## Languages
+
+English, Spanish (`/es`) and Brazilian Portuguese (`/pt-BR`) via Next.js locale routing and a language switcher. All available pages and shared components use translated interface copy, including application forms, validation, statuses, dashboards, charts, and metadata. Dates and numbers follow the selected locale, and the language switcher preserves the route, query, and hash and saves the preference in the NEXT_LOCALE cookie. Source proposal content and submitted values remain unchanged.
+
+To add a language: copy `src/i18n/messages/es.ts`, translate every value (keep `{placeholders}`), register it in `LOCALES` (`src/i18n/translate.ts`) and `i18n.locales` (`next.config.mjs`). Extend `src/i18n/messages/ui.json` and the locale mapping in `src/i18n/uiTranslate.ts` for the new language as well. The type checker rejects missing keys and the tests reject changed placeholders. Shared interface copy is in `src/i18n/messages/ui.json` (English source → Spanish and Portuguese translations). Use `useUi().text` (from `src/i18n/useUi.ts`) in components, preserve API/form identifiers, and keep placeholders unchanged. Run `npm run test:i18n` for catalog and source coverage, or `I18N_BASE_URL=http://localhost:3000 npm run test:i18n:browser` against a running app for route and language-switching checks. Native-speaker review is welcome.
 
 ## Tech Stack
 
@@ -35,10 +50,26 @@ GitHub OAuth token exchange runs via Next API routes under `/api/auth/...`, so o
 
 ## Optional: GitHub API Token
 
-The app uses the public GitHub API (60 req/hr unauthenticated). To raise the limit to 5,000 req/hr, create a `.env` file:
+Grant data is fetched **server-side** (`/api/grants`, `/api/grants/[id]`) and cached for 5 minutes (15 without a token) with stale-while-revalidate, so all visitors share one upstream fetch and the last good snapshot keeps serving if GitHub is down. Unauthenticated, GitHub allows 60 req/hr; to raise it to 5,000 req/hr, set a read-only token in `.env`:
 
 ```
-NEXT_PUBLIC_GITHUB_TOKEN=ghp_your_read_only_token_here
+GITHUB_API_TOKEN=ghp_your_read_only_token_here
+```
+
+Without a token the hub still copes: GitHub reads use conditional requests (ETags), and `304 Not Modified` responses don't count against the limit. The last good snapshot is also written to disk (`GRANTS_SNAPSHOT_PATH`, default in the OS temp dir), so restarts and cold starts serve data immediately.
+
+> **Do not** use `NEXT_PUBLIC_GITHUB_TOKEN`: anything prefixed `NEXT_PUBLIC_` is bundled into browser JavaScript. It is now ignored (with a server warning); if you set it previously, revoke that token.
+
+## Optional: privacy-respecting analytics
+
+Off by default. When enabled, the site loads a cookieless script ([Plausible](https://plausible.io) or self-hosted [Umami](https://umami.is)) and records aggregate page views plus a few named events (`apply_submitted`, `apply_draft_opened`, `donate_copy_address`, `donate_open_wallet`, `funding_finder_result`, `outbound_program`). No cookies, no personal data, no addresses or amounts. These numbers are the usage evidence for retroactive grant applications.
+
+```
+NEXT_PUBLIC_PLAUSIBLE_DOMAIN=zgrantshub.com
+# NEXT_PUBLIC_PLAUSIBLE_SRC=https://plausible.example.com/js/script.js   # self-hosted
+# or
+# NEXT_PUBLIC_UMAMI_WEBSITE_ID=<uuid>
+# NEXT_PUBLIC_UMAMI_SRC=https://umami.example.com/script.js
 ```
 
 ## GitHub repos
@@ -58,6 +89,8 @@ Defaults match the live ZecHub DAO; override only if contracts move.
 | `NEXT_PUBLIC_ZECHUB_DAO_CORE` | DAO Core (`dao-core`) contract address on Juno |
 | `NEXT_PUBLIC_ZECHUB_PROPOSAL_MODULE_SINGLE` | Single-choice proposal module used for prefix **A** proposals |
 | `NEXT_PUBLIC_DAO_DAO_INDEXER_BASE` | DAO DAO indexer base URL (default `https://indexer.daodao.zone`) |
+
+**Grants API:** `/api/grants` (all parsed grants + `fetchedAt`), `/api/grants/[id]` (one grant with comments).
 
 **API routes:** `/api/daodao/proposals-list`, `/api/daodao/proposal?id=`, `/api/daodao/dao-meta`, `/api/daodao/zechub` (resolve ZecHub proposal by id, GitHub issue, or title).  
 **UI:** `/zechub/proposals`, `/zechub/proposals/[id]`.
@@ -82,7 +115,7 @@ Optional explicit mappings live in **`src/data/grant-links.json`** (validated by
 ## Official program links
 
 - [Zcash Community Grants](https://zcashcommunitygrants.org/)
-- [Zcash Foundation grants](https://zfnd.org/grants/)
+- [ZecHub bounties](https://bounties.zechub.wiki/)
 - [Coinholder program (GitHub)](https://github.com/Financial-Privacy-Foundation/ZcashCoinholderGrantsProgram)
 - [ZecHub DAO (wiki)](https://zechub.wiki/dao)
 

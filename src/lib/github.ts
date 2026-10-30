@@ -1,4 +1,7 @@
-import { getGitHubToken } from "@/lib/githubAuth";
+/**
+ * GitHub REST reads for grant issues. Server-only: called from API routes via
+ * src/lib/server/grantsStore.ts so the API token never reaches the browser.
+ */
 import {
   getGrantRepoConfigs,
   OFFICIAL_ZCG_REPO,
@@ -42,33 +45,63 @@ export interface GitHubComment {
 
 const API = "https://api.github.com";
 
-function buildHeaders(): HeadersInit {
-  const token =
-    getGitHubToken() ??
-    process.env.NEXT_PUBLIC_GITHUB_TOKEN ??
-    process.env.VITE_GITHUB_TOKEN;
+let warnedPublicToken = false;
+
+/** Server token: `GITHUB_API_TOKEN` (or `GITHUB_TOKEN`). Never use a NEXT_PUBLIC_* var. */
+export function buildGitHubServerHeaders(): HeadersInit {
+  const token = process.env.GITHUB_API_TOKEN || process.env.GITHUB_TOKEN;
+  if (!token && process.env.NEXT_PUBLIC_GITHUB_TOKEN && !warnedPublicToken) {
+    warnedPublicToken = true;
+    console.warn(
+      "[github] NEXT_PUBLIC_GITHUB_TOKEN is ignored because NEXT_PUBLIC_* values are exposed to browsers. " +
+        "Rename it to GITHUB_API_TOKEN and revoke the old token."
+    );
+  }
   return {
     Accept: "application/vnd.github.v3+json",
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 }
 
-/** For Next.js API routes (no browser session). */
-export function buildGitHubServerHeaders(): HeadersInit {
-  const token =
-    process.env.GITHUB_API_TOKEN ||
-    process.env.NEXT_PUBLIC_GITHUB_TOKEN ||
-    process.env.VITE_GITHUB_TOKEN;
-  return {
-    Accept: "application/vnd.github.v3+json",
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-  };
+/**
+ * ETag cache for conditional requests. GitHub does not count `304 Not Modified`
+ * responses against the rate limit, so unchanged pages are free to re-check.
+ */
+const etagCache = new Map<string, { etag: string; body: unknown }>();
+const ETAG_CACHE_MAX = 2000;
+
+async function getJson<T>(url: string, headers: HeadersInit): Promise<T> {
+  const cached = etagCache.get(url);
+  const res = await fetch(url, {
+    headers: cached ? { ...headers, "If-None-Match": cached.etag } : headers,
+  });
+  if (res.status === 304 && cached) return cached.body as T;
+
+  if (!res.ok) {
+    if (res.status === 403 || res.status === 429) {
+      throw new Error(
+        "GitHub API rate limit exceeded. Set GITHUB_API_TOKEN on the server to increase the limit."
+      );
+    }
+    throw new Error(`GitHub API error ${res.status}: ${res.statusText}`);
+  }
+
+  const body = (await res.json()) as T;
+  const etag = res.headers.get("etag");
+  if (etag) {
+    if (etagCache.size >= ETAG_CACHE_MAX) {
+      const oldest = etagCache.keys().next().value;
+      if (oldest !== undefined) etagCache.delete(oldest);
+    }
+    etagCache.set(url, { etag, body });
+  }
+  return body;
 }
 
 async function getPages<T>(
   path: string,
   params: Record<string, string> = {},
-  headers: HeadersInit = buildHeaders()
+  headers: HeadersInit = buildGitHubServerHeaders()
 ): Promise<T[]> {
   const all: T[] = [];
   let page = 1;
@@ -79,24 +112,23 @@ async function getPages<T>(
       page: String(page),
       per_page: "100",
     });
-    const res = await fetch(`${API}${path}?${qs}`, { headers });
-
-    if (!res.ok) {
-      if (res.status === 403) {
-        throw new Error(
-          "GitHub API rate limit exceeded. Set NEXT_PUBLIC_GITHUB_TOKEN in your .env to increase the limit."
-        );
-      }
-      throw new Error(`GitHub API error ${res.status}: ${res.statusText}`);
-    }
-
-    const data: T[] = await res.json();
+    const data = await getJson<T[]>(`${API}${path}?${qs}`, headers);
     all.push(...data);
     if (data.length < 100) break;
     page++;
   }
 
   return all;
+}
+
+/** Conditional GET of a GitHub REST path (e.g. `/repos/zcash/zips`) with the server token. */
+export function githubGet<T>(path: string): Promise<T> {
+  return getJson<T>(`${API}${path}`, buildGitHubServerHeaders());
+}
+
+/** Test hook. */
+export function __resetGitHubCacheForTests(): void {
+  etagCache.clear();
 }
 
 function issueLooksLikeGrantApplication(
@@ -169,25 +201,19 @@ export async function fetchGrantIssue(
   program: GrantProgram = "zcg"
 ): Promise<GitHubIssue> {
   const repo = repoForProgram(program);
-  const res = await fetch(`${API}/repos/${repo}/issues/${issueNumber}`, {
-    headers: buildHeaders(),
-  });
-  if (res.ok) {
-    return res.json();
-  }
-  if (program === "zcg" && repo !== OFFICIAL_ZCG_REPO && res.status === 404) {
-    const fallback = await fetch(
-      `${API}/repos/${OFFICIAL_ZCG_REPO}/issues/${issueNumber}`,
-      { headers: buildHeaders() }
-    );
-    if (!fallback.ok) {
-      throw new Error(
-        `GitHub API error ${fallback.status}: ${fallback.statusText}`
+  const headers = buildGitHubServerHeaders();
+  try {
+    return await getJson<GitHubIssue>(`${API}/repos/${repo}/issues/${issueNumber}`, headers);
+  } catch (e) {
+    const notFound = e instanceof Error && /\b404\b/.test(e.message);
+    if (program === "zcg" && repo !== OFFICIAL_ZCG_REPO && notFound) {
+      return getJson<GitHubIssue>(
+        `${API}/repos/${OFFICIAL_ZCG_REPO}/issues/${issueNumber}`,
+        headers
       );
     }
-    return fallback.json();
+    throw e;
   }
-  throw new Error(`GitHub API error ${res.status}: ${res.statusText}`);
 }
 
 export async function fetchIssueComments(
@@ -209,30 +235,19 @@ export async function fetchIssueComments(
   }
 }
 
-/** Lightweight list for related-grant scoring (server). */
+/** Lightweight list for related-grant scoring (server), served from the shared snapshot. */
 export async function fetchGrantIssueSummariesForProgram(
   program: GrantProgram
 ): Promise<Array<{ issueNumber: number; title: string; htmlUrl: string }>> {
-  const repo = repoForProgram(program);
-  const headers = buildGitHubServerHeaders();
-  const [open, closed] = await Promise.all([
-    getPages<GitHubIssue>(`/repos/${repo}/issues`, { state: "open" }, headers),
-    getPages<GitHubIssue>(`/repos/${repo}/issues`, { state: "closed" }, headers),
-  ]);
-  const merged = [...open, ...closed];
-  const filtered = merged.filter((issue) =>
-    issueLooksLikeGrantApplication(issue, program)
-  );
-  return filtered.map((issue) => {
-    const title = issue.title
-      .replace(/^Grant\s+Application\s*[-–]\s*/i, "")
-      .trim();
-    return {
-      issueNumber: issue.number,
-      title,
-      htmlUrl: issue.html_url,
-    };
-  });
+  const { getGrantsSnapshot } = await import("@/lib/server/grantsStore");
+  const { grants } = await getGrantsSnapshot();
+  return grants
+    .filter((g) => g.program === program)
+    .map((g) => ({
+      issueNumber: g.issueNumber,
+      title: g.title,
+      htmlUrl: g.githubLink,
+    }));
 }
 
 export { formatGrantId };

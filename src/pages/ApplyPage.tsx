@@ -1,3 +1,5 @@
+import { useUi } from "@/i18n/useUi";
+import { UiText } from "@/i18n/ui";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
@@ -35,6 +37,8 @@ import { cn } from "@/lib/utils";
 import { getGitHubToken } from "@/lib/githubAuth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CoinholderApplyWizard } from "@/pages/CoinholderApplyPage";
+import { track } from "@/lib/analytics";
+import { PreflightPanel } from "@/components/PreflightPanel";
 import {
   zechubDaoCreateProposalUrl,
   zechubDaoDaodaoUrl,
@@ -60,75 +64,65 @@ const stepLabels = [
 
 const terms = [
   <>
-    I agree to the{" "}
+    <UiText text="I agree to the" />{" "}
     <a
       href="https://9ba4718c-5c73-47c3-a024-4fc4e5278803.usrfiles.com/ugd/9ba471_f81ef4e4b5f040038350270590eb2e42.pdf"
       target="_blank"
       rel="noopener noreferrer"
       className="underline hover:text-foreground"
     >
-      Grant Agreement
-    </a>{" "}
-    terms if funded
-  </>,
+      <UiText text="Grant Agreement" /></a>{" "}
+    <UiText text="terms if funded" /></>,
   <>
-    I agree to{" "}
+    <UiText text="I agree to" />{" "}
     <a
       href="https://9ba4718c-5c73-47c3-a024-4fc4e5278803.usrfiles.com/ugd/9ba471_7d9e73d16b584a61bae92282b208efc4.pdf"
       target="_blank"
       rel="noopener noreferrer"
       className="underline hover:text-foreground"
     >
-      Provide KYC information
-    </a>{" "}
-    if funded above $50,000 USD
-  </>,
-  <>I agree to disclose conflicts of interest</>,
+      <UiText text="Provide KYC information" /></a>{" "}
+    <UiText text="if funded above $50,000 USD" /></>,
+  <><UiText text="I agree to disclose conflicts of interest" /></>,
   <>
-    I agree to adhere to the{" "}
+    <UiText text="I agree to adhere to the" />{" "}
     <a
       href="https://forum.zcashcommunity.com/t/zcg-code-of-conduct/41787"
       target="_blank"
       rel="noopener noreferrer"
       className="underline hover:text-foreground"
     >
-      Code of Conduct
-    </a>{" "}
-    and{" "}
+      <UiText text="Code of Conduct" /></a>{" "}
+    <UiText text="and" />{" "}
     <a
       href="https://forum.zcashcommunity.com/t/zcg-communication-guidelines/44284"
       target="_blank"
       rel="noopener noreferrer"
       className="underline hover:text-foreground"
     >
-      Communication Guidelines
-    </a>
+      <UiText text="Communication Guidelines" /></a>
   </>,
   <>
-    I understand all milestone deliverables will be validated and accepted by their intended users or their representatives, who will confirm that the deliverables meet the required quality, functionality, and usability for each user story.
-  </>,
+    <UiText text="I understand all milestone deliverables will be validated and accepted by their intended users or their representatives, who will confirm that the deliverables meet the required quality, functionality, and usability for each user story." /></>,
   <>
-    I agree that for any new open-source software, I will create a <code>CONTRIBUTING.md</code> file that reflects the high standards of Zcash development, using the{" "}
+    <UiText text="I agree that for any new open-source software, I will create a " /><code><UiText text="CONTRIBUTING.md" /></code> <UiText text=" file that reflects the high standards of Zcash development, using the" />{" "}
     <a
       href="https://github.com/zcash/librustzcash/blob/main/CONTRIBUTING.md#styleguides"
       target="_blank"
       rel="noopener noreferrer"
       className="underline hover:text-foreground"
     >
-      librustzcash style guides
-    </a>{" "}
-    as a primary reference.
-  </>,
+      <UiText text="librustzcash style guides" /></a>{" "}
+    <UiText text="as a primary reference." /></>,
   <>
-    I understand when contributing to existing Zcash code, I am required to adhere to the project specific contribution guidelines, paying close attention to any{" "}
+    <UiText text="I understand when contributing to existing Zcash code, I am required to adhere to the project specific contribution guidelines, paying close attention to any" />{" "}
     <a
       href="https://github.com/zcash/librustzcash/blob/main/CONTRIBUTING.md#merge-workflow"
       target="_blank"
       rel="noopener noreferrer"
       className="underline hover:text-foreground"
     >
-      merge
-    </a>
+      <UiText text="merge" /></a>
     ,{" "}
     <a
       href="https://github.com/zcash/librustzcash/blob/main/CONTRIBUTING.md#branch-history"
@@ -136,8 +130,7 @@ const terms = [
       rel="noopener noreferrer"
       className="underline hover:text-foreground"
     >
-      branch
-    </a>
+      <UiText text="branch" /></a>
     ,{" "}
     <a
       href="https://github.com/zcash/librustzcash/blob/main/CONTRIBUTING.md#pull-request-review"
@@ -145,42 +138,36 @@ const terms = [
       rel="noopener noreferrer"
       className="underline hover:text-foreground"
     >
-      pull request
-    </a>
-    , and{" "}
+      <UiText text="pull request" /></a>
+    <UiText text=", and" />{" "}
     <a
       href="https://github.com/zcash/librustzcash/blob/main/CONTRIBUTING.md#commit-messages"
       target="_blank"
       rel="noopener noreferrer"
       className="underline hover:text-foreground"
     >
-      commit
-    </a>{" "}
-    guidelines as exemplified in the <code>librustzcash</code> repository.
-  </>,
+      <UiText text="commit" /></a>{" "}
+    <UiText text="guidelines as exemplified in the " /><code><UiText text="librustzcash" /></code> <UiText text=" repository." /></>,
   <>
-    I agree to post request details on the{" "}
+    <UiText text="I agree to post request details on the" />{" "}
     <a
       href="https://forum.zcashcommunity.com/c/grants/33"
       target="_blank"
       rel="noopener noreferrer"
       className="underline hover:text-foreground"
     >
-      Community Forum
-    </a>
+      <UiText text="Community Forum" /></a>
   </>,
   <>
-    I understand it is my responsibility to post a link to this issue on the{" "}
+    <UiText text="I understand it is my responsibility to post a link to this issue on the" />{" "}
     <a
       href="https://forum.zcashcommunity.com/c/grants/33"
       target="_blank"
       rel="noopener noreferrer"
       className="underline hover:text-foreground"
     >
-      Zcash Community Forums
-    </a>{" "}
-    after this application has been submitted so the community can give input. I understand this is required in order for ZCG to discuss and vote on this grant application.
-  </>,
+      <UiText text="Zcash Community Forums" /></a>{" "}
+    <UiText text="after this application has been submitted so the community can give input. I understand this is required in order for ZCG to discuss and vote on this grant application." /></>,
 ];
 
 const categories = [
@@ -450,6 +437,7 @@ export default function ApplyPage({
   defaultMilestones = [],
   defaultDocuments = [],
 }: ApplyPageProps) {
+  const { text: tx, locale: uiLocale } = useUi();
   const router = useRouter();
   const applyTab =
     router.isReady && router.query.tab === "coinholder"
@@ -603,6 +591,7 @@ export default function ApplyPage({
         throw new Error("Issue created but URL missing in response.");
       }
       clearZcgApplyDraft();
+      track("apply_submitted", { program: "zcg" });
       window.open(result.issueUrl, "_blank");
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : "Failed to create issue.");
@@ -623,6 +612,7 @@ export default function ApplyPage({
       setSubmitError("Could not build real draft issue URL.");
       return;
     }
+    track("apply_draft_opened", { program: "zcg" });
     window.open(issueUrl, "_blank");
   };
 
@@ -653,35 +643,34 @@ export default function ApplyPage({
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
       <h1 className="mb-1 text-2xl font-bold text-foreground sm:text-3xl">
-        Apply for a grant
-      </h1>
+        {tx("Apply for a grant")}</h1>
       <p className="mb-4 text-sm text-muted-foreground sm:mb-6 sm:text-base">
-        Choose <span className="font-medium text-foreground">ZCG</span> for
-        forward-looking proposals,{" "}
-        <span className="font-medium text-foreground">Coinholder</span> for Lockbox
-        retroactive (completed work) applications, or{" "}
-        <span className="font-medium text-foreground">ZecHub DAO</span> for on-chain
-        mini-grants via DAO DAO on Juno. Connect GitHub before submitting ZCG or
-        Coinholder forms.
+        {tx("Choose ")}<span className="font-medium text-foreground">{tx("ZCG")}</span> {tx(" for forward-looking proposals,")}{" "}
+        <span className="font-medium text-foreground">{tx("Coinholder")}</span> {tx(" for Lockbox retroactive (completed work) applications, or")}{" "}
+        <span className="font-medium text-foreground">{tx("ZecHub DAO")}</span> {tx(" for on-chain mini-grants via DAO DAO on Juno. Connect GitHub before submitting ZCG or Coinholder forms.")}</p>
+      <p className="mb-4 text-sm text-muted-foreground sm:mb-6">
+        {tx("Not sure which one fits?")}{" "}
+        <Link href="/find-funding" className="font-medium text-primary hover:underline">
+          {tx("Use the Funding Finder")}</Link>{" "}
+        {tx("or check the")}{" "}
+        <Link href="/retro" className="font-medium text-primary hover:underline">
+          {tx("current retro round dates")}</Link>
+        .
       </p>
 
       <Tabs value={applyTab} onValueChange={setApplyTab} className="w-full">
         <TabsList className="mb-6 grid h-auto w-full max-w-xl grid-cols-3 p-1 sm:w-auto">
           <TabsTrigger value="zcg" className="px-2 py-2 text-xs sm:px-3 sm:text-sm">
-            ZCG
-          </TabsTrigger>
+            {tx("ZCG")}</TabsTrigger>
           <TabsTrigger value="coinholder" className="px-2 py-2 text-xs sm:px-3 sm:text-sm">
-            Coinholder
-          </TabsTrigger>
+            {tx("Coinholder")}</TabsTrigger>
           <TabsTrigger value="zechub" className="px-2 py-2 text-xs sm:px-3 sm:text-sm">
-            ZecHub DAO
-          </TabsTrigger>
+            {tx("ZecHub DAO")}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="zcg" className="mt-0 outline-none focus-visible:ring-0">
           <h2 className="mb-1 text-xl font-semibold text-foreground sm:text-2xl">
-            Zcash Community Grants
-          </h2>
+            {tx("Zcash Community Grants")}</h2>
           {/* <p className="mb-4 text-sm text-muted-foreground sm:mb-6 sm:text-base">
             Forward-looking applications.{" "}
             <Link href="/grants?program=zcg" className="text-primary hover:underline">
@@ -717,7 +706,7 @@ export default function ApplyPage({
                 )}>
                   {i < step ? <Check className="h-3 w-3" /> : i + 1}
                 </div>
-                {label}
+                {tx(label)}
               </button>
             ))}
           </div>
@@ -730,7 +719,7 @@ export default function ApplyPage({
           {step === 0 && (
             <Card className="border-border/50 bg-card">
               <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
-                <CardTitle>Terms & Conditions</CardTitle>
+                <CardTitle>{tx("Terms & Conditions")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 px-4 pb-4 sm:space-y-4 sm:px-6 sm:pb-6">
                 {terms.map((term, i) => (
@@ -739,7 +728,7 @@ export default function ApplyPage({
                     <span className="text-sm text-muted-foreground">{term}</span>
                   </label>
                 ))}
-                <p className="text-xs text-muted-foreground">All terms must be accepted to proceed.</p>
+                <p className="text-xs text-muted-foreground">{tx("All terms must be accepted to proceed.")}</p>
               </CardContent>
             </Card>
           )}
@@ -748,19 +737,19 @@ export default function ApplyPage({
           {step === 1 && (
             <Card className="border-border/50 bg-card">
               <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
-                <CardTitle>Organization</CardTitle>
+                <CardTitle>{tx("Organization")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 px-4 pb-4 sm:space-y-4 sm:px-6 sm:pb-6">
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-foreground">Application Owners (@Octocat, @Octocat1) *</label>
-                  <Input value={formData.github} onChange={e => updateField("github", e.target.value)} placeholder="@owner1, @owner2" className="bg-secondary" />
+                  <label className="mb-1 block text-sm font-medium text-foreground">{tx("Application Owners (@Octocat, @Octocat1) *")}</label>
+                  <Input value={formData.github} onChange={e => updateField("github", e.target.value)} placeholder={tx("@owner1, @owner2")} className="bg-secondary" />
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-foreground">Organization Name</label>
-                  <Input value={formData.org} onChange={e => updateField("org", e.target.value)} placeholder="Your Organization" className="bg-secondary" />
+                  <label className="mb-1 block text-sm font-medium text-foreground">{tx("Organization Name")}</label>
+                  <Input value={formData.org} onChange={e => updateField("org", e.target.value)} placeholder={tx("Your Organization")} className="bg-secondary" />
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-foreground">How did you learn about ZCG?</label>
+                  <label className="mb-1 block text-sm font-medium text-foreground">{tx("How did you learn about ZCG?")}</label>
                   <Textarea value={formData.howLearn} onChange={e => updateField("howLearn", e.target.value)} className="bg-secondary" />
                 </div>
               </CardContent>
@@ -771,25 +760,25 @@ export default function ApplyPage({
           {step === 2 && (
             <Card className="border-border/50 bg-card">
               <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
-                <CardTitle>Project Overview</CardTitle>
+                <CardTitle>{tx("Project Overview")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 px-4 pb-4 sm:space-y-4 sm:px-6 sm:pb-6">
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-foreground">Grant Title *</label>
-                  <Input value={formData.title} onChange={e => updateField("title", e.target.value)} placeholder="Enter your grant title" className="bg-secondary" />
+                  <label className="mb-1 block text-sm font-medium text-foreground">{tx("Grant Title *")}</label>
+                  <Input value={formData.title} onChange={e => updateField("title", e.target.value)} placeholder={tx("Enter your grant title")} className="bg-secondary" />
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-foreground">Requested Amount (USD) *</label>
+                  <label className="mb-1 block text-sm font-medium text-foreground">{tx("Requested Amount (USD) *")}</label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">$</span>
                     <Input type="number" value={formData.amount} onChange={e => updateField("amount", e.target.value)} className="bg-secondary pl-7" />
                   </div>
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-foreground">Category *</label>
+                  <label className="mb-1 block text-sm font-medium text-foreground">{tx("Category *")}</label>
                   <Select value={formData.category} onValueChange={v => updateField("category", v)}>
-                    <SelectTrigger className="bg-secondary"><SelectValue placeholder="Select a category" /></SelectTrigger>
-                    <SelectContent>{categories.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent>
+                    <SelectTrigger className="bg-secondary"><SelectValue placeholder={tx("Select a category")} /></SelectTrigger>
+                    <SelectContent>{categories.map(c => <SelectItem key={c} value={c}>{tx(c)}</SelectItem>)}</SelectContent>
                   </Select>
                 </div>
               </CardContent>
@@ -801,32 +790,31 @@ export default function ApplyPage({
             <div className="space-y-3 sm:space-y-4">
               <Card className="border-border/50 bg-card">
                 <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
-                  <CardTitle>Project Lead</CardTitle>
+                  <CardTitle>{tx("Project Lead")}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3 px-4 pb-4 sm:px-6 sm:pb-6">
-                  <Input placeholder="Name" value={formData.leadName} onChange={e => updateField("leadName", e.target.value)} className="bg-secondary" />
-                  <Input placeholder="Role" value={formData.leadRole} onChange={e => updateField("leadRole", e.target.value)} className="bg-secondary" />
-                  <Textarea placeholder="Background" value={formData.leadBg} onChange={e => updateField("leadBg", e.target.value)} className="bg-secondary" />
-                  <Textarea placeholder="Responsibilities" value={formData.leadResp} onChange={e => updateField("leadResp", e.target.value)} className="bg-secondary" />
+                  <Input placeholder={tx("Name")} value={formData.leadName} onChange={e => updateField("leadName", e.target.value)} className="bg-secondary" />
+                  <Input placeholder={tx("Role")} value={formData.leadRole} onChange={e => updateField("leadRole", e.target.value)} className="bg-secondary" />
+                  <Textarea placeholder={tx("Background")} value={formData.leadBg} onChange={e => updateField("leadBg", e.target.value)} className="bg-secondary" />
+                  <Textarea placeholder={tx("Responsibilities")} value={formData.leadResp} onChange={e => updateField("leadResp", e.target.value)} className="bg-secondary" />
                 </CardContent>
               </Card>
               {teamMembers.map((m, i) => (
                 <Card key={i} className="border-border/50 bg-card">
                   <CardHeader className="flex flex-row items-center justify-between px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
-                    <CardTitle className="text-base">Team Member {i + 1}</CardTitle>
+                    <CardTitle className="text-base">{tx("Team Member ")}{i + 1}</CardTitle>
                     <Button variant="ghost" size="icon" onClick={() => setTeamMembers(prev => prev.filter((_, idx) => idx !== i))}><X className="h-4 w-4" /></Button>
                   </CardHeader>
                   <CardContent className="space-y-3 px-4 pb-4 sm:px-6 sm:pb-6">
-                    <Input placeholder="Name" value={m.name} onChange={e => setTeamMembers(prev => { const n = [...prev]; n[i] = { ...n[i], name: e.target.value }; return n; })} className="bg-secondary" />
-                    <Input placeholder="Role" value={m.role} onChange={e => setTeamMembers(prev => { const n = [...prev]; n[i] = { ...n[i], role: e.target.value }; return n; })} className="bg-secondary" />
-                    <Textarea placeholder="Responsibilities" value={m.resp} onChange={e => setTeamMembers(prev => { const n = [...prev]; n[i] = { ...n[i], resp: e.target.value }; return n; })} className="bg-secondary" />
+                    <Input placeholder={tx("Name")} value={m.name} onChange={e => setTeamMembers(prev => { const n = [...prev]; n[i] = { ...n[i], name: e.target.value }; return n; })} className="bg-secondary" />
+                    <Input placeholder={tx("Role")} value={m.role} onChange={e => setTeamMembers(prev => { const n = [...prev]; n[i] = { ...n[i], role: e.target.value }; return n; })} className="bg-secondary" />
+                    <Textarea placeholder={tx("Responsibilities")} value={m.resp} onChange={e => setTeamMembers(prev => { const n = [...prev]; n[i] = { ...n[i], resp: e.target.value }; return n; })} className="bg-secondary" />
                   </CardContent>
                 </Card>
               ))}
               {teamMembers.length < 6 && (
                 <Button variant="outline" onClick={() => setTeamMembers(prev => [...prev, { name: "", role: "", bg: "", resp: "" }])} className="gap-2">
-                  <Plus className="h-4 w-4" /> Add Team Member
-                </Button>
+                  <Plus className="h-4 w-4" /> {tx(" Add Team Member")}</Button>
               )}
             </div>
           )}
@@ -835,7 +823,7 @@ export default function ApplyPage({
           {step === 4 && (
             <Card className="border-border/50 bg-card">
               <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
-                <CardTitle>Project Details</CardTitle>
+                <CardTitle>{tx("Project Details")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 px-4 pb-4 sm:space-y-4 sm:px-6 sm:pb-6">
                 {[
@@ -844,8 +832,8 @@ export default function ApplyPage({
                   ["techApproach", "Technical Approach *"], ["upstream", "Upstream Merge Opportunities"],
                 ].map(([key, label]) => (
                   <div key={key}>
-                    <label className="mb-1 block text-sm font-medium text-foreground">{label}</label>
-                    <Textarea value={(formData as any)[key]} onChange={e => updateField(key, e.target.value)} className="min-h-[90px] bg-secondary sm:min-h-[100px]" />
+                    <label className="mb-1 block text-sm font-medium text-foreground">{tx(label)}</label>
+                    <Textarea value={formData[key as keyof typeof formData]} onChange={e => updateField(key, e.target.value)} className="min-h-[90px] bg-secondary sm:min-h-[100px]" />
                   </div>
                 ))}
               </CardContent>
@@ -856,61 +844,61 @@ export default function ApplyPage({
           {step === 5 && (
             <Card className="border-border/50 bg-card">
               <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
-                <CardTitle>Budget</CardTitle>
+                <CardTitle>{tx("Budget")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 px-4 pb-4 sm:space-y-4 sm:px-6 sm:pb-6">
                 {[["hardware", "Hardware/Software"], ["services", "Services"], ["compensation", "Compensation"]].map(([key, label]) => (
                   <div key={key}>
-                    <label className="mb-1 block text-sm font-medium text-foreground">{label}</label>
+                    <label className="mb-1 block text-sm font-medium text-foreground">{tx(label)}</label>
                     <div className="relative">
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">$</span>
-                      <Input type="number" value={(formData as any)[key]} onChange={e => updateField(key, e.target.value)} className="bg-secondary pl-7" />
+                      <Input type="number" value={formData[key as keyof typeof formData]} onChange={e => updateField(key, e.target.value)} className="bg-secondary pl-7" />
                     </div>
                   </div>
                 ))}
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-foreground">Hardware/Software Justification</label>
+                  <label className="mb-1 block text-sm font-medium text-foreground">{tx("Hardware/Software Justification")}</label>
                   <Textarea value={formData.hardwareJustification} onChange={e => updateField("hardwareJustification", e.target.value)} className="bg-secondary" />
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-foreground">Service Costs Justification</label>
+                  <label className="mb-1 block text-sm font-medium text-foreground">{tx("Service Costs Justification")}</label>
                   <Textarea value={formData.serviceJustification} onChange={e => updateField("serviceJustification", e.target.value)} className="bg-secondary" />
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-foreground">Compensation Costs Justification</label>
+                  <label className="mb-1 block text-sm font-medium text-foreground">{tx("Compensation Costs Justification")}</label>
                   <Textarea value={formData.compensationJustification} onChange={e => updateField("compensationJustification", e.target.value)} className="bg-secondary" />
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-foreground">Previous Funding</label>
+                  <label className="mb-1 block text-sm font-medium text-foreground">{tx("Previous Funding")}</label>
                   <Select value={formData.prevFunding} onValueChange={v => updateField("prevFunding", v)}>
-                    <SelectTrigger className="bg-secondary"><SelectValue placeholder="Select one" /></SelectTrigger>
+                    <SelectTrigger className="bg-secondary"><SelectValue placeholder={tx("Select one")} /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="yes">Yes</SelectItem>
-                      <SelectItem value="no">No</SelectItem>
+                      <SelectItem value="yes">{tx("Yes")}</SelectItem>
+                      <SelectItem value="no">{tx("No")}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-foreground">Previous Funding Details</label>
+                  <label className="mb-1 block text-sm font-medium text-foreground">{tx("Previous Funding Details")}</label>
                   <Textarea value={formData.prevFundingDetails} onChange={e => updateField("prevFundingDetails", e.target.value)} className="bg-secondary" />
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-foreground">Other Funding Sources</label>
+                  <label className="mb-1 block text-sm font-medium text-foreground">{tx("Other Funding Sources")}</label>
                   <Select value={formData.otherFunding} onValueChange={v => updateField("otherFunding", v)}>
-                    <SelectTrigger className="bg-secondary"><SelectValue placeholder="Select one" /></SelectTrigger>
+                    <SelectTrigger className="bg-secondary"><SelectValue placeholder={tx("Select one")} /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="yes">Yes</SelectItem>
-                      <SelectItem value="no">No</SelectItem>
+                      <SelectItem value="yes">{tx("Yes")}</SelectItem>
+                      <SelectItem value="no">{tx("No")}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-foreground">Other Funding Sources Details</label>
+                  <label className="mb-1 block text-sm font-medium text-foreground">{tx("Other Funding Sources Details")}</label>
                   <Textarea value={formData.otherFundingDetails} onChange={e => updateField("otherFundingDetails", e.target.value)} className="bg-secondary" />
                 </div>
                 <div className="rounded-lg bg-secondary p-3 text-center sm:p-4">
-                  <span className="text-sm text-muted-foreground">Total Budget</span>
-                  <div className="text-2xl font-bold text-primary">${total.toLocaleString()}</div>
+                  <span className="text-sm text-muted-foreground">{tx("Total Budget")}</span>
+                  <div className="text-2xl font-bold text-primary">${total.toLocaleString(uiLocale)}</div>
                 </div>
               </CardContent>
             </Card>
@@ -922,10 +910,10 @@ export default function ApplyPage({
               {[["implRisks", "Implementation Risks"], ["sideEffects", "Potential Side Effects"], ["successMetrics", "Success Metrics"]].map(([key, label]) => (
                 <Card key={key} className="border-border/50 bg-card">
                   <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
-                    <CardTitle className="text-sm">{label}</CardTitle>
+                    <CardTitle className="text-sm">{tx(label)}</CardTitle>
                   </CardHeader>
                   <CardContent className="px-4 pb-4 sm:px-6 sm:pb-6">
-                    <Textarea value={(formData as any)[key]} onChange={e => updateField(key, e.target.value)} className="min-h-[100px] bg-secondary sm:min-h-[120px]" />
+                    <Textarea value={formData[key as keyof typeof formData]} onChange={e => updateField(key, e.target.value)} className="min-h-[100px] bg-secondary sm:min-h-[120px]" />
                   </CardContent>
                 </Card>
               ))}
@@ -937,13 +925,13 @@ export default function ApplyPage({
             <div className="space-y-3 sm:space-y-4">
               <Card className="border-border/50 bg-card">
                 <CardContent className="px-4 py-3 sm:px-6 sm:py-5">
-                  <label className="mb-1 block text-sm font-medium text-foreground">Startup Funding</label>
+                  <label className="mb-1 block text-sm font-medium text-foreground">{tx("Startup Funding")}</label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">$</span>
                     <Input type="number" value={formData.startupAmount} onChange={e => updateField("startupAmount", e.target.value)} className="bg-secondary pl-7" />
                   </div>
                   <div className="mt-3">
-                    <label className="mb-1 block text-sm font-medium text-foreground">Startup Funding Justification</label>
+                    <label className="mb-1 block text-sm font-medium text-foreground">{tx("Startup Funding Justification")}</label>
                     <Textarea value={formData.startupJustification} onChange={e => updateField("startupJustification", e.target.value)} className="bg-secondary" />
                   </div>
                 </CardContent>
@@ -951,32 +939,32 @@ export default function ApplyPage({
               {milestones.map((m, i) => (
                 <Card key={i} className="border-border/50 bg-card">
                   <CardHeader className="flex flex-row items-center justify-between px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
-                    <CardTitle className="text-base">Milestone {i + 1}</CardTitle>
+                    <CardTitle className="text-base">{tx("Milestone ")}{i + 1}</CardTitle>
                     <Button variant="ghost" size="icon" onClick={() => removeMilestone(i)}><X className="h-4 w-4" /></Button>
                   </CardHeader>
                   <CardContent className="space-y-3 px-4 pb-4 sm:px-6 sm:pb-6">
                     <div className="grid gap-3 sm:grid-cols-2">
                       <div>
-                        <label className="mb-1 block text-xs text-muted-foreground">Amount (USD)</label>
+                        <label className="mb-1 block text-xs text-muted-foreground">{tx("Amount (USD)")}</label>
                         <Input type="number" value={m.amount} onChange={e => setMilestones(prev => { const n = [...prev]; n[i] = { ...n[i], amount: e.target.value }; return n; })} className="bg-secondary" />
                       </div>
                       <div>
-                        <label className="mb-1 block text-xs text-muted-foreground">Expected Completion</label>
+                        <label className="mb-1 block text-xs text-muted-foreground">{tx("Expected Completion")}</label>
                         <Input type="date" value={m.date} onChange={e => setMilestones(prev => { const n = [...prev]; n[i] = { ...n[i], date: e.target.value }; return n; })} className="bg-secondary" />
                       </div>
                     </div>
                     <div>
-                      <label className="mb-1 block text-xs text-muted-foreground">Acceptance Criteria</label>
+                      <label className="mb-1 block text-xs text-muted-foreground">{tx("Acceptance Criteria")}</label>
                       <Textarea value={m.criteria} onChange={e => setMilestones(prev => { const n = [...prev]; n[i] = { ...n[i], criteria: e.target.value }; return n; })} className="bg-secondary" />
                     </div>
                     <div>
-                      <label className="mb-1 block text-xs text-muted-foreground">User Stories</label>
+                      <label className="mb-1 block text-xs text-muted-foreground">{tx("User Stories")}</label>
                       <div className="space-y-2">
                         {m.stories.map((story, storyIdx) => (
                           <div key={storyIdx} className="flex items-center gap-2">
                             <Input
                               value={story}
-                              placeholder='As a [type of user], I want [some goal], so that [some reason]'
+                              placeholder={tx("As a [type of user], I want [some goal], so that [some reason]")}
                               onChange={e => setMilestones(prev => { const n = [...prev]; const stories = [...n[i].stories]; stories[storyIdx] = e.target.value; n[i] = { ...n[i], stories }; return n; })}
                               className="bg-secondary"
                             />
@@ -988,18 +976,17 @@ export default function ApplyPage({
                           </div>
                         ))}
                         <Button type="button" variant="outline" size="sm" onClick={() => addStory(i)} className="gap-2">
-                          <Plus className="h-3.5 w-3.5" /> Add User Story
-                        </Button>
+                          <Plus className="h-3.5 w-3.5" /> {tx(" Add User Story")}</Button>
                       </div>
                     </div>
                     <div>
-                      <label className="mb-1 block text-xs text-muted-foreground">Deliverables</label>
+                      <label className="mb-1 block text-xs text-muted-foreground">{tx("Deliverables")}</label>
                       <div className="space-y-2">
                         {m.deliverables.map((deliverable, deliverableIdx) => (
                           <div key={deliverableIdx} className="flex items-center gap-2">
                             <Input
                               value={deliverable}
-                              placeholder="[List specific deliverables that fulfill the user stories]"
+                              placeholder={tx("[List specific deliverables that fulfill the user stories]")}
                               onChange={e => setMilestones(prev => { const n = [...prev]; const deliverables = [...n[i].deliverables]; deliverables[deliverableIdx] = e.target.value; n[i] = { ...n[i], deliverables }; return n; })}
                               className="bg-secondary"
                             />
@@ -1011,16 +998,14 @@ export default function ApplyPage({
                           </div>
                         ))}
                         <Button type="button" variant="outline" size="sm" onClick={() => addDeliverable(i)} className="gap-2">
-                          <Plus className="h-3.5 w-3.5" /> Add Deliverable
-                        </Button>
+                          <Plus className="h-3.5 w-3.5" /> {tx(" Add Deliverable")}</Button>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
               ))}
               <Button variant="outline" onClick={addMilestone} className="gap-2">
-                <Plus className="h-4 w-4" /> Add Milestone
-              </Button>
+                <Plus className="h-4 w-4" /> {tx(" Add Milestone")}</Button>
             </div>
           )}
 
@@ -1028,26 +1013,25 @@ export default function ApplyPage({
           {step === 8 && (
             <Card className="border-border/50 bg-card">
               <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
-                <CardTitle>Supporting Documents</CardTitle>
+                <CardTitle>{tx("Supporting Documents")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 px-4 pb-4 sm:space-y-4 sm:px-6 sm:pb-6">
                 <div className="flex items-center justify-center rounded-lg border-2 border-dashed border-border bg-secondary/50 p-6 sm:p-10">
                   <div className="text-center">
                     <Upload className="mx-auto mb-2 h-7 w-7 text-muted-foreground sm:h-8 sm:w-8" />
-                    <p className="text-sm text-muted-foreground">Drag & drop files or click to upload</p>
+                    <p className="text-sm text-muted-foreground">{tx("Drag & drop files or click to upload")}</p>
                   </div>
                 </div>
                 {documents.map((d, i) => (
                   <div key={i} className="flex items-center gap-2">
-                    <Input placeholder="Name" value={d.name} onChange={e => setDocuments(prev => { const n = [...prev]; n[i] = { ...n[i], name: e.target.value }; return n; })} className="bg-secondary" />
-                    <Input placeholder="URL" value={d.url} onChange={e => setDocuments(prev => { const n = [...prev]; n[i] = { ...n[i], url: e.target.value }; return n; })} className="bg-secondary" />
-                    <Input placeholder="Description" value={d.desc} onChange={e => setDocuments(prev => { const n = [...prev]; n[i] = { ...n[i], desc: e.target.value }; return n; })} className="bg-secondary" />
+                    <Input placeholder={tx("Name")} value={d.name} onChange={e => setDocuments(prev => { const n = [...prev]; n[i] = { ...n[i], name: e.target.value }; return n; })} className="bg-secondary" />
+                    <Input placeholder={tx("URL")} value={d.url} onChange={e => setDocuments(prev => { const n = [...prev]; n[i] = { ...n[i], url: e.target.value }; return n; })} className="bg-secondary" />
+                    <Input placeholder={tx("Description")} value={d.desc} onChange={e => setDocuments(prev => { const n = [...prev]; n[i] = { ...n[i], desc: e.target.value }; return n; })} className="bg-secondary" />
                     <Button variant="ghost" size="icon" onClick={() => setDocuments(prev => prev.filter((_, idx) => idx !== i))}><X className="h-4 w-4" /></Button>
                   </div>
                 ))}
                 <Button variant="outline" onClick={() => setDocuments(prev => [...prev, { name: "", url: "", desc: "" }])} className="gap-2">
-                  <Plus className="h-4 w-4" /> Add URL
-                </Button>
+                  <Plus className="h-4 w-4" /> {tx(" Add URL")}</Button>
               </CardContent>
             </Card>
           )}
@@ -1056,24 +1040,28 @@ export default function ApplyPage({
           {step === 9 && (
             <Card className="border-border/50 bg-card">
               <CardHeader className="px-4 pb-2 pt-4 sm:px-6 sm:pt-6">
-                <CardTitle>Review & Submit</CardTitle>
+                <CardTitle>{tx("Review & Submit")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 px-4 pb-4 sm:space-y-6 sm:px-6 sm:pb-6">
                 <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
-                  <div><span className="text-xs text-muted-foreground">Title</span><p className="font-medium text-foreground">{formData.title || "—"}</p></div>
-                  <div><span className="text-xs text-muted-foreground">Amount</span><p className="font-medium text-primary">${Number(formData.amount).toLocaleString() || "—"}</p></div>
-                  <div><span className="text-xs text-muted-foreground">Category</span><p className="font-medium text-foreground">{formData.category || "—"}</p></div>
-                  <div><span className="text-xs text-muted-foreground">Project Lead</span><p className="font-medium text-foreground">{formData.leadName || "—"}</p></div>
+                  <div><span className="text-xs text-muted-foreground">{tx("Title")}</span><p className="font-medium text-foreground">{formData.title || "—"}</p></div>
+                  <div><span className="text-xs text-muted-foreground">{tx("Amount")}</span><p className="font-medium text-primary">{tx(formData.amount && Number.isFinite(Number(formData.amount)) ? `$${Number(formData.amount).toLocaleString(uiLocale)}` : "—")}</p></div>
+                  <div><span className="text-xs text-muted-foreground">{tx("Category")}</span><p className="font-medium text-foreground">{formData.category || "—"}</p></div>
+                  <div><span className="text-xs text-muted-foreground">{tx("Project Lead")}</span><p className="font-medium text-foreground">{formData.leadName || "—"}</p></div>
                 </div>
-                <div><span className="text-xs text-muted-foreground">Summary</span><p className="text-sm text-muted-foreground">{formData.summary || "—"}</p></div>
+                <div><span className="text-xs text-muted-foreground">{tx("Summary")}</span><p className="text-sm text-muted-foreground">{formData.summary || "—"}</p></div>
                 <div className="rounded-lg bg-secondary p-3 text-center sm:p-4">
-                  <span className="text-sm text-muted-foreground">Total Budget</span>
-                  <div className="text-2xl font-bold text-primary">${total.toLocaleString()}</div>
-                  <span className="text-xs text-muted-foreground">{milestones.length} milestones</span>
+                  <span className="text-sm text-muted-foreground">{tx("Total Budget")}</span>
+                  <div className="text-2xl font-bold text-primary">${total.toLocaleString(uiLocale)}</div>
+                  <span className="text-xs text-muted-foreground">{milestones.length} {tx(" milestones")}</span>
                 </div>
+                <PreflightPanel
+                  draft={{ formData, milestones, teamMembers }}
+                  onGoToStep={setStep}
+                />
                 <label className="flex cursor-pointer items-center gap-3">
                   <Checkbox checked={confirmed} onCheckedChange={() => setConfirmed(!confirmed)} />
-                  <span className="text-sm text-foreground">I confirm all information is accurate</span>
+                  <span className="text-sm text-foreground">{tx("I confirm all information is accurate")}</span>
                 </label>
                 <Button
                   size="lg"
@@ -1081,10 +1069,10 @@ export default function ApplyPage({
                   className="w-full gap-2 bg-primary font-semibold text-primary-foreground"
                   onClick={() => void handleSubmitToGitHub()}
                 >
-                  <FileText className="h-4 w-4" /> {isSubmitting ? "Submitting..." : "Submit Grant Application"}
+                  <FileText className="h-4 w-4" /> {tx(isSubmitting ? "Submitting..." : "Submit Grant Application")}
                 </Button>
                 {submitError && (
-                  <p className="text-sm text-destructive">{submitError}</p>
+                  <p className="text-sm text-destructive">{tx(submitError)}</p>
                 )}
                 <Button
                   type="button"
@@ -1093,8 +1081,7 @@ export default function ApplyPage({
                   disabled={!confirmed || !allTermsAccepted}
                   onClick={handleSubmitRealDraftToGitHub}
                 >
-                  <FileText className="h-4 w-4" /> Create Draft Grant Application
-                </Button>
+                  <FileText className="h-4 w-4" /> {tx(" Create Draft Grant Application")}</Button>
               </CardContent>
             </Card>
           )}
@@ -1109,23 +1096,21 @@ export default function ApplyPage({
               className="gap-1 text-muted-foreground"
               onClick={handleSaveDraft}
             >
-              <Save className="h-3.5 w-3.5" /> Save Draft
-            </Button>
+              <Save className="h-3.5 w-3.5" /> {tx(" Save Draft")}</Button>
             <div className="flex gap-2 sm:gap-3">
               {step > 0 && (
                 <Button variant="outline" onClick={() => setStep(step - 1)} className="gap-1">
-                  <ChevronLeft className="h-4 w-4" /> Back
-                </Button>
+                  <ChevronLeft className="h-4 w-4" /> {tx(" Back")}</Button>
               )}
               {step < 9 && (
                 <Button onClick={() => setStep(step + 1)} disabled={step === 0 && !allTermsAccepted} className="gap-1 bg-primary text-primary-foreground">
-                  Continue <ChevronRight className="h-4 w-4" />
+                  {tx("Continue ")}<ChevronRight className="h-4 w-4" />
                 </Button>
               )}
             </div>
             </div>
             {draftNotice && applyTab === "zcg" && (
-              <p className="text-xs text-muted-foreground">{draftNotice}</p>
+              <p className="text-xs text-muted-foreground">{tx(draftNotice)}</p>
             )}
           </div>
         </div>
@@ -1138,39 +1123,30 @@ export default function ApplyPage({
 
         <TabsContent value="zechub" className="mt-0 outline-none focus-visible:ring-0">
           <h2 className="mb-1 text-xl font-semibold text-foreground sm:text-2xl">
-            ZecHub DAO (on-chain)
-          </h2>
+            {tx("ZecHub DAO (on-chain)")}</h2>
           <p className="mb-6 max-w-2xl text-sm text-muted-foreground sm:text-base">
-            ZecHub mini-grants and governance run on{" "}
-            <span className="font-medium text-foreground/90">DAO DAO</span> on{" "}
-            <span className="font-medium text-foreground/90">Juno</span>. You do not file a
-            GitHub issue here—connect a wallet on DAO DAO to create proposals, vote when voting
-            is open, and follow execution there.
-          </p>
+            {tx("ZecHub mini-grants and governance run on")}{" "}
+            <span className="font-medium text-foreground/90">{tx("DAO DAO")}</span> {tx(" on")}{" "}
+            <span className="font-medium text-foreground/90">{tx("Juno")}</span>{tx(". You do not file a GitHub issue here—connect a wallet on DAO DAO to create proposals, vote when voting is open, and follow execution there.")}</p>
 
           <div className="grid gap-4 md:grid-cols-2">
             <Card className="border-border/50 bg-card">
               <CardHeader className="pb-2">
-                <CardTitle className="text-base">Create a proposal</CardTitle>
+                <CardTitle className="text-base">{tx("Create a proposal")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 text-sm text-muted-foreground">
                 <p>
-                  Open the official proposal builder, draft your title and description (markdown
-                  supported), add actions such as spends or contract messages, then submit and sign
-                  with your Juno wallet.
-                </p>
+                  {tx("Open the official proposal builder, draft your title and description (markdown supported), add actions such as spends or contract messages, then submit and sign with your Juno wallet.")}</p>
                 <div className="flex flex-wrap gap-2">
                   <Button className="gap-2" asChild>
                     <a href={zechubCreateUrl} target="_blank" rel="noopener noreferrer">
                       <FileEdit className="h-4 w-4" />
-                      Create proposal on DAO DAO
-                    </a>
+                      {tx("Create proposal on DAO DAO")}</a>
                   </Button>
                   <Button variant="outline" size="sm" className="gap-2" asChild>
                     <a href={zechubDaoUrl} target="_blank" rel="noopener noreferrer">
                       <Scale className="h-4 w-4" />
-                      Open ZecHub DAO
-                    </a>
+                      {tx("Open ZecHub DAO")}</a>
                   </Button>
                 </div>
               </CardContent>
@@ -1178,23 +1154,20 @@ export default function ApplyPage({
 
             <Card className="border-border/50 bg-card">
               <CardHeader className="pb-2">
-                <CardTitle className="text-base">Browse & vote</CardTitle>
+                <CardTitle className="text-base">{tx("Browse & vote")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 text-sm text-muted-foreground">
                 <p>
-                  This hub lists proposals from the DAO DAO indexer. Use{" "}
-                  <span className="font-medium text-foreground/90">Vote on DAO DAO</span> on a
-                  proposal when its status is open for voting.
-                </p>
+                  {tx("This hub lists proposals from the DAO DAO indexer. Use")}{" "}
+                  <span className="font-medium text-foreground/90">{tx("Vote on DAO DAO")}</span> {tx(" on a proposal when its status is open for voting.")}</p>
                 <div className="flex flex-wrap gap-2">
                   <Button variant="outline" className="gap-2" asChild>
-                    <Link href="/zechub/proposals">Browse ZecHub proposals</Link>
+                    <Link href="/zechub/proposals">{tx("Browse ZecHub proposals")}</Link>
                   </Button>
                   <Button variant="outline" size="sm" className="gap-2" asChild>
                     <a href={zechubDaoUrl} target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="h-4 w-4" />
-                      DAO DAO UI
-                    </a>
+                      {tx("DAO DAO UI")}</a>
                   </Button>
                 </div>
               </CardContent>
@@ -1203,14 +1176,13 @@ export default function ApplyPage({
 
           <Card className="mt-4 border-border/50 bg-card">
             <CardHeader className="pb-2">
-              <CardTitle className="text-base">Learn more</CardTitle>
+              <CardTitle className="text-base">{tx("Learn more")}</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-3 text-sm text-muted-foreground sm:flex-row sm:flex-wrap sm:items-center">
               <Button variant="outline" size="sm" className="w-fit gap-2" asChild>
                 <Link href="/zechub/proposals/guide">
                   <BookOpen className="h-4 w-4" />
-                  How to create proposals & vote
-                </Link>
+                  {tx("How to create proposals & vote")}</Link>
               </Button>
               <a
                 href="https://zechub.wiki/dao"
@@ -1218,16 +1190,14 @@ export default function ApplyPage({
                 rel="noopener noreferrer"
                 className="w-fit text-primary underline-offset-2 hover:underline"
               >
-                ZecHub DAO docs (wiki)
-              </a>
+                {tx("ZecHub DAO docs (wiki)")}</a>
               <a
                 href="https://docs.daodao.zone/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-fit text-primary underline-offset-2 hover:underline"
               >
-                DAO DAO documentation
-              </a>
+                {tx("DAO DAO documentation")}</a>
             </CardContent>
           </Card>
         </TabsContent>
@@ -1239,25 +1209,18 @@ export default function ApplyPage({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Manual Check Needed Before Final GitHub Submit</AlertDialogTitle>
+            <AlertDialogTitle>{tx("Manual Check Needed Before Final GitHub Submit")}</AlertDialogTitle>
             <AlertDialogDescription>
-              GitHub issue-form interactive controls can behave differently from API-created markdown.
-              Please review these fields manually on the opened GitHub issue page:
-              {"\n"}- Terms and Conditions checkboxes
-              {"\n"}- Category (dropdown value)
-              {"\n"}- Previous Funding (Yes/No dropdown)
-              {"\n"}- Other Funding Sources (Yes/No dropdown)
-            </AlertDialogDescription>
+              {tx("GitHub issue-form interactive controls can behave differently from API-created markdown. Please review these fields manually on the opened GitHub issue page:")}{"\n"}{tx("- Terms and Conditions checkboxes")}{"\n"}{tx("- Category (dropdown value)")}{"\n"}{tx("- Previous Funding (Yes/No dropdown)")}{"\n"}{tx("- Other Funding Sources (Yes/No dropdown)")}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{tx("Cancel")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
                 submitRealDraftToGitHub();
               }}
             >
-              Continue and Create Draft
-            </AlertDialogAction>
+              {tx("Continue and Create Draft")}</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
