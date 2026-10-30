@@ -70,9 +70,16 @@
     --sidebar-accent-foreground: 222 47% 11%;
     --sidebar-border: 214 32% 90%;
     --sidebar-ring: 40 90% 56%;
+
+    /* Data-viz categorical slots (validated for this surface; see dataviz palette) */
+    --viz-series-1: #2a78d6;
+    --viz-series-2: #eb6834;
   }
 
   .dark {
+    --viz-series-1: #3987e5;
+    --viz-series-2: #d95926;
+
     --background: 222 47% 6%;
     --foreground: 210 40% 98%;
 
