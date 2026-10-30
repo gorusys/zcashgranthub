@@ -213,3 +213,67 @@ export function findSimilarGrants(
   }
   return scored.sort((a, b) => b.score - a.score).slice(0, limit);
 }
+
+// ---------------------------------------------------------------------------
+// Cost benchmarks
+// ---------------------------------------------------------------------------
+
+export interface CostBenchmark {
+  category: string;
+  sinceIso: string;
+  funded: { n: number; median: number };
+  declined: { n: number; median: number };
+}
+
+const FUNDED = new Set(["APPROVED", "ACTIVE", "COMPLETED"]);
+const MIN_SAMPLE = 5;
+
+function median(xs: number[]): number {
+  const s = [...xs].sort((a, b) => a - b);
+  const mid = Math.floor(s.length / 2);
+  return s.length % 2 ? s[mid] : (s[mid - 1] + s[mid]) / 2;
+}
+
+/**
+ * Median requested amounts for ZCG grants in a category over the last
+ * `months`, split by funded vs declined. Null when the sample is too small.
+ */
+export function costBenchmark(
+  grants: Grant[],
+  category: string,
+  now: Date = new Date(),
+  months = 24
+): CostBenchmark | null {
+  if (!category) return null;
+  const since = new Date(now);
+  since.setUTCMonth(since.getUTCMonth() - months);
+  const sinceIso = since.toISOString();
+  const pool = grants.filter(
+    (g) => g.program === "zcg" && g.category === category && g.amount > 0 && g.submittedDate >= sinceIso
+  );
+  const funded = pool.filter((g) => FUNDED.has(g.status)).map((g) => g.amount);
+  const declined = pool.filter((g) => g.status === "REJECTED").map((g) => g.amount);
+  if (funded.length < MIN_SAMPLE) return null;
+  return {
+    category,
+    sinceIso,
+    funded: { n: funded.length, median: median(funded) },
+    declined: { n: declined.length, median: declined.length ? median(declined) : 0 },
+  };
+}
+
+/** Advisory check comparing the request to the funded median for its category. */
+export function benchmarkCheck(b: CostBenchmark | null, requested: number): PreflightCheck | null {
+  if (!b || requested <= 0) return null;
+  const ratio = requested / b.funded.median;
+  const base = `Funded ${b.category} grants in the last two years had a median request of ${usd(b.funded.median)} (${b.funded.n} grants)`;
+  if (ratio >= 3) {
+    return {
+      id: "benchmark-high",
+      level: "warning",
+      message: `${base}; yours is ${ratio.toFixed(1)}× that. Explain the scope, or split it into phases.`,
+      step: STEP.budget,
+    };
+  }
+  return { id: "benchmark", level: "info", message: `${base}. Yours: ${usd(requested)}.` };
+}

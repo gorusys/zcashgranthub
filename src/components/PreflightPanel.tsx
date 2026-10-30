@@ -6,6 +6,8 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { useGrants } from "@/hooks/useGrants";
 import { programLabel } from "@/lib/grantPrograms";
 import {
+  benchmarkCheck,
+  costBenchmark,
   findSimilarGrants,
   preflightZcg,
   type CheckLevel,
@@ -18,6 +20,8 @@ const ICON: Record<CheckLevel, JSX.Element> = {
   info: <Info className="h-4 w-4 shrink-0 text-muted-foreground" />,
 };
 
+const LEVEL_RANK: Record<CheckLevel, number> = { error: 0, warning: 1, info: 2 };
+
 export function PreflightPanel({
   draft,
   onGoToStep,
@@ -25,11 +29,19 @@ export function PreflightPanel({
   draft: Pick<ZcgApplyDraftPayload, "formData" | "milestones" | "teamMembers">;
   onGoToStep: (step: number) => void;
 }) {
-  const checks = useMemo(() => preflightZcg(draft), [draft]);
+  const { data: grants = [] } = useGrants();
+  const checks = useMemo(() => {
+    const out = preflightZcg(draft);
+    const bench = benchmarkCheck(
+      costBenchmark(grants, draft.formData.category ?? ""),
+      Number(draft.formData.amount) || 0
+    );
+    if (!bench) return out;
+    return [...out, bench].sort((a, b) => LEVEL_RANK[a.level] - LEVEL_RANK[b.level]);
+  }, [draft, grants]);
   const errors = checks.filter((c) => c.level === "error").length;
   const warnings = checks.filter((c) => c.level === "warning").length;
 
-  const { data: grants = [] } = useGrants();
   const similar = useMemo(
     () =>
       findSimilarGrants(

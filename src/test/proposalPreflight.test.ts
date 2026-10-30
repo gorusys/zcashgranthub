@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 import type { Grant } from "@/data/grantTypes";
-import { findSimilarGrants, preflightZcg } from "@/lib/proposalPreflight";
+import {
+  benchmarkCheck,
+  costBenchmark,
+  findSimilarGrants,
+  preflightZcg,
+} from "@/lib/proposalPreflight";
 
 const today = new Date("2026-10-30T00:00:00Z");
 
@@ -104,5 +109,32 @@ describe("findSimilarGrants", () => {
 
   it("returns nothing for an empty draft", () => {
     expect(findSimilarGrants({ title: "", summary: "" }, grants)).toEqual([]);
+  });
+});
+
+describe("cost benchmarks", () => {
+  const now = new Date("2026-10-30T00:00:00Z");
+  const mk = (amount: number, status: string, category = "Wallets", date = "2026-01-01T00:00:00Z", program = "zcg") =>
+    ({ amount, status, category, submittedDate: date, program }) as unknown as Grant;
+
+  it("needs at least five funded grants in the category", () => {
+    expect(costBenchmark([mk(1000, "APPROVED")], "Wallets", now)).toBeNull();
+  });
+
+  it("computes medians for funded and declined, ignoring other programs, categories and old grants", () => {
+    const grants = [
+      ...[10, 20, 30, 40, 50].map((k) => mk(k * 1000, "COMPLETED")),
+      mk(90000, "REJECTED"),
+      mk(70000, "REJECTED"),
+      mk(999999, "APPROVED", "Media"),
+      mk(999999, "APPROVED", "Wallets", "2020-01-01T00:00:00Z"),
+      mk(999999, "APPROVED", "Wallets", "2026-01-01T00:00:00Z", "coinholder"),
+    ];
+    const b = costBenchmark(grants, "Wallets", now)!;
+    expect(b.funded).toEqual({ n: 5, median: 30000 });
+    expect(b.declined).toEqual({ n: 2, median: 80000 });
+    expect(benchmarkCheck(b, 100000)!.level).toBe("warning");
+    expect(benchmarkCheck(b, 25000)!.level).toBe("info");
+    expect(benchmarkCheck(null, 25000)).toBeNull();
   });
 });
