@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { NextRouter } from "next/router";
 import { useRouter } from "next/router";
-import { Bell, Github, Menu, Minus, TrendingDown, TrendingUp, X } from "lucide-react";
+import { Bell, Github, Heart, Menu, Minus, TrendingDown, TrendingUp, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -235,6 +235,18 @@ export function Navbar() {
         <div className="flex items-center gap-2 sm:gap-3">
           <ZecPricePill state={zecPrice} className="hidden lg:flex" />
 
+          <Button
+            variant={router.pathname === "/donate" ? "secondary" : "ghost"}
+            size="sm"
+            className="hidden h-9 gap-1.5 text-primary hover:text-primary md:flex"
+            asChild
+          >
+            <Link href="/donate">
+              <Heart className="h-4 w-4" />
+              Donate
+            </Link>
+          </Button>
+
           <ThemeToggle className="h-9 w-9 text-muted-foreground" />
 
           <UpdatesMenu />
@@ -291,6 +303,18 @@ export function Navbar() {
                 {link.label}
               </Link>
             ))}
+
+            <Link
+              href="/donate"
+              className={`flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
+                router.pathname === "/donate"
+                  ? "bg-primary/10 text-primary"
+                  : "text-primary hover:bg-secondary"
+              }`}
+            >
+              <Heart className="h-4 w-4" />
+              Donate & contribute
+            </Link>
 
             <ZecPricePill state={zecPrice} className="mt-1 w-full justify-between px-3 py-2" />
 
