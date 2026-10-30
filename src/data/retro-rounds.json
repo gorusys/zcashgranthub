@@ -1,0 +1,80 @@
+{
+  "$comment": "Coinholder-Directed Retroactive Grants Program (ZIP 1016) round schedule, copied from FPF/organizer forum announcements. Times are UTC. When FPF posts a new schedule, add a round here and cite the post in `sources`.",
+  "rounds": [
+    {
+      "id": "q4-2025",
+      "label": "Q4 2025",
+      "status": "scheduled",
+      "submissionsOpen": "2025-09-08T00:00:00Z",
+      "submissionDeadline": "2025-10-12T23:59:00Z",
+      "reviewStart": "2025-10-13T00:00:00Z",
+      "reviewEnd": "2025-11-12T23:59:00Z",
+      "votingStart": "2025-11-13T00:00:00Z",
+      "votingEnd": "2025-11-25T23:59:00Z",
+      "resultsUrl": "https://forum.zcashcommunity.com/t/53487",
+      "sources": [
+        "https://forum.zcashcommunity.com/t/52107",
+        "https://forum.zcashcommunity.com/t/53110"
+      ]
+    },
+    {
+      "id": "q1-2026",
+      "label": "Q1 2026",
+      "status": "scheduled",
+      "submissionsOpen": "2026-01-09T00:00:00Z",
+      "submissionDeadline": "2026-02-15T23:59:00Z",
+      "reviewStart": "2026-02-16T00:00:00Z",
+      "reviewEnd": "2026-03-17T23:59:00Z",
+      "votingStart": "2026-03-19T00:00:00Z",
+      "votingEnd": "2026-04-01T23:59:00Z",
+      "resultsUrl": "https://forum.zcashcommunity.com/t/55048",
+      "sources": [
+        "https://forum.zcashcommunity.com/t/54208",
+        "https://forum.zcashcommunity.com/t/55048"
+      ]
+    },
+    {
+      "id": "q2-2026",
+      "label": "Q2 2026",
+      "status": "postponed",
+      "note": "Vote cancelled; Q2 submissions carried forward into the Q3 2026 round.",
+      "submissionsOpen": "2026-04-13T00:00:00Z",
+      "sources": [
+        "https://forum.zcashcommunity.com/t/55328",
+        "https://forum.zcashcommunity.com/t/55701"
+      ]
+    },
+    {
+      "id": "q3-2026",
+      "label": "Q3 2026",
+      "status": "scheduled",
+      "submissionsOpen": "2026-07-31T00:00:00Z",
+      "submissionDeadline": "2026-08-14T20:00:00Z",
+      "reviewStart": "2026-08-17T00:00:00Z",
+      "reviewEnd": "2026-09-16T20:00:00Z",
+      "votingStart": "2026-09-17T00:00:00Z",
+      "votingEnd": "2026-09-29T20:00:00Z",
+      "resultsUrl": "https://forum.zcashcommunity.com/t/57909",
+      "sources": [
+        "https://forum.zcashcommunity.com/t/56606",
+        "https://forum.zcashcommunity.com/t/56885"
+      ]
+    },
+    {
+      "id": "q4-2026",
+      "label": "Q4 2026",
+      "status": "scheduled",
+      "note": "Dates announced by FPF, subject to minor adjustments.",
+      "submissionsOpen": "2026-10-30T00:00:00Z",
+      "submissionDeadline": "2026-11-13T20:00:00Z",
+      "reviewStart": "2026-11-16T00:00:00Z",
+      "reviewEnd": "2026-12-16T20:00:00Z",
+      "votingStart": "2026-12-17T00:00:00Z",
+      "votingEnd": "2026-12-29T20:00:00Z",
+      "sources": [
+        "https://forum.zcashcommunity.com/t/56606",
+        "https://forum.zcashcommunity.com/t/57909"
+      ]
+    }
+  ]
+}

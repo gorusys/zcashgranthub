@@ -31,6 +31,7 @@ const STATUSES: GrantStatus[] = [
   "ACTIVE",
   "COMPLETED",
   "REJECTED",
+  "WITHDRAWN",
 ];
 
 const CATEGORIES: GrantCategory[] = [

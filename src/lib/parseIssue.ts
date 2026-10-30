@@ -122,6 +122,7 @@ export function labelToStatus(
 
   if (
     has("rejected") ||
+    has("vetoed") ||
     has("declined") ||
     has("does not meet criteria") ||
     has("not meet criteria")
@@ -134,15 +135,17 @@ export function labelToStatus(
 
   /** Lockbox / Coinholder repo label workflow */
   if (program === "coinholder") {
+    if (has("past deadline")) return "WITHDRAWN";
     if (has("funds disbursed")) return "COMPLETED";
     if (has("approved by coinholders"))
       return "APPROVED";
+    // Closed without a coinholder decision: withdrawn, duplicate, or never voted.
+    if (state === "closed") return "WITHDRAWN";
     if (
       has("ready for vote") ||
       has("all steps completed")
     )
       return "COMMUNITY_REVIEW";
-    if (state === "closed") return "COMPLETED";
     return "PENDING_REVIEW";
   }
 
@@ -311,6 +314,7 @@ export function parseIssueToGrant(
     program: ctx.program,
     sourceRepo: ctx.sourceRepo,
     issueNumber: issue.number,
+    labels: issue.labels.map((l) => l.name),
     title,
     applicant: issue.user.login,
     applicantAvatar: issue.user.avatar_url,

@@ -141,6 +141,11 @@ const navLinks: NavLink[] = [
     active: (r) => r.pathname === "/grants" && r.query.program === "coinholder",
   },
   {
+    label: "Retro Rounds",
+    href: "/retro",
+    active: (r) => r.pathname === "/retro",
+  },
+  {
     label: "ZecHub DAO",
     href: "/zechub/proposals",
     active: (r) => r.pathname.startsWith("/zechub/proposals"),
