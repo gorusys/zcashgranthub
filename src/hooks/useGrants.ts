@@ -1,57 +1,41 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  fetchAllGrantIssuesWithMeta,
-  fetchGrantIssue,
-  fetchIssueComments,
-} from "@/lib/github";
-import { parseIssueToGrant } from "@/lib/parseIssue";
 import type { Grant } from "@/data/grantTypes";
-import {
-  getGrantRepoConfigs,
-  parseGrantRouteId,
-} from "@/lib/grantPrograms";
+import type { GrantsSnapshot } from "@/lib/server/grantsStore";
 
-/** Fetch and parse all grant applications from GitHub Issues. */
+async function getJson<T>(url: string): Promise<T> {
+  const res = await fetch(url);
+  const body = await res.json().catch(() => null);
+  if (!res.ok) {
+    const msg =
+      body && typeof body.error === "string"
+        ? body.error
+        : `Request failed (${res.status})`;
+    throw new Error(msg);
+  }
+  return body as T;
+}
+
+/** All grant applications (ZCG + Coinholder), from the server-side snapshot. */
 export function useGrants() {
   return useQuery<Grant[], Error>({
     queryKey: ["grants", "multi-repo"],
-    queryFn: async () => {
-      const metas = await fetchAllGrantIssuesWithMeta();
-      return metas.map(({ issue, program, sourceRepo }) =>
-        parseIssueToGrant(issue, [], { program, sourceRepo })
-      );
-    },
-    staleTime: 5 * 60 * 1000, // cache 5 minutes
+    queryFn: async () =>
+      (await getJson<GrantsSnapshot>("/api/grants")).grants,
+    staleTime: 5 * 60 * 1000,
     retry: 1,
   });
 }
 
-/** Fetch and parse a single grant by GitHub issue number, including comments. */
+/** Single grant by route id (`zcg-42`, `coinholder-7`, legacy `42`), including comments. */
 export function useGrant(id: string | undefined) {
   return useQuery<Grant, Error>({
     queryKey: ["grant", id],
     queryFn: async () => {
       if (!id) throw new Error("Grant ID is required");
-      const { program, issueNumber } = parseGrantRouteId(id);
-
-      const [issue, comments] = await Promise.all([
-        fetchGrantIssue(issueNumber, program),
-        fetchIssueComments(issueNumber, program),
-      ]);
-
-      const fromApi = issue.repository_url?.replace(
-        "https://api.github.com/repos/",
-        ""
+      const { grant } = await getJson<{ grant: Grant }>(
+        `/api/grants/${encodeURIComponent(id)}`
       );
-      const sourceRepo =
-        fromApi ??
-        getGrantRepoConfigs().find((c) => c.program === program)?.slug ??
-        "";
-
-      return parseIssueToGrant(issue, comments, {
-        program,
-        sourceRepo,
-      });
+      return grant;
     },
     enabled: Boolean(id),
     staleTime: 5 * 60 * 1000,

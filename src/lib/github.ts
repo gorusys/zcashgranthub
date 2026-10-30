@@ -1,4 +1,7 @@
-import { getGitHubToken } from "@/lib/githubAuth";
+/**
+ * GitHub REST reads for grant issues. Server-only: called from API routes via
+ * src/lib/server/grantsStore.ts so the API token never reaches the browser.
+ */
 import {
   getGrantRepoConfigs,
   OFFICIAL_ZCG_REPO,
@@ -42,23 +45,18 @@ export interface GitHubComment {
 
 const API = "https://api.github.com";
 
-function buildHeaders(): HeadersInit {
-  const token =
-    getGitHubToken() ??
-    process.env.NEXT_PUBLIC_GITHUB_TOKEN ??
-    process.env.VITE_GITHUB_TOKEN;
-  return {
-    Accept: "application/vnd.github.v3+json",
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-  };
-}
+let warnedPublicToken = false;
 
-/** For Next.js API routes (no browser session). */
+/** Server token: `GITHUB_API_TOKEN` (or `GITHUB_TOKEN`). Never use a NEXT_PUBLIC_* var. */
 export function buildGitHubServerHeaders(): HeadersInit {
-  const token =
-    process.env.GITHUB_API_TOKEN ||
-    process.env.NEXT_PUBLIC_GITHUB_TOKEN ||
-    process.env.VITE_GITHUB_TOKEN;
+  const token = process.env.GITHUB_API_TOKEN || process.env.GITHUB_TOKEN;
+  if (!token && process.env.NEXT_PUBLIC_GITHUB_TOKEN && !warnedPublicToken) {
+    warnedPublicToken = true;
+    console.warn(
+      "[github] NEXT_PUBLIC_GITHUB_TOKEN is ignored because NEXT_PUBLIC_* values are exposed to browsers. " +
+        "Rename it to GITHUB_API_TOKEN and revoke the old token."
+    );
+  }
   return {
     Accept: "application/vnd.github.v3+json",
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -68,7 +66,7 @@ export function buildGitHubServerHeaders(): HeadersInit {
 async function getPages<T>(
   path: string,
   params: Record<string, string> = {},
-  headers: HeadersInit = buildHeaders()
+  headers: HeadersInit = buildGitHubServerHeaders()
 ): Promise<T[]> {
   const all: T[] = [];
   let page = 1;
@@ -84,7 +82,7 @@ async function getPages<T>(
     if (!res.ok) {
       if (res.status === 403) {
         throw new Error(
-          "GitHub API rate limit exceeded. Set NEXT_PUBLIC_GITHUB_TOKEN in your .env to increase the limit."
+          "GitHub API rate limit exceeded. Set GITHUB_API_TOKEN on the server to increase the limit."
         );
       }
       throw new Error(`GitHub API error ${res.status}: ${res.statusText}`);
@@ -170,7 +168,7 @@ export async function fetchGrantIssue(
 ): Promise<GitHubIssue> {
   const repo = repoForProgram(program);
   const res = await fetch(`${API}/repos/${repo}/issues/${issueNumber}`, {
-    headers: buildHeaders(),
+    headers: buildGitHubServerHeaders(),
   });
   if (res.ok) {
     return res.json();
@@ -178,7 +176,7 @@ export async function fetchGrantIssue(
   if (program === "zcg" && repo !== OFFICIAL_ZCG_REPO && res.status === 404) {
     const fallback = await fetch(
       `${API}/repos/${OFFICIAL_ZCG_REPO}/issues/${issueNumber}`,
-      { headers: buildHeaders() }
+      { headers: buildGitHubServerHeaders() }
     );
     if (!fallback.ok) {
       throw new Error(
@@ -209,30 +207,19 @@ export async function fetchIssueComments(
   }
 }
 
-/** Lightweight list for related-grant scoring (server). */
+/** Lightweight list for related-grant scoring (server), served from the shared snapshot. */
 export async function fetchGrantIssueSummariesForProgram(
   program: GrantProgram
 ): Promise<Array<{ issueNumber: number; title: string; htmlUrl: string }>> {
-  const repo = repoForProgram(program);
-  const headers = buildGitHubServerHeaders();
-  const [open, closed] = await Promise.all([
-    getPages<GitHubIssue>(`/repos/${repo}/issues`, { state: "open" }, headers),
-    getPages<GitHubIssue>(`/repos/${repo}/issues`, { state: "closed" }, headers),
-  ]);
-  const merged = [...open, ...closed];
-  const filtered = merged.filter((issue) =>
-    issueLooksLikeGrantApplication(issue, program)
-  );
-  return filtered.map((issue) => {
-    const title = issue.title
-      .replace(/^Grant\s+Application\s*[-–]\s*/i, "")
-      .trim();
-    return {
-      issueNumber: issue.number,
-      title,
-      htmlUrl: issue.html_url,
-    };
-  });
+  const { getGrantsSnapshot } = await import("@/lib/server/grantsStore");
+  const { grants } = await getGrantsSnapshot();
+  return grants
+    .filter((g) => g.program === program)
+    .map((g) => ({
+      issueNumber: g.issueNumber,
+      title: g.title,
+      htmlUrl: g.githubLink,
+    }));
 }
 
 export { formatGrantId };

@@ -35,11 +35,13 @@ GitHub OAuth token exchange runs via Next API routes under `/api/auth/...`, so o
 
 ## Optional: GitHub API Token
 
-The app uses the public GitHub API (60 req/hr unauthenticated). To raise the limit to 5,000 req/hr, create a `.env` file:
+Grant data is fetched **server-side** (`/api/grants`, `/api/grants/[id]`) and cached for 5 minutes with stale-while-revalidate, so all visitors share one upstream fetch and the last good snapshot keeps serving if GitHub is down. Unauthenticated, GitHub allows 60 req/hr; to raise it to 5,000 req/hr, set a read-only token in `.env`:
 
 ```
-NEXT_PUBLIC_GITHUB_TOKEN=ghp_your_read_only_token_here
+GITHUB_API_TOKEN=ghp_your_read_only_token_here
 ```
+
+> **Do not** use `NEXT_PUBLIC_GITHUB_TOKEN`: anything prefixed `NEXT_PUBLIC_` is bundled into browser JavaScript. It is now ignored (with a server warning); if you set it previously, revoke that token.
 
 ## GitHub repos
 
@@ -58,6 +60,8 @@ Defaults match the live ZecHub DAO; override only if contracts move.
 | `NEXT_PUBLIC_ZECHUB_DAO_CORE` | DAO Core (`dao-core`) contract address on Juno |
 | `NEXT_PUBLIC_ZECHUB_PROPOSAL_MODULE_SINGLE` | Single-choice proposal module used for prefix **A** proposals |
 | `NEXT_PUBLIC_DAO_DAO_INDEXER_BASE` | DAO DAO indexer base URL (default `https://indexer.daodao.zone`) |
+
+**Grants API:** `/api/grants` (all parsed grants + `fetchedAt`), `/api/grants/[id]` (one grant with comments).
 
 **API routes:** `/api/daodao/proposals-list`, `/api/daodao/proposal?id=`, `/api/daodao/dao-meta`, `/api/daodao/zechub` (resolve ZecHub proposal by id, GitHub issue, or title).  
 **UI:** `/zechub/proposals`, `/zechub/proposals/[id]`.

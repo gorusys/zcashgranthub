@@ -1,6 +1,6 @@
 /**
  * Grant domain types and UI config (status badges, categories, workflow).
- * Live rows are built in src/hooks/useGrants.ts from GitHub issues.
+ * Live rows are built server-side in src/lib/server/grantsStore.ts from GitHub issues.
  */
 
 import type { GrantProgram } from "@/lib/grantPrograms";
