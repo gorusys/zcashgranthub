@@ -20,6 +20,7 @@ import { RetroRoundNotice } from "@/components/RetroRoundNotice";
 import { useT } from "@/i18n";
 import { useZcgPublicSpreadsheet } from "@/hooks/useZcgPublicSpreadsheet";
 import { useEffect, useRef, useState } from "react";
+import { landingStats, recentApplications } from "@/lib/landingStats";
 import { GRANTS_DASHBOARD_SHEET_URL } from "@/lib/grantPrograms";
 
 function AnimatedCounter({
@@ -47,7 +48,11 @@ function AnimatedCounter({
   }, [started]);
 
   useEffect(() => {
-    if (!started || target === 0) return;
+    if (!started) return;
+    if (target === 0) {
+      setCount(0);
+      return;
+    }
     const duration = 1500;
     const steps = 60;
     const increment = target / steps;
@@ -117,12 +122,12 @@ const howItWorks = [
   {
     step: 2,
     title: "Community Review",
-    desc: "The Zcash community reviews and provides feedback on your proposal for one week.",
+    desc: "Publish your proposal on the Zcash forum for community review and feedback.",
   },
   {
     step: 3,
     title: "Committee Review",
-    desc: "ZCG committee members evaluate the application during their bi-weekly meeting.",
+    desc: "ZCG committee members evaluate the application in their published meeting process.",
   },
   {
     step: 4,
@@ -137,37 +142,18 @@ const howItWorks = [
 ];
 
 export default function LandingPage() {
-  const { data: grants = [], isLoading } = useGrants();
+  const { data: grants = [], isLoading, isError: grantsError } = useGrants();
   const { t } = useT();
-  const { data: sheet } = useZcgPublicSpreadsheet();
+  const { data: sheet, isLoading: sheetLoading } = useZcgPublicSpreadsheet();
 
-  const parseUsdMetric = (value: string | null | undefined): number | null => {
-    if (!value) return null;
-    const numeric = Number(value.replace(/[^0-9.-]/g, ""));
-    return Number.isFinite(numeric) ? numeric : null;
-  };
-
-  // Derive live stats from real data
-  const totalGrants = grants.length;
-  const activeGrants = grants.filter((g) =>
-    ["ACTIVE", "APPROVED"].includes(g.status)
-  ).length;
-  const parsedTotalOutflow = parseUsdMetric(sheet?.zcg.metrics["Total USD outflow:"]);
-  const totalDisbursed =
-    parsedTotalOutflow ?? grants.reduce((s, g) => s + g.amountPaid, 0);
-  const parsedTreasuryUsd = parseUsdMetric(
-    sheet?.zcg.metrics["USD value of current holdings:"]
-  );
-  const zcgTreasury = parsedTreasuryUsd ?? 0;
-
-  // Show up to 4 recently active/approved/committee-review grants
-  const recentGrants = grants
-    .filter((g) =>
-      ["ACTIVE", "APPROVED", "COMMITTEE_REVIEW", "COMMUNITY_REVIEW"].includes(
-        g.status
-      )
-    )
-    .slice(0, 4);
+  const stats = landingStats(grants, sheet?.zcg);
+  const recentGrants = recentApplications(grants);
+  const metrics = [
+    { label: "Grant Applications", value: grantsError ? null : stats.applications, loading: isLoading, prefix: "", source: "ZCG + Coinholder · GitHub" },
+    { label: "ZCG Grant Milestones Paid", value: stats.paidMilestonesUsd, loading: sheetLoading, prefix: "$", source: "ZCG · USD value of payouts" },
+    { label: "Approved or Active Grants", value: grantsError ? null : stats.approvedOrActive, loading: isLoading, prefix: "", source: "ZCG + Coinholder · GitHub" },
+    { label: "ZCG Treasury", value: stats.treasuryUsd, loading: sheetLoading, prefix: "~$", source: "ZCG · holdings before liabilities" },
+  ];
 
   return (
     <div className="min-h-screen">
@@ -226,44 +212,29 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Stats — live from GitHub */}
+      {/* Application counts from GitHub; ZCG financials from the official sheet. */}
       <section className="border-b border-border/50 bg-card/50">
-        <div className="container mx-auto grid grid-cols-2 gap-4 px-4 py-10 sm:gap-6 sm:py-12 lg:grid-cols-4">
-          {isLoading ? (
-            Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="animate-pulse text-center">
-                <div className="mx-auto h-9 w-20 rounded bg-secondary" />
-                <div className="mx-auto mt-2 h-3 w-32 rounded bg-secondary" />
+        <div className="container mx-auto px-4 py-10 sm:py-12">
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+            {metrics.map((metric) => (
+              <div key={metric.label} className="text-center">
+                {metric.loading ? (
+                  <div className="mx-auto h-9 w-20 animate-pulse rounded bg-secondary" aria-label={`Loading ${metric.label}`} />
+                ) : metric.value == null ? (
+                  <div className="text-2xl font-bold text-muted-foreground sm:text-3xl lg:text-4xl" aria-label={`${metric.label} unavailable`}>—</div>
+                ) : (
+                  <AnimatedCounter target={metric.value} prefix={metric.prefix} />
+                )}
+                <div className="mt-1 text-sm text-muted-foreground">{metric.label}</div>
+                <div className="mt-1 text-xs text-muted-foreground">{metric.source}</div>
               </div>
-            ))
-          ) : (
-            <>
-              <div className="text-center">
-                <AnimatedCounter target={totalGrants} />
-                <div className="mt-1 text-sm text-muted-foreground">
-                  Total Grant Applications
-                </div>
-              </div>
-              <div className="text-center">
-                <AnimatedCounter target={totalDisbursed} prefix="$" />
-                <div className="mt-1 text-sm text-muted-foreground">
-                  Total Disbursed
-                </div>
-              </div>
-              <div className="text-center">
-                <AnimatedCounter target={activeGrants} />
-                <div className="mt-1 text-sm text-muted-foreground">
-                  Active Grants
-                </div>
-              </div>
-              <div className="text-center">
-                <AnimatedCounter target={zcgTreasury} prefix={zcgTreasury > 0 ? "~$" : "$"} />
-                <div className="mt-1 text-sm text-muted-foreground">
-                  ZCG Treasury
-                </div>
-              </div>
-            </>
-          )}
+            ))}
+          </div>
+          <p className="mt-5 text-center text-xs text-muted-foreground">
+            Financial figures: <a href={GRANTS_DASHBOARD_SHEET_URL} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">official ZCG spreadsheet</a>
+            {sheet?.zcg.blockTime && <> · as of {sheet.zcg.blockTime} UTC</>}.
+            {" "}Treasury includes ZEC valued at the sheet’s quoted price.
+          </p>
         </div>
       </section>
 
@@ -442,7 +413,7 @@ export default function LandingPage() {
       {/* How It Works */}
       <section className="container mx-auto px-4 py-12 sm:py-16 md:py-20">
         <h2 className="mb-8 text-center text-xl font-bold text-foreground sm:mb-12 sm:text-2xl">
-          How It Works
+          How ZCG Applications Work
         </h2>
         <div className="mx-auto max-w-2xl">
           {howItWorks.map((item, i) => (
