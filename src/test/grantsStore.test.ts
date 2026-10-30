@@ -1,4 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { existsSync, mkdtempSync, rmSync } from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { __resetGitHubCacheForTests } from "@/lib/github";
 import {
   __resetGrantsStoreForTests,
   getGrantDetail,
@@ -26,8 +30,15 @@ function respond(body: unknown, status = 200) {
 describe("grantsStore", () => {
   const fetchMock = vi.fn<(url: string, init?: RequestInit) => Promise<Response>>();
 
+  let dir: string;
+  let snapshotFile: string;
+
   beforeEach(() => {
     __resetGrantsStoreForTests();
+    __resetGitHubCacheForTests();
+    dir = mkdtempSync(path.join(os.tmpdir(), "grants-store-"));
+    snapshotFile = path.join(dir, "snapshot.json");
+    vi.stubEnv("GRANTS_SNAPSHOT_PATH", snapshotFile);
     vi.stubGlobal("fetch", fetchMock);
     vi.stubEnv("NEXT_PUBLIC_GITHUB_REPO_COINHOLDER_DISABLED", "1");
     vi.stubEnv("GITHUB_API_TOKEN", "server-token");
@@ -35,6 +46,7 @@ describe("grantsStore", () => {
   });
 
   afterEach(() => {
+    rmSync(dir, { recursive: true, force: true });
     vi.useRealTimers();
     vi.unstubAllGlobals();
     vi.unstubAllEnvs();
@@ -100,5 +112,41 @@ describe("grantsStore", () => {
     expect(g.comments).toHaveLength(1);
     await getGrantDetail("zcg-5");
     expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("restores the last good snapshot from disk after a restart", async () => {
+    vi.useRealTimers();
+    fetchMock.mockImplementation((url) =>
+      respond(url.includes("state=open") ? [issue(7)] : [])
+    );
+    await getGrantsSnapshot();
+    await vi.waitFor(() => expect(existsSync(snapshotFile)).toBe(true));
+
+    __resetGrantsStoreForTests();
+    fetchMock.mockReset();
+    fetchMock.mockImplementation(() => respond({}, 403));
+    const restored = await getGrantsSnapshot();
+    expect(restored.grants.map((g) => g.id)).toEqual(["zcg-7"]);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("revalidates with ETags and reuses the body on 304", async () => {
+    let calls = 0;
+    fetchMock.mockImplementation((url, init) => {
+      calls++;
+      const h = (init?.headers ?? {}) as Record<string, string>;
+      if (h["If-None-Match"] === '"v1"') return Promise.resolve(new Response(null, { status: 304 }));
+      const body = url.includes("state=open") ? [issue(3)] : [];
+      return Promise.resolve(
+        new Response(JSON.stringify(body), { status: 200, headers: { etag: '"v1"' } })
+      );
+    });
+    await getGrantsSnapshot();
+    vi.advanceTimersByTime(SNAPSHOT_TTL_MS + 1);
+    await getGrantsSnapshot();
+    await vi.runAllTimersAsync();
+    const after = await getGrantsSnapshot();
+    expect(calls).toBe(4);
+    expect(after.grants.map((g) => g.id)).toEqual(["zcg-3"]);
   });
 });

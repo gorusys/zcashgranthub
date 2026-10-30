@@ -63,6 +63,41 @@ export function buildGitHubServerHeaders(): HeadersInit {
   };
 }
 
+/**
+ * ETag cache for conditional requests. GitHub does not count `304 Not Modified`
+ * responses against the rate limit, so unchanged pages are free to re-check.
+ */
+const etagCache = new Map<string, { etag: string; body: unknown }>();
+const ETAG_CACHE_MAX = 2000;
+
+async function getJson<T>(url: string, headers: HeadersInit): Promise<T> {
+  const cached = etagCache.get(url);
+  const res = await fetch(url, {
+    headers: cached ? { ...headers, "If-None-Match": cached.etag } : headers,
+  });
+  if (res.status === 304 && cached) return cached.body as T;
+
+  if (!res.ok) {
+    if (res.status === 403 || res.status === 429) {
+      throw new Error(
+        "GitHub API rate limit exceeded. Set GITHUB_API_TOKEN on the server to increase the limit."
+      );
+    }
+    throw new Error(`GitHub API error ${res.status}: ${res.statusText}`);
+  }
+
+  const body = (await res.json()) as T;
+  const etag = res.headers.get("etag");
+  if (etag) {
+    if (etagCache.size >= ETAG_CACHE_MAX) {
+      const oldest = etagCache.keys().next().value;
+      if (oldest !== undefined) etagCache.delete(oldest);
+    }
+    etagCache.set(url, { etag, body });
+  }
+  return body;
+}
+
 async function getPages<T>(
   path: string,
   params: Record<string, string> = {},
@@ -77,24 +112,18 @@ async function getPages<T>(
       page: String(page),
       per_page: "100",
     });
-    const res = await fetch(`${API}${path}?${qs}`, { headers });
-
-    if (!res.ok) {
-      if (res.status === 403) {
-        throw new Error(
-          "GitHub API rate limit exceeded. Set GITHUB_API_TOKEN on the server to increase the limit."
-        );
-      }
-      throw new Error(`GitHub API error ${res.status}: ${res.statusText}`);
-    }
-
-    const data: T[] = await res.json();
+    const data = await getJson<T[]>(`${API}${path}?${qs}`, headers);
     all.push(...data);
     if (data.length < 100) break;
     page++;
   }
 
   return all;
+}
+
+/** Test hook. */
+export function __resetGitHubCacheForTests(): void {
+  etagCache.clear();
 }
 
 function issueLooksLikeGrantApplication(
@@ -167,25 +196,19 @@ export async function fetchGrantIssue(
   program: GrantProgram = "zcg"
 ): Promise<GitHubIssue> {
   const repo = repoForProgram(program);
-  const res = await fetch(`${API}/repos/${repo}/issues/${issueNumber}`, {
-    headers: buildGitHubServerHeaders(),
-  });
-  if (res.ok) {
-    return res.json();
-  }
-  if (program === "zcg" && repo !== OFFICIAL_ZCG_REPO && res.status === 404) {
-    const fallback = await fetch(
-      `${API}/repos/${OFFICIAL_ZCG_REPO}/issues/${issueNumber}`,
-      { headers: buildGitHubServerHeaders() }
-    );
-    if (!fallback.ok) {
-      throw new Error(
-        `GitHub API error ${fallback.status}: ${fallback.statusText}`
+  const headers = buildGitHubServerHeaders();
+  try {
+    return await getJson<GitHubIssue>(`${API}/repos/${repo}/issues/${issueNumber}`, headers);
+  } catch (e) {
+    const notFound = e instanceof Error && /\b404\b/.test(e.message);
+    if (program === "zcg" && repo !== OFFICIAL_ZCG_REPO && notFound) {
+      return getJson<GitHubIssue>(
+        `${API}/repos/${OFFICIAL_ZCG_REPO}/issues/${issueNumber}`,
+        headers
       );
     }
-    return fallback.json();
+    throw e;
   }
-  throw new Error(`GitHub API error ${res.status}: ${res.statusText}`);
 }
 
 export async function fetchIssueComments(

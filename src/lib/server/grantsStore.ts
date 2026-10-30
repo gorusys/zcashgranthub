@@ -5,7 +5,12 @@
  * - Fresh for SNAPSHOT_TTL_MS; after that the stale copy is served while a
  *   background refresh runs (stale-while-revalidate).
  * - If GitHub fails, the last good snapshot keeps being served.
+ * - The last good snapshot is also written to disk (GRANTS_SNAPSHOT_PATH, default
+ *   in the OS temp dir) so a restart or cold start serves it immediately.
  */
+import { promises as fs } from "node:fs";
+import os from "node:os";
+import path from "node:path";
 import type { Grant } from "@/data/grantTypes";
 import {
   fetchAllGrantIssuesWithMeta,
@@ -28,6 +33,42 @@ export interface GrantsSnapshot {
 
 let snapshot: { grants: Grant[]; fetchedAt: number } | null = null;
 let inflight: Promise<{ grants: Grant[]; fetchedAt: number }> | null = null;
+let diskChecked = false;
+
+function snapshotPath(): string {
+  return (
+    process.env.GRANTS_SNAPSHOT_PATH ||
+    path.join(os.tmpdir(), "zgrantshub-grants-snapshot.json")
+  );
+}
+
+async function readDiskSnapshot(): Promise<{ grants: Grant[]; fetchedAt: number } | null> {
+  try {
+    const raw = JSON.parse(await fs.readFile(snapshotPath(), "utf8")) as unknown;
+    if (
+      raw &&
+      typeof raw === "object" &&
+      Array.isArray((raw as { grants?: unknown }).grants) &&
+      typeof (raw as { fetchedAt?: unknown }).fetchedAt === "number"
+    ) {
+      return raw as { grants: Grant[]; fetchedAt: number };
+    }
+  } catch {
+    /* missing or unreadable: fetch from GitHub */
+  }
+  return null;
+}
+
+async function writeDiskSnapshot(s: { grants: Grant[]; fetchedAt: number }): Promise<void> {
+  const file = snapshotPath();
+  const tmp = `${file}.${process.pid}.tmp`;
+  try {
+    await fs.writeFile(tmp, JSON.stringify(s));
+    await fs.rename(tmp, file);
+  } catch (e) {
+    console.warn("[grantsStore] could not persist snapshot:", e);
+  }
+}
 
 async function buildSnapshot(): Promise<{ grants: Grant[]; fetchedAt: number }> {
   const metas = await fetchAllGrantIssuesWithMeta();
@@ -42,6 +83,7 @@ function refresh(): Promise<{ grants: Grant[]; fetchedAt: number }> {
     inflight = buildSnapshot()
       .then((s) => {
         snapshot = s;
+        void writeDiskSnapshot(s);
         return s;
       })
       .finally(() => {
@@ -52,6 +94,10 @@ function refresh(): Promise<{ grants: Grant[]; fetchedAt: number }> {
 }
 
 export async function getGrantsSnapshot(): Promise<GrantsSnapshot> {
+  if (!snapshot && !diskChecked) {
+    diskChecked = true;
+    snapshot = await readDiskSnapshot();
+  }
   if (snapshot) {
     const age = Date.now() - snapshot.fetchedAt;
     if (age < SNAPSHOT_TTL_MS) {
@@ -111,5 +157,6 @@ export async function getGrantDetail(id: string): Promise<Grant> {
 export function __resetGrantsStoreForTests(): void {
   snapshot = null;
   inflight = null;
+  diskChecked = false;
   detailCache.clear();
 }
