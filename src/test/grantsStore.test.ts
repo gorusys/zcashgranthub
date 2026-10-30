@@ -167,4 +167,16 @@ describe("grantsStore", () => {
     expect(snap.stale).toBe(false);
     expect(fetchMock).not.toHaveBeenCalled();
   });
+
+  it("falls back to the snapshot copy when grant detail can't be fetched", async () => {
+    fetchMock.mockImplementation((url) =>
+      respond(url.includes("/issues?") && url.includes("state=open") ? [issue(11)] : [])
+    );
+    await getGrantsSnapshot();
+    fetchMock.mockImplementation(() => respond({}, 403));
+    const g = await getGrantDetail("zcg-11");
+    expect(g.id).toBe("zcg-11");
+    expect(g.comments).toEqual([]);
+    await expect(getGrantDetail("zcg-99")).rejects.toThrow(/rate limit/);
+  });
 });

@@ -171,6 +171,10 @@ export async function getGrantDetail(id: string): Promise<Grant> {
     return grant;
   } catch (e) {
     if (hit) return hit.grant;
+    // GitHub unavailable or rate-limited: serve the snapshot copy (no comments).
+    const snap = await getGrantsSnapshot().catch(() => null);
+    const fromSnapshot = snap?.grants.find((g) => g.id === key);
+    if (fromSnapshot) return fromSnapshot;
     throw e;
   }
 }
