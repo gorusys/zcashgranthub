@@ -8,6 +8,8 @@ export type WorkStage = "done" | "partly" | "planned";
 export type WorkSize = "small" | "medium" | "large";
 export type WorkKind = "software" | "content" | "community" | "security" | "research";
 
+import { translateEn, type Translate } from "@/i18n/translate";
+
 export interface FinderAnswers {
   stage: WorkStage;
   size: WorkSize;
@@ -28,36 +30,30 @@ export interface FundingRoute {
   cta: string;
 }
 
-export const SIZE_LABEL: Record<WorkSize, string> = {
-  small: "Under $1,000",
-  medium: "$1,000 – $50,000",
-  large: "Over $50,000",
-};
 
-const KYC_NOTE = "Requests above $50,000 require KYC with FPF before payout (you can stay pseudonymous publicly).";
 
 const FIT_RANK: Record<Fit, number> = { best: 0, good: 1, possible: 2 };
 
-export function recommendFunding({ stage, size, kind }: FinderAnswers): FundingRoute[] {
+export function recommendFunding({ stage, size, kind }: FinderAnswers, t: Translate = translateEn): FundingRoute[] {
   const out: FundingRoute[] = [];
   const contentLike = kind === "content" || kind === "community";
 
   // Coinholder retro: completed, verifiable work only.
   if (stage !== "planned") {
     const why = [
-      "Pays for work that is already done and publicly verifiable.",
-      "Quarterly rounds; ZEC holders vote, with a 420,000 ZEC quorum and simple majority.",
+      t("route.coinholder.why1"),
+      t("route.coinholder.why2"),
     ];
     if (kind === "security") {
-      why.push("Coinholders have strongly backed disclosed vulnerability reports and audits in past rounds.");
+      why.push(t("route.coinholder.whySecurity"));
     }
     if (stage === "partly") {
-      why.push("Only the finished part is eligible. Apply for the remaining work elsewhere and disclose both applications.");
+      why.push(t("route.coinholder.whyPartly"));
     }
-    if (size === "large") why.push(KYC_NOTE);
+    if (size === "large") why.push(t("route.kyc"));
     out.push({
       id: "coinholder",
-      name: "Coinholder retroactive grant",
+      name: t("route.coinholder.name"),
       fit:
         stage === "done" && !(size === "small" && contentLike)
           ? "best"
@@ -66,37 +62,37 @@ export function recommendFunding({ stage, size, kind }: FinderAnswers): FundingR
             : "possible",
       why,
       steps: [
-        "Check the current round's submission deadline.",
-        "Fill the FPF GitHub template with evidence: repos, releases, deployments, usage numbers.",
-        "Post it as a new thread in the forum's Retroactive Grants category.",
-        "Answer questions during the 30-day review, then the vote.",
+        t("route.coinholder.step1"),
+        t("route.coinholder.step2"),
+        t("route.coinholder.step3"),
+        t("route.coinholder.step4"),
       ],
       href: "/retro",
-      cta: "See round dates",
+      cta: t("route.coinholder.cta"),
     });
   }
 
   // ZCG: forward-looking work with milestones.
   if (stage !== "done") {
     const why = [
-      "Funds planned or ongoing work, paid out by milestone.",
-      "Rolling applications; the committee reviews every other week after at least one week of community comment.",
-      "Approval is a 3-of-5 committee vote; reasons are published in meeting minutes.",
-      "Grantees post monthly progress updates on the forum.",
+      t("route.zcg.why1"),
+      t("route.zcg.why2"),
+      t("route.zcg.why3"),
+      t("route.zcg.why4"),
     ];
-    if (size === "large") why.push(KYC_NOTE, "Larger requests get more diligence and more milestones.");
+    if (size === "large") why.push(t("route.kyc"), t("route.zcg.whyLarge"));
     out.push({
       id: "zcg",
-      name: "Zcash Community Grants (ZCG)",
+      name: t("route.zcg.name"),
       fit: stage === "planned" && !(size === "small" && contentLike) ? "best" : "good",
       why,
       steps: [
-        "Search past grants for similar work and read the committee's reasons.",
-        "Draft scope, milestones with deliverables and dates, and a budget.",
-        "Submit the GitHub application, then link it from a forum thread.",
+        t("route.zcg.step1"),
+        t("route.zcg.step2"),
+        t("route.zcg.step3"),
       ],
       href: "/apply?tab=zcg",
-      cta: "Start ZCG application",
+      cta: t("route.zcg.cta"),
     });
   }
 
@@ -104,20 +100,20 @@ export function recommendFunding({ stage, size, kind }: FinderAnswers): FundingR
   if (size === "small" && kind !== "security") {
     out.push({
       id: "zechub_bounties",
-      name: "ZecHub bounties",
+      name: t("route.bounties.name"),
       fit: contentLike || kind === "software" ? "best" : "possible",
       why: [
-        "Small, well-defined tasks (wiki pages, translations, tutorials, PRs) paid in shielded ZEC.",
-        "Amounts follow ZecHub's published USD bands, converted at the spot ZEC price.",
-        "Stages: merged → reward approved → paid.",
+        t("route.bounties.why1"),
+        t("route.bounties.why2"),
+        t("route.bounties.why3"),
       ],
       steps: [
-        "Pick an open bounty or propose one on the ZecHub Discord.",
-        "Submit a pull request to the ZecHub repository.",
-        "Share your shielded Unified Address for payout.",
+        t("route.bounties.step1"),
+        t("route.bounties.step2"),
+        t("route.bounties.step3"),
       ],
       href: "/bounties",
-      cta: "Browse open bounties",
+      cta: t("route.bounties.cta"),
     });
   }
 
@@ -125,19 +121,19 @@ export function recommendFunding({ stage, size, kind }: FinderAnswers): FundingR
   if (contentLike && size !== "large") {
     out.push({
       id: "zechub_dao",
-      name: "ZecHub DAO proposal",
+      name: t("route.dao.name"),
       fit: size === "medium" && stage === "planned" ? "good" : "possible",
       why: [
-        "On-chain DAO DAO proposals (Juno) for education, media and community spends.",
-        "Larger ZecHub rewards (shows, podcasts, sponsorships) go through the DAO.",
+        t("route.dao.why1"),
+        t("route.dao.why2"),
       ],
       steps: [
-        "Read the ZecHub DAO guide.",
-        "Discuss the idea on the ZecHub Discord first.",
-        "Create a proposal on DAO DAO for members to vote on.",
+        t("route.dao.step1"),
+        t("route.dao.step2"),
+        t("route.dao.step3"),
       ],
       href: "/zechub/proposals/guide",
-      cta: "Read the DAO guide",
+      cta: t("route.dao.cta"),
     });
   }
 

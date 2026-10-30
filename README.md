@@ -23,6 +23,12 @@ Official domain: [zgrantshub.com](https://zgrantshub.com)
 - **Coinholder retro rounds** — `/retro` shows the current round phase with a countdown, the FPF timeline, a pre-submission checklist, this round's submissions, past-round outcomes (counts from FPF GitHub labels) and live organizer announcements from the forum. Round dates live in `src/data/retro-rounds.json`; add each new round from FPF's forum post and cite it in `sources`.
 - **Analytics dashboard**.
 
+## Languages
+
+English, Spanish (`/es`) and Brazilian Portuguese (`/pt-BR`) via Next.js locale routing and a language switcher. Translated so far: navigation, footer, announcement bar, landing hero, the Funding Finder (including its recommendations) and the Bounties page; other pages fall back to English.
+
+To add a language: copy `src/i18n/messages/es.ts`, translate every value (keep `{placeholders}`), register it in `LOCALES` (`src/i18n/translate.ts`) and `i18n.locales` (`next.config.mjs`). The type checker rejects missing keys and the tests reject changed placeholders. Native-speaker review is welcome; translations here were written by the maintainers.
+
 ## Tech Stack
 
 - [Next.js](https://nextjs.org/) + [React 18](https://react.dev/) + TypeScript

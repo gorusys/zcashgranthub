@@ -17,6 +17,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { GrantCard } from "@/components/GrantCard";
 import { useGrants } from "@/hooks/useGrants";
 import { RetroRoundNotice } from "@/components/RetroRoundNotice";
+import { useT } from "@/i18n";
 import { useZcgPublicSpreadsheet } from "@/hooks/useZcgPublicSpreadsheet";
 import { useEffect, useRef, useState } from "react";
 import { GRANTS_DASHBOARD_SHEET_URL } from "@/lib/grantPrograms";
@@ -137,6 +138,7 @@ const howItWorks = [
 
 export default function LandingPage() {
   const { data: grants = [], isLoading } = useGrants();
+  const { t } = useT();
   const { data: sheet } = useZcgPublicSpreadsheet();
 
   const parseUsdMetric = (value: string | null | undefined): number | null => {
@@ -178,12 +180,11 @@ export default function LandingPage() {
             <RetroRoundNotice />
           </div>
           <h1 className="mx-auto max-w-4xl text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-6xl">
-            Fund the Future of{" "}
-            <span className="text-gradient-gold">Zcash Privacy</span>
+            {t("hero.title1")}{" "}
+            <span className="text-gradient-gold">{t("hero.title2")}</span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:mt-6 sm:text-lg">
-            Explore ZCG and Coinholder applications on GitHub, ZecHub mini-grants on DAO DAO, and the
-            community operations dashboard—without mixing them into one false status.
+            {t("hero.subtitle")}
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:gap-4">
             <Link href="/apply" className="w-full sm:w-auto">
@@ -191,7 +192,7 @@ export default function LandingPage() {
                 size="lg"
                 className="w-full gap-2 bg-primary font-semibold text-primary-foreground hover:bg-primary/90 sm:w-auto sm:px-8"
               >
-                ZCG grant application
+                {t("hero.ctaZcg")}
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
@@ -201,24 +202,24 @@ export default function LandingPage() {
                 variant="secondary"
                 className="w-full gap-2 sm:w-auto sm:px-8"
               >
-                Coinholder retroactive application
+                {t("hero.ctaCoinholder")}
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
             <Link href="/grants" className="w-full sm:w-auto">
               <Button size="lg" variant="outline" className="w-full gap-2 border-border sm:w-auto sm:px-8">
-                Browse Grants
+                {t("hero.ctaBrowse")}
               </Button>
             </Link>
           </div>
           <p className="mt-5 text-sm text-muted-foreground">
-            Not sure which program fits your work?{" "}
+            {t("hero.notSure")}{" "}
             <Link href="/find-funding" className="font-medium text-primary hover:underline">
-              Find the right funding
+              {t("hero.findFunding")}
             </Link>{" "}
-            or{" "}
+            {t("hero.or")}{" "}
             <Link href="/bounties" className="font-medium text-primary hover:underline">
-              start with a bounty
+              {t("hero.startBounty")}
             </Link>
             .
           </p>

@@ -1,22 +1,26 @@
 import Link from "next/link";
+import { useT, type MessageKey } from "@/i18n";
 
-const links = [
-  { label: "Website", href: "https://zgrantshub.com", external: true },
-  { label: "Apply", href: "/apply" },
-  { label: "Browse", href: "/grants" },
-  { label: "Discussions", href: "/forum/discussions" },
-  { label: "Analytics", href: "/analytics" },
-  { label: "Funding streams", href: "/funding-streams" },
-  { label: "Bounties", href: "/bounties" },
-  { label: "Projects", href: "/projects" },
-  { label: "API", href: "/developers" },
-  { label: "Donate", href: "/donate" },
-  { label: "Contribute", href: "/donate#contribute" },
-  { label: "Forum", href: "https://forum.zcashcommunity.com", external: true },
-  { label: "GitHub", href: "https://github.com/ZcashCommunityGrants", external: true },
+type FooterLink = { labelKey: MessageKey | null; text?: string; href: string; external?: boolean };
+
+const links: FooterLink[] = [
+  { labelKey: "footer.website", href: "https://zgrantshub.com", external: true },
+  { labelKey: "footer.apply", href: "/apply" },
+  { labelKey: "footer.browse", href: "/grants" },
+  { labelKey: "footer.discussions", href: "/forum/discussions" },
+  { labelKey: "footer.analytics", href: "/analytics" },
+  { labelKey: "footer.streams", href: "/funding-streams" },
+  { labelKey: "footer.bounties", href: "/bounties" },
+  { labelKey: "footer.projects", href: "/projects" },
+  { labelKey: "footer.api", href: "/developers" },
+  { labelKey: "footer.donate", href: "/donate" },
+  { labelKey: "footer.contribute", href: "/donate#contribute" },
+  { labelKey: "footer.forum", href: "https://forum.zcashcommunity.com", external: true },
+  { labelKey: null, text: "GitHub", href: "https://github.com/ZcashCommunityGrants", external: true },
 ];
 
 export function Footer() {
+  const { t } = useT();
   return (
     <footer className="border-t border-border/50 bg-background">
       <div className="container mx-auto px-4 py-8 sm:py-12">
@@ -32,7 +36,7 @@ export function Footer() {
             />
             <div className="flex flex-col">
               <span className="text-sm font-bold text-foreground">Zcash Grants Hub</span>
-              <span className="text-xs text-muted-foreground">Zcash Community Grants</span>
+              <span className="text-xs text-muted-foreground">{t("footer.subtitle")}</span>
             </div>
           </div>
 
@@ -40,21 +44,21 @@ export function Footer() {
             {links.map((link) =>
               link.external ? (
                 <a
-                  key={link.label}
+                  key={link.href}
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  {link.label}
+                  {link.labelKey ? t(link.labelKey) : link.text}
                 </a>
               ) : (
                 <Link
-                  key={link.label}
+                  key={link.href}
                   href={link.href}
                   className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  {link.label}
+                  {link.labelKey ? t(link.labelKey) : link.text}
                 </Link>
               )
             )}
@@ -63,7 +67,7 @@ export function Footer() {
 
         <div className="mt-8 border-t border-border/50 pt-6 text-center">
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} Zcash Grants Hub. Built for the Zcash Community.
+            {t("footer.copyright", { year: new Date().getFullYear() })}
           </p>
         </div>
       </div>

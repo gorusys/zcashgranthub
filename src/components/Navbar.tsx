@@ -21,11 +21,11 @@ import {
 import { useZecUsdPrice } from "@/hooks/useZecUsdPrice";
 import type { ZecUsdPriceState } from "@/hooks/useZecUsdPrice";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { ZCG_COMMUNITY_GRANTS_FORUM_CATEGORY_URL } from "@/lib/grantPrograms";
 import { useGrantUpdates } from "@/hooks/useWatchlist";
 import { statusConfig } from "@/data/grantTypes";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { useT, type MessageKey } from "@/i18n";
 
-const ZCG_FORUM_GRANTS = ZCG_COMMUNITY_GRANTS_FORUM_CATEGORY_URL;
 
 function ZecPricePill({ state, className }: { state: ZecUsdPriceState; className?: string }) {
   const { usd, change24hPct, status } = state;
@@ -80,7 +80,8 @@ function ZecPricePill({ state, className }: { state: ZecUsdPriceState; className
 }
 
 function UpdatesMenu({ triggerClassName }: { triggerClassName?: string }) {
-  const { updates, markSeen, watchedCount, active } = useGrantUpdates();
+  const { updates, markSeen, active } = useGrantUpdates();
+  const { t } = useT();
   const count = updates.length;
   return (
     <DropdownMenu>
@@ -89,7 +90,7 @@ function UpdatesMenu({ triggerClassName }: { triggerClassName?: string }) {
           variant="ghost"
           size="icon"
           className={triggerClassName ?? "relative h-9 w-9 text-muted-foreground"}
-          aria-label={count ? `${count} grant update${count === 1 ? "" : "s"}` : "Grant updates"}
+          aria-label={count ? (count === 1 ? t("updates.countOne") : t("updates.count", { n: count })) : t("updates.none")}
         >
           <Bell className="h-4 w-4" />
           {count > 0 && (
@@ -101,10 +102,10 @@ function UpdatesMenu({ triggerClassName }: { triggerClassName?: string }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-80">
         <DropdownMenuLabel className="flex items-center justify-between">
-          Updates
+          {t("updates.title")}
           {count > 0 && (
             <button type="button" onClick={markSeen} className="text-xs font-normal text-primary hover:underline">
-              Mark all seen
+              {t("updates.markSeen")}
             </button>
           )}
         </DropdownMenuLabel>
@@ -118,40 +119,38 @@ function UpdatesMenu({ triggerClassName }: { triggerClassName?: string }) {
                   {u.kind === "status"
                     ? `${statusConfig[u.from!].label} → ${statusConfig[u.to!].label}`
                     : u.kind === "new"
-                      ? `Your application · ${statusConfig[u.to!].label}`
-                      : "New activity on GitHub"}
+                      ? `${t("updates.yourApplication")} · ${statusConfig[u.to!].label}`
+                      : t("updates.newActivity")}
                 </span>
               </Link>
             </DropdownMenuItem>
           ))
         ) : (
           <p className="px-2 py-1.5 text-xs leading-relaxed text-muted-foreground">
-            {active
-              ? `No changes on your ${watchedCount ? `${watchedCount} watched grant${watchedCount === 1 ? "" : "s"}` : "applications"} since you last looked.`
-              : "Press Watch on any grant to see its status changes and new activity here. Your watchlist stays in this browser."}
+            {active ? t("updates.noChanges") : t("updates.empty")}
           </p>
         )}
         {count > 6 && (
           <DropdownMenuItem asChild>
             <Link href="/dashboard?tab=notifications" className="cursor-pointer text-xs text-primary">
-              See all {count} updates
+              {t("updates.seeAll", { n: count })}
             </Link>
           </DropdownMenuItem>
         )}
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link href="/dashboard?tab=notifications" className="cursor-pointer">
-            Watchlist &amp; notifications
+            {t("updates.watchlist")}
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <a href="/calendar.ics" className="cursor-pointer">
-            Subscribe to deadlines (calendar)
+            {t("updates.calendar")}
           </a>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <a href="/feed.xml" className="cursor-pointer">
-            Grant updates (RSS)
+            {t("updates.rss")}
           </a>
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -160,44 +159,44 @@ function UpdatesMenu({ triggerClassName }: { triggerClassName?: string }) {
 }
 
 type NavLink = {
-  label: string;
+  labelKey: MessageKey;
   href: string;
   active: (router: NextRouter) => boolean;
 };
 
 const navLinks: NavLink[] = [
   {
-    label: "Grants",
+    labelKey: "nav.grants",
     href: "/grants",
     active: (r) => r.pathname.startsWith("/grants"),
   },
   {
-    label: "Retro Rounds",
+    labelKey: "nav.retro",
     href: "/retro",
     active: (r) => r.pathname === "/retro",
   },
   {
-    label: "Decisions",
+    labelKey: "nav.decisions",
     href: "/decisions",
     active: (r) => r.pathname === "/decisions",
   },
   {
-    label: "ZecHub DAO",
+    labelKey: "nav.zechub",
     href: "/zechub/proposals",
     active: (r) => r.pathname.startsWith("/zechub/proposals"),
   },
   {
-    label: "Apply",
+    labelKey: "nav.apply",
     href: "/apply",
     active: (r) => r.pathname === "/apply",
   },
   {
-    label: "Forum",
+    labelKey: "nav.forum",
     href: "/forum/discussions",
     active: (r) => r.pathname === "/forum/discussions",
   },
   {
-    label: "Analytics",
+    labelKey: "nav.analytics",
     href: "/analytics",
     active: (r) => r.pathname === "/analytics",
   },
@@ -205,6 +204,7 @@ const navLinks: NavLink[] = [
 
 export function Navbar() {
   const router = useRouter();
+  const { t } = useT();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [sessionLogin, setSessionLogin] = useState<string | null>(null);
   const zecPrice = useZecUsdPrice();
@@ -248,7 +248,7 @@ export function Navbar() {
               Zcash Grants Hub
             </span>
             <span className="mt-0.5 whitespace-nowrap text-[10px] leading-none text-muted-foreground">
-              ZCG · Coinholder · ZecHub DAO
+              {t("nav.tagline")}
             </span>
           </div>
           <span className="text-sm font-bold text-foreground sm:hidden">Zcash Grants Hub</span>
@@ -257,7 +257,7 @@ export function Navbar() {
         <div className="hidden items-center gap-0.5 xl:flex">
           {navLinks.map((link) => (
             <Link
-              key={link.label}
+              key={link.labelKey}
               href={link.href}
               className={`relative whitespace-nowrap rounded-md px-2.5 py-2 text-sm font-medium transition-colors ${
                 link.active(router)
@@ -265,7 +265,7 @@ export function Navbar() {
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              {link.label}
+              {t(link.labelKey)}
               {link.active(router) && (
                 <span className="absolute bottom-0 left-2.5 right-2.5 h-0.5 rounded-full bg-primary" />
               )}
@@ -284,10 +284,11 @@ export function Navbar() {
           >
             <Link href="/donate">
               <Heart className="h-4 w-4" />
-              Donate
+              {t("nav.donate")}
             </Link>
           </Button>
 
+          <LanguageSwitcher className="hidden h-9 w-9 text-muted-foreground xl:inline-flex" />
           <ThemeToggle className="h-9 w-9 text-muted-foreground" />
 
           <UpdatesMenu />
@@ -300,7 +301,7 @@ export function Navbar() {
               onClick={clearGitHubSession}
             >
               <Github className="h-4 w-4" />
-              <span className="hidden lg:inline">@{sessionLogin} (Disconnect)</span>
+              <span className="hidden lg:inline">@{sessionLogin} ({t("nav.disconnect")})</span>
               <span className="lg:hidden">@{sessionLogin}</span>
             </Button>
           ) : (
@@ -311,7 +312,7 @@ export function Navbar() {
               onClick={() => void beginGitHubOAuth()}
             >
               <Github className="h-4 w-4" />
-              <span className="hidden 2xl:inline">Connect GitHub</span>
+              <span className="hidden 2xl:inline">{t("nav.connectGithub")}</span>
               <span className="2xl:hidden">GitHub</span>
             </Button>
           )}
@@ -333,7 +334,7 @@ export function Navbar() {
           <div className="container mx-auto flex flex-col gap-1 px-4 py-3">
             {navLinks.map((link) => (
               <Link
-                key={link.label}
+                key={link.labelKey}
                 href={link.href}
                 className={`flex items-center rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
                   link.active(router)
@@ -341,7 +342,7 @@ export function Navbar() {
                     : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                 }`}
               >
-                {link.label}
+                {t(link.labelKey)}
               </Link>
             ))}
 
@@ -354,57 +355,21 @@ export function Navbar() {
               }`}
             >
               <Heart className="h-4 w-4" />
-              Donate & contribute
+              {t("nav.donateContribute")}
             </Link>
 
             <ZecPricePill state={zecPrice} className="mt-1 w-full justify-between px-3 py-2" />
 
             <ThemeToggle className="mt-1 h-10 w-10 text-muted-foreground" />
 
-            <div className="mt-1">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-10 w-full justify-start gap-2 text-muted-foreground"
-                    aria-label="Updates and useful links"
-                  >
-                    <Bell className="h-4 w-4" />
-                    Updates & links
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-[min(100vw-2rem,20rem)]">
-                  <DropdownMenuLabel>Quick links</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link href="/dashboard" className="cursor-pointer">
-                      My dashboard
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/grants" className="cursor-pointer">
-                      Browse grants
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <a
-                      href={ZCG_FORUM_GRANTS}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="cursor-pointer"
-                    >
-                      ZCG forum (grants)
-                    </a>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <p className="px-2 py-1.5 text-xs leading-relaxed text-muted-foreground">
-                    In-app notifications are not wired yet. Watch GitHub issues and the forum for
-                    updates.
-                  </p>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+            <Button asChild variant="outline" size="sm" className="mt-1 h-10 w-full justify-start gap-2 text-muted-foreground">
+              <Link href="/dashboard?tab=notifications">
+                <Bell className="h-4 w-4" />
+                {t("updates.watchlist")}
+              </Link>
+            </Button>
+
+            <LanguageSwitcher showLabel className="mt-1 h-10 w-full justify-start text-muted-foreground" />
 
             {sessionLogin ? (
               <Button
@@ -414,7 +379,7 @@ export function Navbar() {
                 onClick={clearGitHubSession}
               >
                 <Github className="h-4 w-4" />
-                @{sessionLogin} (Disconnect)
+                @{sessionLogin} ({t("nav.disconnect")})
               </Button>
             ) : (
               <Button
@@ -424,7 +389,7 @@ export function Navbar() {
                 onClick={() => void beginGitHubOAuth()}
               >
                 <Github className="h-4 w-4" />
-                Connect GitHub
+                {t("nav.connectGithub")}
               </Button>
             )}
           </div>

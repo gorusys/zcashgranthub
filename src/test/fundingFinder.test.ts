@@ -41,3 +41,13 @@ describe("recommendFunding", () => {
           expect(recommendFunding({ stage, size, kind }).length).toBeGreaterThan(0);
   });
 });
+
+describe("recommendFunding translations", () => {
+  it("renders route text in the requested language", async () => {
+    const { translator } = await import("@/i18n/translate");
+    const r = recommendFunding({ stage: "planned", size: "large", kind: "software" }, translator("es"));
+    expect(r[0].name).toBe("Zcash Community Grants (ZCG)");
+    expect(r[0].why).toContain("Financia trabajo planificado o en curso, pagado por hitos.");
+    expect(r[0].cta).toBe("Empezar solicitud ZCG");
+  });
+});
