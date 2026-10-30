@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Head from "next/head";
 import { useQuery } from "@tanstack/react-query";
-import { Gavel, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -71,7 +71,7 @@ export default function DecisionsPage() {
   }, [all, q, outcome]);
 
   return (
-    <div className="container mx-auto min-w-0 max-w-4xl px-4 py-6 sm:py-8">
+    <div className="container mx-auto min-w-0 px-4 py-6 sm:py-8">
       <Head>
         <title>ZCG decisions archive · Zcash Grants Hub</title>
         <meta
@@ -80,31 +80,33 @@ export default function DecisionsPage() {
         />
       </Head>
 
-      <h1 className="flex items-center gap-2 text-2xl font-bold text-foreground sm:text-3xl">
-        <Gavel className="h-7 w-7 text-primary" /> ZCG decisions archive
-      </h1>
-      <p className="mb-6 mt-2 text-sm text-muted-foreground sm:text-base">
-        What the Zcash Community Grants committee decided on each proposal, and why, in members'
-        own words. Parsed from the meeting minutes the committee publishes on the forum. Search
-        for your topic before applying to see what reviewers have said about similar work.
-      </p>
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl font-bold text-foreground sm:text-3xl">
+          ZCG decisions archive
+        </h1>
+        <p className="mt-1 max-w-3xl text-sm text-muted-foreground sm:text-base">
+          What the Zcash Community Grants committee decided on each proposal, and why, in members'
+          own words. Parsed from the meeting minutes the committee publishes on the forum. Search
+          for your topic before applying to see what reviewers have said about similar work.
+        </p>
+      </div>
 
       {data && (
-        <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
           {[
             ["Proposals discussed", stats.proposals.toLocaleString()],
             ["Approved", stats.approved.toLocaleString()],
             ["Declined", stats.declined.toLocaleString()],
             ["Approval rate", stats.rate == null ? "—" : `${stats.rate}%`],
           ].map(([label, value]) => (
-            <Card key={label}>
-              <CardContent className="p-4">
-                <div className="text-xl font-bold tabular-nums text-foreground">{value}</div>
-                <div className="text-xs text-muted-foreground">{label}</div>
+            <Card key={label} className="border-border/50 bg-card">
+              <CardContent className="p-5 text-center">
+                <div className="text-2xl font-bold tabular-nums text-foreground sm:text-3xl">{value}</div>
+                <div className="mt-1 text-xs text-muted-foreground">{label}</div>
               </CardContent>
             </Card>
           ))}
-          <p className="col-span-2 text-xs text-muted-foreground sm:col-span-4">
+          <p className="col-span-2 text-xs text-muted-foreground lg:col-span-4">
             From {data.meetings} meetings; latest decision per proposal. Approval rate counts only
             approved vs declined.
           </p>
@@ -151,7 +153,7 @@ export default function DecisionsPage() {
       )}
 
       {data && (
-        <Card>
+        <Card className="border-border/50 bg-card">
           <CardContent className="divide-y divide-border py-1">
             {filtered.length === 0 && (
               <p className="py-6 text-center text-sm text-muted-foreground">No matching decisions.</p>
