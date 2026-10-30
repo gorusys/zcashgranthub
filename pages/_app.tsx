@@ -5,6 +5,7 @@ import { ThemeProvider } from "next-themes";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
+import { AnnouncementBar } from "@/components/AnnouncementBar";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import "@/index.css";
@@ -55,6 +56,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <Toaster />
           <Sonner />
           <div className="flex min-h-screen flex-col">
+            <AnnouncementBar />
             <Navbar />
             <main className="flex-1">
               <Component {...pageProps} />
