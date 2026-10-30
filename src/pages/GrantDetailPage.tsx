@@ -24,6 +24,7 @@ import { MilestoneProgressBar } from "@/components/MilestoneProgressBar";
 import { useGrant } from "@/hooks/useGrants";
 import { CommitteeDecisionsCard } from "@/components/CommitteeDecisions";
 import { WatchButton } from "@/components/WatchButton";
+import { DeliverySignalsCard } from "@/components/DeliverySignalsCard";
 import { useRelatedForGrant } from "@/hooks/useRelatedForGrant";
 import { zechubDaoDaodaoUrl } from "@/lib/daodao/zechubConfig";
 import {
@@ -342,6 +343,8 @@ export default function GrantDetailPage({ id }: { id?: string }) {
       {grant.program === "zcg" && (
         <CommitteeDecisionsCard forumLink={grant.forumLink} title={grant.title} />
       )}
+
+      <DeliverySignalsCard grant={grant} />
 
       {/* ── Content + sidebar ─────────────────────────────────────────────── */}
       <div className="flex flex-col gap-6 lg:flex-row">

@@ -1,0 +1,24 @@
+{
+  "$comment": "Core Zcash infrastructure tracked on /projects. Add a repo here to track its activity, maintainers and NU7 readiness.",
+  "repos": [
+    { "repo": "ZcashFoundation/zebra", "role": "Node", "name": "Zebra", "desc": "Rust full node (Zcash Foundation)" },
+    { "repo": "zcash/zallet", "role": "Node", "name": "Zallet", "desc": "Full-node wallet replacing zcashd's wallet" },
+    { "repo": "zingolabs/zaino", "role": "Node", "name": "Zaino", "desc": "Indexer serving light clients from Zebra" },
+    { "repo": "zcash/lightwalletd", "role": "Node", "name": "lightwalletd", "desc": "Light-client server (Go)" },
+    { "repo": "zcash/librustzcash", "role": "Library", "name": "librustzcash", "desc": "Core Rust crates for wallets and nodes" },
+    { "repo": "zcash/orchard", "role": "Library", "name": "Orchard", "desc": "Orchard shielded protocol" },
+    { "repo": "zcash/ironwood", "role": "Library", "name": "Ironwood", "desc": "Ironwood shielded protocol" },
+    { "repo": "zcash/halo2", "role": "Library", "name": "halo2", "desc": "Proving system" },
+    { "repo": "zcash/sapling-crypto", "role": "Library", "name": "sapling-crypto", "desc": "Sapling shielded protocol" },
+    { "repo": "zcash/incrementalmerkletree", "role": "Library", "name": "incrementalmerkletree", "desc": "Note commitment trees" },
+    { "repo": "ZcashFoundation/frost", "role": "Library", "name": "FROST", "desc": "Threshold signatures" },
+    { "repo": "zcash/zips", "role": "Specification", "name": "ZIPs & protocol spec", "desc": "Zcash Improvement Proposals" },
+    { "repo": "zodl-inc/zodl-android", "role": "Wallet", "name": "Zodl (Android)", "desc": "Mobile wallet" },
+    { "repo": "zodl-inc/zodl-ios", "role": "Wallet", "name": "Zodl (iOS)", "desc": "Mobile wallet" },
+    { "repo": "zodl-inc/zodl-android-wallet-sdk", "role": "SDK", "name": "Zodl Android SDK", "desc": "Mobile wallet SDK" },
+    { "repo": "zodl-inc/zodl-swift-wallet-sdk", "role": "SDK", "name": "Zodl Swift SDK", "desc": "Mobile wallet SDK" },
+    { "repo": "zingolabs/zingolib", "role": "SDK", "name": "zingolib", "desc": "Wallet library behind Zingo" },
+    { "repo": "zingolabs/zingo-mobile", "role": "Wallet", "name": "Zingo (mobile)", "desc": "Mobile wallet" },
+    { "repo": "zingolabs/zingo-pc", "role": "Wallet", "name": "Zingo (desktop)", "desc": "Desktop wallet" }
+  ]
+}

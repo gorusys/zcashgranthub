@@ -121,6 +121,11 @@ async function getPages<T>(
   return all;
 }
 
+/** Conditional GET of a GitHub REST path (e.g. `/repos/zcash/zips`) with the server token. */
+export function githubGet<T>(path: string): Promise<T> {
+  return getJson<T>(`${API}${path}`, buildGitHubServerHeaders());
+}
+
 /** Test hook. */
 export function __resetGitHubCacheForTests(): void {
   etagCache.clear();

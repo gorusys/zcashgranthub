@@ -8,6 +8,7 @@ const links = [
   { label: "Analytics", href: "/analytics" },
   { label: "Funding streams", href: "/funding-streams" },
   { label: "Bounties", href: "/bounties" },
+  { label: "Projects", href: "/projects" },
   { label: "API", href: "/developers" },
   { label: "Donate", href: "/donate" },
   { label: "Contribute", href: "/donate#contribute" },
