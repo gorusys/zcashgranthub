@@ -34,7 +34,6 @@ export const SIZE_LABEL: Record<WorkSize, string> = {
   large: "Over $50,000",
 };
 
-const ZECHUB_BOUNTIES_URL = "https://bounties.zechub.wiki/";
 const KYC_NOTE = "Requests above $50,000 require KYC with FPF before payout (you can stay pseudonymous publicly).";
 
 const FIT_RANK: Record<Fit, number> = { best: 0, good: 1, possible: 2 };
@@ -117,8 +116,8 @@ export function recommendFunding({ stage, size, kind }: FinderAnswers): FundingR
         "Submit a pull request to the ZecHub repository.",
         "Share your shielded Unified Address for payout.",
       ],
-      href: ZECHUB_BOUNTIES_URL,
-      cta: "Browse bounties",
+      href: "/bounties",
+      cta: "Browse open bounties",
     });
   }
 

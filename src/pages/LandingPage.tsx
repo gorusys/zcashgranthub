@@ -214,8 +214,13 @@ export default function LandingPage() {
           <p className="mt-5 text-sm text-muted-foreground">
             Not sure which program fits your work?{" "}
             <Link href="/find-funding" className="font-medium text-primary hover:underline">
-              Find the right funding →
+              Find the right funding
+            </Link>{" "}
+            or{" "}
+            <Link href="/bounties" className="font-medium text-primary hover:underline">
+              start with a bounty
             </Link>
+            .
           </p>
         </div>
       </section>

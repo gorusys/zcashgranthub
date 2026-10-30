@@ -15,6 +15,22 @@ const ENDPOINTS: Array<{ path: string; desc: string; params?: string; example: s
     example: "/api/v1/retro-rounds",
   },
   {
+    path: "GET /api/zcg/decisions",
+    desc: "ZCG committee decisions parsed from meeting minutes: outcome, requested amount, summary and each member's statement.",
+    params: "q=text · outcome=approved|declined|open · forumLink=&title= (decisions for one grant) · limit",
+    example: "/api/zcg/decisions?outcome=declined&limit=20",
+  },
+  {
+    path: "GET /api/opportunities",
+    desc: "Open ZecHub ZEC bounties and unassigned good-first-issue / help-wanted issues across Zcash GitHub orgs.",
+    example: "/api/opportunities",
+  },
+  {
+    path: "GET /api/chain/tip",
+    desc: "Current mainnet height and block time (Blockchair, with an estimate fallback).",
+    example: "/api/chain/tip",
+  },
+  {
     path: "GET /feed.xml",
     desc: "RSS 2.0 feed of the 50 most recently updated grants. Add ?program=zcg or ?program=coinholder via /api/v1/feed.",
     example: "/feed.xml",
