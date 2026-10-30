@@ -145,9 +145,26 @@ describe("grantsStore", () => {
     await getGrantsSnapshot();
     vi.advanceTimersByTime(SNAPSHOT_TTL_MS + 1);
     await getGrantsSnapshot();
-    await vi.runAllTimersAsync();
+    await vi.waitFor(() => expect(calls).toBe(4));
     const after = await getGrantsSnapshot();
-    expect(calls).toBe(4);
     expect(after.grants.map((g) => g.id)).toEqual(["zcg-3"]);
+  });
+
+  it("adopts a fresh snapshot another instance wrote instead of refetching", async () => {
+    vi.useRealTimers();
+    fetchMock.mockImplementation((url) =>
+      respond(url.includes("state=open") ? [issue(8)] : [])
+    );
+    await getGrantsSnapshot();
+    await vi.waitFor(() => expect(existsSync(snapshotFile)).toBe(true));
+
+    // Simulate a second module instance whose in-memory copy is stale.
+    __resetGrantsStoreForTests();
+    fetchMock.mockReset();
+    fetchMock.mockImplementation(() => respond({}, 500));
+    const snap = await getGrantsSnapshot();
+    expect(snap.grants.map((g) => g.id)).toEqual(["zcg-8"]);
+    expect(snap.stale).toBe(false);
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 });

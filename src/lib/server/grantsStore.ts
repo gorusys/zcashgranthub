@@ -21,6 +21,14 @@ import { parseIssueToGrant } from "@/lib/parseIssue";
 import { getGrantRepoConfigs, parseGrantRouteId } from "@/lib/grantPrograms";
 
 export const SNAPSHOT_TTL_MS = 5 * 60 * 1000;
+/** Without a token GitHub allows 60 req/hr, so refresh less often. */
+export const SNAPSHOT_TTL_UNAUTH_MS = 15 * 60 * 1000;
+
+function snapshotTtl(): number {
+  return process.env.GITHUB_API_TOKEN || process.env.GITHUB_TOKEN
+    ? SNAPSHOT_TTL_MS
+    : SNAPSHOT_TTL_UNAUTH_MS;
+}
 const DETAIL_TTL_MS = 5 * 60 * 1000;
 const DETAIL_CACHE_MAX = 200;
 
@@ -78,10 +86,24 @@ async function buildSnapshot(): Promise<{ grants: Grant[]; fetchedAt: number }> 
   return { grants, fetchedAt: Date.now() };
 }
 
+/**
+ * Another process, or another API route's module instance in the same server,
+ * may already have refreshed the shared disk snapshot. Use it if it's fresh.
+ */
+async function freshFromDisk(): Promise<{ grants: Grant[]; fetchedAt: number } | null> {
+  const disk = await readDiskSnapshot();
+  return disk && Date.now() - disk.fetchedAt < snapshotTtl() ? disk : null;
+}
+
 function refresh(): Promise<{ grants: Grant[]; fetchedAt: number }> {
   if (!inflight) {
-    inflight = buildSnapshot()
-      .then((s) => {
+    inflight = freshFromDisk()
+      .then(async (disk) => {
+        if (disk) {
+          snapshot = disk;
+          return disk;
+        }
+        const s = await buildSnapshot();
         snapshot = s;
         void writeDiskSnapshot(s);
         return s;
@@ -100,7 +122,7 @@ export async function getGrantsSnapshot(): Promise<GrantsSnapshot> {
   }
   if (snapshot) {
     const age = Date.now() - snapshot.fetchedAt;
-    if (age < SNAPSHOT_TTL_MS) {
+    if (age < snapshotTtl()) {
       return { ...toPublic(snapshot), stale: false };
     }
     refresh().catch((e) => {

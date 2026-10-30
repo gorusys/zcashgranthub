@@ -40,7 +40,7 @@ GitHub OAuth token exchange runs via Next API routes under `/api/auth/...`, so o
 
 ## Optional: GitHub API Token
 
-Grant data is fetched **server-side** (`/api/grants`, `/api/grants/[id]`) and cached for 5 minutes with stale-while-revalidate, so all visitors share one upstream fetch and the last good snapshot keeps serving if GitHub is down. Unauthenticated, GitHub allows 60 req/hr; to raise it to 5,000 req/hr, set a read-only token in `.env`:
+Grant data is fetched **server-side** (`/api/grants`, `/api/grants/[id]`) and cached for 5 minutes (15 without a token) with stale-while-revalidate, so all visitors share one upstream fetch and the last good snapshot keeps serving if GitHub is down. Unauthenticated, GitHub allows 60 req/hr; to raise it to 5,000 req/hr, set a read-only token in `.env`:
 
 ```
 GITHUB_API_TOKEN=ghp_your_read_only_token_here
