@@ -265,10 +265,17 @@ function parseDocuments(
 // Forum link
 // ---------------------------------------------------------------------------
 
-function forumLink(body: string, comments: GitHubComment[]): string {
+/** Forum topics linked from the application template itself, not the proposal's thread. */
+const TEMPLATE_FORUM_TOPICS = /\/t\/(?:[^/\s]*code-of-conduct[^/\s]*\/)?41787\b|code-of-conduct/i;
+
+/** The proposal's forum thread: first linked forum topic that isn't a template link. */
+export function forumLink(body: string, comments: Pick<GitHubComment, "body">[] = []): string {
   const text = [body, ...comments.map((c) => c.body)].join(" ");
-  const m = text.match(/https?:\/\/forum\.zcashcommunity\.com\/[^\s)>]+/);
-  return m ? m[0] : ZCG_COMMUNITY_GRANTS_FORUM_CATEGORY_URL;
+  const urls = (text.match(/https?:\/\/forum\.zcashcommunity\.com\/t\/[^\s)\]>"'`]+/g) ?? []).map((u) =>
+    u.replace(/[.,;:!?]+$/, "")
+  );
+  const thread = urls.find((u) => !TEMPLATE_FORUM_TOPICS.test(u));
+  return thread ?? ZCG_COMMUNITY_GRANTS_FORUM_CATEGORY_URL;
 }
 
 /**
