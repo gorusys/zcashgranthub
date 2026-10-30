@@ -18,6 +18,18 @@ export const ZECHUB_PROPOSAL_MODULE_SINGLE =
 export const DAO_DAO_INDEXER_BASE =
   process.env.NEXT_PUBLIC_DAO_DAO_INDEXER_BASE ?? "https://indexer.daodao.zone";
 
+/**
+ * Public Juno REST (LCD) endpoints used for direct CosmWasm queries when the indexer is down.
+ * Override with a comma-separated JUNO_REST_ENDPOINTS (server-side only).
+ */
+export const JUNO_REST_ENDPOINTS: string[] = (
+  process.env.JUNO_REST_ENDPOINTS ??
+  "https://juno-rest.publicnode.com,https://juno-api.polkachu.com,https://rest.cosmos.directory/juno"
+)
+  .split(",")
+  .map((s) => s.trim().replace(/\/+$/, ""))
+  .filter(Boolean);
+
 export const ZECHUB_PROPOSAL_PREFIX = "A";
 
 export function zechubDaoDaodaoUrl(): string {

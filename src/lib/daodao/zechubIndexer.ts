@@ -1,61 +1,25 @@
 import type { DaoProposalSingleRaw, ZechubDaoMeta } from "./types";
 import { grantTitleMatchScore } from "./grantTitleMatch";
-import {
-  DAO_DAO_INDEXER_BASE,
-  ZECHUB_CHAIN_ID,
-  ZECHUB_DAO_CORE,
-  ZECHUB_PROPOSAL_MODULE_SINGLE,
-} from "./zechubConfig";
+import { ZECHUB_CHAIN_ID, ZECHUB_DAO_CORE } from "./zechubConfig";
+import { queryDaoSummary, queryProposal, queryReverseProposals } from "./zechubSource";
 
 /** Scan depth: many grants match by title without issue# in proposal text */
 const TITLE_MATCH_MAX_PAGES = 22;
 const TITLE_MATCH_PAGE_SIZE = 40;
 const TITLE_MATCH_MIN_SCORE = 0.72;
 
-function indexerUrl(path: string): string {
-  return `${DAO_DAO_INDEXER_BASE}/${ZECHUB_CHAIN_ID}${path}`;
-}
-
-export async function fetchZechubDaoDumpState(): Promise<{
-  config: { name: string };
-  proposalCount: number;
-}> {
-  const res = await fetch(indexerUrl(`/contract/${ZECHUB_DAO_CORE}/daoCore/dumpState`));
-  if (!res.ok) {
-    throw new Error(`DAO DAO indexer dumpState: ${res.status}`);
-  }
-  const data = (await res.json()) as {
-    config: { name: string };
-    proposalCount: number;
-  };
-  return data;
-}
-
 export async function fetchZechubDaoMeta(): Promise<ZechubDaoMeta> {
-  const dump = await fetchZechubDaoDumpState();
+  const { name, proposalCount } = await queryDaoSummary();
   return {
-    name: dump.config.name,
-    proposalCount: dump.proposalCount,
+    name,
+    proposalCount,
     chainId: ZECHUB_CHAIN_ID,
     daoCoreAddress: ZECHUB_DAO_CORE,
   };
 }
 
-export async function fetchZechubProposalById(
-  proposalId: number
-): Promise<DaoProposalSingleRaw> {
-  const url = new URL(
-    indexerUrl(
-      `/contract/${ZECHUB_PROPOSAL_MODULE_SINGLE}/daoProposalSingle/proposal`
-    )
-  );
-  url.searchParams.set("id", String(proposalId));
-
-  const res = await fetch(url.toString());
-  if (!res.ok) {
-    throw new Error(`DAO DAO proposal ${proposalId}: ${res.status}`);
-  }
-  return res.json() as Promise<DaoProposalSingleRaw>;
+export function fetchZechubProposalById(proposalId: number): Promise<DaoProposalSingleRaw> {
+  return queryProposal(proposalId);
 }
 
 interface ReverseRow {
@@ -85,21 +49,7 @@ export async function findZechubProposalIdByGithubIssue(
   let startBefore: number | undefined;
 
   for (let page = 0; page < maxPages; page++) {
-    const url = new URL(
-      indexerUrl(
-        `/contract/${ZECHUB_PROPOSAL_MODULE_SINGLE}/daoProposalSingle/reverseProposals`
-      )
-    );
-    url.searchParams.set("limit", String(pageSize));
-    if (startBefore !== undefined) {
-      url.searchParams.set("startBefore", String(startBefore));
-    }
-
-    const res = await fetch(url.toString());
-    if (!res.ok) {
-      throw new Error(`DAO DAO reverseProposals: ${res.status}`);
-    }
-    const rows = (await res.json()) as ReverseRow[];
+    const rows: ReverseRow[] = await queryReverseProposals(pageSize, startBefore);
     if (!Array.isArray(rows) || rows.length === 0) return null;
 
     for (const row of rows) {
@@ -132,21 +82,7 @@ export async function findZechubProposalIdByGrantTitle(
   let startBefore: number | undefined;
 
   for (let page = 0; page < TITLE_MATCH_MAX_PAGES; page++) {
-    const url = new URL(
-      indexerUrl(
-        `/contract/${ZECHUB_PROPOSAL_MODULE_SINGLE}/daoProposalSingle/reverseProposals`
-      )
-    );
-    url.searchParams.set("limit", String(TITLE_MATCH_PAGE_SIZE));
-    if (startBefore !== undefined) {
-      url.searchParams.set("startBefore", String(startBefore));
-    }
-
-    const res = await fetch(url.toString());
-    if (!res.ok) {
-      throw new Error(`DAO DAO reverseProposals: ${res.status}`);
-    }
-    const rows = (await res.json()) as ReverseRow[];
+    const rows: ReverseRow[] = await queryReverseProposals(TITLE_MATCH_PAGE_SIZE, startBefore);
     if (!Array.isArray(rows) || rows.length === 0) break;
 
     for (const row of rows) {
@@ -183,21 +119,7 @@ export async function listZechubProposalsByTitleSimilarity(
   let startBefore: number | undefined;
 
   for (let page = 0; page < TITLE_MATCH_MAX_PAGES; page++) {
-    const url = new URL(
-      indexerUrl(
-        `/contract/${ZECHUB_PROPOSAL_MODULE_SINGLE}/daoProposalSingle/reverseProposals`
-      )
-    );
-    url.searchParams.set("limit", String(TITLE_MATCH_PAGE_SIZE));
-    if (startBefore !== undefined) {
-      url.searchParams.set("startBefore", String(startBefore));
-    }
-
-    const res = await fetch(url.toString());
-    if (!res.ok) {
-      throw new Error(`DAO DAO reverseProposals: ${res.status}`);
-    }
-    const rows = (await res.json()) as ReverseRow[];
+    const rows: ReverseRow[] = await queryReverseProposals(TITLE_MATCH_PAGE_SIZE, startBefore);
     if (!Array.isArray(rows) || rows.length === 0) break;
 
     for (const row of rows) {
