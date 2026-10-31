@@ -15,11 +15,15 @@ export default function DashboardPage() {
   const { text: tx, locale: uiLocale } = useUi();
   const { data: grants = [], isLoading } = useGrants();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState("applications");
-  useEffect(() => {
-    const tab = router.query.tab;
-    if (typeof tab === "string" && ["applications", "milestones", "notifications"].includes(tab)) setActiveTab(tab);
-  }, [router.query.tab]);
+  const activeTab = router.isReady && typeof router.query.tab === "string" &&
+    ["applications", "milestones", "notifications"].includes(router.query.tab)
+    ? router.query.tab : "applications";
+  const setActiveTab = (tab: string) => {
+    const query = { ...router.query };
+    if (tab === "applications") delete query.tab;
+    else query.tab = tab;
+    void router.replace({ pathname: "/dashboard", query }, undefined, { shallow: true });
+  };
   /** `undefined` = not hydrated yet (avoid SSR/client mismatch). */
   const [login, setLogin] = useState<string | null | undefined>(undefined);
 

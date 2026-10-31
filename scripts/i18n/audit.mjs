@@ -19,7 +19,7 @@ const files = [];
 for (const dir of ["src/pages", "src/components"]) {
   files.push(...fs.readdirSync(dir).filter((f) => f.endsWith(".tsx")).map((f) => path.join(dir, f)));
 }
-files.push("src/components/ui/dialog.tsx", "src/components/ui/sheet.tsx", "src/components/ui/carousel.tsx", "src/components/ui/breadcrumb.tsx", "src/components/analytics/ZcgWorkbookAnalytics.tsx", "src/components/zechub/ProposalDescription.tsx", "pages/_app.tsx", "pages/apply/coinholder.tsx");
+files.push("src/lib/navigation.ts", "src/components/ui/dialog.tsx", "src/components/ui/sheet.tsx", "src/components/ui/carousel.tsx", "src/components/ui/breadcrumb.tsx", "src/components/analytics/ZcgWorkbookAnalytics.tsx", "src/components/zechub/ProposalDescription.tsx", "pages/_app.tsx", "pages/apply/coinholder.tsx");
 function check(value) {
   const s = normalize(value);
   if (/[A-Za-z]{2}/.test(s) && !fixed.has(s) && !dictionary[s]) missing.add(s);
@@ -27,6 +27,7 @@ function check(value) {
 for (const file of files) {
   const sf = ts.createSourceFile(file, fs.readFileSync(file, "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
   function walk(n) {
+    if (file === "src/lib/navigation.ts" && ts.isPropertyAssignment(n) && ["label", "description"].includes(n.name.getText(sf)) && ts.isStringLiteral(n.initializer)) check(n.initializer.text);
     if (ts.isCallExpression(n) && n.expression.getText(sf) === "tx" && n.arguments.length) {
       if (ts.isStringLiteral(n.arguments[0]) || ts.isNoSubstitutionTemplateLiteral(n.arguments[0])) check(n.arguments[0].text);
     }
