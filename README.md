@@ -52,6 +52,8 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+Development uses Webpack because Turbopack can stall during page compilation in this project. To refresh browser compatibility data with the npm lockfile, run `npm update caniuse-lite browserslist`.
+
 GitHub OAuth token exchange runs via Next API routes under `/api/auth/...`, so one `npm run dev` process is enough.
 
 ## Optional: GitHub API Token
