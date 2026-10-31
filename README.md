@@ -29,6 +29,12 @@ English, Spanish (`/es`) and Brazilian Portuguese (`/pt-BR`) via Next.js locale 
 
 To add a language: copy `src/i18n/messages/es.ts`, translate every value (keep `{placeholders}`), register it in `LOCALES` (`src/i18n/translate.ts`) and `i18n.locales` (`next.config.mjs`). Extend `src/i18n/messages/ui.json` and the locale mapping in `src/i18n/uiTranslate.ts` for the new language as well. The type checker rejects missing keys and the tests reject changed placeholders. Shared interface copy is in `src/i18n/messages/ui.json` (English source → Spanish and Portuguese translations). Use `useUi().text` (from `src/i18n/useUi.ts`) in components, preserve API/form identifiers, and keep placeholders unchanged. Run `npm run test:i18n` for catalog and source coverage, or `I18N_BASE_URL=http://localhost:3000 npm run test:i18n:browser` against a running app for route and language-switching checks. Native-speaker review is welcome.
 
+## Production API runtime
+
+The root package leaves `type` unset (Node defaults to CommonJS) because Vercel loads compiled Pages Router API bundles with `require()`. Keep the tooling configurations explicitly ESM (`next.config.mjs`, `postcss.config.mjs`, `eslint.config.mjs`, `vite.config.mts`, and `vitest.config.mts`). Application TypeScript can continue to use imports and exports through Next.js.
+
+After `npm run build`, run `npm run test:api-runtime`. This loads the compiled grants, forum, and chain API handlers without `.next/package.json`, matching the deployment package scope that exposed `ERR_REQUIRE_ESM` on Vercel.
+
 ## Tech Stack
 
 - [Next.js](https://nextjs.org/) + [React 18](https://react.dev/) + TypeScript

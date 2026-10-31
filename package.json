@@ -2,7 +2,6 @@
   "name": "zcash-grants-hub",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -13,7 +12,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:i18n": "node scripts/i18n/audit.mjs && vitest run src/test/i18n.test.ts src/test/uiTranslation.test.tsx",
-    "test:i18n:browser": "node scripts/i18n/smoke.mjs"
+    "test:i18n:browser": "node scripts/i18n/smoke.mjs",
+    "test:api-runtime": "node scripts/verify-api-runtime.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

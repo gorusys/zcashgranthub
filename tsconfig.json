@@ -40,7 +40,7 @@
     "node_modules",
     "src/main.tsx",
     "src/App.tsx",
-    "vite.config.ts",
-    "vitest.config.ts"
+    "vite.config.mts",
+    "vitest.config.mts"
   ]
 }
