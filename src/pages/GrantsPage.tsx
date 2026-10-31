@@ -1,3 +1,4 @@
+import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useState, useMemo, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/router";
@@ -297,7 +298,7 @@ export default function GrantsPage() {
     programFilter === "coinholder" ? "Apply for Coinholder grant" : "Apply for ZCG grant";
 
   return (
-    <div className="container mx-auto px-4 py-6 sm:py-8">
+    <PageLayout>
       <div className="mb-5 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground sm:text-3xl">{tx(pageTitle)}</h1>
@@ -455,6 +456,6 @@ export default function GrantsPage() {
           )}
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 }

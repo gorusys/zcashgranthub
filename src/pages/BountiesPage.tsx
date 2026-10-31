@@ -1,3 +1,4 @@
+import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useMemo, useState } from "react";
 import Head from "next/head";
@@ -100,7 +101,7 @@ export default function BountiesPage() {
   }, [data]);
 
   return (
-    <div className="container mx-auto min-w-0 max-w-4xl px-4 py-6 sm:py-8">
+    <PageLayout>
       <Head>
         <title>{tx(`${t("bounties.title")} · Zcash Grants Hub`)}</title>
         <meta
@@ -173,6 +174,6 @@ export default function BountiesPage() {
           </CardContent>
         </Card>
       )}
-    </div>
+    </PageLayout>
   );
 }

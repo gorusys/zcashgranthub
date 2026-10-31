@@ -1,3 +1,4 @@
+import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useMemo, useState } from "react";
 import Head from "next/head";
@@ -245,7 +246,7 @@ export default function ProjectsPage() {
   }, [data]);
 
   return (
-    <div className="container mx-auto min-w-0 max-w-5xl px-4 py-6 sm:py-8">
+    <PageLayout>
       <Head>
         <title>{tx("Projects & infrastructure · Zcash Grants Hub")}</title>
         <meta
@@ -292,6 +293,6 @@ export default function ProjectsPage() {
           </Button>
         </div>
       )}
-    </div>
+    </PageLayout>
   );
 }

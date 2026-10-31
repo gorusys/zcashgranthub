@@ -1,3 +1,4 @@
+import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useEffect, useMemo, useState } from "react";
 import Head from "next/head";
@@ -212,7 +213,7 @@ export default function RetroRoundsPage() {
   ).reverse();
 
   return (
-    <div className="container mx-auto min-w-0 px-4 py-6 sm:py-8">
+    <PageLayout>
       <Head>
         <title>{tx("Coinholder retro rounds · Zcash Grants Hub")}</title>
         <meta
@@ -521,6 +522,6 @@ export default function RetroRoundsPage() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </PageLayout>
   );
 }

@@ -1,3 +1,4 @@
+import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useMemo, useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -164,21 +165,21 @@ export default function AnalyticsPage() {
 
   if (isError) {
     return (
-      <div className="container mx-auto px-4 py-20 text-center">
+      <PageLayout className="text-center">
         <AlertCircle className="mx-auto mb-4 h-10 w-10 text-red-400" />
         <h1 className="text-xl font-bold text-foreground">
           {tx("Could not load analytics")}</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           {tx((error as Error)?.message ?? "Failed to fetch grants from GitHub.")}
         </p>
-      </div>
+      </PageLayout>
     );
   }
 
   const skeletonClass = isLoading ? "animate-pulse" : "";
 
   return (
-    <div className="container mx-auto px-4 py-6 sm:py-8">
+    <PageLayout>
       <h1 className="mb-2 text-2xl font-bold text-foreground sm:text-3xl">{tx("Analytics")}</h1>
       <p className="mb-6 text-sm text-muted-foreground sm:mb-8 sm:text-base">
         {tx("Application and category metrics from GitHub Issues, plus official ZCG / Coinholder treasury figures from the public")}{" "}
@@ -377,6 +378,6 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </PageLayout>
   );
 }
