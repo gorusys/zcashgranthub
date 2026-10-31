@@ -1,8 +1,8 @@
+import { navigationGroups, isNavItemActive, isFeedLink } from "@/lib/navigation";
 import { useUi } from "@/i18n/useUi";
 import Link from "next/link";
-import type { NextRouter } from "next/router";
 import { useRouter } from "next/router";
-import { Bell, Github, Heart, Menu, Minus, TrendingDown, TrendingUp, X } from "lucide-react";
+import { ArrowUpRight, Bell, ChevronDown, Compass, Github, Heart, Layers, Menu, Minus, TrendingDown, TrendingUp, UserRound, Wallet, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -25,7 +25,11 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { useGrantUpdates } from "@/hooks/useWatchlist";
 import { statusConfig } from "@/data/grantTypes";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { useT, type MessageKey } from "@/i18n";
+import { useT } from "@/i18n";
+import { Sheet, SheetContent, SheetTitle, SheetDescription, SheetTrigger } from "@/components/ui/sheet";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+
+const groupIcons = { explore: Compass, funding: Wallet, insights: Layers, activity: UserRound, resources: BookOpen };
 
 
 function ZecPricePill({ state, className }: { state: ZecUsdPriceState; className?: string }) {
@@ -161,50 +165,6 @@ function UpdatesMenu({ triggerClassName }: { triggerClassName?: string }) {
   );
 }
 
-type NavLink = {
-  labelKey: MessageKey;
-  href: string;
-  active: (router: NextRouter) => boolean;
-};
-
-const navLinks: NavLink[] = [
-  {
-    labelKey: "nav.grants",
-    href: "/grants",
-    active: (r) => r.pathname.startsWith("/grants"),
-  },
-  {
-    labelKey: "nav.retro",
-    href: "/retro",
-    active: (r) => r.pathname === "/retro",
-  },
-  {
-    labelKey: "nav.decisions",
-    href: "/decisions",
-    active: (r) => r.pathname === "/decisions",
-  },
-  {
-    labelKey: "nav.zechub",
-    href: "/zechub/proposals",
-    active: (r) => r.pathname.startsWith("/zechub/proposals"),
-  },
-  {
-    labelKey: "nav.apply",
-    href: "/apply",
-    active: (r) => r.pathname === "/apply",
-  },
-  {
-    labelKey: "nav.forum",
-    href: "/forum/discussions",
-    active: (r) => r.pathname === "/forum/discussions",
-  },
-  {
-    labelKey: "nav.analytics",
-    href: "/analytics",
-    active: (r) => r.pathname === "/analytics",
-  },
-];
-
 export function Navbar() {
   const { text: tx } = useUi();
   const router = useRouter();
@@ -218,9 +178,12 @@ export function Navbar() {
   }, [router.asPath]);
 
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    if (!mobileOpen) return;
+    const desktop = window.matchMedia("(min-width: 1280px)");
+    const closeOnDesktop = () => { if (desktop.matches) setMobileOpen(false); };
+    desktop.addEventListener("change", closeOnDesktop);
     return () => {
-      document.body.style.overflow = "";
+      desktop.removeEventListener("change", closeOnDesktop);
     };
   }, [mobileOpen]);
 
@@ -236,7 +199,7 @@ export function Navbar() {
   }, []);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
+    <nav aria-label={tx("Main navigation")} className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
       <div className="container mx-auto flex h-14 items-center justify-between px-4 sm:h-16">
         <Link href="/" className="flex items-center gap-2.5 sm:gap-3">
           <img
@@ -258,22 +221,40 @@ export function Navbar() {
         </Link>
 
         <div className="hidden items-center gap-0.5 xl:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.labelKey}
-              href={link.href}
-              className={`relative whitespace-nowrap rounded-md px-2.5 py-2 text-sm font-medium transition-colors ${
-                link.active(router)
-                  ? "text-primary"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {t(link.labelKey)}
-              {link.active(router) && (
-                <span className="absolute bottom-0 left-2.5 right-2.5 h-0.5 rounded-full bg-primary" />
-              )}
-            </Link>
-          ))}
+          {navigationGroups.map((group) => {
+            const active = group.items.some((item) => isNavItemActive(item, router));
+            return (
+              <DropdownMenu key={group.id}>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className={`h-10 gap-1.5 px-2.5 text-sm ${active ? "text-primary" : "text-muted-foreground"}`}>
+                    {tx(group.label)}
+                    <ChevronDown className="h-3.5 w-3.5" aria-hidden />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-72 p-2">
+                  <DropdownMenuLabel className="text-xs text-muted-foreground">{tx(group.label)}</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {group.items.map((item) => {
+                    const selected = isNavItemActive(item, router);
+                    const content = <>
+                      <span className="font-medium">{tx(item.label)}</span>
+                      {item.description && <span className="text-xs leading-relaxed text-muted-foreground">{tx(item.description)}</span>}
+                    </>;
+                    const className = `flex cursor-pointer flex-col items-start gap-0.5 rounded-md px-3 py-2.5 ${selected ? "bg-primary/10 text-primary" : ""}`;
+                    return (
+                      <DropdownMenuItem key={item.href} className={className} asChild>
+                        {isFeedLink(item.href) ? (
+                          <a href={item.href}>{content}</a>
+                        ) : (
+                          <Link href={item.href} aria-current={selected ? "page" : undefined}>{content}</Link>
+                        )}
+                      </DropdownMenuItem>
+                    );
+                  })}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            );
+          })}
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3">
@@ -320,84 +301,58 @@ export function Navbar() {
             </Button>
           )}
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-9 w-9 text-muted-foreground xl:hidden"
-            aria-label={tx(mobileOpen ? "Close menu" : "Open menu")}
-            onClick={() => setMobileOpen((prev) => !prev)}
-          >
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="icon" className="h-10 w-10 rounded-xl xl:hidden" aria-label={tx("Open menu")}>
+                <Menu className="h-5 w-5" aria-hidden />
+              </Button>
+            </SheetTrigger>
+            <SheetContent id="mobile-navigation" className="flex h-[100dvh] w-full flex-col gap-0 p-0 sm:max-w-md [&>button]:right-5 [&>button]:top-6 [&>button]:flex [&>button]:h-11 [&>button]:w-11 [&>button]:items-center [&>button]:justify-center [&>button]:rounded-xl [&>button]:border [&>button]:border-border">
+              <div className="border-b border-border/60 px-5 pb-5 pt-6 pr-20">
+                <div className="mb-3 flex items-center gap-3">
+                  <img src="/favicon.svg" alt="" width={36} height={36} className="rounded-xl" />
+                  <SheetTitle className="text-base">{tx("Zcash Grants Hub")}</SheetTitle>
+                </div>
+                <SheetDescription className="text-xs leading-relaxed">{t("nav.tagline")}</SheetDescription>
+              </div>
+              <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-5">
+                <Button asChild className="mb-5 h-12 w-full justify-between rounded-xl">
+                  <Link href="/find-funding" onClick={() => setMobileOpen(false)}>{tx("Find the right funding")}<ArrowUpRight className="h-4 w-4" aria-hidden /></Link>
+                </Button>
+                <Accordion type="multiple" defaultValue={[navigationGroups.find(group => group.items.some(item => isNavItemActive(item, router)))?.id ?? "explore"]}>
+                  {navigationGroups.map(group => {
+                    const Icon = groupIcons[group.id as keyof typeof groupIcons];
+                    const active = group.items.some(item => isNavItemActive(item, router));
+                    return <AccordionItem key={group.id} value={group.id} className="border-border/50">
+                      <AccordionTrigger className="min-h-14 py-3 text-sm hover:no-underline">
+                        <span className={`flex items-center gap-3 ${active ? "text-primary" : ""}`}><Icon className="h-4 w-4" aria-hidden />{tx(group.label)}</span>
+                      </AccordionTrigger>
+                      <AccordionContent className="space-y-1 pb-3">
+                        {group.items.map(item => {
+                          const selected = isNavItemActive(item, router);
+                          const className = `flex min-h-12 items-center justify-between gap-3 rounded-xl px-3 py-3 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${selected ? "bg-primary/10 font-semibold text-primary" : "text-muted-foreground hover:bg-secondary hover:text-foreground"}`;
+                          const content = <><span>{tx(item.label)}</span>{selected && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" aria-hidden />}</>;
+                          return isFeedLink(item.href) ? <a key={item.href} href={item.href} className={className} onClick={() => setMobileOpen(false)}>{content}</a> : <Link key={item.href} href={item.href} className={className} aria-current={selected ? "page" : undefined} onClick={() => setMobileOpen(false)}>{content}</Link>;
+                        })}
+                      </AccordionContent>
+                    </AccordionItem>;
+                  })}
+                </Accordion>
+              </div>
+              <div className="shrink-0 space-y-3 border-t border-border/60 bg-secondary/30 px-5 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+                <div className="flex items-center justify-between gap-2">
+                  <LanguageSwitcher showLabel className="h-11 min-w-0 justify-start text-muted-foreground" />
+                  <ThemeToggle className="h-11 w-11 shrink-0 rounded-xl border border-border text-muted-foreground" />
+                </div>
+                <Button variant="outline" className="h-11 w-full gap-2 rounded-xl" onClick={() => sessionLogin ? clearGitHubSession() : void beginGitHubOAuth()}>
+                  <Github className="h-4 w-4" />{sessionLogin ? `@${sessionLogin} (${t("nav.disconnect")})` : t("nav.connectGithub")}
+                </Button>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
 
-      {mobileOpen && (
-        <div className="border-t border-border/50 bg-background/95 backdrop-blur-xl xl:hidden">
-          <div className="container mx-auto flex flex-col gap-1 px-4 py-3">
-            {navLinks.map((link) => (
-              <Link
-                key={link.labelKey}
-                href={link.href}
-                className={`flex items-center rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
-                  link.active(router)
-                    ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:bg-secondary hover:text-foreground"
-                }`}
-              >
-                {t(link.labelKey)}
-              </Link>
-            ))}
-
-            <Link
-              href="/donate"
-              className={`flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
-                router.pathname === "/donate"
-                  ? "bg-primary/10 text-primary"
-                  : "text-primary hover:bg-secondary"
-              }`}
-            >
-              <Heart className="h-4 w-4" />
-              {t("nav.donateContribute")}
-            </Link>
-
-            <ZecPricePill state={zecPrice} className="mt-1 w-full justify-between px-3 py-2" />
-
-            <ThemeToggle className="mt-1 h-10 w-10 text-muted-foreground" />
-
-            <Button asChild variant="outline" size="sm" className="mt-1 h-10 w-full justify-start gap-2 text-muted-foreground">
-              <Link href="/dashboard?tab=notifications">
-                <Bell className="h-4 w-4" />
-                {t("updates.watchlist")}
-              </Link>
-            </Button>
-
-            <LanguageSwitcher showLabel className="mt-1 h-10 w-full justify-start text-muted-foreground" />
-
-            {sessionLogin ? (
-              <Button
-                variant="outline"
-                size="sm"
-                className="mt-1 h-10 w-full gap-2"
-                onClick={clearGitHubSession}
-              >
-                <Github className="h-4 w-4" />
-                @{tx(sessionLogin)} ({t("nav.disconnect")})
-              </Button>
-            ) : (
-              <Button
-                variant="outline"
-                size="sm"
-                className="mt-1 h-10 w-full gap-2"
-                onClick={() => void beginGitHubOAuth()}
-              >
-                <Github className="h-4 w-4" />
-                {t("nav.connectGithub")}
-              </Button>
-            )}
-          </div>
-        </div>
-      )}
     </nav>
   );
 }

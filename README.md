@@ -23,6 +23,10 @@ Official domain: [zgrantshub.com](https://zgrantshub.com)
 - **Coinholder retro rounds** — `/retro` shows the current round phase with a countdown, the FPF timeline, a pre-submission checklist, this round's submissions, past-round outcomes (counts from FPF GitHub labels) and live organizer announcements from the forum. Round dates live in `src/data/retro-rounds.json`; add each new round from FPF's forum post and cite it in `sources`.
 - **Analytics dashboard**.
 
+## Navigation
+
+The navbar groups all public pages into Explore, Funding, Insights, My activity, and Resources. Desktop dropdowns and the scrollable mobile menu share `src/lib/navigation.ts`, including application and dashboard tabs. `src/test/navigation.test.ts` checks route coverage and active states. Run `NAV_BASE_URL=http://localhost:3000 npm run test:navigation:browser` against a local server to check all three languages, keyboard navigation, and mobile behavior.
+
 ## Languages
 
 English, Spanish (`/es`) and Brazilian Portuguese (`/pt-BR`) via Next.js locale routing and a language switcher. All available pages and shared components use translated interface copy, including application forms, validation, statuses, dashboards, charts, and metadata. Dates and numbers follow the selected locale, and the language switcher preserves the route, query, and hash and saves the preference in the NEXT_LOCALE cookie. Source proposal content and submitted values remain unchanged.
@@ -51,6 +55,8 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
+
+Development uses Webpack because Turbopack can stall during page compilation in this project. To refresh browser compatibility data with the npm lockfile, run `npm update caniuse-lite browserslist`.
 
 GitHub OAuth token exchange runs via Next API routes under `/api/auth/...`, so one `npm run dev` process is enough.
 
