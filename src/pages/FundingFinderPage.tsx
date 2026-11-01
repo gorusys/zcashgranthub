@@ -1,3 +1,4 @@
+import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useEffect, useMemo, useState } from "react";
 import Head from "next/head";
@@ -97,7 +98,7 @@ export default function FundingFinderPage() {
   const milestone = round && now != null ? nextMilestone(round, now) : null;
 
   return (
-    <div className="container mx-auto min-w-0 max-w-4xl px-4 py-6 sm:py-8">
+    <PageLayout>
       <Head>
         <title>{tx(`${t("finder.title")} · Zcash Grants Hub`)}</title>
         <meta
@@ -183,6 +184,6 @@ export default function FundingFinderPage() {
           </p>
         </div>
       )}
-    </div>
+    </PageLayout>
   );
 }

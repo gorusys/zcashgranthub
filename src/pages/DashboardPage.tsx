@@ -1,3 +1,4 @@
+import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useEffect, useMemo, useState } from "react";
 import { Bell, FileText, LayoutDashboard, ChevronRight, Clock, ExternalLink } from "lucide-react";
@@ -61,16 +62,16 @@ export default function DashboardPage() {
   );
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="mb-8 text-3xl font-bold text-foreground">{tx("Dashboard")}</h1>
+    <PageLayout>
+      <h1 className="mb-6 text-2xl font-bold text-foreground sm:mb-8 sm:text-3xl">{tx("Dashboard")}</h1>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="mb-6 bg-secondary">
-          <TabsTrigger value="applications" className="gap-2">
+        <TabsList className="mb-6 grid h-auto w-full grid-cols-3 bg-secondary sm:inline-flex sm:w-auto">
+          <TabsTrigger value="applications" className="min-w-0 gap-1 whitespace-normal px-2 py-2 text-xs sm:gap-2 sm:px-3 sm:text-sm">
             <LayoutDashboard className="h-4 w-4" /> {tx(" My Applications")}</TabsTrigger>
-          <TabsTrigger value="milestones" className="gap-2">
+          <TabsTrigger value="milestones" className="min-w-0 gap-1 whitespace-normal px-2 py-2 text-xs sm:gap-2 sm:px-3 sm:text-sm">
             <FileText className="h-4 w-4" /> {tx(" Milestone Reports")}</TabsTrigger>
-          <TabsTrigger value="notifications" className="gap-2">
+          <TabsTrigger value="notifications" className="min-w-0 gap-1 whitespace-normal px-2 py-2 text-xs sm:gap-2 sm:px-3 sm:text-sm">
             <Bell className="h-4 w-4" /> {tx(" Notifications")}</TabsTrigger>
         </TabsList>
 
@@ -187,6 +188,6 @@ export default function DashboardPage() {
           <WatchlistPanel />
         </TabsContent>
       </Tabs>
-    </div>
+    </PageLayout>
   );
 }

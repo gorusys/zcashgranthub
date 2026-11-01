@@ -27,6 +27,8 @@ Official domain: [zgrantshub.com](https://zgrantshub.com)
 
 The navbar groups all public pages into Explore, Funding, Insights, My activity, and Resources. Desktop dropdowns and the scrollable mobile menu share `src/lib/navigation.ts`, including application and dashboard tabs. `src/test/navigation.test.ts` checks route coverage and active states. Run `NAV_BASE_URL=http://localhost:3000 npm run test:navigation:browser` against a local server to check all three languages, keyboard navigation, and mobile behavior.
 
+Interior pages, loading states, and error states use `src/components/PageLayout.tsx` for a shared content width, 16px horizontal gutters, and responsive vertical spacing. The homepage sections use the same container alignment.
+
 ## Languages
 
 English, Spanish (`/es`) and Brazilian Portuguese (`/pt-BR`) via Next.js locale routing and a language switcher. All available pages and shared components use translated interface copy, including application forms, validation, statuses, dashboards, charts, and metadata. Dates and numbers follow the selected locale, and the language switcher preserves the route, query, and hash and saves the preference in the NEXT_LOCALE cookie. Source proposal content and submitted values remain unchanged.

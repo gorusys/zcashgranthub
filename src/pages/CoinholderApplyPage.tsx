@@ -1,3 +1,4 @@
+import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { UiText } from "@/i18n/ui";
 import Link from "next/link";
@@ -180,8 +181,9 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
 
   const Heading = embedded ? "h2" : "h1";
 
+  const Layout = embedded ? "div" : PageLayout;
   return (
-    <div className={embedded ? "" : "container mx-auto px-4 py-6 sm:py-8"}>
+    <Layout>
       {!embedded && (
         <p className="mb-2 text-xs text-muted-foreground">
           <Link href="/apply" className="text-primary hover:underline">
@@ -644,7 +646,7 @@ export function CoinholderApplyWizard({ embedded = false }: { embedded?: boolean
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }
 

@@ -10,7 +10,7 @@ export function Footer() {
   const linkClass = "inline-flex min-h-10 items-center py-2 text-sm leading-relaxed text-muted-foreground transition-colors hover:text-primary focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
   return (
     <footer className="border-t border-border/60 bg-secondary/20">
-      <div className="container mx-auto px-5 py-10 sm:py-14">
+      <div className="container mx-auto px-4 py-10 sm:py-14">
         <div className="flex flex-col justify-between gap-6 border-b border-border/60 pb-8 sm:flex-row sm:items-center">
           <div className="max-w-sm">
             <Link href="/" className="inline-flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">

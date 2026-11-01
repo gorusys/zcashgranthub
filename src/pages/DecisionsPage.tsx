@@ -1,3 +1,4 @@
+import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useEffect, useMemo, useState } from "react";
 import Head from "next/head";
@@ -73,7 +74,7 @@ export default function DecisionsPage() {
   }, [all, q, outcome]);
 
   return (
-    <div className="container mx-auto min-w-0 px-4 py-6 sm:py-8">
+    <PageLayout>
       <Head>
         <title>{tx("ZCG decisions archive · Zcash Grants Hub")}</title>
         <meta
@@ -164,6 +165,6 @@ export default function DecisionsPage() {
             {tx("Show more (")}{filtered.length - shown} {tx(" left)")}</Button>
         </div>
       )}
-    </div>
+    </PageLayout>
   );
 }

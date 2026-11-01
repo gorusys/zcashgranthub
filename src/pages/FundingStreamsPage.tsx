@@ -1,3 +1,4 @@
+import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useEffect, useMemo, useState } from "react";
 import Head from "next/head";
@@ -162,7 +163,7 @@ export default function FundingStreamsPage() {
     depletedAt == null ? "lasts 20+ years" : `runs out around ${monthYear(uiLocale, depletedAt)}`;
 
   return (
-    <div className="container mx-auto min-w-0 max-w-5xl px-4 py-6 sm:py-8">
+    <PageLayout>
       <Head>
         <title>{tx("Funding streams & NU7 · Zcash Grants Hub")}</title>
         <meta
@@ -418,6 +419,6 @@ export default function FundingStreamsPage() {
           </a>
         ))}
       </p>
-    </div>
+    </PageLayout>
   );
 }

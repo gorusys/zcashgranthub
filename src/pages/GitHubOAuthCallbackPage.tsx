@@ -1,3 +1,4 @@
+import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
@@ -53,7 +54,7 @@ export default function GitHubOAuthCallbackPage() {
   }, [code, state, oauthError, router, router.isReady]);
 
   return (
-    <div className="container mx-auto px-4 py-16">
+    <PageLayout>
       <div className="mx-auto max-w-xl rounded-lg border border-border/50 bg-card p-6 text-center">
         {status === "loading" && (
           <>
@@ -78,6 +79,6 @@ export default function GitHubOAuthCallbackPage() {
           </>
         )}
       </div>
-    </div>
+    </PageLayout>
   );
 }

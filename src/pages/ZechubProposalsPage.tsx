@@ -1,3 +1,4 @@
+import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useCallback, useEffect, useMemo, useState, useRef } from "react";
 import Head from "next/head";
@@ -353,7 +354,7 @@ export default function ZechubProposalsPage() {
   ]);
 
   return (
-    <div className="container mx-auto px-4 py-6 sm:py-8">
+    <PageLayout>
       <Head>
         <title>{tx("ZecHub DAO proposals · Zcash Grants Hub")}</title>
         <meta
@@ -544,6 +545,6 @@ export default function ZechubProposalsPage() {
           )}
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 }

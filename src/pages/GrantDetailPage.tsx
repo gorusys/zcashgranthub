@@ -1,3 +1,4 @@
+import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import Link from "next/link";
 import {
@@ -42,7 +43,7 @@ import { useState } from "react";
 
 function DetailSkeleton() {
   return (
-    <div className="container mx-auto animate-pulse px-4 py-8">
+    <PageLayout className="animate-pulse">
       <div className="mb-6 h-4 w-24 rounded bg-secondary" />
       <div className="mb-3 flex gap-2">
         <div className="h-5 w-24 rounded-full bg-secondary" />
@@ -53,7 +54,7 @@ function DetailSkeleton() {
       <div className="mt-6 h-20 w-full rounded-lg bg-secondary" />
       <div className="mt-4 h-10 w-full rounded-lg bg-secondary" />
       <div className="mt-6 h-64 w-full rounded-lg bg-secondary" />
-    </div>
+    </PageLayout>
   );
 }
 
@@ -133,7 +134,7 @@ export default function GrantDetailPage({ id }: { id?: string }) {
   // ── error ─────────────────────────────────────────────────────────────────
   if (isError) {
     return (
-      <div className="container mx-auto px-4 py-20 text-center">
+      <PageLayout className="text-center">
         <AlertCircle className="mx-auto mb-4 h-10 w-10 text-red-400" />
         <h1 className="text-2xl font-bold text-foreground">{tx("Could not load grant")}</h1>
         <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
@@ -142,19 +143,19 @@ export default function GrantDetailPage({ id }: { id?: string }) {
         <Link href="/grants">
           <Button variant="outline" className="mt-6">{tx("Back to Grants")}</Button>
         </Link>
-      </div>
+      </PageLayout>
     );
   }
 
   // ── not found ─────────────────────────────────────────────────────────────
   if (!grant) {
     return (
-      <div className="container mx-auto px-4 py-20 text-center">
+      <PageLayout className="text-center">
         <h1 className="text-2xl font-bold text-foreground">{tx("Grant not found")}</h1>
         <Link href="/grants">
           <Button variant="outline" className="mt-4">{tx("Back to Grants")}</Button>
         </Link>
-      </div>
+      </PageLayout>
     );
   }
 
@@ -175,7 +176,7 @@ export default function GrantDetailPage({ id }: { id?: string }) {
 
   // ── render ────────────────────────────────────────────────────────────────
   return (
-    <div className="container mx-auto min-w-0 px-4 py-6 sm:py-8">
+    <PageLayout>
       {/* Back link */}
       <Link
         href="/grants"
@@ -735,6 +736,6 @@ export default function GrantDetailPage({ id }: { id?: string }) {
           </div>
         </aside>
       </div>
-    </div>
+    </PageLayout>
   );
 }

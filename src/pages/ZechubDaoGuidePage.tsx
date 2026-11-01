@@ -1,3 +1,4 @@
+import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import Link from "next/link";
 import Head from "next/head";
@@ -28,7 +29,7 @@ export default function ZechubDaoGuidePage() {
   const createUrl = zechubDaoCreateProposalUrl();
 
   return (
-    <div className="container mx-auto min-w-0 px-4 py-6 sm:py-8">
+    <PageLayout>
       <Head>
         <title>{tx("Create & vote · ZecHub DAO · Zcash Grants Hub")}</title>
         <meta
@@ -220,6 +221,6 @@ export default function ZechubDaoGuidePage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </PageLayout>
   );
 }

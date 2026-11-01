@@ -1,3 +1,4 @@
+import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import Link from "next/link";
 import Head from "next/head";
@@ -82,29 +83,29 @@ export default function ZechubProposalDetailPage({ id }: { id: string }) {
 
   if (!valid) {
     return (
-      <div className="container mx-auto px-4 py-20 text-center">
+      <PageLayout className="text-center">
         <h1 className="text-xl font-bold text-foreground">{tx("Invalid proposal id")}</h1>
         <Link href="/zechub/proposals">
           <Button variant="outline" className="mt-4">
             {tx("Back to proposals")}</Button>
         </Link>
-      </div>
+      </PageLayout>
     );
   }
 
   if (isLoading) {
     return (
-      <div className="container mx-auto animate-pulse px-4 py-8">
+      <PageLayout className="animate-pulse">
         <div className="mb-6 h-4 w-32 rounded bg-secondary" />
         <div className="mb-4 h-8 w-2/3 rounded bg-secondary" />
         <div className="h-40 rounded-lg bg-secondary" />
-      </div>
+      </PageLayout>
     );
   }
 
   if (isError || !proposal) {
     return (
-      <div className="container mx-auto px-4 py-20 text-center">
+      <PageLayout className="text-center">
         <AlertCircle className="mx-auto mb-4 h-10 w-10 text-red-400" />
         <h1 className="text-2xl font-bold text-foreground">{tx("Could not load proposal")}</h1>
         <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
@@ -114,14 +115,14 @@ export default function ZechubProposalDetailPage({ id }: { id: string }) {
           <Button variant="outline" className="mt-6">
             {tx("Back to proposals")}</Button>
         </Link>
-      </div>
+      </PageLayout>
     );
   }
 
   const sb = statusBadge(proposal);
 
   return (
-    <div className="container mx-auto min-w-0 px-4 py-6 sm:py-8">
+    <PageLayout>
       <Head>
         <title>{proposal.title} {tx(" · ZecHub DAO · Zcash Grants Hub")}</title>
         <meta
@@ -272,6 +273,6 @@ export default function ZechubProposalDetailPage({ id }: { id: string }) {
           </Card>
         </aside>
       </div>
-    </div>
+    </PageLayout>
   );
 }

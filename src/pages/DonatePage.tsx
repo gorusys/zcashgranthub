@@ -1,3 +1,4 @@
+import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useEffect, useMemo, useState } from "react";
 import Head from "next/head";
@@ -234,7 +235,7 @@ export default function DonatePage() {
   };
 
   return (
-    <div className="container mx-auto min-w-0 px-4 py-6 sm:py-8">
+    <PageLayout>
       <Head>
         <title>{tx("Donate & contribute · Zcash Grants Hub")}</title>
         <meta
@@ -624,6 +625,6 @@ export default function DonatePage() {
           </CardContent>
         </Card>
       </section>
-    </div>
+    </PageLayout>
   );
 }

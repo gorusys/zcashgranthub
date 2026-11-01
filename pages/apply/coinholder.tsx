@@ -1,3 +1,4 @@
+import { PageLayout } from "@/components/PageLayout";
 import { UiText } from "@/i18n/ui";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
@@ -19,8 +20,8 @@ export default function ApplyCoinholderRedirect() {
   }, [router.isReady]);
 
   return (
-    <div className="container mx-auto px-4 py-8 text-sm text-muted-foreground">
+    <PageLayout className="text-sm text-muted-foreground">
       <UiText text="Redirecting to apply…" />
-    </div>
+    </PageLayout>
   );
 }

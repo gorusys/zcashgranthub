@@ -1,3 +1,4 @@
+import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { UiText } from "@/i18n/ui";
 import Link from "next/link";
@@ -641,7 +642,7 @@ export default function ApplyPage({
   };
 
   return (
-    <div className="container mx-auto px-4 py-6 sm:py-8">
+    <PageLayout>
       <h1 className="mb-1 text-2xl font-bold text-foreground sm:text-3xl">
         {tx("Apply for a grant")}</h1>
       <p className="mb-4 text-sm text-muted-foreground sm:mb-6 sm:text-base">
@@ -1224,6 +1225,6 @@ export default function ApplyPage({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </PageLayout>
   );
 }

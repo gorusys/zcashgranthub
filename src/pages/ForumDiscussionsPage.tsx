@@ -1,3 +1,4 @@
+import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useMemo, useState } from "react";
 import Head from "next/head";
@@ -108,7 +109,7 @@ export default function ForumDiscussionsPage() {
   }, [data?.topics, sortBy, uiLocale]);
 
   return (
-    <div className="container mx-auto px-4 py-6 sm:py-8">
+    <PageLayout>
       <Head>
         <title>{tx("Forum discussions · Zcash Grants Hub")}</title>
         <meta
@@ -265,6 +266,6 @@ export default function ForumDiscussionsPage() {
           </p>
         </div>
       )}
-    </div>
+    </PageLayout>
   );
 }

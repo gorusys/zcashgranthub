@@ -1,3 +1,4 @@
+import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import Head from "next/head";
 import { Code2, Rss } from "lucide-react";
@@ -41,7 +42,7 @@ const ENDPOINTS: Array<{ path: string; desc: string; params?: string; example: s
 export default function DevelopersPage() {
   const { text: tx } = useUi();
   return (
-    <div className="container mx-auto min-w-0 max-w-4xl px-4 py-6 sm:py-8">
+    <PageLayout>
       <Head>
         <title>{tx("API & feeds · Zcash Grants Hub")}</title>
         <meta name="description" content={tx("Free, read-only JSON API and RSS feed for Zcash grants data.")} />
@@ -79,6 +80,6 @@ export default function DevelopersPage() {
         <a href="https://github.com/gorusys/zcashgranthub" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
           {tx("GitHub")}</a>
         {tx(". The hub is open source, and other projects using the data helps keep it maintained.")}</p>
-    </div>
+    </PageLayout>
   );
 }
