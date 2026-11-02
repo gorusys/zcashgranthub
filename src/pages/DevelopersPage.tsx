@@ -1,6 +1,5 @@
 import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
-import Head from "next/head";
 import { Code2, Rss } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -43,10 +42,6 @@ export default function DevelopersPage() {
   const { text: tx } = useUi();
   return (
     <PageLayout>
-      <Head>
-        <title>{tx("API & feeds · Zcash Grants Hub")}</title>
-        <meta name="description" content={tx("Free, read-only JSON API and RSS feed for Zcash grants data.")} />
-      </Head>
       <h1 className="flex items-center gap-2 text-2xl font-bold text-foreground sm:text-3xl">
         <Code2 className="h-7 w-7 text-primary" /> {tx(" API & feeds")}</h1>
       <p className="mb-6 mt-2 text-sm text-muted-foreground sm:text-base">

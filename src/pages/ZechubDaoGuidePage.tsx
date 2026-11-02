@@ -1,7 +1,6 @@
 import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import Link from "next/link";
-import Head from "next/head";
 import {
   ArrowLeft,
   BookOpen,
@@ -30,13 +29,6 @@ export default function ZechubDaoGuidePage() {
 
   return (
     <PageLayout>
-      <Head>
-        <title>{tx("Create & vote · ZecHub DAO · Zcash Grants Hub")}</title>
-        <meta
-          name="description"
-          content={tx("How to create ZecHub DAO proposals and vote using DAO DAO on Juno—wallet, links, and steps.")}
-        />
-      </Head>
 
       <Link
         href="/zechub/proposals"

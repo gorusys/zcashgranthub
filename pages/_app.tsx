@@ -1,3 +1,4 @@
+import { Seo } from "@/components/Seo";
 import { useUi } from "@/i18n/useUi";
 import type { AppProps } from "next/app";
 import Head from "next/head";
@@ -35,28 +36,9 @@ export default function App({ Component, pageProps }: AppProps) {
         enableSystem
         disableTransitionOnChange
       >
+        <Seo />
         <Head>
-          <title>Zcash Grants Hub</title>
-          <meta
-            name="description"
-            content={tx("Zcash Grants Hub: discover grants, submit proposals via GitHub, and explore treasury and funding insights for the Zcash community.")}
-          />
-          <meta property="og:title" content="Zcash Grants Hub" />
-          <meta
-            property="og:description"
-            content={tx("A unified platform for Zcash grants discovery, proposal submission, and transparent treasury analytics.")}
-          />
-          <meta property="og:url" content="https://zgrantshub.com" />
-          <meta
-            property="og:image"
-            content="https://zgrantshub.com/logo.png"
-          />
-          <meta
-            name="twitter:image"
-            content="https://zgrantshub.com/logo.png"
-          />
           <link rel="alternate" type="application/rss+xml" title={tx("Zcash Grants Hub: grant updates")} href="/feed.xml" />
-          <meta name="twitter:card" content="summary" />
           <link rel="icon" href="/favicon.ico?v=2" sizes="any" />
           <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
           <link rel="icon" href="/favicon.svg" type="image/svg+xml" />

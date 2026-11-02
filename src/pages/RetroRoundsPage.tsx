@@ -1,7 +1,6 @@
 import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useEffect, useMemo, useState } from "react";
-import Head from "next/head";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -214,13 +213,6 @@ export default function RetroRoundsPage() {
 
   return (
     <PageLayout>
-      <Head>
-        <title>{tx("Coinholder retro rounds · Zcash Grants Hub")}</title>
-        <meta
-          name="description"
-          content={tx("Deadlines, phases, checklist and past results for the Zcash Coinholder-Directed Retroactive Grants Program (ZIP 1016).")}
-        />
-      </Head>
 
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-foreground sm:text-3xl">

@@ -1,7 +1,6 @@
 import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useMemo, useState } from "react";
-import Head from "next/head";
 import { useQuery } from "@tanstack/react-query";
 import { Coins, ExternalLink, Github, Search } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -102,13 +101,6 @@ export default function BountiesPage() {
 
   return (
     <PageLayout>
-      <Head>
-        <title>{tx(`${t("bounties.title")} · Zcash Grants Hub`)}</title>
-        <meta
-          name="description"
-          content={tx("Open ZEC bounties from ZecHub and beginner-friendly issues in Zebra, librustzcash, Zingo and other Zcash projects, in one list.")}
-        />
-      </Head>
 
       <h1 className="flex items-center gap-2 text-2xl font-bold text-foreground sm:text-3xl">
         <Coins className="h-7 w-7 text-primary" /> {t("bounties.title")}

@@ -1,7 +1,6 @@
 import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useMemo, useState } from "react";
-import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
@@ -110,13 +109,6 @@ export default function ForumDiscussionsPage() {
 
   return (
     <PageLayout>
-      <Head>
-        <title>{tx("Forum discussions · Zcash Grants Hub")}</title>
-        <meta
-          name="description"
-          content={tx("Browse active Community Grants discussions from the Zcash forum.")}
-        />
-      </Head>
 
       <div className="mb-6 space-y-4 sm:mb-8">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">

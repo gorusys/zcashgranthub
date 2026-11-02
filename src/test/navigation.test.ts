@@ -11,7 +11,7 @@ const selected = (pathname: string, tab?: string, hash?: string) => items.filter
 
 function pages(directory: string, prefix = ""): string[] {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
-    if (entry.name === "api" || entry.name === "auth" || entry.name.startsWith("_") || entry.name.includes("[") || entry.name === "404.tsx") return [];
+    if (entry.name === "api" || entry.name === "auth" || entry.name.startsWith("_") || entry.name.includes("[") || entry.name === "404.tsx" || entry.name.endsWith(".xml.tsx")) return [];
     const name = `${prefix}/${entry.name}`;
     return entry.isDirectory() ? pages(path.join(directory, entry.name), name) : entry.name.endsWith(".tsx") ? [name.replace(/\/index\.tsx$/, "").replace(/\.tsx$/, "") || "/"] : [];
   });

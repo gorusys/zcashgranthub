@@ -1,7 +1,6 @@
 import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useEffect, useMemo, useState } from "react";
-import Head from "next/head";
 import { useQuery } from "@tanstack/react-query";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -75,13 +74,6 @@ export default function DecisionsPage() {
 
   return (
     <PageLayout>
-      <Head>
-        <title>{tx("ZCG decisions archive · Zcash Grants Hub")}</title>
-        <meta
-          name="description"
-          content={tx("Search Zcash Community Grants committee decisions and each member's stated reasoning, parsed from the published meeting minutes.")}
-        />
-      </Head>
 
       <div className="mb-6 sm:mb-8">
         <h1 className="text-2xl font-bold text-foreground sm:text-3xl">

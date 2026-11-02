@@ -11,6 +11,7 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      { source: "/apply/coinholder", destination: "/apply?tab=coinholder", permanent: true },
       { source: "/contribute", destination: "/donate#contribute", permanent: false },
     ];
   },
