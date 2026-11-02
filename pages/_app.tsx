@@ -49,15 +49,18 @@ export default function App({ Component, pageProps }: AppProps) {
           <meta property="og:url" content="https://zgrantshub.com" />
           <meta
             property="og:image"
-            content="https://zgrantshub.com/favicon.svg"
+            content="https://zgrantshub.com/logo.png"
           />
           <meta
             name="twitter:image"
-            content="https://zgrantshub.com/favicon.svg"
+            content="https://zgrantshub.com/logo.png"
           />
           <link rel="alternate" type="application/rss+xml" title={tx("Zcash Grants Hub: grant updates")} href="/feed.xml" />
+          <meta name="twitter:card" content="summary" />
+          <link rel="icon" href="/favicon.ico?v=2" sizes="any" />
+          <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
           <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-          <link rel="apple-touch-icon" href="/favicon.svg" />
+          <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
         </Head>
         {analytics && (
           <Script defer src={analytics.src} strategy="afterInteractive" {...analytics.attrs} />
