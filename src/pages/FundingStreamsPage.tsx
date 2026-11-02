@@ -1,7 +1,6 @@
 import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useEffect, useMemo, useState } from "react";
-import Head from "next/head";
 import { useQuery } from "@tanstack/react-query";
 import {
   CartesianGrid,
@@ -164,13 +163,6 @@ export default function FundingStreamsPage() {
 
   return (
     <PageLayout>
-      <Head>
-        <title>{tx("Funding streams & NU7 · Zcash Grants Hub")}</title>
-        <meta
-          name="description"
-          content={tx("Where each Zcash block reward goes before and after NU7, when the dev-fund streams end, and a treasury runway scenario for the ZCG funding debate.")}
-        />
-      </Head>
 
       <h1 className="flex items-center gap-2 text-2xl font-bold text-foreground sm:text-3xl">
         <Layers className="h-7 w-7 text-primary" /> {tx(" Funding streams & NU7")}</h1>

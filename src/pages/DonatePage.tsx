@@ -1,7 +1,6 @@
 import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useEffect, useMemo, useState } from "react";
-import Head from "next/head";
 import Link from "next/link";
 import QRCode from "qrcode";
 import { toast } from "sonner";
@@ -236,14 +235,6 @@ export default function DonatePage() {
 
   return (
     <PageLayout>
-      <Head>
-        <title>{tx("Donate & contribute · Zcash Grants Hub")}</title>
-        <meta
-          name="description"
-          content={tx("Support Zcash Grants Hub with a shielded ZEC donation, or contribute code, feedback, and reviews to the Zcash grants ecosystem.")}
-        />
-        <meta property="og:title" content={tx("Donate & contribute · Zcash Grants Hub")} />
-      </Head>
 
       {/* Hero */}
       <div className="mb-8 max-w-3xl sm:mb-10">

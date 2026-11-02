@@ -1,7 +1,7 @@
 import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import Link from "next/link";
-import Head from "next/head";
+import { Seo } from "@/components/Seo";
 import { useQuery } from "@tanstack/react-query";
 import {
   ArrowLeft,
@@ -123,13 +123,7 @@ export default function ZechubProposalDetailPage({ id }: { id: string }) {
 
   return (
     <PageLayout>
-      <Head>
-        <title>{proposal.title} {tx(" · ZecHub DAO · Zcash Grants Hub")}</title>
-        <meta
-          name="description"
-          content={tx(`ZecHub DAO proposal A${proposal.id} on Juno (DAO DAO). ${proposal.title.slice(0, 120)}`)}
-        />
-      </Head>
+      <Seo title={`${proposal.title} ${tx(" · ZecHub DAO · Zcash Grants Hub")}`} description={tx(`ZecHub DAO proposal A${proposal.id} on Juno (DAO DAO). ${proposal.title.slice(0, 120)}`)} />
       <Link
         href="/zechub/proposals"
         className="mb-5 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"

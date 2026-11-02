@@ -1,7 +1,6 @@
 import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useEffect, useMemo, useState } from "react";
-import Head from "next/head";
 import Link from "next/link";
 import { ArrowRight, Compass, ExternalLink, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -99,13 +98,6 @@ export default function FundingFinderPage() {
 
   return (
     <PageLayout>
-      <Head>
-        <title>{tx(`${t("finder.title")} · Zcash Grants Hub`)}</title>
-        <meta
-          name="description"
-          content={tx("Answer three questions to find which Zcash funding route fits your work: ZCG, Coinholder retroactive grants, ZecHub bounties or the ZecHub DAO.")}
-        />
-      </Head>
 
       <h1 className="flex items-center gap-2 text-2xl font-bold text-foreground sm:text-3xl">
         <Compass className="h-7 w-7 text-primary" /> {t("finder.title")}

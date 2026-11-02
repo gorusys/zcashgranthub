@@ -1,7 +1,6 @@
 import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useCallback, useEffect, useMemo, useState, useRef } from "react";
-import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import {
@@ -355,13 +354,6 @@ export default function ZechubProposalsPage() {
 
   return (
     <PageLayout>
-      <Head>
-        <title>{tx("ZecHub DAO proposals · Zcash Grants Hub")}</title>
-        <meta
-          name="description"
-          content={tx("Browse on-chain ZecHub DAO proposals on Juno via DAO DAO—mini-grants and governance separate from ZCG GitHub review.")}
-        />
-      </Head>
       <div className="mb-5 space-y-4 sm:mb-8">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">

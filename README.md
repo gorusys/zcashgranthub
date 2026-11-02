@@ -134,3 +134,7 @@ Optional explicit mappings live in **`src/data/grant-links.json`** (validated by
 - [ZecHub DAO (wiki)](https://zechub.wiki/dao)
 
 The hub also links the [community operations spreadsheet](https://docs.google.com/spreadsheets/d/1FQ28rDCyRW0TiNxrm3rgD8ai2KGUsXAjPieQmI1kKKg) as a dashboard, not as a competing browse index.
+
+## Search metadata
+
+`src/lib/seo.ts` defines public page metadata and the sitemap route list. `Seo` supplies localized canonical URLs, language alternates, social previews, and homepage WebSite structured data. Keep titles and descriptions translated in `src/i18n/messages/ui.json`. Personal dashboards, authentication callbacks and error pages use `noindex`; query strings and fragments are omitted from canonical URLs. `/sitemap.xml` includes all 15 public static pages in English, Spanish and Brazilian Portuguese, with reciprocal language alternatives. Dynamic grant and DAO detail content still loads on the client and is excluded from this static sitemap.

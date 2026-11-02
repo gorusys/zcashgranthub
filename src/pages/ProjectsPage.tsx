@@ -1,7 +1,6 @@
 import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import { useMemo, useState } from "react";
-import Head from "next/head";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { AlertTriangle, Boxes, ChevronDown, ExternalLink, Search } from "lucide-react";
@@ -247,13 +246,6 @@ export default function ProjectsPage() {
 
   return (
     <PageLayout>
-      <Head>
-        <title>{tx("Projects & infrastructure · Zcash Grants Hub")}</title>
-        <meta
-          name="description"
-          content={tx("Who has been funded to build what in Zcash, the repositories behind each grant, and the health and NU7 readiness of core infrastructure.")}
-        />
-      </Head>
       <h1 className="flex items-center gap-2 text-2xl font-bold text-foreground sm:text-3xl">
         <Boxes className="h-7 w-7 text-primary" /> {tx(" Projects & infrastructure")}</h1>
       <p className="mb-6 mt-2 text-sm text-muted-foreground sm:text-base">

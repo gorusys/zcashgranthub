@@ -1,3 +1,4 @@
+import { Seo } from "@/components/Seo";
 import { PageLayout } from "@/components/PageLayout";
 import { useUi } from "@/i18n/useUi";
 import Link from "next/link";
@@ -177,6 +178,7 @@ export default function GrantDetailPage({ id }: { id?: string }) {
   // ── render ────────────────────────────────────────────────────────────────
   return (
     <PageLayout>
+      <Seo title={`${grant.title} · Zcash Grants Hub`} />
       {/* Back link */}
       <Link
         href="/grants"
