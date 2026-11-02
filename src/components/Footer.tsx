@@ -1,7 +1,7 @@
 import { useUi } from "@/i18n/useUi";
 import Link from "next/link";
 import { useT } from "@/i18n";
-import { ArrowUpRight, Github, Heart } from "lucide-react";
+import { ArrowUpRight, Github, Heart, MessageCircle } from "lucide-react";
 import { navigationGroups, isFeedLink } from "@/lib/navigation";
 
 export function Footer() {
@@ -34,6 +34,7 @@ export function Footer() {
         <div className="flex flex-col gap-4 border-t border-border/60 pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs leading-relaxed text-muted-foreground">{t("footer.copyright", { year: new Date().getFullYear() })}</p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
+            <a href="https://discord.gg/NJSrv9EBbn" target="_blank" rel="noopener noreferrer" className={linkClass}><MessageCircle className="mr-2 h-4 w-4" aria-hidden />{tx("Discord")}<ArrowUpRight className="ml-1 h-3 w-3" aria-hidden /></a>
             <a href="https://forum.zcashcommunity.com" target="_blank" rel="noopener noreferrer" className={linkClass}>{t("footer.forum")}<ArrowUpRight className="ml-1 h-3 w-3" aria-hidden /></a>
             <a href="https://github.com/ZcashCommunityGrants" target="_blank" rel="noopener noreferrer" className={linkClass}><Github className="mr-2 h-4 w-4" aria-hidden />{tx("GitHub")}<ArrowUpRight className="ml-1 h-3 w-3" aria-hidden /></a>
           </div>
